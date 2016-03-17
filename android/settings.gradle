@@ -1,0 +1,3 @@
+rootProject.name = 'fy360'
+
+include ':app'
