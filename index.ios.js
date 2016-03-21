@@ -11,12 +11,12 @@ import React, {
     ListView,
 } from 'react-native';
 
-import ListViewDemo from './demo/ListView'
+import RefreshControlDemo from './demo/RefreshControl'
 
 class fy360 extends Component {
     render() {
         return (
-            <ListViewDemo />
+            <RefreshControlDemo />
         );
     }
 }

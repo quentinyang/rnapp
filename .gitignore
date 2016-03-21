@@ -32,3 +32,6 @@ local.properties
 #
 node_modules/
 npm-debug.log
+
+ios/fy360.xcodeproj/xcshareddata/
+android/gradle/wrapper/*.zip

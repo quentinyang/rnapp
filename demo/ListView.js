@@ -11,7 +11,8 @@ import React, {
     ListView,
     TouchableOpacity,
     Image,
-    AlertIOS
+    AlertIOS,
+    RefreshControl
 } from 'react-native';
 
 export default class ListViewDemo extends Component {
@@ -35,7 +36,9 @@ export default class ListViewDemo extends Component {
                 'Row 1', 'Row 2','Row 3','Row 4','Row 5','Row 6','Row 7','Row 8','Row 9','Row 10','Row 11','Row 12','Row 13',
                 'Row 1', 'Row 2','Row 3','Row 4','Row 5','Row 6','Row 7','Row 8','Row 9','Row 10','Row 11','Row 12','Row 13',
                 'Row 1', 'Row 2','Row 3','Row 4','Row 5','Row 6','Row 7','Row 8','Row 9','Row 10','Row 11','Row 12','Row 13'
-            ])
+            ]),
+            rowData: Array.from(new Array(20)).map(
+                        (val, i) => ({text: '初始行 ' + i}))
         };
     }
 
@@ -49,6 +52,14 @@ export default class ListViewDemo extends Component {
                 onEndReached={this._onEndReached}
                 onEndReachedThreshold={100}
                 renderRow={this._renderRow}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.isRefreshing}
+                        onRefresh={this._onRefresh}
+                        colors={['#ff0000', '#00ff00', '#0000ff','#3ad564']}
+                        progressBackgroundColor="#ffffff"
+                    />
+                }
             />
         );
     }
@@ -75,6 +86,23 @@ export default class ListViewDemo extends Component {
 
     }
 
+    _onRefresh() {
+        this.setState({isRefreshing: true});
+
+        setTimeout(() => {
+            // 准备下拉刷新的5条数据
+            const rowData = Array.from(new Array(5)).map((val, i) => ({
+                text: '刷新行 ' + (+this.state.loaded + i)
+            })).concat(this.state.rowData);
+
+            this.setState({
+                loaded: this.state.loaded + 5,
+                isRefreshing: false,
+                rowData: rowData,
+            });
+        }, 5000);
+    }
+
     _onEndReached(a, b) {
         AlertIOS.alert(
             'Foo Title',
@@ -84,7 +112,7 @@ export default class ListViewDemo extends Component {
 
                 }},
                 {text: 'Bar', onPress: () => {
-                    
+
                 }},
             ]
         )
