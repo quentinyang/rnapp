@@ -17,6 +17,8 @@ import PickerDemo from './demo/Picker';
 import PickerIOSDemo from './demo/PickerIOS';
 import BasicComponentsDemo from './demo/BasicComponent';
 import RefreshControlDemo from './demo/RefreshControl';
+import RefreshControlDemo from './demo/RefreshControl'
+import Root from './app/root';
 
 class fy360 extends Component {
     render() {
