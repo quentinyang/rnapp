@@ -4,19 +4,22 @@ import React, {
     AppRegistry,
     Component,
     StyleSheet,
-    Text,
     View,
     Navigator,
     TouchableOpacity,
     ListView,
 } from 'react-native';
 
-import RefreshControlDemo from './demo/RefreshControl'
+import BasicComponentsDemo from './demo/BasicComponent';
+import RefreshControlDemo from './demo/RefreshControl';
 
 class fy360 extends Component {
     render() {
         return (
-            <RefreshControlDemo />
+            <View>
+                <BasicComponentsDemo />
+                <RefreshControlDemo />
+            </View>
         );
     }
 }
