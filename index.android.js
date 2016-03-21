@@ -12,13 +12,25 @@ import React, {
 } from 'react-native';
 
 import RefreshControlDemo from './demo/RefreshControl'
+import {Image} from 'nuke';
 
 class fy360 extends Component {
-    render() {
-        return (
-            <RefreshControlDemo />
-        );
-    }
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>
+          Welcome to React Native!
+        </Text>
+        <Image source={require('./assets/test.jpg')} />
+        <Text style={styles.instructions}>
+          To get started, edit index.android.js
+        </Text>
+        <Text style={styles.instructions}>
+          Shake or press menu button for dev menu
+        </Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
