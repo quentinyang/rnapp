@@ -17,7 +17,7 @@ const {
   View
 } = React;
 
-let index = 0;
+var index = 0;
 
 class Main extends React.Component {
     constructor(props) {
@@ -25,8 +25,8 @@ class Main extends React.Component {
     }
 
     onPressDrawerItem(indexP) {
-        this.props.actions.fetchTypes(indexP % 2 == 0)
-        index++;
+        this.props.actions.fetchTypes(index % 2 == 0)
+        index = index + 1;
     }
 
     render() {
