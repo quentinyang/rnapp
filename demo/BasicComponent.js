@@ -6,7 +6,7 @@ import React, {
 } from 'react-native';
 
 import {View, Text, Image, Switch, MapView} from 'nuke-native';
-console.log(Switch);
+
 export default class BasicComponentsDemo extends Component {
     constructor(props) {
         super(props);
