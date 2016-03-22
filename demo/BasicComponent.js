@@ -5,7 +5,7 @@ import React, {
     StyleSheet,
 } from 'react-native';
 
-import {View, Text, Image, Switch, MapView} from 'nuke-native';
+import {View, Text, Image, Switch, MapView} from 'nuke';
 
 export default class BasicComponentsDemo extends Component {
     constructor(props) {

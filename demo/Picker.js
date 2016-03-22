@@ -6,7 +6,7 @@ import React, {
     PickerIOS,
 } from 'react-native';
 
-import {View, Text, Image, Switch, MapView, Picker} from 'nuke-native';
+import {View, Text, Image, Switch, MapView, Picker} from 'nuke';
 
 export default class PickerDemo extends Component {
     constructor(props) {
