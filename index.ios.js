@@ -19,33 +19,44 @@ import RefreshControlDemo from './demo/RefreshControl';
 import Root from './app/root';
 import ToastDemo from './demo/ToastAndroid';
 
+import codePush from "react-native-code-push";
+
 class fy360 extends Component {
-    render() {
-        var Picker1 = PickerIOSDemo.examples[0].render;
-        var Picker2 = PickerIOSDemo.examples[1].render;
-        return (
-            <View style={styles.container}>
-                <Text style={styles.welcome}>
-                  Welcome to React Native!
-                </Text>
-                <Image source={require('./assets/test.jpg')} />
-                <Text style={styles.instructions}>
-                  To get started, edit index.ios.js
-                </Text>
-                <Text style={styles.instructions}>
-                  Press Cmd+R to reload,{'\n'}
-                  Cmd+D or shake for dev menu
-                </Text>
-                <ToastDemo />
-                <AlertDemo />
-                <Picker1 />
-                <Picker2 />
-                <PickerDemo />
-                <BasicComponentsDemo />
-                <RefreshControlDemo />
-            </View>
-        );
-    }
+  componentDidMount() {
+    // download silently and installed the next time the app is restarted
+    codePush.sync({rollbackTimeout: 3000});
+    // Prompt the user when an update is available, 
+    // if aggree, and then display a "downloading" modal, and update immediately
+    // codePush.sync({updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE, rollbackTimeout: 3000});
+  }
+
+  render() {
+    var Picker1 = PickerIOSDemo.examples[0].render;
+    var Picker2 = PickerIOSDemo.examples[1].render;
+    return (
+        <View style={styles.container}>
+            <Text style={styles.welcome}>
+              Welcome to React Native!
+            </Text>
+            <Image source={require('./rn/image/flower.jpg')}  style={{width: 200, height: 200}}/>
+            <Text style={styles.instructions}>
+              To get started, edit index.ios.js
+            </Text>
+            <Text style={styles.instructions}>
+              Press Cmd+R to reload,{'\n'}
+              Cmd+D or shake for dev menu
+            </Text>
+            <ToastDemo />
+            <AlertDemo />
+            <Picker1 />
+            <Picker2 />
+            <PickerDemo />
+            <BasicComponentsDemo />
+            <RefreshControlDemo />
+        </View>
+    );
+  }
+
 }
 
 const styles = StyleSheet.create({

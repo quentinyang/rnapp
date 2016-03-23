@@ -36,3 +36,10 @@ npm-debug.log
 ios/fy360.xcodeproj/xcshareddata/
 android/app/src/main/assets/
 android/gradle/wrapper/*.zip
+android/gradle/wrapper/*.zip
+
+# codepush
+release/
+assets/
+index.ios.jsbundle
+index.android.jsbundle

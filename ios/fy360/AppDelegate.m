@@ -43,14 +43,26 @@
 
 //   jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"index.ios" withExtension:@"jsbundle"];
   
+  /**
+   * OPTION 3 - Code Push
+   *
+   * E.g.:
+   *  jsCodeLocation = [CodePush bundleURL];//default main.jsbundle
+   *  or
+   *  jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
+   *
+   */
 
+//  
+//  #ifdef DEBUG
+//    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+//  #else
+//    jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
+//  #endif
   
-  #ifdef DEBUG
-    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
-  #else
-    jsCodeLocation = [CodePush bundleURL] URLForResource:@"index.ios" withExtension:@"jsbundle"];
-  #endif
-  
+//  jsCodeLocation = [[CodePush bundleURL] bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
+//  jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+  jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"fy360"
