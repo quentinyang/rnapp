@@ -1,11 +1,8 @@
 'use strict';
 
 var React = require('react-native');
-var {
-  Picker,
-  Text,
-  View,
-} = React;
+
+import {View, Text, Image, Switch, MapView, Picker} from 'nuke';
 
 var PickerItemIOS = Picker.Item;
 

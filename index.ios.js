@@ -4,21 +4,20 @@ import React, {
     AppRegistry,
     Component,
     StyleSheet,
-    View,
     Navigator,
     TouchableOpacity,
-    Text,
     ListView,
 } from 'react-native';
 
-import {Image} from 'nuke';
+import {Image, View, Text} from 'nuke';
 
 import PickerDemo from './demo/Picker';
 import PickerIOSDemo from './demo/PickerIOS';
+import AlertDemo from './demo/Alert';
 import BasicComponentsDemo from './demo/BasicComponent';
 import RefreshControlDemo from './demo/RefreshControl';
-import RefreshControlDemo from './demo/RefreshControl'
 import Root from './app/root';
+import ToastDemo from './demo/ToastAndroid';
 
 class fy360 extends Component {
     render() {
@@ -37,6 +36,8 @@ class fy360 extends Component {
                   Press Cmd+R to reload,{'\n'}
                   Cmd+D or shake for dev menu
                 </Text>
+                <ToastDemo />
+                <AlertDemo />
                 <Picker1 />
                 <Picker2 />
                 <PickerDemo />
@@ -50,9 +51,7 @@ class fy360 extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        marginTop: 10,
     },
     welcome: {
         fontSize: 20,
