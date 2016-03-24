@@ -18,6 +18,8 @@ const {
   Platform
 } = React;
 
+import LoginContainer from '../containers/LoginContainer';
+
 var index = 0;
 
 class Main extends React.Component {
@@ -33,7 +35,7 @@ class Main extends React.Component {
     render() {
         let loading = this.props.test.get('loading');
         let text = loading ? '首页的了哦' : '我哪知道是哪个页面的哈'
-        
+
         return (
             <TouchableOpacity
                 style={styles.drawerContent}
