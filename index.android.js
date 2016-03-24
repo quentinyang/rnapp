@@ -36,7 +36,7 @@ class fy360 extends Component {
                 <Text style={styles.welcome}>
                   Welcome to React Native (Latest)!
                 </Text>
-                <Image source={require('./rn/image/flower.jpg')} style={{width: 200, height: 200}}/>
+                <Image source={require('./app/images/flower.jpg')} style={{width: 200, height: 200}}/>
                 <Text style={styles.instructions}>
                   To get started, edit index.android.js
                 </Text>
