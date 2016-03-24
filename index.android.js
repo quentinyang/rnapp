@@ -18,16 +18,25 @@ import BasicComponentsDemo from './demo/BasicComponent';
 import RefreshControlDemo from './demo/RefreshControl';
 import ToastDemo from './demo/ToastAndroid';
 
+import codePush from "react-native-code-push";
+
 class fy360 extends Component {
+    componentDidMount() {
+        // download silently and installed the next time the app is restarted
+        codePush.sync({rollbackTimeout: 3000});
+        // Prompt the user when an update is available, 
+        // if aggree, and then display a "downloading" modal, and update immediately
+        // codePush.sync({updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE, rollbackTimeout: 3000});
+    }
     render() {
         var Picker1 = PickerIOSDemo.examples[0].render;
         var Picker2 = PickerIOSDemo.examples[1].render;
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>
-                  Welcome to React Native!
+                  Welcome to React Native (Latest)!
                 </Text>
-                <Image source={require('./assets/test.jpg')} />
+                <Image source={require('./rn/image/flower.jpg')} style={{width: 200, height: 200}}/>
                 <Text style={styles.instructions}>
                   To get started, edit index.android.js
                 </Text>

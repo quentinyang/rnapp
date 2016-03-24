@@ -33,13 +33,18 @@ local.properties
 node_modules/
 npm-debug.log
 
+# Android Studio
+android/app/app.iml
+android/fy360.iml
+
+# React Native
 ios/fy360.xcodeproj/xcshareddata/
+android/gradle/wrapper/*.zip
 android/app/src/main/assets/
-android/gradle/wrapper/*.zip
-android/gradle/wrapper/*.zip
 
 # codepush
 release/
 assets/
 index.ios.jsbundle
 index.android.jsbundle
+index.android.bundle
