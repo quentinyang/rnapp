@@ -14,7 +14,8 @@ const {
   Image,
   DrawerLayoutAndroid,
   Dimensions,
-  View
+  View,
+  Platform
 } = React;
 
 var index = 0;

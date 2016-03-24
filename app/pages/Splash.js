@@ -15,15 +15,16 @@ class Splash extends React.Component {
             InteractionManager.runAfterInteractions(() => {
                 navigator.resetTo({
                     component: MainContainer,
-                    name: 'Main'
+                    name: 'Main',
+                    title: 'Main Page'
                 });
             });
-        }, 5000);
+        }, 1000);
     }
 
     render() {
         return (
-            <View style={{flex:1}}>
+            <View style={styles.container}>
                 <View style={styles.content}>
                     <Text>MIXIMII</Text>
                 </View>
@@ -39,12 +40,12 @@ var styles = StyleSheet.create({
         justifyContent:'center',
     },
     content: {
-        marginTop: (Platform.OS === 'ios')? 64: 48,
         backgroundColor:'#fff',
         width: Dimensions.get('window').width,
         flex:1,
         borderColor:'#e6e6e6',
         borderWidth: 1/PixelRatio.get(),
+        height: 40
     },
 });
 

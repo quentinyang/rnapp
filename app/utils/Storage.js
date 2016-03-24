@@ -1,9 +1,6 @@
 'use strict';
 
-import React from 'react-native';
-const {
-  AsyncStorage
-} = React;
+import React, {AsyncStorage} from 'react-native';
 
 var deviceStorage = {
     get: function(key) {

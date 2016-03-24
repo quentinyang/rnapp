@@ -1,6 +1,6 @@
 'use strict';
 
-import React, {Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text} from 'react-native';
+import React, {Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View} from 'react-native';
 import {NaviGoBack} from '../utils/CommonUtils';
 import Splash from '../pages/Splash';
 
@@ -43,12 +43,13 @@ class App extends React.Component {
         // }
 
         return (
-            <Component navigator={navigator} route={route} />
+            <View style={styles.navBarWarp}>
+                <Component navigator={navigator} route={route} />
+            </View>
         );
     }
 
     navBar() {
-
         let a = <Navigator.NavigationBar
                     routeMapper={{
                         LeftButton: this._LeftButton,
@@ -76,7 +77,7 @@ class App extends React.Component {
         return (
             <TouchableOpacity
                 onPress={() => navigator.pop()}
-                style={styles.navBarLeftButton}>
+                style={styles.navBarRightButton}>
                 <Text>Right</Text>
             </TouchableOpacity>
         );
@@ -84,124 +85,53 @@ class App extends React.Component {
 
     _Title(route, navigator, index, navState) {
         return (
-            <Text>{ route.yitle }</Text>
+            <Text style={styles.navBarTitleText}>{ route.title }</Text>
         )
     }
 
     render() {
-        let aa = <Navigator.NavigationBar
-                    routeMapper={this.navBar()}
-                    style={styles.navBar}
-                />;
-
         return (
             <Navigator
                 style={styles.navigator}
                 configureScene={this.configureScene}
                 renderScene={this.renderScene}
                 sceneStyle={{backgroundColor: '#fff'}}
+                navigationBar={this.navBar()}
                 initialRoute={{
                     component: Splash,
                     name: 'Splash',
-                    yitle: 'Test'
+                    title: 'Test'
                 }}
-                navigationBar={aa}
             />
         )
     }
 }
 
 let styles = StyleSheet.create({
-    navigator: {
-        flex: 1
+    navBarWarp: {
+        marginTop: (Platform.OS === 'ios') ? 64: 48
     },
     navBar: {
-        flex: 1,
-        backgroundColor:'#fff',
-        borderColor:'orange',
-        borderWidth:1,
-        height: (Platform.OS === 'ios') ? 64: 48
+        backgroundColor: '#fff',
+        borderColor: '#ddd',
+        borderWidth: 1,
+        height: (Platform.OS === 'ios') ? 64: 48,
+    },
+    navBarTitleText: {
+        fontWeight: '500',
     },
     navBarLeftButton: {
         paddingLeft: 5
     },
+    navBarRightButton: {
+        marginRight: 5
+    },
     icon: {
-        width:30,
-        height:30,
-        marginTop:(Platform.OS === 'ios')? 6: 9,
-        textAlign:'center'
+        width: 30,
+        height: 30,
+        marginTop: (Platform.OS === 'ios')? 6: 9,
+        textAlign: 'center'
     }
 });
 
 export default App;
-
-/*'use strict';
-
-import React, {Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text} from 'react-native';
-import {NaviGoBack} from '../utils/CommonUtils';
-import Splash from '../pages/Splash';
-
-var App = React.createClass({
-
-  renderScene: function( route, nav ) {
-    let Componented = route.component
-
-    switch (route.name) {
-      case 'Splash':
-        return <Componented/>
-      case 'PageTwo':
-        return <Splash navigator={ nav } leftButton={ "Back" } title={ "PageTwo" } />;
-    }
-  },
-
-  LeftButton: function( route, navigator, index, navState ){
-    return(
-      <Text>{ route.leftButton }</Text>
-    )
-  },
-  Title: function( route, navigator, index, navState ){
-    return(
-      <Text>{ route.title }</Text>
-    )
-  },
-  RightButton: function( route, navigator, index, navState ){
-    return(
-      <Text>{ route.rightButton }</Text>
-    )
-  },
-
-  render: function() {
-    return (
-      <Navigator
-        style={{flex: 1}}
-        initialRoute={{
-            component: Splash,
-            name: 'Splash',
-            title: 'Test'
-        }}
-        renderScene={ this.renderScene }
-        configureScene={( route ) => {
-          return Navigator.SceneConfigs.FloatFromRight;
-        }}
-        navigationBar={
-          <Navigator.NavigationBar
-            style={{
-                flex: 1,
-                backgroundColor:'#fff',
-                borderColor:'orange',
-                borderWidth:1,
-                height: (Platform.OS === 'ios') ? 64: 48
-            }}
-            routeMapper={{
-                LeftButton: this.LeftButton,
-                Title: this.Title,
-                RightButton: this.RightButton
-            }} 
-          />
-        } 
-      />
-    );
-  },
-});
-
-export default App;*/
