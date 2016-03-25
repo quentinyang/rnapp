@@ -47,6 +47,8 @@ react-native bundle --platform android --entry-file index.android.js  \
 --bundle-output ./release/index.android.jsbundle \
 --assets-dest ./release \
 --dev false
+
+code-push 
 ```
 
 ## 正式打包Todo List：
@@ -60,6 +62,19 @@ react-native bundle --platform android --entry-file index.android.js  \
 ```
 new CodePush("Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl", this, BuildConfig.DEBUG);
 ```
+
+## 内部打包上传说明
+1. 内部包管理在[https://d.corp.angejia.com/](https://d.corp.angejia.com/)，主机地址192.168.169.14。
+
+ 上传服务器位置：`/srv/app/ios_package/fangyuan360/`，内设`dev`,`alpha`,`master`三种环境。
+
+ 如下示例上传到`dev`环境：
+
+```
+scp ~/Desktop/fy360\ 2016-03-25\ 15-20-00/fy360.ipa angejia@192.168.169.14:/srv/app/ios_package/fangyuan360/dev/fy360.ipa
+fy360.ipa                              
+```
+
 ## 参考
 
  - [Code Push@Quentin github](https://github.com/quentinyang/sharing/blob/master/App/codepush.md)
