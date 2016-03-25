@@ -10,72 +10,117 @@ const {
 } = React;
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        phone: '',
-        code: ''
-    };
-  }
+    constructor(props) {
+        super(props);
+    }
 
-  onPress(url) {
-    Linking.openURL(url);
-  }
+    render() {
+        let {formInfo, controllerInfo} = this.props.login;
 
-  render() {
-    return (
-        <View style={styles.container}>
-            <View>
-                <View style={{alignItems: 'center'}}>
-                    <Image
-                        style={{width: 110, height: 110}}
-                        source={require('../images/flower.jpg')}
-                    />
-                    <Text style={styles.fytitle}>
-                        房源360
-                    </Text>
-                    <Text style={styles.fysubtitle}>
-                        房源信息共享平台
-                    </Text>
-                </View>
-                <View style={styles.phoneBox}>
+        return (
+            <View style={styles.container}>
+                <View>
+                    <View style={{alignItems: 'center'}}>
+                        <Image
+                            style={{width: 110, height: 110}}
+                            source={require('../images/flower.jpg')}
+                        />
+                        <Text style={styles.fytitle}>
+                            房源360
+                        </Text>
+                        <Text style={styles.fysubtitle}>
+                            房源信息共享平台
+                        </Text>
+                    </View>
+                    <View style={styles.phoneBox}>
+                        <TextInput
+                            style={styles.fiPhone}
+                            onChangeText={(phone) => this.singleAction('phoneChanged', phone)}
+                            keyboardType='numeric'
+                            placeholder='手机号'
+                            placeholderTextColor=''
+                            maxLength={11}
+                            underlineColorAndroid='transparent'
+                            value={formInfo.phone}
+                        />
+                        <TouchableHighlight
+                            style={styles.codeButton}
+                            onPress={this.sendCode}
+                        >
+                            <Text style={styles.codeText}>
+                                发送验证码
+                            </Text>
+                        </TouchableHighlight>
+                    </View>
                     <TextInput
-                        style={styles.fiPhone}
-                        onChangeText={(phone) => this.setState({phone})}
+                        style={styles.fiCode}
+                        onChangeText={(code) => this.singleAction('codeChanged', code)}
                         keyboardType='numeric'
-                        placeholder='手机号'
-                        placeholderTextColor=''
-                        maxLength={11}
-                        underlineColorAndroid='transparent'
-                        value={this.state.phone}
+                        placeholder='验证码'
+                        maxLength={4}
+                        value={formInfo.code}
                     />
+                    <View style={styles.errMsgBox}>
+                        <Text
+                            style={styles.errMsgText}
+                        >
+                            {controllerInfo.err_msg}
+                        </Text>
+                    </View>
                     <TouchableHighlight
-                        style={styles.codeButton}
+                        style={styles.submitButton}
+                        onPress={this.handleSubmit}
                     >
-                        <Text style={styles.codeText}>
-                            发送验证码
+                        <Text style={styles.submitText}>
+                            登录
                         </Text>
                     </TouchableHighlight>
                 </View>
-                <TextInput
-                    style={styles.fiCode}
-                    onChangeText={(code) => this.setState({code})}
-                    keyboardType='numeric'
-                    placeholder='验证码'
-                    maxLength={4}
-                    value={this.state.code}
-                />
-                <TouchableHighlight
-                    style={styles.submitButton}
-                >
-                    <Text style={styles.submitText}>
-                        登录
-                    </Text>
-                </TouchableHighlight>
             </View>
-        </View>
-    );
-  }
+        );
+    }
+
+    singleAction(action, value) {
+        let {actions} = this.props;
+
+        actions.errMsg('');
+        actions[action](value);
+    }
+
+    sendCode = () => {
+        let {login, actions} = this.props,
+            {controllerInfo} = login;
+    };
+
+    checkForm = () => {
+        let {phone, code} = this.props.login.formInfo,
+            msg = '';
+
+        if(!phone) {
+            msg = 'emptyPhone';
+        } else if(!code) {
+            msg = 'emptyCode';
+        } else if (!/^1\d{10}$/.test(phone)) {
+            msg = 'phoneWrong';
+        } else if (!/^\d{4}$/.test(code)) {
+            msg = 'codeWrong';
+        }
+        return msg;
+    };
+
+    handleSubmit = (e) => {
+        let msg = this.checkForm(),
+            {actions} = this.props;
+
+        msg ? actions.errMsg(errMsgs[msg]) : actions.loginSubmit();
+    };
+}
+
+let errMsgs = {
+    "emptyPhone": "请输入手机号",
+    "emptyCode": "请输入手机验证码",
+    "phoneWrong": "请输入正确的手机号",
+    "codeWrong": "验证码不正确"
 }
 
 let styles = StyleSheet.create({
@@ -129,7 +174,6 @@ let styles = StyleSheet.create({
         textAlign: 'center'
     },
     fiCode: {
-        marginBottom: 25,
         paddingLeft: 10,
         height: 45,
         fontSize: 16,
@@ -137,6 +181,15 @@ let styles = StyleSheet.create({
         borderColor: '#d9d9d9',
         borderWidth: 1,
         borderRadius: 1
+    },
+    errMsgBox: {
+        justifyContent: 'center',
+        paddingLeft: 2,
+        height: 25
+    },
+    errMsgText: {
+        fontSize: 12,
+        color: '#f00'
     },
     submitButton: {
         justifyContent: 'center',

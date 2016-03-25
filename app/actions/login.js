@@ -1,0 +1,33 @@
+import * as types from '../constants/Login';
+import {login} from '../service/userService';
+
+function makeActionCreator(type, ...argNames) {
+    return function (...args) {
+        let action = {type};
+        argNames.forEach((arg, index) => {
+            action[argNames[index]] = args[index];
+        });
+        return action;
+    }
+}
+
+export const phoneChanged = makeActionCreator(types.PHONE_CHANGED, 'phone');
+export const codeChanged = makeActionCreator(types.CODE_CHANGED, 'code');
+export const formSubmitted = makeActionCreator(types.FORM_SUBMITTED, 'login_form');
+
+export const codeStatus = makeActionCreator(types.CSTATUS_CHANGED, 'code_status');
+export const codeSend = makeActionCreator(types.CSEND_CHANGED, 'code_send');
+export const codeText = makeActionCreator(types.CTEXT_CHANGED, 'code_text');
+export const errMsg = makeActionCreator(types.ERR_MSG, 'err_msg');
+
+export function loginSubmit(params) {
+    return dispatch => {
+        return login()
+            .then((oData) => {
+                dispatch(formSubmitted(true))
+            })
+            .catch((error) => {
+                dispatch(errMsg(error.msg))
+            })
+    }
+}

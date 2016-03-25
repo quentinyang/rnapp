@@ -1,6 +1,6 @@
 'use strict';
-let HOST = 'http://192.168.163.67:8081/app/fakedata/';
-//let HOST = 'http://192.168.162.61:8081/app/fakedata/';
+
+let HOST = 'http://192.168.164.116:8081/app/fakedata/';
 
 let urls = {
     test: {
@@ -8,6 +8,10 @@ let urls = {
     },
     detail: {
         baseInfo: HOST + 'property-detail.json'
+    },
+    user: {
+        sendCode: HOST + 'sendcode.json',
+        login: HOST + 'login.json'
     }
 }
 

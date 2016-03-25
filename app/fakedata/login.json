@@ -1,0 +1,7 @@
+{
+    "status": "success",
+    "msg":"\u6ce8\u518c\u6210\u529f",
+    "redirect": "http:\/\/localhost:8000\/house\/input",
+    "data":[],
+    "token": "123456789000"
+}
