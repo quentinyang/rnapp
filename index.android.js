@@ -17,6 +17,8 @@ import AlertDemo from './demo/Alert';
 import BasicComponentsDemo from './demo/BasicComponent';
 import RefreshControlDemo from './demo/RefreshControl';
 import ToastDemo from './demo/ToastAndroid';
+import ButtonDemo from './demo/Button'
+import ModalDemo from './demo/Modal'
 
 import codePush from "react-native-code-push";
 
@@ -36,7 +38,9 @@ class fy360 extends Component {
                 <Text style={styles.welcome}>
                   Welcome to React Native (Latest)!
                 </Text>
-                <Image source={require('./app/images/flower.jpg')} style={{width: 200, height: 200}}/>
+                <Image source={require('./rn/image/flower.jpg')} style={{width: 200, height: 200}}/>
+                <ButtonDemo />
+                <ModalDemo />
                 <Text style={styles.instructions}>
                   To get started, edit index.android.js
                 </Text>
