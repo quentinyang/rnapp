@@ -1,8 +1,10 @@
 'use strict';
 
+let HOST = 'http://192.168.163.67:8081/app/fakedata/';
+
 let urls = {
     test: {
-        list: 'fakedata/property-list.json'
+        list: HOST +  'property-list.json'
     }
 }
 

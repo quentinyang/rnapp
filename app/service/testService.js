@@ -1,5 +1,4 @@
 import * as ajax from '../utils/Ajax';
-// import {urls} from '../config/urls';
 import * as urls from '../config/urls';
 
 export function getPropertyList() {
