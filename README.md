@@ -49,6 +49,17 @@ react-native bundle --platform android --entry-file index.android.js  \
 --dev false
 ```
 
+## 正式打包Todo List：
+
+1. 修改`./fy360-native/ios/fy360/Info.plist`文件，找到如下代码修改Key值：
+```
+<key>CodePushDeploymentKey</key>
+<string>Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl</string>
+```
+1. 修改`./fy360-native/android/app/src/main/java/com/fy360/MainActivity.java`文件，找到如下代码修改Key值：
+```
+new CodePush("Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl", this, BuildConfig.DEBUG);
+```
 ## 参考
 
  - [Code Push@Quentin github](https://github.com/quentinyang/sharing/blob/master/App/codepush.md)
