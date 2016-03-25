@@ -3,6 +3,8 @@
 import React, {Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View} from 'react-native';
 import {NaviGoBack} from '../utils/CommonUtils';
 import Splash from '../pages/Splash';
+import LoginContainer from '../containers/LoginContainer';
+import HomeContainer from '../containers/HomeContainer';
 
 let _navigator, isRemoved = false;
 
@@ -12,6 +14,11 @@ class App extends React.Component {
 
         this.renderScene = this.renderScene.bind(this);
         this.goBack = this.goBack.bind(this);
+        this._willFocus = this._willFocus.bind(this);
+
+        this.state = {
+            hideNavBar: true
+        }
         // this.navBar = this.navBar.bind(this);
         // this._LeftButton = this._LeftButton.bind(this);
         // this._RightButton = this._RightButton.bind(this);
@@ -30,37 +37,30 @@ class App extends React.Component {
 
     renderScene(route, navigator) {
         let Component = route.component;
-
-        // _navigator = navigator;
-
-        // if(route.name === 'WebViewPage') {
-        //     BackAndroid.removeEventListener('hardwareBackPress', this.goBack);
-        //     isRemoved = true;
-        // } else {
-        //     if(isRemoved) {
-        //         BackAndroid.addEventListener('hardwareBackPress', this.goBack);
-        //     };
-        // }
+        let barWrapStyle = route.hideNavBar ? null : styles.navBarWarp;
 
         return (
-            <View style={styles.navBarWarp}>
+            <View style={barWrapStyle}>
                 <Component navigator={navigator} route={route} />
             </View>
         );
     }
 
     navBar() {
-        let a = <Navigator.NavigationBar
-                    routeMapper={{
-                        LeftButton: this._LeftButton,
-                        RightButton: this._RightButton,
-                        Title: this._Title
-                    }}
-                    style={styles.navBar}
-                />;
+        let {hideNavBar} = this.state;
 
-
-        return a;
+        if (hideNavBar) {
+            return null;
+        } else {
+            return (<Navigator.NavigationBar
+                routeMapper={{
+                    LeftButton: this._LeftButton,
+                    RightButton: this._RightButton,
+                    Title: this._Title
+                }}
+                style={styles.navBar}
+            />)
+        }
     }
 
     _LeftButton(route, navigator, index, navState) {
@@ -89,6 +89,12 @@ class App extends React.Component {
         )
     }
 
+    _willFocus(route) {
+        this.setState({
+            hideNavBar: route.hideNavBar
+        })
+    }
+
     render() {
         return (
             <Navigator
@@ -97,10 +103,12 @@ class App extends React.Component {
                 renderScene={this.renderScene}
                 sceneStyle={{backgroundColor: '#fff'}}
                 navigationBar={this.navBar()}
+                onWillFocus={this._willFocus}
                 initialRoute={{
-                    component: Splash,
-                    name: 'Splash',
-                    title: 'Test'
+                    component: HomeContainer,
+                    name: 'login',
+                    hideNavBar: true,
+                    title: 'Login'
                 }}
             />
         )

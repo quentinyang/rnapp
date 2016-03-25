@@ -2,7 +2,6 @@
 
 import {React, Component, Text, View, ScrollView, StyleSheet} from 'nuke';
 
-
 export default class Tab extends Component {
     constructor(props) {
         super(props);
