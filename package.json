@@ -11,6 +11,7 @@
     "react-native-code-push": "^1.9.0-beta",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",
-    "redux-thunk": "^1.0.3"
+    "redux-thunk": "^1.0.3",
+    "react-addons-pure-render-mixin": "^0.14.6"
   }
 }
