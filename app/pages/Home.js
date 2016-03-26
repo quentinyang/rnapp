@@ -13,10 +13,13 @@ export default class Home extends Component {
     render() {
         return (
             <View style={styles.flex}>
+                <View style={styles.searchWrap}>
+                    <Text></Text>
+                </View>
                 <TouchableWithoutFeedback  onPress={this._onHandlePress}>
                     <View style={styles.allHouse}>
                         <Text>Image</Text>
-                        <Text style={[styles.flex, styles.textPadding]}>123</Text>
+                        <Text style={[styles.flex, styles.textPadding]}>全部房源</Text>
                         <Text>></Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -37,6 +40,10 @@ export default class Home extends Component {
 }
 
 const styles = StyleSheet.create({
+    searchWrap: {
+        height: 60,
+        backgroundColor: '#04c1ae'
+    },
     flex: {
         flex: 1
     },

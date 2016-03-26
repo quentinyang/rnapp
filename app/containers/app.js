@@ -2,9 +2,7 @@
 
 import React, {Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View} from 'react-native';
 import {NaviGoBack} from '../utils/CommonUtils';
-import Splash from '../pages/Splash';
 import LoginContainer from '../containers/LoginContainer';
-import HomeContainer from '../containers/HomeContainer';
 
 let _navigator, isRemoved = false;
 
@@ -40,7 +38,7 @@ class App extends React.Component {
         let barWrapStyle = route.hideNavBar ? null : styles.navBarWarp;
 
         return (
-            <View style={barWrapStyle}>
+            <View style={[barWrapStyle, {flex: 1}]}>
                 <Component navigator={navigator} route={route} />
             </View>
         );
@@ -68,7 +66,7 @@ class App extends React.Component {
             <TouchableOpacity
                 onPress={() => navigator.pop()}
                 style={styles.navBarLeftButton}>
-                <Text>Left</Text>
+                <Text style={styles.navBarText}>Left</Text>
             </TouchableOpacity>
         );
     }
@@ -78,7 +76,7 @@ class App extends React.Component {
             <TouchableOpacity
                 onPress={() => navigator.pop()}
                 style={styles.navBarRightButton}>
-                <Text>Right</Text>
+                <Text style={styles.navBarText}>Right</Text>
             </TouchableOpacity>
         );
     }
@@ -98,14 +96,14 @@ class App extends React.Component {
     render() {
         return (
             <Navigator
-                style={styles.navigator}
+                style={{flex:1}}
                 configureScene={this.configureScene}
                 renderScene={this.renderScene}
                 sceneStyle={{backgroundColor: '#fff'}}
                 navigationBar={this.navBar()}
                 onWillFocus={this._willFocus}
                 initialRoute={{
-                    component: HomeContainer,
+                    component: LoginContainer,
                     name: 'login',
                     hideNavBar: true,
                     title: 'Login'
@@ -125,8 +123,15 @@ let styles = StyleSheet.create({
         borderWidth: 1,
         height: (Platform.OS === 'ios') ? 64: 48,
     },
+    navBarText: {
+        fontSize: (Platform.OS === 'ios')? 20: 19,
+        marginVertical: (Platform.OS === 'ios')? 11: 12,
+    },
     navBarTitleText: {
+        fontSize: (Platform.OS === 'ios')? 20: 19,
+        marginTop: (Platform.OS === 'ios')? 10: 20,
         fontWeight: '500',
+        color: (Platform.OS === 'ios')? '#333': '#666'
     },
     navBarLeftButton: {
         paddingLeft: 5

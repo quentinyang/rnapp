@@ -9,6 +9,8 @@ const {
   View
 } = React;
 
+import TabViewContainer from '../containers/TabViewContainer';
+
 class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -109,10 +111,18 @@ class Login extends React.Component {
     };
 
     handleSubmit = (e) => {
-        let msg = this.checkForm(),
-            {actions} = this.props;
+        let {actions, navigator} = this.props;
+        // let msg = this.checkForm(),
+        //     {actions, navigator} = this.props;
 
-        msg ? actions.errMsg(errMsgs[msg]) : actions.loginSubmit();
+        // msg ? actions.errMsg(errMsgs[msg]) : actions.loginSubmit();
+
+        navigator.resetTo({
+            component: TabViewContainer,
+            name: 'home',
+            title: '我的主页',
+            hideNavBar: true
+        })
     };
 }
 

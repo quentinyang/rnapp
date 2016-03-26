@@ -1,5 +1,4 @@
-import React from 'react-native'
-import { Component, View, Text, StyleSheet } from 'nuke'
+import {React, Component, View, Text, StyleSheet } from 'nuke'
 
 export default class Detail extends Component {
     constructor(props) {
