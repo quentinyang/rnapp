@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View} from 'nuke';
+import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image} from 'nuke';
 import {NaviGoBack} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
 
@@ -67,7 +67,10 @@ class App extends Component {
             <TouchableOpacity
                 onPress={() => navigator.pop()}
                 style={styles.navBarLeftButton}>
-                <Text style={styles.navBarText}>Left</Text>
+                <Image
+                    source={require('../images/back.png')}
+                    style={styles.icon}
+                />
             </TouchableOpacity>
         );
     }
@@ -131,8 +134,8 @@ let styles = StyleSheet.create({
         height: (Platform.OS === 'ios') ? 64: 48,
     },
     navBarText: {
-        fontSize: (Platform.OS === 'ios')? 20: 19,
-        marginVertical: (Platform.OS === 'ios')? 11: 12,
+        // fontSize: (Platform.OS === 'ios')? 20: 19,
+        // marginVertical: (Platform.OS === 'ios')? 11: 12,
     },
     navBarTitleText: {
         fontSize: (Platform.OS === 'ios')? 20: 19,
@@ -141,16 +144,15 @@ let styles = StyleSheet.create({
         color: (Platform.OS === 'ios')? '#333': '#666'
     },
     navBarLeftButton: {
-        paddingLeft: 5
+        paddingLeft: 15
     },
     navBarRightButton: {
-        marginRight: 5
+        marginRight: 15
     },
     icon: {
-        width: 30,
-        height: 30,
-        marginTop: (Platform.OS === 'ios')? 6: 9,
-        textAlign: 'center'
+        width: 10,
+        height: 24,
+        marginTop: (Platform.OS === 'ios')? 6: 9
     }
 });
 

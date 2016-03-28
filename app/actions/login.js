@@ -1,15 +1,6 @@
 import * as types from '../constants/Login';
 import {login} from '../service/userService';
-
-function makeActionCreator(type, ...argNames) {
-    return function (...args) {
-        let action = {type};
-        argNames.forEach((arg, index) => {
-            action[argNames[index]] = args[index];
-        });
-        return action;
-    }
-}
+import {makeActionCreator} from './base';
 
 export const phoneChanged = makeActionCreator(types.PHONE_CHANGED, 'phone');
 export const codeChanged = makeActionCreator(types.CODE_CHANGED, 'code');

@@ -1,6 +1,7 @@
 'use strict';
 
-import {React, Component, Text, View, ListView, StyleSheet, TouchableWithoutFeedback, RefreshControl, ActivityIndicator, InteractionManager} from 'nuke';
+import {React, Component, Text, View, ListView, StyleSheet, Image,
+        TouchableWithoutFeedback, RefreshControl, ActivityIndicator, InteractionManager} from 'nuke';
 import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
 import Immutable, {List} from 'immutable';
@@ -8,6 +9,7 @@ import Immutable, {List} from 'immutable';
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
 });
+
 
 export default class HouseList extends Component {
     constructor(props) {
@@ -22,15 +24,17 @@ export default class HouseList extends Component {
         this._renderRow = this._renderRow.bind(this);
         this._onEndReached = this._onEndReached.bind(this);
         this._onRefresh = this._onRefresh.bind(this);
-        this._getRows = this._getRows.bind(this);
         this._onItemPress = this._onItemPress.bind(this);
         this._renderFooter = this._renderFooter.bind(this);
     }
 
     render() {
-        let {houseList} = this.state;
+        let {houseData} = this.props;
+        let houseList = houseData.get('properties');
+        let pager = houseData.get('pager');
 
         return (
+            Number(pager.get('total')) > 0 ? 
             <ListView
                 style={styles.listViewWrap}
                 dataSource={ds.cloneWithRows(houseList.toArray())}
@@ -53,16 +57,25 @@ export default class HouseList extends Component {
                     />
                 }
             />
+            :
+            <View style={[styles.flex, styles.center]}>
+                <Image
+                    source={require('../images/no_house_list.png')}
+                    style={styles.noHouseList}
+                />
+                <Text style={styles.noHouseListMsg}>没有找到符合要求的结果</Text>
+            </View>
         )
     }
 
     componentDidMount() {
-        let {loaded, houseList} = this.state;
+        let {loaded} = this.state;
+        let {actions} = this.props;
 
         if (!loaded) {
-            this.setState({
-                houseList: houseList.concat(this._getRows())
-            })
+            InteractionManager.runAfterInteractions(() => {
+                actions.fetchHouseList({});
+            });
         }
     }
 
@@ -73,86 +86,29 @@ export default class HouseList extends Component {
     }
 
     _onEndReached() { // 防止多次重复加载
-        let {houseList} = this.state;
-        let endData = Immutable.fromJS([
-            {
-                "property_id": 954,
-                "community_id": 2,
-                "community_name": "绿绿123123123",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 955,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            }
-        ]);
+        let {actions, houseData} = this.props;
+        let pager = houseData.get('pager');
 
-        this.setState({
-            houseList: houseList.concat(endData)
-        })
+        if ( Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
+            InteractionManager.runAfterInteractions(() => {
+                actions.fetchAppendHouseList({});
+            });
+        }
     }
 
     _renderFooter() {
+        let {houseData} = this.props;
+        let pager = houseData.get('pager');
+
         return (
-            <View style={styles.listFooter}>
-                <ActivityIndicator color={'#d43d3d'} styleAttr="Small"/>
-            </View>
+                Number(pager.get('current_page')) == Number(pager.get('last_page')) ? 
+                    <View style={styles.listFooter}>
+                        <Text style={styles.noData}>已经没有数据了！</Text>
+                    </View>
+                     :
+                    <View style={styles.listFooter}>
+                        <ActivityIndicator color={'#d43d3d'} styleAttr="Small"/>
+                    </View>
         );
     }
 
@@ -248,410 +204,12 @@ export default class HouseList extends Component {
             hideNavBar: false
         });
     }
-
-    _getRows() {
-        return Immutable.fromJS([
-            {
-                "property_id": 944,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 945,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 944,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 945,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 944,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 945,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 944,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 945,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 944,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 945,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 944,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 945,
-                "community_id": 2,
-                "community_name": "绿绿",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            }
-        ]);
-    }
 }
 
 const styles = StyleSheet.create({
+    flex: {
+        flex: 1
+    },
     listViewWrap: {
 
     },
@@ -659,21 +217,24 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    noData: {
+        color: '#8d8c92',
+        fontSize: 12
+    },
+    noHouseList: {
+        width: 100,
+        height: 100,
+    },
+    noHouseListMsg: {
+        fontSize: 15,
+        color: '#8d8c92',
+        fontFamily: 'Heiti SC',
+        paddingTop: 50
+    },
+    center: {
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
