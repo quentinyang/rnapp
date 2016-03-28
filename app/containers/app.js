@@ -1,28 +1,28 @@
 'use strict';
 
-import React, {Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View} from 'react-native';
+import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View} from 'nuke';
 import {NaviGoBack} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
 
-let _navigator, isRemoved = false;
+let _navigator;
 
-class App extends React.Component {
+class App extends Component {
     constructor(props) {
         super(props);
 
         this.renderScene = this.renderScene.bind(this);
         this.goBack = this.goBack.bind(this);
         this._willFocus = this._willFocus.bind(this);
+        this.navBar = this.navBar.bind(this);
+        this._leftButton = this._leftButton.bind(this);
+        this._rightButton = this._rightButton.bind(this);
+        this._title = this._title.bind(this);
 
         this.state = {
             hideNavBar: true
-        }
-        // this.navBar = this.navBar.bind(this);
-        // this._LeftButton = this._LeftButton.bind(this);
-        // this._RightButton = this._RightButton.bind(this);
-        // this._Title = this._Title.bind(this);
+        };
 
-        // BackAndroid.addEventListener('hardwareBackPress', this.goBack);
+        BackAndroid.addEventListener('hardwareBackPress', this.goBack);
     }
 
     configureScene(route, routeStack) {
@@ -30,15 +30,16 @@ class App extends React.Component {
     }
 
     goBack() {
-        // return NaviGoBack(_navigator);
+        return NaviGoBack(_navigator);
     }
 
     renderScene(route, navigator) {
         let Component = route.component;
         let barWrapStyle = route.hideNavBar ? null : styles.navBarWarp;
+        _navigator = navigator;
 
         return (
-            <View style={[barWrapStyle, {flex: 1}]}>
+            <View style={[barWrapStyle, styles.flex]}>
                 <Component navigator={navigator} route={route} />
             </View>
         );
@@ -52,16 +53,16 @@ class App extends React.Component {
         } else {
             return (<Navigator.NavigationBar
                 routeMapper={{
-                    LeftButton: this._LeftButton,
-                    RightButton: this._RightButton,
-                    Title: this._Title
+                    LeftButton: this._leftButton,
+                    RightButton: this._rightButton,
+                    Title: this._title
                 }}
                 style={styles.navBar}
             />)
         }
     }
 
-    _LeftButton(route, navigator, index, navState) {
+    _leftButton(route, navigator, index, navState) {
         return (
             <TouchableOpacity
                 onPress={() => navigator.pop()}
@@ -71,7 +72,7 @@ class App extends React.Component {
         );
     }
 
-    _RightButton(route, navigator, index, navState) {
+    _rightButton(route, navigator, index, navState) {
         return (
             <TouchableOpacity
                 onPress={() => navigator.pop()}
@@ -81,9 +82,9 @@ class App extends React.Component {
         );
     }
 
-    _Title(route, navigator, index, navState) {
+    _title(route, navigator, index, navState) {
         return (
-            <Text style={styles.navBarTitleText}>{ route.title }</Text>
+            <Text style={styles.navBarTitleText}>{route.title}</Text>
         )
     }
 
@@ -96,10 +97,10 @@ class App extends React.Component {
     render() {
         return (
             <Navigator
-                style={{flex:1}}
+                style={styles.flex}
                 configureScene={this.configureScene}
                 renderScene={this.renderScene}
-                sceneStyle={{backgroundColor: '#fff'}}
+                sceneStyle={styles.sceneStyle}
                 navigationBar={this.navBar()}
                 onWillFocus={this._willFocus}
                 initialRoute={{
@@ -114,6 +115,12 @@ class App extends React.Component {
 }
 
 let styles = StyleSheet.create({
+    flex: {
+        flex: 1
+    },
+    sceneStyle: {
+        backgroundColor: '#fff'
+    },
     navBarWarp: {
         marginTop: (Platform.OS === 'ios') ? 64: 48
     },

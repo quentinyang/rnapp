@@ -77,6 +77,8 @@ class TabBar extends Component {
             {
                 tabArr.map(
                     (tabItem) => {
+                        let isCurrentTab = this.props.tabIndex === tabItem.key;
+                        let tabTextStyle = isCurrentTab ? styles.tabTextSelected : null;
                         return (
                             <TouchableOpacity
                                 activeOpacity={1}
@@ -89,7 +91,7 @@ class TabBar extends Component {
                                 }}
                             >
                                 <View>
-                                    <Text style={styles.tabtext}>{tabItem.title}</Text>
+                                    <Text style={[styles.tabText, tabTextStyle]}>{tabItem.title}</Text>
                                 </View>
                             </TouchableOpacity>
                         )
@@ -125,10 +127,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent:'center',
     },
-    tabtext: {
+    tabText: {
         textAlign: 'center',
         fontSize: 12,
         marginTop: -2
+    },
+    tabTextSelected: {
+        color: '#04c1ae'
     }
 });
 

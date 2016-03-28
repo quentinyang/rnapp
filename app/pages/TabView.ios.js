@@ -52,13 +52,13 @@ export default class TabView extends Component {
 
         switch(tabIndex) {
             case 0:
-                return <HomeContainer navigator={navigator}/>;
+                return <HomeContainer navigator={navigator} rout='全部房源'/>;
                 break;
             case 1:
-                return <HomeContainer navigator={navigator}/>;
+                return <HomeContainer navigator={navigator} rout='发房子'/>;
                 break;
             case 2:
-                return <HomeContainer navigator={navigator}/>;
+                return <HomeContainer navigator={navigator} rout='我的😄'/>;
                 break;
         }
     }
