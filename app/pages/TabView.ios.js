@@ -23,7 +23,7 @@ export default class TabView extends Component {
                     barTintColor='#f8f8f8'>
                     {
                         tabArr.map(
-                            (val)=>{
+                            (val) => {
                                 return (
                                     <TabBar.Item
                                         title={val.title}

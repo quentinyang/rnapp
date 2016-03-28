@@ -19,7 +19,7 @@ export default class Home extends Component {
                 <TouchableWithoutFeedback  onPress={this._onHandlePress}>
                     <View style={styles.allHouse}>
                         <Text>Image</Text>
-                        <Text style={[styles.flex, styles.textPadding]}>全部房源</Text>
+                        <Text style={[styles.flex, styles.textPadding]}>{this.props.rout}</Text>
                         <Text>></Text>
                     </View>
                 </TouchableWithoutFeedback>
