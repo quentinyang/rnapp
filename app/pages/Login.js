@@ -17,7 +17,44 @@ class Login extends React.Component {
     }
 
     render() {
-        let {formInfo, controllerInfo} = this.props.login;
+        let {formInfo, controllerInfo} = this.props.login,
+            codeHTML;
+        // if(controllerInfo.code_send) {
+        //     let num = 60;
+        //     this.timer = setInterval(() => {
+        //         num--;
+        //         if(num <= 0) {
+        //             this.props.action.codeSend(false);
+        //             this.props.action.codeStatus(false);
+        //         }
+        //         codeHTML = (<TouchableHighlight
+        //                     style={styles.codeButton}
+        //                     >
+        //                     <Text style={styles.codeText}>
+        //                         {num}秒后重试
+        //                     </Text>
+        //                 </TouchableHighlight>);
+        //     }, 1000);
+        // } else {
+        //     if(controllerInfo.code_status) {
+        //         codeHTML = (<TouchableHighlight
+        //                         style={styles.codeButton}
+        //                         onPress={this.sendCode}
+        //                     >
+        //                         <Text style={[styles.codeText, {color: '#ffa251'}]}>
+        //                             发送验证码
+        //                         </Text>
+        //                     </TouchableHighlight>);
+        //     } else {
+        //         codeHTML = (<TouchableHighlight
+        //                         style={styles.codeButton}
+        //                     >
+        //                         <Text style={styles.codeText}>
+        //                             发送验证码
+        //                         </Text>
+        //                     </TouchableHighlight>);
+        //     }
+        // }
 
         return (
             <View style={styles.container}>
@@ -37,7 +74,7 @@ class Login extends React.Component {
                     <View style={styles.phoneBox}>
                         <TextInput
                             style={styles.fiPhone}
-                            onChangeText={(phone) => this.singleAction('phoneChanged', phone)}
+                            onChangeText={(phone) => this.inputPhone(phone)}
                             keyboardType='numeric'
                             placeholder='手机号'
                             placeholderTextColor=''
@@ -45,14 +82,13 @@ class Login extends React.Component {
                             underlineColorAndroid='transparent'
                             value={formInfo.phone}
                         />
-                        <TouchableHighlight
-                            style={styles.codeButton}
-                            onPress={this.sendCode}
-                        >
-                            <Text style={styles.codeText}>
-                                发送验证码
-                            </Text>
-                        </TouchableHighlight>
+                        <Countdown
+                            ref='xxx'
+                            code_send={controllerInfo.code_send}
+                            code_status={controllerInfo.code_status}
+                            sendCode={this.sendCode}
+                            actions={this.props.actions}
+                        />
                     </View>
                     <TextInput
                         style={styles.fiCode}
@@ -63,9 +99,7 @@ class Login extends React.Component {
                         value={formInfo.code}
                     />
                     <View style={styles.errMsgBox}>
-                        <Text
-                            style={styles.errMsgText}
-                        >
+                        <Text style={styles.errMsgText}>
                             {controllerInfo.err_msg}
                         </Text>
                     </View>
@@ -89,9 +123,27 @@ class Login extends React.Component {
         actions[action](value);
     }
 
+    inputPhone = (value) => {
+        let {actions} = this.props;
+console.log(this.refs.xxx);
+        if(this.props.login.controllerInfo.err_msg) {
+            actions.errMsg('');
+        }
+        actions.phoneChanged(value);
+
+        if(value.length === 11) {
+            if(!/^1\d{10}$/.test(value)) {
+                actions.errMsg(errMsgs['phoneWrong']);
+            } else {
+                actions.codeStatus(true);
+            }
+        }
+    };
+
     sendCode = () => {
-        let {login, actions} = this.props,
-            {controllerInfo} = login;
+        let {login, actions} = this.props;
+
+        actions.codeSend(true);
     };
 
     checkForm = () => {
@@ -111,19 +163,78 @@ class Login extends React.Component {
     };
 
     handleSubmit = (e) => {
-        let {actions, navigator} = this.props;
-        // let msg = this.checkForm(),
-        //     {actions, navigator} = this.props;
+        let msg = this.checkForm(),
+            {actions, navigator} = this.props;
 
-        // msg ? actions.errMsg(errMsgs[msg]) : actions.loginSubmit();
+        msg ? actions.errMsg(errMsgs[msg]) : actions.loginSubmit();
 
-        navigator.resetTo({
-            component: TabViewContainer,
-            name: 'home',
-            title: '我的主页',
-            hideNavBar: true
-        })
+        // navigator.resetTo({
+        //     component: TabViewContainer,
+        //     name: 'home',
+        //     title: '我的主页',
+        //     hideNavBar: true
+        // })
     };
+}
+
+class Countdown extends Login {
+    constructor(props) {
+        super(props);
+        this.state = {
+            num: 60
+        };
+    }
+
+    render() {
+        let {code_send, code_status, actions} = this.props;
+        if(this.props.code_send) {
+            if(!this.timer || this.timer == 0) {
+                this.timer = setInterval(() => {this.setState({num: --this.state.num})}, 1000);
+            }
+            if(this.state.num <= 0) {
+                clearInterval(this.timer);
+                actions.codeSend(false);
+                this.onInterval(60)
+            }
+
+            return (
+                <TouchableHighlight
+                    style={styles.codeButton}
+                >
+                    <Text style={styles.codeText}>
+                        {this.state.num}秒后重试
+                    </Text>
+                </TouchableHighlight>
+            );
+        } else {
+            if(this.props.code_status) {
+                return (
+                    <TouchableHighlight
+                        style={styles.codeButton}
+                        onPress={this.props.sendCode}
+                    >
+                        <Text style={[styles.codeText, {color: '#ffa251'}]}>
+                            发送验证码
+                        </Text>
+                    </TouchableHighlight>
+                );
+            } else {
+                return(
+                    <TouchableHighlight
+                        style={styles.codeButton}
+                    >
+                        <Text style={styles.codeText}>
+                            发送验证码
+                        </Text>
+                    </TouchableHighlight>
+                );
+            }
+        }
+    }
+
+    onInterval(value) {
+        this.setState({num: value});
+    }
 }
 
 let errMsgs = {

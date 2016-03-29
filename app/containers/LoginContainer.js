@@ -2,25 +2,33 @@
 
 import React from 'react-native';
 const {
-  Component
+    Component
 } = React;
 import {connect} from 'react-redux';
-
+import {bindActionCreators} from 'redux';
 import Login from '../pages/Login';
+import * as actions from '../actions/login';
 
 class LoginContainer extends Component {
-  render() {
-    return (
-      <Login {...this.props} />
-    );
-  }
+    render() {
+        return (
+            <Login {...this.props} />
+        );
+    }
 }
 
 function mapStateToProps(state) {
-  const {login} = state;
-  return {
-    login
-  }
+    const {login} = state;
+    return {
+        login
+    }
 }
 
-export default connect(mapStateToProps)(LoginContainer);
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(actions, dispatch)
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer);
