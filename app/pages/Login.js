@@ -9,52 +9,19 @@ const {
   View
 } = React;
 
+import {loginService} from '../service/userService';
 import TabViewContainer from '../containers/TabViewContainer';
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            num: 60
+        };
     }
 
     render() {
-        let {formInfo, controllerInfo} = this.props.login,
-            codeHTML;
-        // if(controllerInfo.code_send) {
-        //     let num = 60;
-        //     this.timer = setInterval(() => {
-        //         num--;
-        //         if(num <= 0) {
-        //             this.props.action.codeSend(false);
-        //             this.props.action.codeStatus(false);
-        //         }
-        //         codeHTML = (<TouchableHighlight
-        //                     style={styles.codeButton}
-        //                     >
-        //                     <Text style={styles.codeText}>
-        //                         {num}秒后重试
-        //                     </Text>
-        //                 </TouchableHighlight>);
-        //     }, 1000);
-        // } else {
-        //     if(controllerInfo.code_status) {
-        //         codeHTML = (<TouchableHighlight
-        //                         style={styles.codeButton}
-        //                         onPress={this.sendCode}
-        //                     >
-        //                         <Text style={[styles.codeText, {color: '#ffa251'}]}>
-        //                             发送验证码
-        //                         </Text>
-        //                     </TouchableHighlight>);
-        //     } else {
-        //         codeHTML = (<TouchableHighlight
-        //                         style={styles.codeButton}
-        //                     >
-        //                         <Text style={styles.codeText}>
-        //                             发送验证码
-        //                         </Text>
-        //                     </TouchableHighlight>);
-        //     }
-        // }
+        let {formInfo, controllerInfo} = this.props.login;
 
         return (
             <View style={styles.container}>
@@ -83,7 +50,7 @@ class Login extends React.Component {
                             value={formInfo.phone}
                         />
                         <Countdown
-                            ref='xxx'
+                            num={this.state.num}
                             code_send={controllerInfo.code_send}
                             code_status={controllerInfo.code_status}
                             sendCode={this.sendCode}
@@ -116,6 +83,10 @@ class Login extends React.Component {
         );
     }
 
+    componentWillUnmount() {
+        this.timer && clearTimeout(this.timer);
+    }
+
     singleAction(action, value) {
         let {actions} = this.props;
 
@@ -124,9 +95,15 @@ class Login extends React.Component {
     }
 
     inputPhone = (value) => {
-        let {actions} = this.props;
-console.log(this.refs.xxx);
-        if(this.props.login.controllerInfo.err_msg) {
+        let {login, actions} = this.props,
+            {controllerInfo} = login;
+        if(controllerInfo.code_send) {
+            return;
+        }
+        if(controllerInfo.code_status) {
+            actions.codeStatus(false);
+        }
+        if(controllerInfo.err_msg) {
             actions.errMsg('');
         }
         actions.phoneChanged(value);
@@ -141,9 +118,34 @@ console.log(this.refs.xxx);
     };
 
     sendCode = () => {
-        let {login, actions} = this.props;
+        let self = this;
+        let {login, actions} = self.props;
 
         actions.codeSend(true);
+        self.onStart();
+    };
+
+    onStart = () => {
+        clearTimeout(this.timer);
+        this.refreshTime();
+    };
+
+    refreshTime = () => {
+        if(this.state.num <= 0) {
+            this.onEnd();
+            return;
+        }
+        let sec = --this.state.num;
+        this.timer = setTimeout(() => {
+            this.setState({num: sec});
+            this.refreshTime();
+        }, 1000);
+    };
+
+    onEnd = () => {
+        clearTimeout(this.timer);
+        this.setState({num: 60});
+        this.props.actions.codeSend(false);
     };
 
     checkForm = () => {
@@ -164,50 +166,48 @@ console.log(this.refs.xxx);
 
     handleSubmit = (e) => {
         let msg = this.checkForm(),
-            {actions, navigator} = this.props;
+            {actions, navigator, login} = this.props;
 
-        msg ? actions.errMsg(errMsgs[msg]) : actions.loginSubmit();
-
-        // navigator.resetTo({
-        //     component: TabViewContainer,
-        //     name: 'home',
-        //     title: '我的主页',
-        //     hideNavBar: true
-        // })
+        //msg ? actions.errMsg(errMsgs[msg]) : actions.loginSubmit(login.formInfo);
+        if(msg) {
+            actions.errMsg(errMsgs[msg])
+        } else {
+            loginService({body:login.formInfo})
+            .then((oData) => {
+                navigator.resetTo({
+                    component: TabViewContainer,
+                    name: 'home',
+                    title: '我的主页',
+                    hideNavBar: true
+                });
+            })
+            .catch((error) => {
+                console.error('Ajax Error: ' + error);
+            })
+        }
     };
 }
 
-class Countdown extends Login {
+class Countdown extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            num: 60
-        };
     }
 
     render() {
-        let {code_send, code_status, actions} = this.props;
-        if(this.props.code_send) {
-            if(!this.timer || this.timer == 0) {
-                this.timer = setInterval(() => {this.setState({num: --this.state.num})}, 1000);
-            }
-            if(this.state.num <= 0) {
-                clearInterval(this.timer);
-                actions.codeSend(false);
-                this.onInterval(60)
-            }
+        let {code_send, code_status, num, actions} = this.props;
 
+        if(code_send) {
             return (
                 <TouchableHighlight
                     style={styles.codeButton}
                 >
                     <Text style={styles.codeText}>
-                        {this.state.num}秒后重试
+                        {num}秒后重试
                     </Text>
                 </TouchableHighlight>
             );
         } else {
-            if(this.props.code_status) {
+            if(code_status) {
                 return (
                     <TouchableHighlight
                         style={styles.codeButton}
@@ -230,10 +230,6 @@ class Countdown extends Login {
                 );
             }
         }
-    }
-
-    onInterval(value) {
-        this.setState({num: value});
     }
 }
 

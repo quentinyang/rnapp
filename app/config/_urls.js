@@ -1,6 +1,6 @@
 'use strict';
 
-let HOST = 'http://apis.baidu.com/';
+let HOST = 'http://192.168.164.112:1234/service/';
 
 let urls = {
     test: {
@@ -8,7 +8,12 @@ let urls = {
     },
     house: {
         list: HOST + 'house/list'
-    }
+    },
+    user: {
+        sendCode: HOST + 'passport/login/sms',
+        login: HOST + 'passport/login'
+    },
+
 };
 
 module.exports = urls;

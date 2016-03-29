@@ -13,12 +13,12 @@ export const errMsg = makeActionCreator(types.ERR_MSG, 'err_msg');
 
 export function loginSubmit(params) {
     return dispatch => {
-        return login()
+        return login({body:params})
             .then((oData) => {
-                dispatch(formSubmitted(true))
+                console.info('Ajax Success: ' + oData);
             })
             .catch((error) => {
-                dispatch(errMsg(error.msg))
+                console.error('Ajax Error: ' + error);
             })
     }
 }

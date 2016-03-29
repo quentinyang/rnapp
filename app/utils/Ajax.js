@@ -21,6 +21,10 @@ function post(url, params) {
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(body),
             ...paramsOther
         })
