@@ -27,19 +27,19 @@ class Login extends React.Component {
 
         return (
             <View style={styles.container}>
-                <View>
-                    <View style={{alignItems: 'center'}}>
-                        <Image
-                            style={{width: 110, height: 110}}
-                            source={require('../images/flower.jpg')}
-                        />
-                        <Text style={styles.fytitle}>
-                            房源360
-                        </Text>
-                        <Text style={styles.fysubtitle}>
-                            房源信息共享平台
-                        </Text>
-                    </View>
+                <View style={{alignItems: 'flex-end', justifyContent: 'center'}}>
+                    <Image
+                        style={{width: 123, height: 215}}
+                        source={require('../images/shape.png')}
+                    />
+                </View>
+                <Text style={[styles.fytitle, {marginTop: -80}]}>
+                    房源360
+                </Text>
+                <Text style={styles.fysubtitle}>
+                    房源信息共享平台
+                </Text>
+                <View style={styles.layout}>
                     <View style={styles.phoneBox}>
                         <TextInput
                             style={styles.fiPhone}
@@ -201,23 +201,26 @@ let errMsgs = {
 let styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        marginLeft: 25,
-        marginRight: 25
+        justifyContent: 'center'
     },
     fytitle: {
         marginTop: 10,
         fontSize: 40,
         textAlign: 'center',
-        color: '#04c1ae'
+        color: '#04c1ae',
+        backgroundColor: 'transparent'
     },
     fysubtitle: {
         marginTop: 10,
         marginBottom: 80,
         fontSize: 14,
         textAlign: 'center',
-        color: '#3e3e3e'
+        color: '#3e3e3e',
+        backgroundColor: 'transparent'
+    },
+    layout: {
+        marginLeft: 25,
+        marginRight: 25
     },
     phoneBox: {
         flexDirection: 'row',
