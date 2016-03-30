@@ -4,6 +4,7 @@ import {React, Component, Text, View, ScrollView, Image, StyleSheet, Interaction
 import Item from '../components/Item';
 import AttentionBlockSetTwoContainer from '../containers/AttentionBlockSetTwoContainer';
 import {saveAttentionCommunitySetService} from '../service/blockService';
+import AutocompleteContainerDemo from '../containers/AutocompleteContainerDemo'
 
 export default class AttentionBlockSetOne extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ export default class AttentionBlockSetOne extends Component {
                             />
                         </View>
                     </TouchableWithoutFeedback>
-                    <Item list={attentionList.get('community_select')} titleName={'小区'} onDelete={this._handleDelete}/>
+                    <Item list={attentionList.get('community_select')} titleName={'小区'} onDelete={this._handleDelete} onAdd={this._handleAdd} />
                 </ScrollView>
                 <View style={styles.conformWrap}>
                     <TouchableHighlight
@@ -69,6 +70,17 @@ export default class AttentionBlockSetOne extends Component {
     _handleDelete = (communityId) => {
         let {actions} = this.props;
         actions.attentionListOneCommunityRomoved(communityId);
+    };
+
+    _handleAdd = () => {
+        let {navigator} = this.props;
+
+        navigator.push({
+            component: AutocompleteContainerDemo,
+            name: 'AutocompleteContainerDemo',
+            title: '搜索小区',
+            hideNavBar: true
+        });
     };
 
     _conformCommunitySet = () => {

@@ -67,7 +67,7 @@ export default class Item extends Component {
     };
 
     _handleAdd = () => {
-
+        this.props.onAdd();
     };
 }
 
