@@ -1,7 +1,7 @@
 'use strict';
 
 import { combineReducers } from 'redux';
-import * as types from '../constants/HouseList';
+import * as types from '../constants/Home';
 import Immutable from 'immutable';
 
 let initialState = {
@@ -16,10 +16,10 @@ let initialState = {
 
 function houseData(state = Immutable.fromJS(initialState), action) {
     switch(action.type) {
-        case types.HOUSE_FETCHED:
+        case types.HOUSE_ATTENTION_FETCHED:
             return Immutable.fromJS(action.houseList);
             break;
-        case types.HOUSE_APPEND_FETCHED:
+        case types.HOUSE_ATTENTION_APPEND_FETCHED:
             let immuData = Immutable.fromJS(action.houseList);
             let newData = state.updateIn(['properties'], (k) => {
                 return k.concat(immuData.get('properties'));
@@ -28,14 +28,13 @@ function houseData(state = Immutable.fromJS(initialState), action) {
 
             return newData;
             break;
-        case types.HOUSE_PREPEND_FETCHED:
+        case types.HOUSE_ATTENTION_PREPEND_FETCHED:
             let prependData = Immutable.fromJS(action.houseList);
             let newPrependData = state.updateIn(['properties'], (k) => {
                 return prependData.get('properties').concat(k);
             });
             return newPrependData;
-            break;
-        default:
+        default: 
             return state;
     }
 }

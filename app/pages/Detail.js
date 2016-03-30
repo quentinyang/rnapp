@@ -54,8 +54,7 @@ class BaseInfo extends Component {
 
 var styles = StyleSheet.create({
     container: {
-        flex: 1,
-        flexDirection: 'column'
+        flex: 1
     },
     itemContainer: {
         borderBottomWidth: 1,

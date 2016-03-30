@@ -3,7 +3,7 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/test';
+import * as actions from '../actions/home';
 import Home from '../pages/Home';
 
 class HomeContainer extends Component {
@@ -19,9 +19,9 @@ class HomeContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {test} = state;
+    const {houseData} = state.home;
     return {
-        test
+        houseData
     }
 }
 

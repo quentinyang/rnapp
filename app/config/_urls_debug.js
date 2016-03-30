@@ -15,7 +15,11 @@ let urls = {
     },
     house: {
         list: HOST + 'house-list.json',
-        append: HOST + 'house-append.json'
+        append: HOST + 'house-append.json',
+        prepend: HOST + 'house-prepend.json',
+        attention: HOST + 'house-attention.json',
+        attentionAppend: HOST + 'house-attention-append.json',
+        attentionPrepend: HOST + 'house-attention-prepend.json'
     }
 }
 

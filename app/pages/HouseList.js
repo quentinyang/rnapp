@@ -89,7 +89,7 @@ export default class HouseList extends Component {
         let {actions, houseData} = this.props;
         let pager = houseData.get('pager');
 
-        if ( Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
+        if (Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
             InteractionManager.runAfterInteractions(() => {
                 actions.fetchAppendHouseList({});
             });
@@ -113,85 +113,14 @@ export default class HouseList extends Component {
     }
 
     _onRefresh() {
-        let {houseList} = this.state;
-        let newData = Immutable.fromJS([
-            {
-                "property_id": 940,
-                "community_id": 2,
-                "community_name": "绿绿123",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            },
-            {
-                "property_id": 941,
-                "community_id": 2,
-                "community_name": "绿绿233444",
-                "building_num": "3",
-                "building_unit": "号",
-                "door_num": "202",
-                "avg_price": 33333,
-                "district_id": 6,
-                "district_name": "长宁",
-                "block_id": 51,
-                "block_name": "古北",
-                "price": 400,
-                "area": 120,
-                "bedrooms": 2,
-                "living_rooms": 2,
-                "bathrooms": 2,
-                "listed_at": "2015-12",
-                "house_lock_status": 1,
-                "unlock_house_cost": 0,
-                "unlock_phone_cost": 2,
-                "tags": [
-                    {
-                        "id": "16",
-                        "name": "满五年"
-                    },
-                    {
-                        "id": "17",
-                        "name": "唯一住房"
-                    }
-                ],
-                "updated_at": "2015-12-15"
-            }
-        ]);
+        let {actions} = this.props;
         this.setState({isRefreshing: true});
-        setTimeout(() => {
-            InteractionManager.runAfterInteractions(() => {
-                this.setState({
-                    houseList: newData.concat(houseList),
-                    isRefreshing: false
-                })
-            });
-        }, 1000);
 
+        InteractionManager.runAfterInteractions(() => {
+            actions.fetchPrependHouseList({});
+        });
+
+        this.setState({isRefreshing: false});
     }
 
     _onItemPress(propertyId) {
