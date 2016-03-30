@@ -25,6 +25,10 @@ export function fetchAttentionPrependHouseListService() {
     return ajax.get(urls.house.attentionPrepend)
 }
 
+export function fetchSimilarHouseListService() {
+    return ajax.get(urls.house.similar)
+}
+
 
 
 

@@ -17,13 +17,6 @@ export default class Home extends Component {
         this.state = {
             isRefreshing: false
         };
-        this._onHandlePress = this._onHandlePress.bind(this);
-        this._onRefresh = this._onRefresh.bind(this);
-        this._renderRow = this._renderRow.bind(this);
-        this._onItemPress = this._onItemPress.bind(this);
-        this._onEndReached = this._onEndReached.bind(this);
-        this._renderFooter = this._renderFooter.bind(this);
-        this._renderHeader = this._renderHeader.bind(this);
     }
 
     render() {
@@ -69,24 +62,27 @@ export default class Home extends Component {
         });
     }
 
-    _renderRow(rowData: any) {
+    _renderRow = (rowData: any) => {
         return (
             <HouseItem item={rowData} onItemPress={this._onItemPress}/>
         )
-    }
+    };
 
-    _onItemPress(propertyId) {
+    _onItemPress = (propertyId, communityId, communityName) => {
         let {navigator} = this.props;
 
         navigator.push({
             component: DetailContainer,
             name: 'houseDetail',
             title: '房源详情',
-            hideNavBar: false
+            hideNavBar: false,
+            propertyId,
+            communityId,
+            communityName
         });
-    }
+    };
 
-    _onRefresh() {
+    _onRefresh = () => {
         let {actions} = this.props;
         this.setState({
             isRefreshing: true
@@ -97,9 +93,9 @@ export default class Home extends Component {
         this.setState({
             isRefreshing: false
         })
-    }
+    };
 
-    _onHandlePress() {
+    _onHandlePress = () => {
         let {navigator} = this.props;
 
         navigator.push({
@@ -108,9 +104,9 @@ export default class Home extends Component {
             title: 'House List Page',
             hideNavBar: false
         });
-    }
+    };
 
-    _onEndReached() {
+    _onEndReached = () => {
         let {actions, houseData} = this.props;
         let pager = houseData.get('pager');
 
@@ -119,9 +115,9 @@ export default class Home extends Component {
                 actions.fetchAttentionAppendHouseList({});
             });
         }
-    }
+    };
 
-    _renderHeader() {
+    _renderHeader = () => {
         return (
             <View>
                 <TouchableWithoutFeedback  onPress={this._onHandlePress}>
@@ -140,9 +136,9 @@ export default class Home extends Component {
                 <Attention />
             </View>
         )
-    }
+    };
 
-    _renderFooter() {
+    _renderFooter = () => {
         let {houseData} = this.props;
         let pager = houseData.get('pager');
 
@@ -156,7 +152,7 @@ export default class Home extends Component {
                         <ActivityIndicator color={'#d43d3d'} styleAttr="Small"/>
                     </View>
         );
-    }
+    };
 }
 
 export class Attention extends Component {

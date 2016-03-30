@@ -10,30 +10,41 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        this.renderScene = this.renderScene.bind(this);
-        this.goBack = this.goBack.bind(this);
-        this._willFocus = this._willFocus.bind(this);
-        this.navBar = this.navBar.bind(this);
-        this._leftButton = this._leftButton.bind(this);
-        this._rightButton = this._rightButton.bind(this);
-        this._title = this._title.bind(this);
-
         this.state = {
             hideNavBar: true
         };
 
-        BackAndroid.addEventListener('hardwareBackPress', this.goBack);
+        BackAndroid.addEventListener('hardwareBackPress', this._goBack);
     }
 
-    configureScene(route, routeStack) {
+    render() {
+        return (
+            <Navigator
+                style={styles.flex}
+                configureScene={this._configureScene}
+                renderScene={this._renderScene}
+                sceneStyle={styles.sceneStyle}
+                navigationBar={this._navBar()}
+                onWillFocus={this._willFocus}
+                initialRoute={{
+                    component: LoginContainer,
+                    name: 'login',
+                    hideNavBar: true,
+                    title: 'Login'
+                }}
+            />
+        )
+    }
+
+    _configureScene = (route, routeStack) => {
         return Navigator.SceneConfigs.PushFromRight;
-    }
+    };
 
-    goBack() {
+    _goBack = () => {
         return NaviGoBack(_navigator);
-    }
+    };
 
-    renderScene(route, navigator) {
+    _renderScene = (route, navigator) => {
         let Component = route.component;
         let barWrapStyle = route.hideNavBar ? null : styles.navBarWarp;
         _navigator = navigator;
@@ -43,9 +54,9 @@ class App extends Component {
                 <Component navigator={navigator} route={route} />
             </View>
         );
-    }
+    };
 
-    navBar() {
+    _navBar = () => {
         let {hideNavBar} = this.state;
 
         if (hideNavBar) {
@@ -60,9 +71,9 @@ class App extends Component {
                 style={styles.navBar}
             />)
         }
-    }
+    };
 
-    _leftButton(route, navigator, index, navState) {
+    _leftButton = (route, navigator, index, navState) => {
         return (
             <TouchableOpacity
                 onPress={() => navigator.pop()}
@@ -73,9 +84,9 @@ class App extends Component {
                 />
             </TouchableOpacity>
         );
-    }
+    };
 
-    _rightButton(route, navigator, index, navState) {
+    _rightButton = (route, navigator, index, navState) => {
         return (
             <TouchableOpacity
                 onPress={() => navigator.pop()}
@@ -83,38 +94,19 @@ class App extends Component {
                 <Text style={styles.navBarText}>Right</Text>
             </TouchableOpacity>
         );
-    }
+    };
 
-    _title(route, navigator, index, navState) {
+    _title = (route, navigator, index, navState) => {
         return (
             <Text style={styles.navBarTitleText}>{route.title}</Text>
         )
-    }
+    };
 
-    _willFocus(route) {
+    _willFocus = (route) => {
         this.setState({
             hideNavBar: route.hideNavBar
         })
-    }
-
-    render() {
-        return (
-            <Navigator
-                style={styles.flex}
-                configureScene={this.configureScene}
-                renderScene={this.renderScene}
-                sceneStyle={styles.sceneStyle}
-                navigationBar={this.navBar()}
-                onWillFocus={this._willFocus}
-                initialRoute={{
-                    component: LoginContainer,
-                    name: 'login',
-                    hideNavBar: true,
-                    title: 'Login'
-                }}
-            />
-        )
-    }
+    };
 }
 
 let styles = StyleSheet.create({

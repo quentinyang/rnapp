@@ -1,11 +1,10 @@
 'use strict';
 
-import React from 'react-native'
-import { Component } from 'nuke'
-import { connect } from 'react-redux'
-import { bindActionCreators} from 'redux'
-import * as actions from '../actions/test'
-import Detail from '../pages/Detail'
+import {React, Component} from 'nuke';
+import { connect } from 'react-redux';
+import { bindActionCreators} from 'redux';
+import * as actions from '../actions/detail';
+import Detail from '../pages/Detail';
 
 class DetailContainer extends Component {
     constructor(props) {
@@ -20,9 +19,10 @@ class DetailContainer extends Component {
 }
 
 function mapStateToProps(state) {
+    const {houseData} = state.detail;
     return {
         baseInfo: {},
-        sameCommunityList: {}
+        sameCommunityList: houseData
     }
 }
 

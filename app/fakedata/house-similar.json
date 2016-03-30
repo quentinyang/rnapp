@@ -1,0 +1,168 @@
+{
+  "community_id": 19,
+  "community_name": "光通大厦",
+  "total": 5,
+  "properties": [
+    {
+      "community_name": "光通大厦",
+      "property_id": 124,
+      "district_id": 2,
+      "district_name": "静安",
+      "block_id": 21,
+      "block_name": "南京西路",
+      "building_num": "103",
+      "building_unit": "号",
+      "door_num": "103",
+      "price": 333,
+      "area": 50,
+      "avg_price": 66600,
+      "bedrooms": 2,
+      "living_rooms": 1,
+      "bathrooms": 0,
+      "listed_at": "2015-12",
+      "tags": [
+        {
+          "id": "16",
+          "name": "满五年"
+        },
+        {
+          "id": "17",
+          "name": "唯一住房"
+        }
+      ],
+      "house_lock_status": 1,
+      "unlock_house_cost": 0,
+      "unlock_phone_cost": 2,
+      "updated_at": "2015-12-03"
+    },
+    {
+      "community_name": "光通大厦",
+      "property_id": 124,
+      "district_id": 2,
+      "district_name": "静安",
+      "block_id": 21,
+      "block_name": "南京西路",
+      "building_num": "103",
+      "building_unit": "号",
+      "door_num": "103",
+      "price": 333,
+      "area": 50,
+      "avg_price": 66600,
+      "bedrooms": 2,
+      "living_rooms": 1,
+      "bathrooms": 0,
+      "listed_at": "2015-12",
+      "tags": [
+        {
+          "id": "16",
+          "name": "满五年"
+        },
+        {
+          "id": "17",
+          "name": "唯一住房"
+        }
+      ],
+      "house_lock_status": 1,
+      "unlock_house_cost": 0,
+      "unlock_phone_cost": 2,
+      "updated_at": "2015-12-03"
+    },
+    {
+      "community_name": "光通大厦",
+      "property_id": 124,
+      "district_id": 2,
+      "district_name": "静安",
+      "block_id": 21,
+      "block_name": "南京西路",
+      "building_num": "103",
+      "building_unit": "号",
+      "door_num": "103",
+      "price": 333,
+      "area": 50,
+      "avg_price": 66600,
+      "bedrooms": 2,
+      "living_rooms": 1,
+      "bathrooms": 0,
+      "listed_at": "2015-12",
+      "tags": [
+        {
+          "id": "16",
+          "name": "满五年"
+        },
+        {
+          "id": "17",
+          "name": "唯一住房"
+        }
+      ],
+      "house_lock_status": 1,
+      "unlock_house_cost": 0,
+      "unlock_phone_cost": 2,
+      "updated_at": "2015-12-03"
+    },
+    {
+      "community_name": "光通大厦",
+      "property_id": 124,
+      "district_id": 2,
+      "district_name": "静安",
+      "block_id": 21,
+      "block_name": "南京西路",
+      "building_num": "103",
+      "building_unit": "号",
+      "door_num": "103",
+      "price": 333,
+      "area": 50,
+      "avg_price": 66600,
+      "bedrooms": 2,
+      "living_rooms": 1,
+      "bathrooms": 0,
+      "listed_at": "2015-12",
+      "tags": [
+        {
+          "id": "16",
+          "name": "满五年"
+        },
+        {
+          "id": "17",
+          "name": "唯一住房"
+        }
+      ],
+      "house_lock_status": 1,
+      "unlock_house_cost": 0,
+      "unlock_phone_cost": 2,
+      "updated_at": "2015-12-03"
+    },
+    {
+      "community_name": "光通大厦",
+      "property_id": 124,
+      "district_id": 2,
+      "district_name": "静安",
+      "block_id": 21,
+      "block_name": "南京西路",
+      "building_num": "103",
+      "building_unit": "号",
+      "door_num": "103",
+      "price": 333,
+      "area": 50,
+      "avg_price": 66600,
+      "bedrooms": 2,
+      "living_rooms": 1,
+      "bathrooms": 0,
+      "listed_at": "2015-12",
+      "tags": [
+        {
+          "id": "16",
+          "name": "满五年"
+        },
+        {
+          "id": "17",
+          "name": "唯一住房"
+        }
+      ],
+      "house_lock_status": 1,
+      "unlock_house_cost": 0,
+      "unlock_phone_cost": 2,
+      "updated_at": "2015-12-03"
+    }
+  ],
+  "collect_community_status": 0
+}

@@ -20,12 +20,6 @@ export default class HouseList extends Component {
             isRefreshing: false,
             loaded: false
         }
-
-        this._renderRow = this._renderRow.bind(this);
-        this._onEndReached = this._onEndReached.bind(this);
-        this._onRefresh = this._onRefresh.bind(this);
-        this._onItemPress = this._onItemPress.bind(this);
-        this._renderFooter = this._renderFooter.bind(this);
     }
 
     render() {
@@ -79,13 +73,13 @@ export default class HouseList extends Component {
         }
     }
 
-    _renderRow(rowData: any, sectionID: number, rowID: number) {
+    _renderRow = (rowData: any, sectionID: number, rowID: number) => {
         return (
             <HouseItem item={rowData} onItemPress={this._onItemPress}/>
         )
-    }
+    };
 
-    _onEndReached() { // 防止多次重复加载
+    _onEndReached = () => { // 防止多次重复加载
         let {actions, houseData} = this.props;
         let pager = houseData.get('pager');
 
@@ -94,9 +88,9 @@ export default class HouseList extends Component {
                 actions.fetchAppendHouseList({});
             });
         }
-    }
+    };
 
-    _renderFooter() {
+    _renderFooter = () => {
         let {houseData} = this.props;
         let pager = houseData.get('pager');
 
@@ -110,9 +104,9 @@ export default class HouseList extends Component {
                         <ActivityIndicator color={'#d43d3d'} styleAttr="Small"/>
                     </View>
         );
-    }
+    };
 
-    _onRefresh() {
+    _onRefresh = () => {
         let {actions} = this.props;
         this.setState({isRefreshing: true});
 
@@ -121,18 +115,19 @@ export default class HouseList extends Component {
         });
 
         this.setState({isRefreshing: false});
-    }
+    };
 
-    _onItemPress(propertyId) {
+    _onItemPress = (propertyId) => {
         let {navigator} = this.props;
 
         navigator.push({
             component: DetailContainer,
             name: 'houseDetail',
             title: '房源详情',
-            hideNavBar: false
+            hideNavBar: false,
+            propertyId: propertyId
         });
-    }
+    };
 }
 
 const styles = StyleSheet.create({

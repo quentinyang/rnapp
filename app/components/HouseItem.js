@@ -5,15 +5,13 @@ import {React, Component, Text, View, ScrollView, StyleSheet, TouchableWithoutFe
 export default class HouseItem extends Component {
     constructor(props) {
         super(props);
-
-        this._onHandlePress = this._onHandlePress.bind(this);
     }
 
     render() {
         let {item} = this.props;
 
         return (
-            <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item.get('property_id'))} key={item.get('property_id')}>
+            <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item.get('property_id'), item.get('community_id'), item.get('community_name'))} key={item.get('property_id')}>
                 <View style={styles.item}>
                     <View style={[styles.row]}>
                         <View style={[styles.row, styles.flex]}>
@@ -39,9 +37,9 @@ export default class HouseItem extends Component {
         );
     }
 
-    _onHandlePress(propertyId) {
-        this.props.onItemPress(propertyId);
-    }
+    _onHandlePress = (propertyId, communityId, communityName) => {
+        this.props.onItemPress(propertyId, communityId, communityName);
+    };
 }
 
 const styles = StyleSheet.create({

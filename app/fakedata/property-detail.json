@@ -1,3 +1,36 @@
 {
-  "name": "名字"
+    "property_id":63,
+    "community_id":10398,
+    "community_name":"上海奥林匹克花园（一至三期）",
+    "community_address":"美好家",
+    "avg_price":30000,
+    "publish_time":"2015-12-10",
+    "district_name":"宝山",
+    "block_name":"大场",
+    "price":360,
+    "area":120,
+    "unlock_house_cost":0,
+    "unlock_phone_cost":2,
+    "bedrooms":2,
+    "living_rooms":1,
+    "bathrooms":1,
+    "building_num":"25",
+    "building_unit":"号",
+    "door_num":"609",
+    "seller_name":"李晓明",
+    "seller_phone":"18217715130",
+    "see_count":6,
+    "updated_at":"2015-11-25",
+    "tags": [
+        {
+            "id": "16",
+            "name": "满五年"
+        },
+        {
+            "id": "17",
+            "name": "唯一住房"
+        }
+    ],
+    "phone_lock_status":0,
+    "score": 4
 }
