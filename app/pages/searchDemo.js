@@ -1,15 +1,14 @@
 'use strict';
 
 import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight } from 'nuke'
-
-import Autocomplete from '../components/Autocomplete'
+import Autocomplete from '../components/autocomplete'
 
 export default class SearchDemo extends Component {
     constructor(props) {
         super(props);
         this.i = 0;
     }
-    componentDidUnmount() {
+    componentWillUnmount() {
         this.props.actions.clearResult();
     }
     render() {
