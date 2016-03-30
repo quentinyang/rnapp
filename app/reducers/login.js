@@ -17,43 +17,27 @@ let initialState = {
     }
 };
 
-function formInfo(state = initialState.formData, action) {
+function formInfo(state = Immutable.fromJS(initialState.formData), action) {
     switch(action.type) {
         case types.PHONE_CHANGED:
-            return Object.assign({}, state, {
-                phone: action.phone
-            });
+            return state.set('phone', Immutable.fromJS(action.phone));
         case types.CODE_CHANGED:
-            return Object.assign({}, state, {
-                code: action.code
-            });
+            return state.set('code', Immutable.fromJS(action.code));
         default:
             return state;
     }
 }
 
-function controllerInfo(state = initialState.controllerData, action) {
+function controllerInfo(state = Immutable.fromJS(initialState.controllerData), action) {
     switch(action.type) {
         case types.CSTATUS_CHANGED:
-            return Object.assign({}, state, {
-                code_status: action.code_status
-            });
+            return state.set('code_status', Immutable.fromJS(action.code_status));
         case types.CSEND_CHANGED:
-            return Object.assign({}, state, {
-                code_send: action.code_send
-            });
-        case types.CTEXT_CHANGED:
-            return Object.assign({}, state, {
-                code_text: action.code_text
-            });
+            return state.set('code_send', Immutable.fromJS(action.code_send));
         case types.ERR_MSG:
-            return Object.assign({}, state, {
-                err_msg: action.err_msg
-            });
+            return state.set('err_msg', Immutable.fromJS(action.err_msg));
         case types.FORM_SUBMITTED:
-            return Object.assign({}, state, {
-                register_form: action.register_form
-            });
+            return state.set('register_form', Immutable.fromJS(action.register_form));
         default:
             return state;
     }

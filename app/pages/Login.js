@@ -1,14 +1,16 @@
-import React from 'react-native';
-const {
-  StyleSheet,
-  Image,
-  Text,
-  Linking,
-  TextInput,
-  TouchableHighlight,
-  View
-} = React;
 
+import {
+    React,
+    Component,
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    TextInput,
+    TouchableHighlight
+} from 'nuke';
+
+import Countdown from '../components/Countdown'
 import {loginService} from '../service/userService';
 import TabViewContainer from '../containers/TabViewContainer';
 
@@ -47,12 +49,12 @@ class Login extends React.Component {
                             placeholderTextColor=''
                             maxLength={11}
                             underlineColorAndroid='transparent'
-                            value={formInfo.phone}
+                            value={formInfo.get('phone')}
                         />
                         <Countdown
                             num={this.state.num}
-                            code_send={controllerInfo.code_send}
-                            code_status={controllerInfo.code_status}
+                            code_send={controllerInfo.get('code_send')}
+                            code_status={controllerInfo.get('code_status')}
                             sendCode={this.sendCode}
                             actions={this.props.actions}
                         />
@@ -63,11 +65,11 @@ class Login extends React.Component {
                         keyboardType='numeric'
                         placeholder='验证码'
                         maxLength={4}
-                        value={formInfo.code}
+                        value={formInfo.get('code')}
                     />
                     <View style={styles.errMsgBox}>
                         <Text style={styles.errMsgText}>
-                            {controllerInfo.err_msg}
+                            {controllerInfo.get('err_msg')}
                         </Text>
                     </View>
                     <TouchableHighlight
@@ -88,22 +90,21 @@ class Login extends React.Component {
     }
 
     singleAction(action, value) {
-        let {actions} = this.props;
-
-        actions.errMsg('');
+        let {login, actions} = this.props;
+        login.controllerInfo.get('err_msg') && actions.errMsg('');
         actions[action](value);
     }
 
     inputPhone = (value) => {
         let {login, actions} = this.props,
             {controllerInfo} = login;
-        if(controllerInfo.code_send) {
+        if(controllerInfo.get('code_send')) {
             return;
         }
-        if(controllerInfo.code_status) {
+        if(controllerInfo.get('code_status')) {
             actions.codeStatus(false);
         }
-        if(controllerInfo.err_msg) {
+        if(controllerInfo.get('err_msg')) {
             actions.errMsg('');
         }
         actions.phoneChanged(value);
@@ -149,7 +150,9 @@ class Login extends React.Component {
     };
 
     checkForm = () => {
-        let {phone, code} = this.props.login.formInfo,
+        let {formInfo} = this.props.login,
+            phone = formInfo.get('phone'),
+            code = formInfo.get('code'),
             msg = '';
 
         if(!phone) {
@@ -186,51 +189,6 @@ class Login extends React.Component {
             })
         }
     };
-}
-
-class Countdown extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let {code_send, code_status, num, actions} = this.props;
-
-        if(code_send) {
-            return (
-                <TouchableHighlight
-                    style={styles.codeButton}
-                >
-                    <Text style={styles.codeText}>
-                        {num}秒后重试
-                    </Text>
-                </TouchableHighlight>
-            );
-        } else {
-            if(code_status) {
-                return (
-                    <TouchableHighlight
-                        style={styles.codeButton}
-                        onPress={this.props.sendCode}
-                    >
-                        <Text style={[styles.codeText, {color: '#ffa251'}]}>
-                            发送验证码
-                        </Text>
-                    </TouchableHighlight>
-                );
-            } else {
-                return(
-                    <TouchableHighlight
-                        style={styles.codeButton}
-                    >
-                        <Text style={styles.codeText}>
-                            发送验证码
-                        </Text>
-                    </TouchableHighlight>
-                );
-            }
-        }
-    }
 }
 
 let errMsgs = {

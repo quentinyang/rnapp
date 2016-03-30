@@ -8,7 +8,6 @@ export const formSubmitted = makeActionCreator(types.FORM_SUBMITTED, 'login_form
 
 export const codeStatus = makeActionCreator(types.CSTATUS_CHANGED, 'code_status');
 export const codeSend = makeActionCreator(types.CSEND_CHANGED, 'code_send');
-export const codeText = makeActionCreator(types.CTEXT_CHANGED, 'code_text');
 export const errMsg = makeActionCreator(types.ERR_MSG, 'err_msg');
 
 export function loginSubmit(params) {
