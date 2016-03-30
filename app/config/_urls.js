@@ -1,6 +1,6 @@
 'use strict';
 
-let HOST = 'http://192.168.164.112:1234/service/';
+let HOST = 'http://360.feature-fy360.dev.angejia.com/service/';
 
 let urls = {
     test: {
