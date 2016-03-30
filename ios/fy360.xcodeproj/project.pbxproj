@@ -23,6 +23,17 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		54C9C5521C9BE52E00914E77 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 54C9C5511C9BE52E00914E77 /* bundle */; };
 		660728D21CA244D90069FBAA /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 660728D11CA244D90069FBAA /* assets */; };
+		6620FB961CAA91AB00BB2A3F /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */; };
+		6620FB981CAA91B500BB2A3F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB971CAA91B500BB2A3F /* Security.framework */; };
+		6620FB9A1CAA91BF00BB2A3F /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB991CAA91BF00BB2A3F /* MobileCoreServices.framework */; };
+		6620FB9C1CAA91CD00BB2A3F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB9B1CAA91CD00BB2A3F /* SystemConfiguration.framework */; };
+		6620FB9E1CAA91E000BB2A3F /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB9D1CAA91E000BB2A3F /* CoreTelephony.framework */; };
+		6620FBA01CAA91E900BB2A3F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB9F1CAA91E900BB2A3F /* AVFoundation.framework */; };
+		6620FBA21CAA91F000BB2A3F /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FBA11CAA91F000BB2A3F /* JavaScriptCore.framework */; };
+		6620FBA41CAA91F800BB2A3F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FBA31CAA91F800BB2A3F /* CoreLocation.framework */; };
+		6620FBA61CAA920100BB2A3F /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FBA51CAA920100BB2A3F /* CoreBluetooth.framework */; };
+		6620FBB71CAAB11000BB2A3F /* GtSdkLib in Resources */ = {isa = PBXBuildFile; fileRef = 6620FBB61CAAB11000BB2A3F /* GtSdkLib */; };
+		6620FBB91CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */; };
 		6630589C1CA0F8F600F15BB8 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 663058911CA0F87C00F15BB8 /* libCodePush.a */; };
 		6630589E1CA0F91D00F15BB8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6630589D1CA0F91D00F15BB8 /* libz.tbd */; };
 		66559B651CA2744C001E7AD9 /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 66559B641CA2744C001E7AD9 /* index.ios.jsbundle */; };
@@ -138,6 +149,17 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		54C9C5511C9BE52E00914E77 /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		660728D11CA244D90069FBAA /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
+		6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		6620FB971CAA91B500BB2A3F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		6620FB991CAA91BF00BB2A3F /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		6620FB9B1CAA91CD00BB2A3F /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		6620FB9D1CAA91E000BB2A3F /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		6620FB9F1CAA91E900BB2A3F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		6620FBA11CAA91F000BB2A3F /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		6620FBA31CAA91F800BB2A3F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		6620FBA51CAA920100BB2A3F /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		6620FBB61CAAB11000BB2A3F /* GtSdkLib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GtSdkLib; path = ../GtSdkLib; sourceTree = "<group>"; };
+		6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libGeTuiSdk-1.4.1.a"; path = "../GtSdkLib/libGeTuiSdk-1.4.1.a"; sourceTree = "<group>"; };
 		6630588C1CA0F87C00F15BB8 /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		6630589D1CA0F91D00F15BB8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		66559B641CA2744C001E7AD9 /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = ../index.ios.jsbundle; sourceTree = "<group>"; };
@@ -157,7 +179,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6620FB961CAA91AB00BB2A3F /* libsqlite3.tbd in Frameworks */,
 				6630589E1CA0F91D00F15BB8 /* libz.tbd in Frameworks */,
+				6620FBB91CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a in Frameworks */,
+				6620FBA61CAA920100BB2A3F /* CoreBluetooth.framework in Frameworks */,
+				6620FBA41CAA91F800BB2A3F /* CoreLocation.framework in Frameworks */,
+				6620FBA21CAA91F000BB2A3F /* JavaScriptCore.framework in Frameworks */,
+				6620FBA01CAA91E900BB2A3F /* AVFoundation.framework in Frameworks */,
+				6620FB9E1CAA91E000BB2A3F /* CoreTelephony.framework in Frameworks */,
+				6620FB9C1CAA91CD00BB2A3F /* SystemConfiguration.framework in Frameworks */,
+				6620FB9A1CAA91BF00BB2A3F /* MobileCoreServices.framework in Frameworks */,
+				6620FB981CAA91B500BB2A3F /* Security.framework in Frameworks */,
 				6630589C1CA0F8F600F15BB8 /* libCodePush.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -290,6 +322,19 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				6630589D1CA0F91D00F15BB8 /* libz.tbd */,
+				6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */,
+				6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */,
+				66559B641CA2744C001E7AD9 /* index.ios.jsbundle */,
+				6620FBB61CAAB11000BB2A3F /* GtSdkLib */,
+				6620FBA51CAA920100BB2A3F /* CoreBluetooth.framework */,
+				6620FBA31CAA91F800BB2A3F /* CoreLocation.framework */,
+				6620FBA11CAA91F000BB2A3F /* JavaScriptCore.framework */,
+				6620FB9F1CAA91E900BB2A3F /* AVFoundation.framework */,
+				6620FB9D1CAA91E000BB2A3F /* CoreTelephony.framework */,
+				6620FB9B1CAA91CD00BB2A3F /* SystemConfiguration.framework */,
+				6620FB991CAA91BF00BB2A3F /* MobileCoreServices.framework */,
+				6620FB971CAA91B500BB2A3F /* Security.framework */,
 				6630588C1CA0F87C00F15BB8 /* CodePush.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -316,8 +361,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				66559B641CA2744C001E7AD9 /* index.ios.jsbundle */,
-				6630589D1CA0F91D00F15BB8 /* libz.tbd */,
 				13B07FAE1A68108700A75B9A /* fy360 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* fy360Tests */,
@@ -391,6 +434,14 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = 82EMB5HWEQ;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -555,6 +606,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				54C9C5521C9BE52E00914E77 /* bundle in Resources */,
 				66559B651CA2744C001E7AD9 /* index.ios.jsbundle in Resources */,
+				6620FBB71CAAB11000BB2A3F /* GtSdkLib in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -661,19 +713,25 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-code-push/**",
+					"$(SRCROOT)/../GtSdkLib",
 				);
 				INFOPLIST_FILE = fy360/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../GtSdkLib",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xinyi.fy360;
 				PRODUCT_NAME = fy360;
-				PROVISIONING_PROFILE = "1854bc56-91b0-4703-88f2-47b2220adbef";
+				PROVISIONING_PROFILE = "81667d31-30cb-4f67-97cb-118fee59db7c";
 			};
 			name = Debug;
 		};
@@ -682,18 +740,24 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
 					"$(SRCROOT)/../node_modules/react-native-code-push/**",
+					"$(SRCROOT)/../GtSdkLib",
 				);
 				INFOPLIST_FILE = fy360/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/../GtSdkLib",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xinyi.fy360;
 				PRODUCT_NAME = fy360;
-				PROVISIONING_PROFILE = "1854bc56-91b0-4703-88f2-47b2220adbef";
+				PROVISIONING_PROFILE = "81667d31-30cb-4f67-97cb-118fee59db7c";
 			};
 			name = Release;
 		};
