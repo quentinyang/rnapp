@@ -1,8 +1,12 @@
 package com.fy360;
 
+import android.util.Log;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
+
+// Import Getui
+import com.igexin.sdk.PushManager;
 
 // 1. Import the plugin class
 import com.microsoft.codepush.react.CodePush;
@@ -47,13 +51,18 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected List<ReactPackage> getPackages() {
+
+        Log.d("GetuiSdk", "initializing sdk...");
+        PushManager.getInstance().initialize(this.getApplicationContext());
+
         // 4. Instantiate an instance of the CodePush runtime, using the right deployment key. If you don't
         // already have it, you can run "code-push deployment ls <appName> -k" to retrieve your key.
         this._codePush = new CodePush("Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl", this, BuildConfig.DEBUG);
 
         // 5. Add the CodePush package to the list of existing packages
         return Arrays.<ReactPackage>asList(
-                new MainReactPackage(), this._codePush.getReactPackage()
+                new MainReactPackage(),
+                this._codePush.getReactPackage()
         );
     }
 }
