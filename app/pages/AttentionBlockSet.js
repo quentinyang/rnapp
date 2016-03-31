@@ -31,7 +31,7 @@ export default class AttentionBlockSet extends Component {
                     districtBlockList.toJS().length > 0 ?
                     <Tab dataArr={districtBlockList}
                          selectedArr={districtBlockSelect} 
-                         maxSelected={3}
+                         maxSelected={5}
                          onHandleBlockSelected={this._onHandleBlockSelected}/> : null
                 }
                 <View style={styles.conformWrap}>
@@ -57,8 +57,8 @@ export default class AttentionBlockSet extends Component {
     }
 
     _skip = () => {
-        let {navigator} = this.props;
-
+        let {navigator, actions} = this.props;
+        actions.attentionBlockSetCleared();
         navigator.resetTo({
             component: TabViewContainer,
             name: 'home',

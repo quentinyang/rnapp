@@ -6,7 +6,7 @@ export default class Tab extends Component {
     constructor(props) {
         super(props);
 
-        let {dataArr, selectedArr, leftSelectId, maxSelected} = this.props;
+        let {dataArr, leftSelectId} = this.props;
         let leftSelectObject = dataArr.first();
 
         this.state = {
@@ -15,8 +15,8 @@ export default class Tab extends Component {
     }
 
     render() {
-        let {dataArr, selectedArr} = this.props;
-
+        let {dataArr, selectedArr, maxSelected} = this.props;
+console.dir(selectedArr.toJS())
         return (
             <View style={styles.container}>
                 <View style={[styles.row, styles.flex]}>
@@ -28,6 +28,7 @@ export default class Tab extends Component {
                     <RightView 
                         data={dataArr}
                         mainIndex={this.state.leftSelectId}
+                        maxSelected={maxSelected}
                         onHandlePressItem={this.onHandlePressRightItem}
                         selectedArr={selectedArr}
                     />
@@ -127,7 +128,13 @@ class RightView extends Component {
     }
 
     _onHandlePress = (block, insert:boolen) => {
-        this.props.onHandlePressItem(block, insert)
+        let {maxSelected, selectedArr} = this.props;
+
+        if (insert && selectedArr.size == maxSelected) {
+            alert('最多5个')
+        } else {
+            this.props.onHandlePressItem(block, insert)
+        }
     };
 }
 

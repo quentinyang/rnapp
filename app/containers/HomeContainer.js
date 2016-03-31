@@ -19,9 +19,10 @@ class HomeContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {houseData} = state.home;
+    const {houseData, attentionList} = state.home;
     return {
-        houseData
+        houseData,
+        attentionList
     }
 }
 

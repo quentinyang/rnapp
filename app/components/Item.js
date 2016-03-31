@@ -27,11 +27,11 @@ export default class Item extends Component {
 
         return list.map((v, k) => {
             return (
-                <View style={[styles.communityWrap]} key={v}>
+                <View style={[styles.communityWrap]} key={v.get('id')}>
                     <Text style={[styles.header, styles.headerText]}>{k == 0 ? titleName : ''}</Text>
-                    <Text style={[styles.flex, styles.contentText]}>金杨</Text>
+                    <Text style={[styles.flex, styles.contentText]}>{v.get('name')}</Text>
                     <TouchableWithoutFeedback
-                        onPress={this._handleDelete}
+                        onPress={this._handleDelete.bind(null, v.get('id'))}
                         >
                         <View>
                             <Image
@@ -47,12 +47,13 @@ export default class Item extends Component {
 
     _renderFooter = () => {
         let {list, titleName} = this.props;
+
         return (
             <View style={[styles.communityWrap]}>
-                <Text style={[styles.header, styles.headerText]}>{list.length == 0 ? titleName: ''}</Text>
+                <Text style={[styles.header, styles.headerText]}>{list.size == 0 ? titleName: ''}</Text>
                 
                 <TouchableWithoutFeedback
-                    onPress={this._handleDelete}
+                    onPress={this._handleAdd}
                     style={styles.flex}
                     >
                     <Text style={[styles.flex, styles.contentText, styles.addColor]}>添加小区</Text>
@@ -61,8 +62,12 @@ export default class Item extends Component {
         )
     };
 
-    _handleDelete = () => {
-        
+    _handleDelete = (communityId) => {
+        this.props.onDelete(communityId);
+    };
+
+    _handleAdd = () => {
+
     };
 }
 

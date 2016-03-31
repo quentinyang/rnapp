@@ -1,8 +1,13 @@
 'use strict';
 
 import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image} from 'nuke';
+import {navigationContext} from 'react-native'
 import {NaviGoBack} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
+import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer';
+import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
+import HomeContainer from '../containers/HomeContainer';
+import TabViewContainer from '../containers/TabViewContainer';
 
 let _navigator;
 
@@ -27,10 +32,10 @@ class App extends Component {
                 navigationBar={this._navBar()}
                 onWillFocus={this._willFocus}
                 initialRoute={{
-                    component: LoginContainer,
+                    component: AttentionBlockSetContainer,
                     name: 'login',
                     hideNavBar: true,
-                    title: 'Login'
+                    title: '设置我的关注'
                 }}
             />
         )
@@ -85,15 +90,13 @@ class App extends Component {
             </TouchableOpacity>
         );
     };
-
+        // <TouchableOpacity
+        //         onPress={() => navigator.pop()}
+        //         style={styles.navBarRightButton}>
+        //         <Text style={styles.navBarText}>Right</Text>
+        //     </TouchableOpacity>
     _rightButton = (route, navigator, index, navState) => {
-        return (
-            <TouchableOpacity
-                onPress={() => navigator.pop()}
-                style={styles.navBarRightButton}>
-                <Text style={styles.navBarText}>Right</Text>
-            </TouchableOpacity>
-        );
+        return null;
     };
 
     _title = (route, navigator, index, navState) => {

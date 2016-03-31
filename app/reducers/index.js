@@ -7,6 +7,7 @@ import houseList from  './houseList';
 import home from  './home';
 import detail from  './detail';
 import attentionBlockSet from  './attentionBlockSet';
+import attentionBlockSetOne from  './attentionBlockSetOne';
 
 const rootReducer = combineReducers({
     test,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     houseList,
     home,
     detail,
-    attentionBlockSet
+    attentionBlockSet,
+    attentionBlockSetOne
 });
 
 export default rootReducer;

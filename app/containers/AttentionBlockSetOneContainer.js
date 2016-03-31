@@ -3,7 +3,7 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/attentionBlockSet';
+import * as actions from '../actions/attentionBlockSetOne';
 import AttentionBlockSetOne from '../pages/AttentionBlockSetOne';
 
 class AttentionBlockSetOneContainer extends Component {
@@ -19,9 +19,9 @@ class AttentionBlockSetOneContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {attentionBlockSet} = state.attentionBlockSet;
+    const {attentionList} = state.attentionBlockSetOne;
     return {
-        attentionBlockSet
+        attentionList
     }
 }
 

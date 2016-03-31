@@ -1,7 +1,9 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, Image, StyleSheet, InteractionManager, Platform, PixelRatio, TouchableWithoutFeedback} from 'nuke';
+import {React, Component, Text, View, ScrollView, Image, StyleSheet, InteractionManager, Platform, PixelRatio, TouchableWithoutFeedback, TouchableHighlight} from 'nuke';
 import Item from '../components/Item';
+import AttentionBlockSetTwoContainer from '../containers/AttentionBlockSetTwoContainer';
+import {saveAttentionCommunitySetService} from '../service/blockService';
 
 export default class AttentionBlockSetOne extends Component {
     constructor(props) {
@@ -9,31 +11,82 @@ export default class AttentionBlockSetOne extends Component {
     }
 
     render() {
+        let {attentionList} = this.props;
+        let districtBlockSelect = attentionList.get('district_block_select');
+        let dbArr = (districtBlockSelect.map((v) => {
+            return v.get('name');
+        })).toJS() || ['请选择板块'];
+
         return (
-            <ScrollView style={[styles.flex, styles.pageBgColor]}>
-                <TouchableWithoutFeedback
-                    onPress={this._onPress}
+            <View style={styles.flex}>
+                <ScrollView style={[styles.flex, styles.pageBgColor]}>
+                    <TouchableWithoutFeedback
+                        onPress={this._onPress}
+                        >
+                        <View style={[styles.blockWrap]}>
+                            <Text style={[styles.header, styles.headerText]}>区域</Text>
+                            <Text numberOfLines={1} style={[styles.flex, styles.contentText]}>{dbArr.join('、')}</Text>
+                            <Image
+                                source={require('../images/next.png')}
+                                style={styles.nextImage}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <Item list={attentionList.get('community_select')} titleName={'小区'} onDelete={this._handleDelete}/>
+                </ScrollView>
+                <View style={styles.conformWrap}>
+                    <TouchableHighlight
+                        style={styles.conformButton}
+                        onPress={this._conformCommunitySet}
                     >
-                    <View style={[styles.blockWrap]}>
-                        <Text style={[styles.header, styles.headerText]}>区域</Text>
-                        <Text style={[styles.flex, styles.contentText]}>金杨、金桥、三林、北蔡</Text>
-                        <Image
-                            source={require('../images/next.png')}
-                            style={styles.nextImage}
-                        />
-                    </View>
-                </TouchableWithoutFeedback>
-                <Item list={[1, 2]} titleName={'区域'}/>
-            </ScrollView>
+                        <Text style={styles.conformText}>
+                            确定
+                        </Text>
+                    </TouchableHighlight>
+                </View>
+            </View>
         );
     }
 
-    _onPress = () => {
+    componentDidMount() {
+        let {actions, route} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            actions.attentionListOneSetFetched(route.attentionList.toJS());
+        });
+    }
 
+    _onPress = () => {
+        let {navigator} = this.props;
+
+        navigator.push({
+            component: AttentionBlockSetTwoContainer,
+            name: 'attentionTow',
+            title: '设置我的关注',
+            hideNavBar: false
+        });
     };
 
-    _handleDelete = () => {
+    _handleDelete = (communityId) => {
+        let {actions} = this.props;
+        actions.attentionListOneCommunityRomoved(communityId);
+    };
 
+    _conformCommunitySet = () => {
+        let {attentionList, actions} = this.props;
+        let communitySelect = attentionList.get('community_select');
+        let params = communitySelect.map((v) => {
+            return v.get('id')
+        });
+        InteractionManager.runAfterInteractions(() => {
+            saveAttentionCommunitySetService(params || [])
+            .then((oData) => {
+                actions.attentionListOneCommunityChanged(communitySelect.toJS());
+                console.dir('+++++++++++')
+            })
+            .catch((oData) => {
+                // Toast
+            });
+        })
     };
 }
 
@@ -75,5 +128,24 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: '#3e3e3e',
         fontFamily: 'Heiti SC'
-    }
+    },
+    conformWrap: {
+        height: 60,
+        backgroundColor: '#eee'
+    },
+    conformButton: {
+        justifyContent: 'center',
+        backgroundColor: '#04c1ae',
+        borderRadius: 5,
+        flex: 1,
+        marginBottom: 10,
+        marginTop: 10,
+        marginLeft: 15,
+        marginRight: 15
+    },
+    conformText: {
+        fontSize: 19,
+        color: '#fff',
+        textAlign: 'center'
+    },
 });

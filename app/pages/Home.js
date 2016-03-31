@@ -3,6 +3,8 @@
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
         TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator} from 'nuke';
 import HouseListContainer from '../containers/HouseListContainer';
+import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
+
 import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
 
@@ -59,6 +61,7 @@ export default class Home extends Component {
 
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionHouseList({});
+            actions.fetchAttentionBlockAndCommunity({});
         });
     }
 
@@ -118,6 +121,8 @@ export default class Home extends Component {
     };
 
     _renderHeader = () => {
+        let {attentionList, navigator} = this.props;
+
         return (
             <View>
                 <TouchableWithoutFeedback  onPress={this._onHandlePress}>
@@ -133,7 +138,7 @@ export default class Home extends Component {
                         />
                     </View>
                 </TouchableWithoutFeedback>
-                <Attention />
+                <Attention attentionList={attentionList} navigator={navigator}/>
             </View>
         )
     };
@@ -161,25 +166,51 @@ export class Attention extends Component {
     }
 
     render() {
+        let {attentionList} = this.props;
+        let districtBlockSelect = attentionList.get('district_block_select');
+        let communitySelect = attentionList.get('community_select');
+
+        let dbArr = (districtBlockSelect.map((v) => {
+            return v.get('name');
+        })).toJS() || ['请选择板块'];
+
+        let commArr = (communitySelect.map((c) => {
+            return c.get('name')
+        })).toJS() || ['请选择小区'];
+
         return (
             <View style={[styles.attention]}>
                 <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
                     <Text style={styles.bar}></Text>
                     <Text style={[styles.flex, styles.heiti_16_header]}>我关注的房源</Text>
                 </View>
-                <View style={[styles.row, styles.attentionMsg, styles.alignItems]}>
-                    <View style={[styles.column, styles.flex]}>
-                        <Text style={[styles.heiti_15_content]} numberOfLines={1}>板块：金阳、金桥、三林、北蔡、南汇、孙桥、张江、川沙</Text>
-                        <Text style={[styles.heiti_15_content]} numberOfLines={1}>小区：金杨新村、达安花园、静安新春、静安新春</Text>
+                <TouchableWithoutFeedback onPress={this._onAttentionBlockSet.bind(null, attentionList)}>
+                    <View style={[styles.row, styles.attentionMsg, styles.alignItems]}>
+                        <View style={[styles.column, styles.flex]}>
+                            <Text style={[styles.heiti_15_content]} numberOfLines={1}>板块：{dbArr.join('、')}</Text>
+                            <Text style={[styles.heiti_15_content]} numberOfLines={1}>小区：{commArr.join('、')}</Text>
+                        </View>
+                        <Image
+                            source={require('../images/next.png')}
+                            style={styles.nextImage}
+                        />
                     </View>
-                    <Image
-                        source={require('../images/next.png')}
-                        style={styles.nextImage}
-                    />
-                </View>
+                </TouchableWithoutFeedback>
             </View>
         )
     }
+
+    _onAttentionBlockSet = (attentionList) => {
+        let {navigator} = this.props;
+
+        navigator.push({
+            component: AttentionBlockSetOneContainer,
+            name: 'AttentionBlockSetOneContainer',
+            title: '设置我的关注',
+            hideNavBar: false,
+            attentionList
+        });
+    };
 }
 
 const styles = StyleSheet.create({
