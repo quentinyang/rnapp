@@ -20,6 +20,7 @@ fy360-native
 ## `react-native`脚本
 
 1. __[常用]开发时部署到真机__
+
 ```
 # IOS
 react-native bundle --platform ios --entry-file index.ios.js \

@@ -14,6 +14,9 @@ import com.microsoft.codepush.react.CodePush;
 import java.util.Arrays;
 import java.util.List;
 
+// Import react native device info
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
+
 public class MainActivity extends ReactActivity {
 
     // 2. Define a private field to hold the CodePush runtime instance
@@ -61,6 +64,7 @@ public class MainActivity extends ReactActivity {
 
         // 5. Add the CodePush package to the list of existing packages
         return Arrays.<ReactPackage>asList(
+                new RNDeviceInfo(),
                 new MainReactPackage(),
                 this._codePush.getReactPackage()
         );

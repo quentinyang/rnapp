@@ -33,6 +33,9 @@ class fy360 extends Component {
     render() {
         var Picker1 = PickerIOSDemo.examples[0].render;
         var Picker2 = PickerIOSDemo.examples[1].render;
+        var DeviceInfo = require('react-native-device-info');
+        console.log("Device Unique ID", DeviceInfo.getUniqueID());
+
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>
