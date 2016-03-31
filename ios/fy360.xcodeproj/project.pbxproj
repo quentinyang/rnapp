@@ -37,7 +37,6 @@
 		6620FBB91CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */; };
 		6630589C1CA0F8F600F15BB8 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 663058911CA0F87C00F15BB8 /* libCodePush.a */; };
 		6630589E1CA0F91D00F15BB8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6630589D1CA0F91D00F15BB8 /* libz.tbd */; };
-		66559B651CA2744C001E7AD9 /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 66559B641CA2744C001E7AD9 /* index.ios.jsbundle */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -172,7 +171,6 @@
 		6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libGeTuiSdk-1.4.1.a"; path = "../GtSdkLib/libGeTuiSdk-1.4.1.a"; sourceTree = "<group>"; };
 		6630588C1CA0F87C00F15BB8 /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		6630589D1CA0F91D00F15BB8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		66559B641CA2744C001E7AD9 /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = ../index.ios.jsbundle; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -294,7 +292,6 @@
 		13B07FAE1A68108700A75B9A /* fy360 */ = {
 			isa = PBXGroup;
 			children = (
-				54C9C5511C9BE52E00914E77 /* bundle */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -386,7 +383,6 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* fy360Tests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
-				660728D11CA244D90069FBAA /* assets */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -634,7 +630,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				660728D21CA244D90069FBAA /* assets in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				54C9C5521C9BE52E00914E77 /* bundle in Resources */,
 				66559B651CA2744C001E7AD9 /* index.ios.jsbundle in Resources */,
