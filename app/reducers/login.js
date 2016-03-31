@@ -12,8 +12,8 @@ let initialState = {
         'code_status': '',
         'code_send': '',  //判断是否正在发送,true在发，false不在。
         'code_text': '获取验证码',
+        'num': 60,
         'err_msg': '',
-        'register_form': '',
     }
 };
 
@@ -36,8 +36,8 @@ function controllerInfo(state = Immutable.fromJS(initialState.controllerData), a
             return state.set('code_send', Immutable.fromJS(action.code_send));
         case types.ERR_MSG:
             return state.set('err_msg', Immutable.fromJS(action.err_msg));
-        case types.FORM_SUBMITTED:
-            return state.set('register_form', Immutable.fromJS(action.register_form));
+        case types.NUM_CHANGED:
+            return state.set('num', Immutable.fromJS(action.num));
         default:
             return state;
     }

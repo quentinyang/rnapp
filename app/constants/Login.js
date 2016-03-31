@@ -5,5 +5,6 @@ export const FORM_SUBMITTED = 'FORM_SUBMITTED';
 export const CSTATUS_CHANGED = 'CSTATUS_CHANGED';
 export const CSEND_CHANGED = 'CSEND_CHANGED';
 export const CTEXT_CHANGED = 'CTEXT_CHANGED';
+export const NUM_CHANGED = 'NUM_CHANGED';
 
 export const ERR_MSG = 'ERR_MSG';

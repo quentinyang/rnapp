@@ -21,6 +21,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		2DD7FB6A1CACCD2900FD56F7 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD7FB691CACCD2900FD56F7 /* libRNDeviceInfo.a */; };
 		54C9C5521C9BE52E00914E77 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 54C9C5511C9BE52E00914E77 /* bundle */; };
 		660728D21CA244D90069FBAA /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 660728D11CA244D90069FBAA /* assets */; };
 		6620FB961CAA91AB00BB2A3F /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */; };
@@ -104,6 +105,13 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
+		2DD7FB671CACCC4100FD56F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2DD7FB631CACCC4000FD56F7 /* RNDeviceInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA5891D81BA9A9FC002B4DB2;
+			remoteInfo = RNDeviceInfo;
+		};
 		663058901CA0F87C00F15BB8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6630588C1CA0F87C00F15BB8 /* CodePush.xcodeproj */;
@@ -147,6 +155,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = fy360/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = fy360/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		2DD7FB631CACCC4000FD56F7 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		2DD7FB691CACCD2900FD56F7 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRNDeviceInfo.a; path = "../../../../code/reading/ios/build/Build/Products/Debug-iphonesimulator/libRNDeviceInfo.a"; sourceTree = "<group>"; };
 		54C9C5511C9BE52E00914E77 /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		660728D11CA244D90069FBAA /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
 		6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -200,6 +210,7 @@
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
+				2DD7FB6A1CACCD2900FD56F7 /* libRNDeviceInfo.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +314,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		2DD7FB641CACCC4000FD56F7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2DD7FB681CACCC4100FD56F7 /* libRNDeviceInfo.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		6630588D1CA0F87C00F15BB8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -322,6 +341,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				2DD7FB631CACCC4000FD56F7 /* RNDeviceInfo.xcodeproj */,
 				6630589D1CA0F91D00F15BB8 /* libz.tbd */,
 				6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */,
 				6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */,
@@ -361,6 +381,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				2DD7FB691CACCD2900FD56F7 /* libRNDeviceInfo.a */,
 				13B07FAE1A68108700A75B9A /* fy360 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* fy360Tests */,
@@ -501,6 +522,10 @@
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
+				{
+					ProductGroup = 2DD7FB641CACCC4000FD56F7 /* Products */;
+					ProjectRef = 2DD7FB631CACCC4000FD56F7 /* RNDeviceInfo.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -565,6 +590,13 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2DD7FB681CACCC4100FD56F7 /* libRNDeviceInfo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNDeviceInfo.a;
+			remoteRef = 2DD7FB671CACCC4100FD56F7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		663058911CA0F87C00F15BB8 /* libCodePush.a */ = {

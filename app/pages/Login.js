@@ -1,4 +1,3 @@
-
 import {
     React,
     Component,
@@ -14,12 +13,11 @@ import Countdown from '../components/Countdown'
 import {loginService} from '../service/userService';
 import TabViewContainer from '../containers/TabViewContainer';
 
+import DeviceInfo from 'react-native-device-info';
+
 class Login extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            num: 60
-        };
     }
 
     render() {
@@ -27,18 +25,14 @@ class Login extends React.Component {
 
         return (
             <View style={styles.container}>
-                <View style={{alignItems: 'flex-end', justifyContent: 'center'}}>
+                <View style={styles.imgRightBox}>
                     <Image
-                        style={{width: 123, height: 215}}
+                        style={styles.fyImage}
                         source={require('../images/shape.png')}
                     />
                 </View>
-                <Text style={[styles.fytitle, {marginTop: -80}]}>
-                    房源360
-                </Text>
-                <Text style={styles.fysubtitle}>
-                    房源信息共享平台
-                </Text>
+                <Text style={styles.fytitle}>房源360</Text>
+                <Text style={styles.fysubtitle}>房源信息共享平台</Text>
                 <View style={styles.layout}>
                     <View style={styles.phoneBox}>
                         <TextInput
@@ -52,7 +46,7 @@ class Login extends React.Component {
                             value={formInfo.get('phone')}
                         />
                         <Countdown
-                            num={this.state.num}
+                            num={controllerInfo.get('num')}
                             code_send={controllerInfo.get('code_send')}
                             code_status={controllerInfo.get('code_status')}
                             sendCode={this.sendCode}
@@ -68,17 +62,13 @@ class Login extends React.Component {
                         value={formInfo.get('code')}
                     />
                     <View style={styles.errMsgBox}>
-                        <Text style={styles.errMsgText}>
-                            {controllerInfo.get('err_msg')}
-                        </Text>
+                        <Text style={styles.errMsgText}>{controllerInfo.get('err_msg')}</Text>
                     </View>
                     <TouchableHighlight
                         style={styles.submitButton}
                         onPress={this.handleSubmit}
                     >
-                        <Text style={styles.submitText}>
-                            登录
-                        </Text>
+                        <Text style={styles.submitText}>登录</Text>
                     </TouchableHighlight>
                 </View>
             </View>
@@ -119,8 +109,8 @@ class Login extends React.Component {
     };
 
     sendCode = () => {
-        let self = this;
-        let {login, actions} = self.props;
+        let self = this,
+            {login, actions} = self.props;
 
         actions.codeSend(true);
         self.onStart();
@@ -132,21 +122,26 @@ class Login extends React.Component {
     };
 
     refreshTime = () => {
-        if(this.state.num <= 0) {
+        let {login, actions} = this.props,
+            num = login.controllerInfo.get('num'),
+            sec = --num;
+
+        if(num <= 0) {
             this.onEnd();
             return;
         }
-        let sec = --this.state.num;
         this.timer = setTimeout(() => {
-            this.setState({num: sec});
+            actions.numChanged(sec);
             this.refreshTime();
         }, 1000);
     };
 
     onEnd = () => {
+        let {actions} = this.props;
         clearTimeout(this.timer);
-        this.setState({num: 60});
-        this.props.actions.codeSend(false);
+
+        actions.numChanged(60);
+        actions.codeSend(false);
     };
 
     checkForm = () => {
@@ -169,13 +164,13 @@ class Login extends React.Component {
 
     handleSubmit = (e) => {
         let msg = this.checkForm(),
-            {actions, navigator, login} = this.props;
+            {actions, navigator, login} = this.props,
+            data = Object.assign({}, login.formInfo.toJS(), {device_id: DeviceInfo.getUniqueID()});
 
-        //msg ? actions.errMsg(errMsgs[msg]) : actions.loginSubmit(login.formInfo);
         if(msg) {
-            actions.errMsg(errMsgs[msg])
+            actions.errMsg(errMsgs[msg]);
         } else {
-            loginService({body:login.formInfo})
+            loginService({body:data})
             .then((oData) => {
                 navigator.resetTo({
                     component: TabViewContainer,
@@ -185,7 +180,7 @@ class Login extends React.Component {
                 });
             })
             .catch((error) => {
-                console.error('Ajax Error: ' + error);
+                actions.errMsg(error.msg);
             })
         }
     };
@@ -203,8 +198,15 @@ let styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center'
     },
+    imgRightBox: {
+        alignItems: 'flex-end'
+    },
+    fyImage: {
+        width: 123,
+        height: 215
+    },
     fytitle: {
-        marginTop: 10,
+        marginTop: -80,
         fontSize: 40,
         textAlign: 'center',
         color: '#04c1ae',

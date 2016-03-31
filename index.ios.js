@@ -27,7 +27,7 @@ class fy360 extends Component {
   componentDidMount() {
     // download silently and installed the next time the app is restarted
     codePush.sync({rollbackTimeout: 3000});
-    // Prompt the user when an update is available, 
+    // Prompt the user when an update is available,
     // if aggree, and then display a "downloading" modal, and update immediately
     // codePush.sync({updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE, rollbackTimeout: 3000});
   }
@@ -36,28 +36,7 @@ class fy360 extends Component {
     var Picker1 = PickerIOSDemo.examples[0].render;
     var Picker2 = PickerIOSDemo.examples[1].render;
     return (
-        <View style={styles.container}>
-            <Text style={styles.welcome}>
-              Welcome to React Native!
-            </Text>
-            <Image source={require('./app/images/flower.jpg')}  style={{width: 200, height: 200}}/>
-            <ButtonDemo />
-            <ModalDemo />
-            <Text style={styles.instructions}>
-              To get started, edit index.ios.js
-            </Text>
-            <Text style={styles.instructions}>
-              Press Cmd+R to reload,{'\n'}
-              Cmd+D or shake for dev menu
-            </Text>
-            <ToastDemo />
-            <AlertDemo />
-            <Picker1 />
-            <Picker2 />
-            <PickerDemo />
-            <BasicComponentsDemo />
-            <RefreshControlDemo />
-        </View>
+        <Root />
     );
   }
 

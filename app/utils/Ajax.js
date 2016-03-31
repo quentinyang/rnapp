@@ -1,5 +1,13 @@
 'use strict';
 
+function status(response, resolve, reject) {
+    if(response.status >= 200 && response.status < 300) {
+        resolve(response.json());
+    } else {
+        response.json().then(reject);
+    }
+}
+
 function get(url, params) {
     return new Promise((resolve, reject) => {
         fetch(url, {
@@ -29,7 +37,7 @@ function post(url, params) {
             ...paramsOther
         })
         .then((response) => {
-            resolve(response.json());
+            status(response, resolve, reject);
         })
         .catch((error) => {
             reject(error)
