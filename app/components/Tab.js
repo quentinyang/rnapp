@@ -1,27 +1,21 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, StyleSheet} from 'nuke';
+import {React, Component, Text, View, ScrollView, StyleSheet, Image, TouchableWithoutFeedback} from 'nuke';
 
 export default class Tab extends Component {
     constructor(props) {
         super(props);
 
-        let {dataArr, selectedArr, leftSelectId} = this.props;
+        let {dataArr, selectedArr, leftSelectId, maxSelected} = this.props;
         let leftSelectObject = dataArr.first();
 
         this.state = {
-            dataArr: dataArr,            // 所有展示的数据
-            selectedArr: selectedArr,        // 所有被选中的数据
-            maxSelected: 3,         // 最多选择几个
-            leftSelectId: leftSelectId || leftSelectObject.get('id')      // 主菜单选中的id
+            leftSelectId: leftSelectId || leftSelectObject.get('id')
         };
-
-        this.onHandlePressLeftItem = this.onHandlePressLeftItem.bind(this);
-        this.onHandlePressRightItem = this.onHandlePressRightItem.bind(this);
     }
 
     render() {
-        let {dataArr} = this.props;
+        let {dataArr, selectedArr} = this.props;
 
         return (
             <View style={styles.container}>
@@ -35,44 +29,27 @@ export default class Tab extends Component {
                         data={dataArr}
                         mainIndex={this.state.leftSelectId}
                         onHandlePressItem={this.onHandlePressRightItem}
-                        selectedArr={this.state.selectedArr}
+                        selectedArr={selectedArr}
                     />
                 </View>
             </View>
         )
     }
 
-    onHandlePressLeftItem(id) {
+    onHandlePressLeftItem = (id) => {
         this.setState({
             leftSelectId: id
         })
-    }
+    };
 
-    onHandlePressRightItem(block, insert:boolen) {
-        let newSelectArr;
-        let {selectedArr, maxSelected} = this.state;
-
-        if (insert && selectedArr.count() <  maxSelected) {
-            newSelectArr = this.state.selectedArr.push(block)
-        } else if (!insert) {
-            newSelectArr = this.state.selectedArr.filter((b) => {
-                return block.get('id') != b.get('id')
-            })
-        } else {
-            return;
-        }
-
-        this.setState({
-            selectedArr: newSelectArr
-        })
-    }
+    onHandlePressRightItem = (block, insert:boolen) => {
+        this.props.onHandleBlockSelected(block, insert);
+    };
 }
 
 class LeftView extends Component {
     constructor(props) {
         super(props);
-
-        this._onHandlePress = this._onHandlePress.bind(this);
     }
 
     render() {
@@ -83,11 +60,13 @@ class LeftView extends Component {
                 selected = styles.selected;
             }
             return (
-                <Text style={[styles.leftRow, selected]}
-                      key={d.get('id')}
-                      onPress={this._onHandlePress.bind(null, d.get('id'))}>
-                  {d.get('name')}
-                </Text>
+                <TouchableWithoutFeedback key={d.get('id')} onPress={this._onHandlePress.bind(null, d.get('id'))}>
+                    <View style={[styles.flex, styles.row, styles.center, styles.itemsHeight, selected]}>
+                        <Text style={[styles.flex, styles.leftRow]}>
+                          {d.get('name')}
+                        </Text>
+                    </View>
+                </TouchableWithoutFeedback>
             );
         });
         return (
@@ -97,16 +76,14 @@ class LeftView extends Component {
         )
     }
 
-    _onHandlePress(id) {
+    _onHandlePress = (id) => {
         this.props.onHandlePressItem(id);
-    }
+    };
 }
 
 class RightView extends Component {
     constructor(props) {
         super(props);
-
-        this._onHandlePress = this._onHandlePress.bind(this)
     }
 
     render() {
@@ -122,14 +99,23 @@ class RightView extends Component {
             });
 
             return (
-                <View key={d.get('id')} style={[styles.flex, styles.row]}>
+                <View key={d.get('id')} style={[styles.flex, styles.row, styles.center, styles.itemsHeight]}>
                     <Text style={[styles.leftRow, styles.flex]}>{d.get('name')}</Text>
-                    <Text 
-                        style={[styles.leftRow, {width: 60, textAlign: 'center'}]}
+                    <TouchableWithoutFeedback
+                        style={[styles.leftRow]}
                         onPress={this._onHandlePress.bind(null, d, isSelected ? false : true)}
                     >
-                        {isSelected ? 1 : 0}
-                    </Text>
+                        {isSelected ? 
+                            <Image
+                                source={require('../images/selected.png')}
+                                style={styles.selectedImage}
+                            /> :
+                            <Image
+                                source={require('../images/unSelected.png')}
+                                style={styles.selectedImage}
+                            />
+                        }
+                    </TouchableWithoutFeedback>
                 </View>
             )
         });
@@ -140,9 +126,9 @@ class RightView extends Component {
         )
     }
 
-    _onHandlePress(block, insert:boolen) {
+    _onHandlePress = (block, insert:boolen) => {
         this.props.onHandlePressItem(block, insert)
-    }
+    };
 }
 
 const styles = StyleSheet.create({
@@ -169,15 +155,20 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         flex: 2
     },
-    // center: {
-    //     justifyContent:'center',
-    //     alignItems:'center'
-    // },
+    center: {
+        alignItems:'center'
+    },
     leftRow: {
         paddingLeft: 10,
-        height: 50,
-        lineHeight: 30,
         fontSize: 14,
         color:'#7C7C7C',
+    },
+    selectedImage: {
+        width: 21,
+        height: 21,
+        marginRight: 30
+    },
+    itemsHeight: {
+        height: 50
     }
 });
