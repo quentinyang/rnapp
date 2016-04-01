@@ -25,7 +25,7 @@ let initialBaseInfo = {
 function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
     switch(action.type) {
         case types.HOUSE_BASE_FETCHED:
-            return Immutable.fromJS(action.houseBase);
+            return state.set('baseInfo', Immutable.fromJS(action.houseBase));
             break;
         default:
             return state;

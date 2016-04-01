@@ -1,6 +1,6 @@
 'use strict';
 
-let HOST = 'http://192.168.163.116:8081/app/fakedata/';
+let HOST = 'http://192.168.162.61:8081/app/fakedata/';
 let HOST1 = 'http://360.feature-fy360.dev.angejia.com/service/';
 
 let urls = {
@@ -33,8 +33,8 @@ let urls = {
         attentionAppend: HOST1 + 'attention/property-list',
         attentionPrepend: HOST1 + 'attention/property-list',
         
-        // similar: HOST + 'house-similar.json'
-        similar: HOST1 + 'community/property-list'
+        similar: HOST + 'house-similar.json'
+        //similar: HOST1 + 'community/property-list'
     },
     blocks: {
         attention: HOST1 + 'get-attention-block',

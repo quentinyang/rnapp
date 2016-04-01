@@ -50,7 +50,7 @@ export default class Detail extends Component {
                 property_id: 507
             });
             actions.fetchSimilarHouseList({
-                community_id: 507
+                community_id: propertyId
             });
         });
     }
@@ -121,15 +121,18 @@ class BaseInfo extends Component {
             <View style={styles.container}>
                 <View style={styles.itemContainer}>
                     <View style={[styles.row, styles.name]}>
-                        <Text style={{fontSize: 19}}>{baseInfo.get('community_name') || ''} {baseInfo.get('building_num') || '' + baseInfo.get('building_unit') || '' + baseInfo.get('door_num') || '' + "室"}</Text>
+                        <View>
+                            <Text numberOfLines={1} style={{fontSize: 19, flex: 1}}><Text>{baseInfo.get('community_name') || ''}rtertertertert</Text></Text>
+                            <Text style={{fontSize: 19, width: 68}}> {baseInfo.get('building_num') || ''}{baseInfo.get('building_unit') || ''}{baseInfo.get('door_num') || ''}室</Text>
+                        </View>
                         <Text style={{fontSize: 12, color: '#8d8c92'}}>查看次数:{baseInfo.get('see_count')}</Text>
                     </View>
-                    <Text style={styles.baseSize}>{baseInfo.get('district_name') || '' + "-" + baseInfo.get('block_name') || ''}<Text style={styles.baseSpace}>{baseInfo.get('community_address') || ''}</Text></Text>
+                    <Text style={styles.baseSize}>{baseInfo.get('district_name') || ''}-{baseInfo.get('block_name') || ''}<Text style={styles.baseSpace}>{baseInfo.get('community_address') || ''}</Text></Text>
                 </View>
 
                 <View style={[styles.itemContainer, styles.row]}>
                     <Text style={styles.baseSize}>户型:</Text>
-                    <Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('bedrooms') || '' + "室" + baseInfo.get('living_rooms') || '' + "厅" + baseInfo.get('bathrooms') || '' + "卫"}</Text>
+                    <Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('bedrooms') || ''}室{baseInfo.get('living_rooms') || ''}厅{baseInfo.get('bathrooms') || ''}卫</Text>
                 </View>
                 <View style={[styles.itemContainer, styles.row]}>
                     <Text style={styles.baseSize}>面积:</Text>
@@ -139,7 +142,11 @@ class BaseInfo extends Component {
                 <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>单价:</Text><Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('avg_price') || ''}元/m²</Text></View>
                 <View style={styles.itemContainer}>
                     <View style={styles.row}><Text style={styles.baseSize}>状态:</Text><Text style={[styles.baseSize, styles.baseSpace, {color: '#ff6d4b'}]}>{baseInfo.get('status') || ''}</Text></View>
+
+
                     <Text style={styles.statusList}>{baseInfo.get('see_count')}</Text>
+
+
                 </View>
 
                 <View style={[styles.itemContainer, styles.row]}>
