@@ -6,7 +6,8 @@ import {
     StyleSheet,
     Image,
     TextInput,
-    TouchableHighlight
+    TouchableHighlight,
+    ScrollView
 } from 'nuke';
 
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
@@ -29,7 +30,14 @@ class Login extends React.Component {
         let {formInfo, controllerInfo} = this.props.login;
 
         return (
-            <View style={styles.container}>
+            <ScrollView
+                ref="scrollView"
+                keyboardDismissMode='interactive'
+                keyboardShouldPersistTaps={false}
+                alwaysBounceVertical={false}
+                style={styles.container}
+                contentContainerStyle={styles.content}
+            >
                 <View style={styles.imgRightBox}>
                     <Image
                         style={styles.fyImage}
@@ -41,6 +49,7 @@ class Login extends React.Component {
                 <View style={styles.layout}>
                     <View style={styles.phoneBox}>
                         <TextInput
+                            ref='phone'
                             style={styles.fiPhone}
                             onChangeText={(phone) => this.inputPhone(phone)}
                             keyboardType='numeric'
@@ -49,6 +58,7 @@ class Login extends React.Component {
                             maxLength={11}
                             underlineColorAndroid='transparent'
                             value={formInfo.get('phone')}
+                            onFocus={this.inputFocused.bind(this, 'phone')}
                         />
                         <Countdown
                             num={controllerInfo.get('num')}
@@ -59,12 +69,14 @@ class Login extends React.Component {
                         />
                     </View>
                     <TextInput
+                        ref='code'
                         style={styles.fiCode}
                         onChangeText={(code) => this.singleAction('codeChanged', code)}
                         keyboardType='numeric'
                         placeholder='验证码'
                         maxLength={4}
                         value={formInfo.get('code')}
+                        onFocus={this.inputFocused.bind(this, 'phone')}
                     />
                     <View style={styles.errMsgBox}>
                         <Text style={styles.errMsgText}>{controllerInfo.get('err_msg')}</Text>
@@ -76,12 +88,24 @@ class Login extends React.Component {
                         <Text style={styles.submitText}>登录</Text>
                     </TouchableHighlight>
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 
     componentWillUnmount() {
         this.timer && clearTimeout(this.timer);
+    }
+
+    inputFocused (refName) {
+        setTimeout(() => {
+            let scrollResponder = this.refs.scrollView.getScrollResponder();
+
+            scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+              React.findNodeHandle(this.refs[refName]),
+              120, //additionalOffset
+              true
+            );
+        }, 50);
     }
 
     singleAction(action, value) {
@@ -205,8 +229,10 @@ let errMsgs = {
 
 let styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center'
+        flex: 1
+    },
+    content: {
+        justifyContent: 'center',
     },
     imgRightBox: {
         alignItems: 'flex-end'
