@@ -1,5 +1,7 @@
-package com.fy360;
+package com.xinyi.fy360;
 
+import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
@@ -56,7 +58,7 @@ public class MainActivity extends ReactActivity {
     protected List<ReactPackage> getPackages() {
 
         Log.d("GetuiSdk", "initializing sdk...");
-        PushManager.getInstance().initialize(this.getApplicationContext());
+//        PushManager.getInstance().initialize(this.getApplicationContext());
 
         // 4. Instantiate an instance of the CodePush runtime, using the right deployment key. If you don't
         // already have it, you can run "code-push deployment ls <appName> -k" to retrieve your key.
@@ -68,5 +70,13 @@ public class MainActivity extends ReactActivity {
                 new MainReactPackage(),
                 this._codePush.getReactPackage()
         );
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Log.d("onCreate", "initializing sdk...");
+        super.onCreate(savedInstanceState);
+        PushManager.getInstance().initialize(this.getApplicationContext());
+
     }
 }

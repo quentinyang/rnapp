@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fy360">
+    package="com.xinyi.fy360">
 
     <!-- 解决Android L上通知显示异常问题，targetSdkVersion需要设置成22 -->
     <uses-sdk
