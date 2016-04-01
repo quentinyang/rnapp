@@ -148,7 +148,7 @@ export default class Home extends Component {
         let pager = houseData.get('pager');
 
         return (
-                Number(pager.get('current_page')) == Number(pager.get('last_page')) ? 
+                Number(pager.get('current_page')) == Number(pager.get('last_page')) ?
                     <View style={styles.listFooter}>
                         <Text style={styles.noData}>已经没有数据了！</Text>
                     </View>
@@ -169,12 +169,11 @@ export class Attention extends Component {
         let {attentionList} = this.props;
         let districtBlockSelect = attentionList.get('district_block_select');
         let communitySelect = attentionList.get('community_select');
-
-        let dbArr = (districtBlockSelect.map((v) => {
+        let dbArr = districtBlockSelect && (districtBlockSelect.map((v) => {
             return v.get('name');
         })).toJS() || ['请选择板块'];
 
-        let commArr = (communitySelect.map((c) => {
+        let commArr = communitySelect && (communitySelect.map((c) => {
             return c.get('name')
         })).toJS() || ['请选择小区'];
 
@@ -273,10 +272,10 @@ const styles = StyleSheet.create({
     bar: {
         width: 3,
         backgroundColor: '#04C1AE',
-        marginRight: 8    
+        marginRight: 8
     },
     alignItems: {
-        alignItems: 'center',  
+        alignItems: 'center',
     },
     heiti_15_content: {
         fontFamily: 'Heiti SC',

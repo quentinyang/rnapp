@@ -1,5 +1,6 @@
 'use strict';
 
+import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image} from 'nuke';
 import {navigationContext} from 'react-native'
 import {NaviGoBack} from '../utils/CommonUtils';
@@ -14,12 +15,33 @@ let _navigator;
 class App extends Component {
     constructor(props) {
         super(props);
-
+        var self = this;
         this.state = {
+            component: TabViewContainer,
+            name: '',
+            title: '房源360',
             hideNavBar: true
         };
-
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
+        AsyncStorageComponent.get('user_token')
+        .then((value) => {
+            if(value) {
+                self.setState({
+                    component: TabViewContainer,
+                    name: 'home',
+                    title: '我的主页'
+                });
+            } else {
+                self.setState({
+                    component: LoginContainer,
+                    name: 'login',
+                    title: '登录',
+                })
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     render() {
@@ -32,10 +54,10 @@ class App extends Component {
                 navigationBar={this._navBar()}
                 onWillFocus={this._willFocus}
                 initialRoute={{
-                    component: AttentionBlockSetContainer,
-                    name: 'login',
+                    component: this.state.component,
+                    name: this.state.name,
                     hideNavBar: true,
-                    title: '设置我的关注'
+                    title: this.state.title
                 }}
             />
         )
