@@ -21,11 +21,12 @@ function _createURL(url, params) {
 
 function get(url, params = {}) {
     let {data, ...paramsOther} = params;
+
     return new Promise((resolve, reject) => {
         fetch(_createURL(url, data || {}), {
             method: 'GET',
             headers: {
-                token: 'Y6taJMcXGpzFGs9nS/ey3w=='
+                token: gtoken
             },
             ...paramsOther
         })
@@ -47,7 +48,7 @@ function post(url, params = {}) {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'token': 'Y6taJMcXGpzFGs9nS/ey3w=='
+                'token': gtoken
             },
             body: JSON.stringify(body),
             ...paramsOther

@@ -15,7 +15,6 @@ export function fetchAttentionBlockSet() {
         return fetchAttentionBlockSetService()
             .then((oData) => {
                 console.info('Ajax Success: ' + oData);
-                console.dir(oData);
                 dispatch(attentionBlockSetFetched(oData))
             })
             .catch((error) => {

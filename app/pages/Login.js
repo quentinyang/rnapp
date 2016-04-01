@@ -206,6 +206,7 @@ class Login extends React.Component {
             loginService({body:data})
             .then((oData) => {
                 AsyncStorageComponent.save(TOKEN_KEY, oData.token);
+                gtoken = oData.token;
                 navigator.resetTo({
                     component: AttentionBlockSetContainer,
                     name: 'AttentionBlockSetContainer',

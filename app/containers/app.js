@@ -8,7 +8,7 @@ import LoginContainer from '../containers/LoginContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 
 let _navigator;
-
+global.gtoken = '';
 class App extends Component {
     constructor(props) {
         super(props);
@@ -22,10 +22,10 @@ class App extends Component {
         };
 
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
-
         AsyncStorageComponent.get('user_token')
         .then((value) => {
             if(value) {
+                gtoken = value;
                 self.setState({
                     component: TabViewContainer,
                     name: 'home',
@@ -48,7 +48,7 @@ class App extends Component {
         let {component} = this.state;
 
         return (
-            component ? 
+            component ?
             <Navigator
                 style={styles.flex}
                 configureScene={this._configureScene}

@@ -22,7 +22,7 @@ export default class AsyncStorageComponent {
         }
     }
 
-    static async remove() {
+    static async remove(storage_key) {
         try {
             await AsyncStorage.removeItem(storage_key);
         } catch (error) {

@@ -15,7 +15,7 @@ export default class AttentionBlockSet extends Component {
 
         let districtBlockList = attentionBlockSet.get('district_block_list');
         let districtBlockSelect = attentionBlockSet.get('district_block_select');
-        
+
         return (
             <View style={[styles.flex, styles.pageMarginBottom]}>
                 <View style={[styles.right, styles.marginTop]}>
@@ -28,9 +28,9 @@ export default class AttentionBlockSet extends Component {
                     <Text style={styles.topSubHeader}>关注区域的新房源第一时间收到</Text>
                 </View>
                 {
-                    districtBlockList.toJS().length > 0 ?
+                    districtBlockList && districtBlockList.toJS().length > 0 ?
                     <Tab dataArr={districtBlockList}
-                         selectedArr={districtBlockSelect} 
+                         selectedArr={districtBlockSelect}
                          maxSelected={5}
                          onHandleBlockSelected={this._onHandleBlockSelected}/> : null
                 }
