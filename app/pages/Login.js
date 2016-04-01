@@ -9,7 +9,7 @@ import {
     TouchableHighlight
 } from 'nuke';
 
-import AsyncStorageComponent from '../components/AsyncStorageComponent';
+import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import Countdown from '../components/Countdown'
 import {loginService} from '../service/userService';
 import TabViewContainer from '../containers/TabViewContainer';
