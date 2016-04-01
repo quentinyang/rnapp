@@ -3,12 +3,8 @@ let urls = require('../config/urls');
 
 module.exports=function(){
 
-    function sendCode(data) {
-        var params = {
-            type: 'POST',
-            url: urls.user.sendcode
-        };
-        ajax($.extend(params, data, true));
+    function sendCodeService(data) {
+        return ajax.post(urls.user.sendCode, data);
     }
 
     function loginService(data) {
@@ -16,7 +12,7 @@ module.exports=function(){
     }
 
     return {
-        sendCode: sendCode,
+        sendCodeService: sendCodeService,
         loginService: loginService
     };
 }();

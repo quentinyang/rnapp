@@ -12,7 +12,7 @@ import {
 
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import Countdown from '../components/Countdown'
-import {loginService} from '../service/userService';
+import {loginService, sendCodeService} from '../service/userService';
 import TabViewContainer from '../containers/TabViewContainer';
 
 import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer';
@@ -83,6 +83,7 @@ class Login extends React.Component {
                     </View>
                     <TouchableHighlight
                         style={styles.submitButton}
+                        underlayColor='#04c1ae'
                         onPress={this.handleSubmit}
                     >
                         <Text style={styles.submitText}>登录</Text>
@@ -143,10 +144,19 @@ class Login extends React.Component {
 
     sendCode = () => {
         let self = this,
-            {login, actions} = self.props;
+            {login, actions} = self.props,
+            data = {
+                phone: self.props.login.formInfo.get('phone')
+            };
 
-        actions.codeSend(true);
-        self.onStart();
+        sendCodeService({body:data})
+        .then((oData) => {
+            actions.codeSend(true);
+            self.onStart();
+        })
+        .catch((error) => {
+            actions.errMsg(error.msg);
+        })
     };
 
     onStart = () => {

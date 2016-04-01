@@ -34,6 +34,7 @@ export default class Countdown extends Component {
                 return (
                     <TouchableHighlight
                         style={styles.codeButton}
+                        underlayColor='#fff'
                         onPress={this.props.sendCode}
                     >
                         <Text style={[styles.codeText, {color: '#ffa251'}]}>
