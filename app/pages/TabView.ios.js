@@ -28,7 +28,7 @@ export default class TabView extends Component {
                                     <TabBar.Item
                                         title={val.title}
                                         selected={this.state.tabIndex === val.key}
-                                        systemIcon={val.systemIcon}
+                                        icon={val.icon}
                                         key={val.key}
                                         onPress={() => {
                                             this.setState({
@@ -78,21 +78,21 @@ const tabArr = [
     {
         key: 0,
         title: '看房',
-        icon: 'ios-list-outline',
+        icon: require('../images/look.png'),
         selectedIcon:'ios-list',
         systemIcon: 'bookmarks'
     },
     {
         key: 1,
         title: '发房',
-        icon: 'ios-paper-outline',
+        icon: require('../images/house.png'),
         selectedIcon:'ios-paper',
         systemIcon: 'history'
     },
     {
         key: 2,
         title: '我的',
-        icon: 'ios-paper-outline',
+        icon: require('../images/me.png'),
         selectedIcon:'ios-paper',
         systemIcon: 'downloads'
     }
