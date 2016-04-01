@@ -17,13 +17,11 @@
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
 		139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139FDEF41B06529B00C62182 /* libRCTWebSocket.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
-		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		2DD7FB6A1CACCD2900FD56F7 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD7FB691CACCD2900FD56F7 /* libRNDeviceInfo.a */; };
 		54C9C5521C9BE52E00914E77 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 54C9C5511C9BE52E00914E77 /* bundle */; };
-		660728D21CA244D90069FBAA /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 660728D11CA244D90069FBAA /* assets */; };
 		6620FB961CAA91AB00BB2A3F /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */; };
 		6620FB981CAA91B500BB2A3F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB971CAA91B500BB2A3F /* Security.framework */; };
 		6620FB9A1CAA91BF00BB2A3F /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB991CAA91BF00BB2A3F /* MobileCoreServices.framework */; };
@@ -33,12 +31,12 @@
 		6620FBA21CAA91F000BB2A3F /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FBA11CAA91F000BB2A3F /* JavaScriptCore.framework */; };
 		6620FBA41CAA91F800BB2A3F /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FBA31CAA91F800BB2A3F /* CoreLocation.framework */; };
 		6620FBA61CAA920100BB2A3F /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FBA51CAA920100BB2A3F /* CoreBluetooth.framework */; };
-		6620FBB71CAAB11000BB2A3F /* GtSdkLib in Resources */ = {isa = PBXBuildFile; fileRef = 6620FBB61CAAB11000BB2A3F /* GtSdkLib */; };
 		6620FBB91CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */; };
 		6630589C1CA0F8F600F15BB8 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 663058911CA0F87C00F15BB8 /* libCodePush.a */; };
 		6630589E1CA0F91D00F15BB8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6630589D1CA0F91D00F15BB8 /* libz.tbd */; };
 		66559B651CA2744C001E7AD9 /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 66559B641CA2744C001E7AD9 /* index.ios.jsbundle */; };
 		66C2DF561CAE6DC9003A7F7B /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66C2DF541CAE6DC9003A7F7B /* libMobClickLibrary.a */; };
+		66C2DF9F1CAEEAC7003A7F7B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -159,7 +157,6 @@
 		2DD7FB631CACCC4000FD56F7 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		2DD7FB691CACCD2900FD56F7 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRNDeviceInfo.a; path = "../../../../code/reading/ios/build/Build/Products/Debug-iphonesimulator/libRNDeviceInfo.a"; sourceTree = "<group>"; };
 		54C9C5511C9BE52E00914E77 /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
-		660728D11CA244D90069FBAA /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../assets; sourceTree = "<group>"; };
 		6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		6620FB971CAA91B500BB2A3F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		6620FB991CAA91BF00BB2A3F /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -464,7 +461,7 @@
 								enabled = 1;
 							};
 							com.apple.Push = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -638,11 +635,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66C2DF9F1CAEEAC7003A7F7B /* LaunchScreen.xib in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				54C9C5521C9BE52E00914E77 /* bundle in Resources */,
 				66559B651CA2744C001E7AD9 /* index.ios.jsbundle in Resources */,
-				6620FBB71CAAB11000BB2A3F /* GtSdkLib in Resources */,
-				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -747,6 +743,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
@@ -758,6 +755,7 @@
 					"$(SRCROOT)/../GtSdkLib",
 				);
 				INFOPLIST_FILE = fy360/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -767,7 +765,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xinyi.fy360;
 				PRODUCT_NAME = fy360;
-				PROVISIONING_PROFILE = "81667d31-30cb-4f67-97cb-118fee59db7c";
+				PROVISIONING_PROFILE = "f3532928-b357-4530-adda-1866e2e58cd8";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -775,6 +774,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				HEADER_SEARCH_PATHS = (
@@ -785,6 +785,7 @@
 					"$(SRCROOT)/../GtSdkLib",
 				);
 				INFOPLIST_FILE = fy360/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -794,7 +795,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xinyi.fy360;
 				PRODUCT_NAME = fy360;
-				PROVISIONING_PROFILE = "81667d31-30cb-4f67-97cb-118fee59db7c";
+				PROVISIONING_PROFILE = "f3532928-b357-4530-adda-1866e2e58cd8";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
