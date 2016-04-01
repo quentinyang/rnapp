@@ -9,11 +9,14 @@ import {
     TouchableHighlight
 } from 'nuke';
 
+import AsyncStorageComponent from '../components/AsyncStorageComponent';
 import Countdown from '../components/Countdown'
 import {loginService} from '../service/userService';
 import TabViewContainer from '../containers/TabViewContainer';
 
 import DeviceInfo from 'react-native-device-info';
+
+let TOKEN_KEY = 'user_token';
 
 class Login extends React.Component {
     constructor(props) {
@@ -172,6 +175,7 @@ class Login extends React.Component {
         } else {
             loginService({body:data})
             .then((oData) => {
+                AsyncStorageComponent.save(TOKEN_KEY, oData.token);
                 navigator.resetTo({
                     component: TabViewContainer,
                     name: 'home',
@@ -184,6 +188,25 @@ class Login extends React.Component {
             })
         }
     };
+
+    componentDidMount() {
+        let {navigator} = this.props;
+
+        // AsyncStorageComponent.get(TOKEN_KEY)
+        // .then((value) => {
+        //     if(value) {
+        //         navigator.resetTo({
+        //             component: TabViewContainer,
+        //             name: 'home',
+        //             title: '我的主页',
+        //             hideNavBar: true
+        //         });
+        //     }
+        // });
+
+    }
+
+
 }
 
 let errMsgs = {

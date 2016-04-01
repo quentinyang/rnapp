@@ -6,6 +6,8 @@ var deviceStorage = {
     get: function(key) {
         return AsyncStorage.getItem(key).then(function(value) {
             return JSON.parse(value);
+        }).catch((error) => {
+            console.log(error);
         });
     },
 
