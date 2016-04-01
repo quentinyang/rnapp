@@ -13,11 +13,11 @@ export function fetchBaseInfo(data) {
     return dispatch => {
         return getBaseInfoService(data)
              .then((oData) => {
-                 console.info('baseinfo Ajax Success: ' + oData);
+                 console.info('baseinfo Ajax Success: ', oData);
                  dispatch(houseBaseFetched(oData))
              })
             .catch((error) => {
-                console.error('Ajax Error: ' + error);
+                console.error('Ajax Error: ', error);
             })
     }
 }
@@ -26,11 +26,11 @@ export function fetchSimilarHouseList(params) {
     return dispatch => {
         return fetchSimilarHouseListService(params)
             .then((oData) => {
-                console.info('Ajax Success: ' + oData);
+                console.info('Ajax Success: ', oData);
                 dispatch(houseSimilarFetched(oData))
             })
             .catch((error) => {
-                console.error('Ajax Error: ' + error);
+                console.error('Ajax Error: ', error);
             })
     }
 }
@@ -39,11 +39,11 @@ export function fetchHouseStatus(params) {
     return dispatch => {
         return getStatusService(params)
             .then((oData) => {
-                console.info('Ajax Success: ' + oData);
+                console.info('Ajax Success: ', oData);
                 dispatch(houseStatusFetched(oData))
             })
             .catch((error) => {
-                console.error('Ajax Error: ' + error);
+                console.error('Ajax Error: ', error);
             })
     }
 }

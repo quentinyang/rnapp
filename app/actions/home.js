@@ -15,11 +15,11 @@ export function fetchAttentionHouseList(params) {
     return dispatch => {
         return fetchAttentionHouseListService()
             .then((oData) => {
-                console.info('Ajax fetchAttentionHouseList Success: ' + oData);
+                console.info('Ajax fetchAttentionHouseList Success: ', oData);
                 dispatch(houseAttentionFetched(oData))
             })
             .catch((error) => {
-                console.error('Ajax fetchAttentionHouseList Error: ' + error);
+                console.error('Ajax fetchAttentionHouseList Error: ', error);
             })
     }
 }
@@ -28,11 +28,11 @@ export function fetchAttentionAppendHouseList(params) {
     return dispatch => {
         return fetchAttentionAppendHouseListService(params)
             .then((oData) => {
-                console.info('Ajax Success: fetchAttentionAppendHouseList' + oData);
+                console.info('Ajax Success: fetchAttentionAppendHouseList', oData);
                 dispatch(houseAttentionAppendFetched(oData))
             })
             .catch((error) => {
-                console.error('Ajax Error: fetchAttentionAppendHouseList' + error);
+                console.error('Ajax Error: fetchAttentionAppendHouseList', error);
             })
     }
 }
@@ -41,11 +41,11 @@ export function fetchAttentionPrependHouseList(params) {
     return dispatch => {
         return fetchAttentionPrependHouseListService()
             .then((oData) => {
-                console.info('Ajax Success: ' + oData);
+                console.info('Ajax Success: ', oData);
                 dispatch(houseAttentionPrependFetched(oData))
             })
             .catch((error) => {
-                console.error('Ajax Error: ' + error);
+                console.error('Ajax Error: ', error);
             })
     }
 }
@@ -54,12 +54,12 @@ export function fetchAttentionBlockAndCommunity() {
     return dispatch => {
         return fetchAttentionBlockAndCommunityService()
             .then((oData) => {
-                console.dir(oData);
-                console.info('Ajax fetchAttentionBlockAndCommunity Success: ' + oData);
+                console.info(oData);
+                console.info('Ajax fetchAttentionBlockAndCommunity Success: ', oData);
                 dispatch(attentionBlockAndCommunityFetched(oData))
             })
             .catch((error) => {
-                console.error('Ajax fetchAttentionBlockAndCommunity Error: ' + error);
+                console.error('Ajax fetchAttentionBlockAndCommunity Error: ', error);
             })
     }
 }

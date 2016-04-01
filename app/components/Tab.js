@@ -1,7 +1,7 @@
 'use strict';
 
 import {React, Component, Text, View, ScrollView, StyleSheet, Image, TouchableWithoutFeedback} from 'nuke';
-
+var {Alert} = React;
 export default class Tab extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +16,7 @@ export default class Tab extends Component {
 
     render() {
         let {dataArr, selectedArr, maxSelected} = this.props;
-console.dir(selectedArr.toJS())
+        console.log('Tab.js ', selectedArr.toJS())
         return (
             <View style={styles.container}>
                 <View style={[styles.row, styles.flex]}>
@@ -131,7 +131,7 @@ class RightView extends Component {
         let {maxSelected, selectedArr} = this.props;
 
         if (insert && selectedArr.size == maxSelected) {
-            alert('最多5个')
+            Alert.alert('温馨提醒', '最多选择5项')
         } else {
             this.props.onHandlePressItem(block, insert)
         }

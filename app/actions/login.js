@@ -15,10 +15,10 @@ export function loginSubmit(params) {
     return dispatch => {
         return login({body:params})
             .then((oData) => {
-                console.info('Ajax Success: ' + oData);
+                console.info('Ajax Success: ', oData);
             })
             .catch((error) => {
-                console.error('Ajax Error: ' + error);
+                console.error('Ajax Error: ', error);
             })
     }
 }

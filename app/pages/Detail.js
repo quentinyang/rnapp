@@ -101,7 +101,7 @@ export default class Detail extends Component {
     _handleMoreHouseList = () => {
         let {route, navigator} = this.props;
         let {communityName, communityId} = route;
-        console.dir(route);
+        console.info('Route: ', route);
         navigator.push({
             component: HouseListContainer,
             name: 'houseDetail',

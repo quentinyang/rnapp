@@ -75,7 +75,6 @@ export default class HouseList extends Component {
     }
 
     componentWillUnmount() {
-        console.dir('componentWillUnmount');
         let {actions} = this.props;
         actions.houseListPageCleared();
     }

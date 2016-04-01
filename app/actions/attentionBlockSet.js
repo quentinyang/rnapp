@@ -14,11 +14,11 @@ export function fetchAttentionBlockSet() {
     return dispatch => {
         return fetchAttentionBlockSetService()
             .then((oData) => {
-                console.info('Ajax Success: ' + oData);
+                console.info('Ajax Success: ', oData);
                 dispatch(attentionBlockSetFetched(oData))
             })
             .catch((error) => {
-                console.error('Ajax Error: ' + error);
+                console.error('Ajax Error: ', error);
             })
     }
 }

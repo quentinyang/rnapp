@@ -81,7 +81,6 @@ export default class AttentionBlockSetOne extends Component {
             saveAttentionCommunitySetService(params || [])
             .then((oData) => {
                 actions.attentionListOneCommunityChanged(communitySelect.toJS());
-                console.dir('+++++++++++')
             })
             .catch((oData) => {
                 // Toast

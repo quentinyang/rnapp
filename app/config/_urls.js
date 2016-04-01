@@ -8,20 +8,10 @@ let urls = {
         status: HOST + 'property/log'
     },
     user: {
-        // sendCode: HOST + 'sendcode.json',
-        // login: HOST + 'login.json',
         sendCode: HOST + 'passport/login/sms',
         login: HOST + 'passport/login'
     },
     house: {
-        // list: HOST + 'house-list.json',
-        // append: HOST + 'house-append.json',
-        // prepend: HOST + 'house-prepend.json',
-
-        // attention: HOST + 'house-attention.json',
-        // attentionAppend: HOST + 'house-attention-append.json',
-        // attentionPrepend: HOST + 'house-attention-prepend.json',
-
         list: HOST + 'property-list',
         append: HOST + 'property-list',
         prepend: HOST + 'property-list',
@@ -30,7 +20,6 @@ let urls = {
         attentionAppend: HOST + 'attention/property-list',
         attentionPrepend: HOST + 'attention/property-list',
 
-        //similar: HOST + 'house-similar.json'
         similar: HOST + 'community/property-list'
     },
     blocks: {

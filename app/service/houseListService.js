@@ -2,14 +2,14 @@ import * as ajax from '../utils/Ajax';
 import * as urls from '../config/urls';
 
 export function fetchHouseListService(params) {
-    console.dir('page: ' + params.page)
+    console.log('page: ', params.page)
     return ajax.get(urls.house.list, {
         data: params
     })
 }
 
 export function fetchAppendHouseListService(params) {
-    console.dir('page: ' + params.page)
+    console.log('page: ', params.page)
     return ajax.get(urls.house.append, {
         data: params
     })
