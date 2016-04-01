@@ -5,9 +5,6 @@ import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, Touchabl
 import {navigationContext} from 'react-native'
 import {NaviGoBack} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
-import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer';
-import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
-import HomeContainer from '../containers/HomeContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 
 let _navigator;
@@ -17,12 +14,15 @@ class App extends Component {
         super(props);
         var self = this;
         this.state = {
-            component: TabViewContainer,
+            component: null,
             name: '',
-            title: '房源360',
-            hideNavBar: true
+            title: '',
+            hideNavBar: true,
+            initialRoute: null
         };
+
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
+
         AsyncStorageComponent.get('user_token')
         .then((value) => {
             if(value) {
@@ -45,7 +45,10 @@ class App extends Component {
     }
 
     render() {
+        let {component} = this.state;
+
         return (
+            component ? 
             <Navigator
                 style={styles.flex}
                 configureScene={this._configureScene}
@@ -59,7 +62,7 @@ class App extends Component {
                     hideNavBar: true,
                     title: this.state.title
                 }}
-            />
+            /> : null
         )
     }
 

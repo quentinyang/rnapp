@@ -14,6 +14,8 @@ import Countdown from '../components/Countdown'
 import {loginService} from '../service/userService';
 import TabViewContainer from '../containers/TabViewContainer';
 
+import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer';
+
 import DeviceInfo from 'react-native-device-info';
 
 let TOKEN_KEY = 'user_token';
@@ -86,6 +88,10 @@ class Login extends React.Component {
         let {login, actions} = this.props;
         login.controllerInfo.get('err_msg') && actions.errMsg('');
         actions[action](value);
+    }
+
+    componentDidMount() {
+        let {navigator} = this.props;
     }
 
     inputPhone = (value) => {
@@ -177,9 +183,9 @@ class Login extends React.Component {
             .then((oData) => {
                 AsyncStorageComponent.save(TOKEN_KEY, oData.token);
                 navigator.resetTo({
-                    component: TabViewContainer,
-                    name: 'home',
-                    title: '我的主页',
+                    component: AttentionBlockSetContainer,
+                    name: 'AttentionBlockSetContainer',
+                    title: '设置我的关注',
                     hideNavBar: true
                 });
             })
@@ -188,25 +194,6 @@ class Login extends React.Component {
             })
         }
     };
-
-    componentDidMount() {
-        let {navigator} = this.props;
-
-        // AsyncStorageComponent.get(TOKEN_KEY)
-        // .then((value) => {
-        //     if(value) {
-        //         navigator.resetTo({
-        //             component: TabViewContainer,
-        //             name: 'home',
-        //             title: '我的主页',
-        //             hideNavBar: true
-        //         });
-        //     }
-        // });
-
-    }
-
-
 }
 
 let errMsgs = {
