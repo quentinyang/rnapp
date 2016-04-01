@@ -39,7 +39,6 @@ export default class Detail extends Component {
                 </View>
             </View>
         );
-
     }
 
     componentDidMount() {
@@ -47,8 +46,11 @@ export default class Detail extends Component {
         let propertyId = route.propertyId;
 
         InteractionManager.runAfterInteractions(() => {
+            actions.fetchBaseInfo({
+                property_id: 507
+            });
             actions.fetchSimilarHouseList({
-                property_id: propertyId
+                community_id: 507
             });
         });
     }
@@ -75,9 +77,10 @@ export default class Detail extends Component {
     };
 
     _renderHeader = () => {
+        let { baseInfo } = this.props;
         return (
             <View>
-                <BaseInfo />
+                <BaseInfo info={baseInfo} />
                 <View style={[styles.itemContainer, styles.row]}>
                     <Text style={styles.bar}></Text>
                     <Text style={styles.baseSize}>同小区房源</Text>
@@ -112,28 +115,36 @@ class BaseInfo extends Component {
         super(props);
     }
     render() {
+        let {info} = this.props;
+        let baseInfo = info.get('baseInfo');
         return (
             <View style={styles.container}>
                 <View style={styles.itemContainer}>
                     <View style={[styles.row, styles.name]}>
-                        <Text style={{fontSize: 19}}>发动机可开放时间</Text>
-                        <Text style={{fontSize: 12, color: '#8d8c92'}}>查看次数:{1}</Text>
+                        <Text style={{fontSize: 19}}>{baseInfo.get('community_name') || ''} {baseInfo.get('building_num') || '' + baseInfo.get('building_unit') || '' + baseInfo.get('door_num') || '' + "室"}</Text>
+                        <Text style={{fontSize: 12, color: '#8d8c92'}}>查看次数:{baseInfo.get('see_count')}</Text>
                     </View>
-                    <Text style={styles.baseSize}>发动机可<Text style={styles.baseSpace}>开放时间</Text></Text>
+                    <Text style={styles.baseSize}>{baseInfo.get('district_name') || '' + "-" + baseInfo.get('block_name') || ''}<Text style={styles.baseSpace}>{baseInfo.get('community_address') || ''}</Text></Text>
                 </View>
 
-                <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>户型:</Text><Text style={[styles.baseSize, styles.baseSpace]}>开放时间</Text></View>
-                <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>面积:</Text><Text style={[styles.baseSize, styles.baseSpace]}>开放时间</Text></View>
-                <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>总价:</Text><Text style={[styles.baseSize, styles.baseSpace]}>开放时间</Text></View>
-                <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>单价:</Text><Text style={[styles.baseSize, styles.baseSpace]}>开放时间</Text></View>
+                <View style={[styles.itemContainer, styles.row]}>
+                    <Text style={styles.baseSize}>户型:</Text>
+                    <Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('bedrooms') || '' + "室" + baseInfo.get('living_rooms') || '' + "厅" + baseInfo.get('bathrooms') || '' + "卫"}</Text>
+                </View>
+                <View style={[styles.itemContainer, styles.row]}>
+                    <Text style={styles.baseSize}>面积:</Text>
+                    <Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('area') || ''}m²</Text>
+                </View>
+                <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>总价:</Text><Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('price') || ''}万</Text></View>
+                <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>单价:</Text><Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('avg_price') || ''}元/m²</Text></View>
                 <View style={styles.itemContainer}>
-                    <View style={styles.row}><Text style={styles.baseSize}>状态:</Text><Text style={[styles.baseSize, styles.baseSpace, {color: '#ff6d4b'}]}>发动</Text></View>
-                    <Text style={styles.statusList}>234345附近的开始发送了房间</Text>
+                    <View style={styles.row}><Text style={styles.baseSize}>状态:</Text><Text style={[styles.baseSize, styles.baseSpace, {color: '#ff6d4b'}]}>{baseInfo.get('status') || ''}</Text></View>
+                    <Text style={styles.statusList}>{baseInfo.get('see_count')}</Text>
                 </View>
 
                 <View style={[styles.itemContainer, styles.row]}>
                     <Text>Icon</Text>
-                    <Text style={{fontSize: 15, marginLeft: 6}}>查看房东电话需要消耗 4 积分</Text>
+                    <Text style={{fontSize: 15, marginLeft: 6}}>查看房东电话需要消耗 {baseInfo.get('see_count')} 积分</Text>
                 </View>
                 <View style={[styles.gap, styles.flex]}></View>
             </View>

@@ -1,8 +1,8 @@
 import * as ajax from '../utils/Ajax'
 import * as urls from '../config/urls'
 
-export function getBaseInfoService() {
+export function getBaseInfoService(params) {
     return ajax.get(urls.detail.baseInfo, {
-        id: 1
+        data: params
     });
 }

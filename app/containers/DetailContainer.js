@@ -19,9 +19,9 @@ class DetailContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {houseData} = state.detail;
+    const {baseInfo, houseData} = state.detail;
     return {
-        baseInfo: {},
+        baseInfo: baseInfo,
         sameCommunityList: houseData
     }
 }
