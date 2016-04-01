@@ -15,24 +15,24 @@ export function fetchAttentionHouseList(params) {
     return dispatch => {
         return fetchAttentionHouseListService()
             .then((oData) => {
-                console.info('Ajax Success: ' + oData);
+                console.info('Ajax fetchAttentionHouseList Success: ' + oData);
                 dispatch(houseAttentionFetched(oData))
             })
             .catch((error) => {
-                console.error('Ajax Error: ' + error);
+                console.error('Ajax fetchAttentionHouseList Error: ' + error);
             })
     }
 }
 
 export function fetchAttentionAppendHouseList(params) {
     return dispatch => {
-        return fetchAttentionAppendHouseListService()
+        return fetchAttentionAppendHouseListService(params)
             .then((oData) => {
-                console.info('Ajax Success: ' + oData);
+                console.info('Ajax Success: fetchAttentionAppendHouseList' + oData);
                 dispatch(houseAttentionAppendFetched(oData))
             })
             .catch((error) => {
-                console.error('Ajax Error: ' + error);
+                console.error('Ajax Error: fetchAttentionAppendHouseList' + error);
             })
     }
 }
@@ -55,11 +55,11 @@ export function fetchAttentionBlockAndCommunity() {
         return fetchAttentionBlockAndCommunityService()
             .then((oData) => {
                 console.dir(oData);
-                console.info('Ajax Success: ' + oData);
+                console.info('Ajax fetchAttentionBlockAndCommunity Success: ' + oData);
                 dispatch(attentionBlockAndCommunityFetched(oData))
             })
             .catch((error) => {
-                console.error('Ajax Error: ' + error);
+                console.error('Ajax fetchAttentionBlockAndCommunity Error: ' + error);
             })
     }
 }

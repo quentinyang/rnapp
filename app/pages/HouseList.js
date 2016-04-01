@@ -16,7 +16,6 @@ export default class HouseList extends Component {
         super(props);
 
         this.state = {
-            houseList: Immutable.fromJS([]),
             isRefreshing: false,
             loaded: false
         }
@@ -38,7 +37,7 @@ export default class HouseList extends Component {
                 pageSize={10}
                 scrollRenderAheadDistance={50}
                 minPulldownDistance={30}
-                onEndReachedThreshold={100}
+                onEndReachedThreshold={50}
                 onEndReached={this._onEndReached}
                 refreshControl={
                     <RefreshControl
@@ -64,13 +63,21 @@ export default class HouseList extends Component {
 
     componentDidMount() {
         let {loaded} = this.state;
-        let {actions} = this.props;
-
+        let {actions, houseData} = this.props;
+        let pager = houseData.get('pager');
         if (!loaded) {
             InteractionManager.runAfterInteractions(() => {
-                actions.fetchHouseList({});
+                actions.fetchHouseList({
+                    page: Number(pager.get('current_page')) + 1
+                });
             });
         }
+    }
+
+    componentWillUnmount() {
+        console.dir('componentWillUnmount');
+        let {actions} = this.props;
+        actions.houseListPageCleared();
     }
 
     _renderRow = (rowData: any, sectionID: number, rowID: number) => {
@@ -85,7 +92,9 @@ export default class HouseList extends Component {
 
         if (Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
             InteractionManager.runAfterInteractions(() => {
-                actions.fetchAppendHouseList({});
+                actions.fetchAppendHouseList({
+                    page: Number(pager.get('current_page')) + 1
+                });
             });
         }
     };

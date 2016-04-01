@@ -8,11 +8,26 @@ function status(response, resolve, reject) {
     }
 }
 
-function get(url, params) {
+function _createURL(url, params) {
+    let newUrl = [];
+
+    for (var key in params) {
+       newUrl.push(key + '=' + params[key])
+    }
+
+    let newUrlStr = newUrl.join('&');
+    return newUrlStr ? url + '?' + newUrlStr : url;
+}
+
+function get(url, params = {}) {
+    let {data, ...paramsOther} = params;
     return new Promise((resolve, reject) => {
-        fetch(url, {
+        fetch(_createURL(url, data || {}), {
             method: 'GET',
-            ...params
+            headers: {
+                token: 'Y6taJMcXGpzFGs9nS/ey3w=='
+            },
+            ...paramsOther
         })
         .then((response) => {
             resolve(response.json());
@@ -23,7 +38,7 @@ function get(url, params) {
     })
 }
 
-function post(url, params) {
+function post(url, params = {}) {
     let {body, ...paramsOther} = params;
 
     return new Promise((resolve, reject) => {
@@ -31,7 +46,8 @@ function post(url, params) {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'token': 'Y6taJMcXGpzFGs9nS/ey3w=='
             },
             body: JSON.stringify(body),
             ...paramsOther

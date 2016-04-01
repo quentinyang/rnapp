@@ -19,9 +19,9 @@ export const houseSimilarFetched = makeActionCreator(types.HOUSE_SIMILAR_FETCHED
 //     }
 // }
 
-export function fetchSimilarHouseList() {
+export function fetchSimilarHouseList(params) {
     return dispatch => {
-        return fetchSimilarHouseListService()
+        return fetchSimilarHouseListService(params)
             .then((oData) => {
                 console.info('Ajax Success: ' + oData);
                 dispatch(houseSimilarFetched(oData))

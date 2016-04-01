@@ -1,6 +1,6 @@
 'use strict';
 
-let HOST = 'http://192.168.163.101:8081/app/fakedata/';
+let HOST = 'http://192.168.163.116:8081/app/fakedata/';
 let HOST1 = 'http://360.feature-fy360.dev.angejia.com/service/';
 
 let urls = {
@@ -17,13 +17,24 @@ let urls = {
         login: HOST1 + 'passport/login'
     },
     house: {
-        list: HOST + 'house-list.json',
-        append: HOST + 'house-append.json',
-        prepend: HOST + 'house-prepend.json',
-        attention: HOST + 'house-attention.json',
-        attentionAppend: HOST + 'house-attention-append.json',
-        attentionPrepend: HOST + 'house-attention-prepend.json',
-        similar: HOST + 'house-similar.json'
+        // list: HOST + 'house-list.json',
+        // append: HOST + 'house-append.json',
+        // prepend: HOST + 'house-prepend.json',
+
+        // attention: HOST + 'house-attention.json',
+        // attentionAppend: HOST + 'house-attention-append.json',
+        // attentionPrepend: HOST + 'house-attention-prepend.json',
+
+        list: HOST1 + 'property-list',
+        append: HOST1 + 'property-list',
+        prepend: HOST1 + 'property-list',
+
+        attention: HOST1 + 'attention/property-list',
+        attentionAppend: HOST1 + 'attention/property-list',
+        attentionPrepend: HOST1 + 'attention/property-list',
+        
+        // similar: HOST + 'house-similar.json'
+        similar: HOST1 + 'community/property-list'
     },
     blocks: {
         attention: HOST1 + 'get-attention-block',

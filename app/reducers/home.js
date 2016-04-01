@@ -10,7 +10,7 @@ let initialState = {
     pager: {
         'total': 1,
         'per_page': 10,
-        'current_page': 1,
+        'current_page': 0,
         'last_page': 2,
     }
 };
@@ -30,11 +30,7 @@ function houseData(state = Immutable.fromJS(initialState), action) {
             return newData;
             break;
         case types.HOUSE_ATTENTION_PREPEND_FETCHED:
-            let prependData = Immutable.fromJS(action.houseList);
-            let newPrependData = state.updateIn(['properties'], (k) => {
-                return prependData.get('properties').concat(k);
-            });
-            return newPrependData;
+            return Immutable.fromJS(action.houseList);
         default: 
             return state;
     }

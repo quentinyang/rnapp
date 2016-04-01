@@ -48,7 +48,7 @@ export default class Detail extends Component {
 
         InteractionManager.runAfterInteractions(() => {
             actions.fetchSimilarHouseList({
-                community_id: propertyId
+                property_id: propertyId
             });
         });
     }

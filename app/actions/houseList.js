@@ -8,9 +8,11 @@ export const houseFetched = makeActionCreator(types.HOUSE_FETCHED, 'houseList');
 export const houseAppendFetched = makeActionCreator(types.HOUSE_APPEND_FETCHED, 'houseList');
 export const housePrependFetched = makeActionCreator(types.HOUSE_PREPEND_FETCHED, 'houseList');
 
+export const houseListPageCleared = makeActionCreator(types.HOUSE_LIST_PAGE_CLEARED);
+
 export function fetchHouseList(params) {
     return dispatch => {
-        return fetchHouseListService()
+        return fetchHouseListService(params)
             .then((oData) => {
                 console.info('Ajax Success: ' + oData);
                 dispatch(houseFetched(oData))
@@ -23,7 +25,7 @@ export function fetchHouseList(params) {
 
 export function fetchAppendHouseList(params) {
     return dispatch => {
-        return fetchAppendHouseListService()
+        return fetchAppendHouseListService(params)
             .then((oData) => {
                 console.info('Ajax Success: ' + oData);
                 dispatch(houseAppendFetched(oData))

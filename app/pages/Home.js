@@ -60,7 +60,7 @@ export default class Home extends Component {
         let {actions} = this.props;
 
         InteractionManager.runAfterInteractions(() => {
-            actions.fetchAttentionHouseList({});
+            // actions.fetchAttentionHouseList({});
             actions.fetchAttentionBlockAndCommunity({});
         });
     }
@@ -104,7 +104,7 @@ export default class Home extends Component {
         navigator.push({
             component: HouseListContainer,
             name: 'houseList',
-            title: 'House List Page',
+            title: '全部房源',
             hideNavBar: false
         });
     };
@@ -115,7 +115,9 @@ export default class Home extends Component {
 
         if (Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
             InteractionManager.runAfterInteractions(() => {
-                actions.fetchAttentionAppendHouseList({});
+                actions.fetchAttentionAppendHouseList({
+                    page: Number(pager.get('current_page')) + 1
+                });
             });
         }
     };
@@ -259,6 +261,10 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    noData: {
+        color: '#8d8c92',
+        fontSize: 12
     },
     attention: {
         padding: 15,

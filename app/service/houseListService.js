@@ -1,12 +1,18 @@
 import * as ajax from '../utils/Ajax';
 import * as urls from '../config/urls';
 
-export function fetchHouseListService() {
-    return ajax.get(urls.house.list)
+export function fetchHouseListService(params) {
+    console.dir('page: ' + params.page)
+    return ajax.get(urls.house.list, {
+        data: params
+    })
 }
 
-export function fetchAppendHouseListService() {
-    return ajax.get(urls.house.append)
+export function fetchAppendHouseListService(params) {
+    console.dir('page: ' + params.page)
+    return ajax.get(urls.house.append, {
+        data: params
+    })
 }
 
 export function fetchPrependHouseListService() {
@@ -17,16 +23,20 @@ export function fetchAttentionHouseListService() {
     return ajax.get(urls.house.attention)
 }
 
-export function fetchAttentionAppendHouseListService() {
-    return ajax.get(urls.house.attentionAppend)
+export function fetchAttentionAppendHouseListService(params) {
+    return ajax.get(urls.house.attentionAppend, {
+        data: params
+    })
 }
 
 export function fetchAttentionPrependHouseListService() {
     return ajax.get(urls.house.attentionPrepend)
 }
 
-export function fetchSimilarHouseListService() {
-    return ajax.get(urls.house.similar)
+export function fetchSimilarHouseListService(params) {
+    return ajax.get(urls.house.similar, {
+        data: params
+    })
 }
 
 
