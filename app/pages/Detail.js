@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, View, Text, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight } from 'nuke'
+import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight } from 'nuke'
 import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
 
@@ -47,13 +47,13 @@ export default class Detail extends Component {
 
         InteractionManager.runAfterInteractions(() => {
             actions.fetchBaseInfo({
-                property_id: 507
+                property_id: propertyId
             });
             actions.fetchSimilarHouseList({
                 community_id: propertyId
             });
             actions.fetchHouseStatus({
-                property_id: 507
+                property_id: propertyId
             });
         });
     }
@@ -127,16 +127,12 @@ class BaseInfo extends Component {
                 <Text key={i} style={styles.statusList}>{s.get('time')} {s.get('name')}{s.get('status')}</Text>
             );
         });
-
         return (
             <View style={styles.container}>
                 <View style={styles.itemContainer}>
                     <View style={[styles.row, styles.name]}>
-                        <View>
-                            <Text numberOfLines={1} style={{fontSize: 19, flex: 1}}><Text>{baseInfo.get('community_name') || ''}</Text></Text>
-                            <Text style={{fontSize: 19, width: 85}}> {baseInfo.get('building_num') || ''}{baseInfo.get('building_unit') || ''}{baseInfo.get('door_num') || ''}室</Text>
-                        </View>
-                        <Text style={{fontSize: 12, color: '#8d8c92'}}>查看次数:{baseInfo.get('see_count')}</Text>
+                        <Text numberOfLines={1} style={{fontSize: 19, flex: 1}}>{baseInfo.get('community_name') || ''} {baseInfo.get('building_num') || ''}{baseInfo.get('building_unit') || ''}{baseInfo.get('door_num') || ''}室</Text>
+                        <Text style={{fontSize: 12, width: 68, color: '#8d8c92'}}>查看次数:{baseInfo.get('see_count')}</Text>
                     </View>
                     <Text style={styles.baseSize}>{baseInfo.get('district_name') || ''}-{baseInfo.get('block_name') || ''}<Text style={styles.baseSpace}>{baseInfo.get('community_address') || ''}</Text></Text>
                 </View>
@@ -157,7 +153,7 @@ class BaseInfo extends Component {
                 </View>
 
                 <View style={[styles.itemContainer, styles.row]}>
-                    <Text>Icon</Text>
+                    <Image style={styles.money_icon} source={require('../images/money.png')}/>
                     <Text style={{fontSize: 15, marginLeft: 6}}>查看房东电话需要消耗 {baseInfo.get('see_count')} 积分</Text>
                 </View>
                 <View style={[styles.gap, styles.flex]}></View>
@@ -200,6 +196,10 @@ var styles = StyleSheet.create({
         fontSize: 12,
         color: '#8d8c92',
         marginTop: 8
+    },
+    money_icon: {
+        width: 18,
+        height: 18
     },
     bar: {
         width: 3,

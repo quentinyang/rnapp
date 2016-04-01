@@ -34,8 +34,8 @@ let urls = {
         attentionAppend: HOST1 + 'attention/property-list',
         attentionPrepend: HOST1 + 'attention/property-list',
         
-        similar: HOST + 'house-similar.json'
-        //similar: HOST1 + 'community/property-list'
+        //similar: HOST + 'house-similar.json'
+        similar: HOST1 + 'community/property-list'
     },
     blocks: {
         attention: HOST1 + 'get-attention-block',

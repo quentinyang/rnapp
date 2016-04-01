@@ -11,7 +11,7 @@ let initialState = {
 function houseData(state = Immutable.fromJS(initialState), action) {
     switch(action.type) {
         case types.HOUSE_SIMILAR_FETCHED:
-            return Immutable.fromJS(action.houseList);
+            return state.set('properties', Immutable.fromJS(action.houseList));
             break;
         default: 
             return state;
