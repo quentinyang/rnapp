@@ -13,16 +13,38 @@
 
 #import "CodePush.h"
 
+#import "MobClick.h"
+
 NSString *const NotificationCategoryIdent = @"ACTIONABLE";
 //NSString *const NotificationActionOneIdent = @"ACTION_ONE";
 //NSString *const NotificationActionTwoIdent = @"ACTION_TWO";
+
+#ifdef DEBUG
+NSString * const UMengAppKey = @"56fe11a6e0f55ac112001746";
+NSString * const UMengChannelId = @"Web";
+#else
+NSString * const UMengAppKey = @"56fe11cce0f55a61740009e4";
+NSString * const UMengChannelId = @"";
+#endif
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-
+  
+  // [UMeng] Start
+  NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+  [MobClick setAppVersion:version];
+  #ifdef DEBUG
+    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+  #else
+    jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
+  #endif
+  
+  [MobClick startWithAppkey:UMengAppKey reportPolicy:BATCH channelId:UMengChannelId];
+  // [UMeng] End
+  
   /**
    * Loading JavaScript code - uncomment the one you want.
    *

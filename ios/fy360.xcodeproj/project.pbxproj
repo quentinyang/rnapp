@@ -37,6 +37,8 @@
 		6620FBB91CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */; };
 		6630589C1CA0F8F600F15BB8 /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 663058911CA0F87C00F15BB8 /* libCodePush.a */; };
 		6630589E1CA0F91D00F15BB8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6630589D1CA0F91D00F15BB8 /* libz.tbd */; };
+		66559B651CA2744C001E7AD9 /* index.ios.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 66559B641CA2744C001E7AD9 /* index.ios.jsbundle */; };
+		66C2DF561CAE6DC9003A7F7B /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66C2DF541CAE6DC9003A7F7B /* libMobClickLibrary.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 /* End PBXBuildFile section */
 
@@ -171,6 +173,9 @@
 		6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libGeTuiSdk-1.4.1.a"; path = "../GtSdkLib/libGeTuiSdk-1.4.1.a"; sourceTree = "<group>"; };
 		6630588C1CA0F87C00F15BB8 /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		6630589D1CA0F91D00F15BB8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		66559B641CA2744C001E7AD9 /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = ../index.ios.jsbundle; sourceTree = "<group>"; };
+		66C2DF541CAE6DC9003A7F7B /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = UMAnalytics_IOS_Sdk_3.6.6/libMobClickLibrary.a; sourceTree = "<group>"; };
+		66C2DF551CAE6DC9003A7F7B /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClick.h; path = UMAnalytics_IOS_Sdk_3.6.6/MobClick.h; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -190,6 +195,7 @@
 				6620FB961CAA91AB00BB2A3F /* libsqlite3.tbd in Frameworks */,
 				6630589E1CA0F91D00F15BB8 /* libz.tbd in Frameworks */,
 				6620FBB91CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a in Frameworks */,
+				66C2DF561CAE6DC9003A7F7B /* libMobClickLibrary.a in Frameworks */,
 				6620FBA61CAA920100BB2A3F /* CoreBluetooth.framework in Frameworks */,
 				6620FBA41CAA91F800BB2A3F /* CoreLocation.framework in Frameworks */,
 				6620FBA21CAA91F000BB2A3F /* JavaScriptCore.framework in Frameworks */,
@@ -338,6 +344,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				66C2DF541CAE6DC9003A7F7B /* libMobClickLibrary.a */,
+				66C2DF551CAE6DC9003A7F7B /* MobClick.h */,
 				2DD7FB631CACCC4000FD56F7 /* RNDeviceInfo.xcodeproj */,
 				6630589D1CA0F91D00F15BB8 /* libz.tbd */,
 				6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */,
@@ -754,6 +762,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../GtSdkLib",
+					"$(PROJECT_DIR)/UMAnalytics_IOS_Sdk_3.6.6",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xinyi.fy360;
@@ -780,6 +789,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../GtSdkLib",
+					"$(PROJECT_DIR)/UMAnalytics_IOS_Sdk_3.6.6",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xinyi.fy360;
