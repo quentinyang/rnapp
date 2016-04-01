@@ -6,3 +6,9 @@ export function getBaseInfoService(params) {
         data: params
     });
 }
+
+export function getStatusService(params) {
+    return ajax.get(urls.detail.status, {
+        data: params
+    });
+}

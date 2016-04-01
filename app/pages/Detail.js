@@ -52,6 +52,9 @@ export default class Detail extends Component {
             actions.fetchSimilarHouseList({
                 community_id: propertyId
             });
+            actions.fetchHouseStatus({
+                property_id: 507
+            });
         });
     }
 
@@ -117,13 +120,21 @@ class BaseInfo extends Component {
     render() {
         let {info} = this.props;
         let baseInfo = info.get('baseInfo');
+        let status = info.get('status');
+
+        let statusList = status.map((s, i) => {
+            return (
+                <Text key={i} style={styles.statusList}>{s.get('time')} {s.get('name')}{s.get('status')}</Text>
+            );
+        });
+
         return (
             <View style={styles.container}>
                 <View style={styles.itemContainer}>
                     <View style={[styles.row, styles.name]}>
                         <View>
-                            <Text numberOfLines={1} style={{fontSize: 19, flex: 1}}><Text>{baseInfo.get('community_name') || ''}rtertertertert</Text></Text>
-                            <Text style={{fontSize: 19, width: 68}}> {baseInfo.get('building_num') || ''}{baseInfo.get('building_unit') || ''}{baseInfo.get('door_num') || ''}室</Text>
+                            <Text numberOfLines={1} style={{fontSize: 19, flex: 1}}><Text>{baseInfo.get('community_name') || ''}</Text></Text>
+                            <Text style={{fontSize: 19, width: 85}}> {baseInfo.get('building_num') || ''}{baseInfo.get('building_unit') || ''}{baseInfo.get('door_num') || ''}室</Text>
                         </View>
                         <Text style={{fontSize: 12, color: '#8d8c92'}}>查看次数:{baseInfo.get('see_count')}</Text>
                     </View>
@@ -142,11 +153,7 @@ class BaseInfo extends Component {
                 <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>单价:</Text><Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('avg_price') || ''}元/m²</Text></View>
                 <View style={styles.itemContainer}>
                     <View style={styles.row}><Text style={styles.baseSize}>状态:</Text><Text style={[styles.baseSize, styles.baseSpace, {color: '#ff6d4b'}]}>{baseInfo.get('status') || ''}</Text></View>
-
-
-                    <Text style={styles.statusList}>{baseInfo.get('see_count')}</Text>
-
-
+                    {statusList}
                 </View>
 
                 <View style={[styles.itemContainer, styles.row]}>

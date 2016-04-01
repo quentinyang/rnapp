@@ -19,13 +19,17 @@ function houseData(state = Immutable.fromJS(initialState), action) {
 }
 
 let initialBaseInfo = {
-    baseInfo: {}
+    baseInfo: {},
+    status: []
 };
 
 function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
     switch(action.type) {
         case types.HOUSE_BASE_FETCHED:
             return state.set('baseInfo', Immutable.fromJS(action.houseBase));
+            break;
+        case types.HOUSE_STATUS_FETCHED:
+            return state.set('status', Immutable.fromJS(action.houseStatus));
             break;
         default:
             return state;

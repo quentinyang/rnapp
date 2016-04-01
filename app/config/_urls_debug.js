@@ -8,7 +8,8 @@ let urls = {
         list: HOST +  'property-list.json'
     },
     detail: {
-        baseInfo: HOST1 + 'property/detail'
+        baseInfo: HOST1 + 'property/detail',
+        status: HOST1 + 'property/log'
     },
     user: {
         // sendCode: HOST1 + 'sendcode.json',
