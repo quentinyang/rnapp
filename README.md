@@ -35,7 +35,8 @@ react-native bundle --platform android --entry-file index.android.js \
 --dev false
 ```
 
-1. _`[平时不用]`使用codepush提交更新时_
+1. _[`平时不用`]_使用codepush提交更新时
+
 ```
 # IOS
 react-native bundle --platform ios --entry-file index.ios.js \
@@ -48,23 +49,25 @@ react-native bundle --platform android --entry-file index.android.js  \
 --bundle-output ./release/index.android.jsbundle \
 --assets-dest ./release \
 --dev false
-
-code-push 
 ```
 
 ## 正式打包Todo List：
 
 1. 修改`./fy360-native/ios/fy360/Info.plist`文件，找到如下代码修改Key值：
+
 ```
 <key>CodePushDeploymentKey</key>
 <string>Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl</string>
 ```
+
 1. 修改`./fy360-native/android/app/src/main/java/com/fy360/MainActivity.java`文件，找到如下代码修改Key值：
+
 ```
 new CodePush("Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl", this, BuildConfig.DEBUG);
 ```
 
 ## 内部打包上传说明
+
 1. 内部包管理在[https://d.corp.angejia.com/](https://d.corp.angejia.com/)，主机地址192.168.169.14。
 
  上传服务器位置：`/srv/app/ios_package/fangyuan360/`，内设`dev`,`alpha`,`master`三种环境。

@@ -28,6 +28,7 @@ export default class Detail extends Component {
                     renderHeader={this._renderHeader}
                     style={styles.listView}
                 />
+                {/*
                 <View style={styles.contactWrap}>
                     <TouchableHighlight
                         style={styles.contactButton}
@@ -37,6 +38,7 @@ export default class Detail extends Component {
                         </Text>
                     </TouchableHighlight>
                 </View>
+                */}
             </View>
         );
     }
@@ -60,7 +62,9 @@ export default class Detail extends Component {
 
     _renderRow = (rowData: any) => {
         return (
-            <HouseItem item={rowData} onItemPress={this._onItemPress}/>
+            <View>
+                {/*<HouseItem item={rowData} onItemPress={this._onItemPress}/>*/}
+            </View>
         );
     };
 
