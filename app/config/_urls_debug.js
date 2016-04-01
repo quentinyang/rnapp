@@ -1,6 +1,6 @@
 'use strict';
 
-let HOST = 'http://192.168.164.97:8081/app/fakedata/';
+let HOST = 'http://192.168.164.79:8081/app/fakedata/';
 let HOST1 = 'http://360.feature-fy360.dev.angejia.com/service/';
 
 let urls = {
