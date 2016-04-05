@@ -49,22 +49,63 @@ react-native bundle --platform android --entry-file index.android.js  \
 --bundle-output ./release/index.android.jsbundle \
 --assets-dest ./release \
 --dev false
+
+# 推送到云
+code-push release FangYuan360 ./release 1.0.0 (Debug)
+code-push release FangYuan360-Release ./release 1.0.0 (Release)
+
 ```
 
 ## 正式打包Todo List：
+1. Code push appkey修改
+ 1. 修改`./fy360-native/ios/fy360/Info.plist`文件，找到如下代码修改Key值：
 
-1. 修改`./fy360-native/ios/fy360/Info.plist`文件，找到如下代码修改Key值：
+ ```
+ <key>CodePushDeploymentKey</key>
+ <string>Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl</string>
+ ```
+ 
+ 备注：
+ 
+ 线下开发环境：`Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl`
+ 
+ 线上生产环境：`_GhPy-CMXi1mTX0CetRfMU82NLvZ4yoltiYTl`
+ 
+ 1. 修改`./fy360-native/android/app/src/main/java/com/fy360/MainActivity.java`文件，找到如下代码修改Key值：
+ 
+ ```
+ new CodePush("Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl", this, BuildConfig.DEBUG);
+ ```
+1. 个推
 
-```
-<key>CodePushDeploymentKey</key>
-<string>Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl</string>
-```
+ - IOS `ios/fy360/AppDelegate.h`
 
-1. 修改`./fy360-native/android/app/src/main/java/com/fy360/MainActivity.java`文件，找到如下代码修改Key值：
+ ```
+ /// 个推开发者网站中申请App时，注册的AppId、AppKey、AppSecret
+ #ifdef DEBUG
+  #define kGtAppId           @"Ln5H71Iykf94XdqPoLTHI8"
+  #define kGtAppKey          @"NA6fia56568ieAobzLmJw5"
+  #define kGtAppSecret       @"Ntat8Ou93MAvkeE3uxSOj3"
+ #else
+  #define kGtAppId           @"ay6BIg9J4bA2Hb9FPZ00v8"
+  #define kGtAppKey          @"SvO4Xb1j0FA1ZHQPUQWjQ6"
+  #define kGtAppSecret       @"dtztWFamWJ6ZRAOV94LcX5"
+ #endif
+ ```
 
-```
-new CodePush("Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl", this, BuildConfig.DEBUG);
-```
+1. 友盟
+
+ - IOS `ios/fy360/AppDelegate.m`
+ 
+ ```
+ #ifdef DEBUG
+ NSString * const UMengAppKey = @"56fe11a6e0f55ac112001746";
+ NSString * const UMengChannelId = @"Web";
+ #else
+ NSString * const UMengAppKey = @"56fe11cce0f55a61740009e4";
+ NSString * const UMengChannelId = @"";
+ #endif
+ ```
 
 ## 内部打包上传说明
 
