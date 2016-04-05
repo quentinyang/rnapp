@@ -36,12 +36,6 @@ NSString * const UMengChannelId = @"";
   // [UMeng] Start
   NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
   [MobClick setAppVersion:version];
-  #ifdef DEBUG
-    jsCodeLocation = [NSURL URLWithString:@"http://192.168.164.79:8081/index.ios.bundle?platform=ios&dev=true"];
-  #else
-    jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
-  #endif
-  
   [MobClick startWithAppkey:UMengAppKey reportPolicy:BATCH channelId:UMengChannelId];
   // [UMeng] End
   
