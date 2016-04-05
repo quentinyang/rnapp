@@ -2,6 +2,7 @@
 
 import {React, Component, View, StyleSheet, TabBar} from 'nuke';
 import HomeContainer from '../containers/HomeContainer';
+import HouseInputContainer from '../containers/HouseInputContainer';
 
 export default class TabView extends Component {
     constructor(props) {
@@ -55,7 +56,7 @@ export default class TabView extends Component {
                 return <HomeContainer navigator={navigator} rout='全部房源'/>;
                 break;
             case 1:
-                return <HomeContainer navigator={navigator} rout='发房子'/>;
+                return <HouseInputContainer navigator={navigator} rout='发房'/>;
                 break;
             case 2:
                 return <HomeContainer navigator={navigator} rout='我的😄'/>;
