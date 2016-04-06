@@ -8,3 +8,5 @@ export const attentionListOneBlockChanged = makeActionCreator(types.ATTENTION_LI
 export const attentionListOneCommunityChanged = makeActionCreator(types.ATTENTION_LIST_ONE_COMMUNITY_CHANGED, 'communityList');
 
 export const attentionListOneCommunityRomoved = makeActionCreator(types.ATTENTION_LIST_ONE_COMMUNITY_ROMOVED , 'communityId');
+
+export const attentionListOneCommunityAdded = makeActionCreator(types.ATTENTION_LIST_ONE_COMMUNITY_ADDED , 'community');

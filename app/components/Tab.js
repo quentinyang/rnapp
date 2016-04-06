@@ -1,7 +1,7 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, StyleSheet, Image, PixelRatio, TouchableWithoutFeedback} from 'nuke';
-var {Alert} = React;
+import {React, Component, Text, View, ScrollView, StyleSheet, Image, PixelRatio, TouchableWithoutFeedback, Alert} from 'nuke';
+
 export default class Tab extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +24,7 @@ export default class Tab extends Component {
                         data={dataArr}
                         mainIndex={this.state.leftSelectId}
                         onHandlePressItem={this.onHandlePressLeftItem}
+                        selectedArr={selectedArr}
                     />
                     <RightView 
                         data={dataArr}
@@ -54,17 +55,37 @@ class LeftView extends Component {
     }
 
     render() {
-        let {data, mainIndex} = this.props;
+        let {data, mainIndex, selectedArr} = this.props;
         let leftView = data.map((d, i) => {
             let selected = null;
             if (mainIndex == d.get('id')) {
                 selected = styles.selected;
             }
+            let blocks = d.get('blocks');
+            let includeItem = selectedArr.filter((s) => {
+                let status = false;
+                blocks.map((b) => {
+                    if (s.get('id') == b.get('id')) {
+                        status = true;
+                        return;
+                    }
+                });
+                if (status == true) {
+                    return true;
+                }
+            });
+
             return (
                 <TouchableWithoutFeedback key={d.get('id')} onPress={this._onHandlePress.bind(null, d.get('id'))}>
                     <View style={[styles.flex, styles.row, styles.center, styles.itemsHeight, selected]}>
                         <Text style={[styles.flex, styles.leftRow]}>
-                          {d.get('name')}
+                            {d.get('name') + ' '}
+                            {
+                                includeItem.size > 0 ? <Image
+                                    source={require('../images/dot.png')}
+                                    style={styles.dotImage}
+                                /> : null
+                            }
                         </Text>
                     </View>
                 </TouchableWithoutFeedback>
@@ -131,7 +152,7 @@ class RightView extends Component {
         let {maxSelected, selectedArr} = this.props;
 
         if (insert && selectedArr.size == maxSelected) {
-            Alert.alert('温馨提醒', '最多选择5项')
+            Alert.alert('温馨提醒', '最多选择5项');
         } else {
             this.props.onHandlePressItem(block, insert)
         }
@@ -176,5 +197,12 @@ const styles = StyleSheet.create({
     },
     itemsHeight: {
         height: 50
+    },
+    dotImage: {
+        width: 8,
+        height: 8,
+        position: 'absolute',
+        top: 50,
+        marginTop: -1
     }
 });

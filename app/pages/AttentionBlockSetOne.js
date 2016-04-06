@@ -1,10 +1,10 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, Image, StyleSheet, InteractionManager, Platform, PixelRatio, TouchableWithoutFeedback, TouchableHighlight} from 'nuke';
+import {React, Component, Text, View, ScrollView, Image, StyleSheet, InteractionManager, Platform, PixelRatio, TouchableWithoutFeedback, TouchableHighlight, Alert} from 'nuke';
 import Item from '../components/Item';
 import AttentionBlockSetTwoContainer from '../containers/AttentionBlockSetTwoContainer';
 import {saveAttentionCommunitySetService} from '../service/blockService';
-import AutocompleteContainerDemo from '../containers/AutocompleteContainerDemo'
+import CommunitySearchContainer from '../containers/CommunitySearchContainer'
 
 export default class AttentionBlockSetOne extends Component {
     constructor(props) {
@@ -14,7 +14,7 @@ export default class AttentionBlockSetOne extends Component {
     render() {
         let {attentionList} = this.props;
         let districtBlockSelect = attentionList.get('district_block_select');
-        let dbArr = (districtBlockSelect.map((v) => {
+        let dbArr = districtBlockSelect.size > 0 && (districtBlockSelect.map((v) => {
             return v.get('name');
         })).toJS() || ['请选择板块'];
 
@@ -76,15 +76,15 @@ export default class AttentionBlockSetOne extends Component {
         let {navigator} = this.props;
 
         navigator.push({
-            component: AutocompleteContainerDemo,
-            name: 'AutocompleteContainerDemo',
+            component: CommunitySearchContainer,
+            name: 'CommunitySearchContainer',
             title: '搜索小区',
             hideNavBar: true
         });
     };
 
     _conformCommunitySet = () => {
-        let {attentionList, actions} = this.props;
+        let {attentionList, actions, actionsHome} = this.props;
         let communitySelect = attentionList.get('community_select');
         let params = communitySelect.map((v) => {
             return v.get('id')
@@ -93,9 +93,11 @@ export default class AttentionBlockSetOne extends Component {
             saveAttentionCommunitySetService(params || [])
             .then((oData) => {
                 actions.attentionListOneCommunityChanged(communitySelect.toJS());
+                actionsHome.fetchAttentionHouseList();
+                Alert.alert('提示', '保存成功', [{text: '确定'}]);
             })
             .catch((oData) => {
-                // Toast
+                Alert.alert('提示', oData.msg, [{text: '确定'}]);
             });
         })
     };

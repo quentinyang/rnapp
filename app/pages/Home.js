@@ -27,10 +27,23 @@ export default class Home extends Component {
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
                 <View style={styles.searchWrap}>
-                    <Text></Text>
+                    <View style={[styles.searchBox, styles.row, styles.alignItems]}>
+                        <Text style={[styles.searchText, styles.searchTextPadding]}>上海</Text>
+                        <TouchableWithoutFeedback onPress={this._onHandlePress}>
+                            <View style={[styles.flex, styles.searchBtn, styles.alignItems, styles.justifyContent, styles.row]}>
+                                <Image
+                                    source={require('../images/searchWhite.png')}
+                                    style={styles.searchWhite}
+                                />
+                                <Text style={[styles.searchText]}>
+                                    搜索
+                                </Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
                 </View>
                 <ListView
-                    style={styles.flex}
+                    contentContainerStyle={styles.contentContainerStyle}
                     dataSource={ds.cloneWithRows(houseList.toArray())}
                     renderRow={this._renderRow}
                     initialListSize={10}
@@ -140,66 +153,27 @@ export default class Home extends Component {
                         />
                     </View>
                 </TouchableWithoutFeedback>
-                <Attention attentionList={attentionList} navigator={navigator}/>
+                <Attention attentionList={attentionList} navigator={navigator} onAttentionBlockSet={this._onAttentionBlockSet}/>
             </View>
         )
     };
 
     _renderFooter = () => {
-        let {houseData} = this.props;
+        let {houseData, attentionList, navigator} = this.props;
         let pager = houseData.get('pager');
 
         return (
-                Number(pager.get('current_page')) == Number(pager.get('last_page')) ?
+                Number(pager.get('current_page')) == Number(pager.get('last_page')) && Number(pager.get('total')) != 0 ?
                     <View style={styles.listFooter}>
                         <Text style={styles.noData}>已经没有数据了！</Text>
                     </View>
-                     :
+                     : Number(pager.get('current_page')) != Number(pager.get('last_page')) && Number(pager.get('total')) != 0 ? 
                     <View style={styles.listFooter}>
                         <ActivityIndicator color={'#d43d3d'} styleAttr="Small"/>
                     </View>
+                    : <NoData attentionList={attentionList} navigator={navigator} onAttentionBlockSet={this._onAttentionBlockSet}/>
         );
     };
-}
-
-export class Attention extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let {attentionList} = this.props;
-        let districtBlockSelect = attentionList.get('district_block_select');
-        let communitySelect = attentionList.get('community_select');
-        let dbArr = districtBlockSelect && (districtBlockSelect.map((v) => {
-            return v.get('name');
-        })).toJS() || ['请选择板块'];
-
-        let commArr = communitySelect && (communitySelect.map((c) => {
-            return c.get('name')
-        })).toJS() || ['请选择小区'];
-
-        return (
-            <View style={[styles.attention]}>
-                <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
-                    <Text style={styles.bar}></Text>
-                    <Text style={[styles.flex, styles.heiti_16_header]}>我关注的房源</Text>
-                </View>
-                <TouchableWithoutFeedback onPress={this._onAttentionBlockSet.bind(null, attentionList)}>
-                    <View style={[styles.row, styles.attentionMsg, styles.alignItems]}>
-                        <View style={[styles.column, styles.flex]}>
-                            <Text style={[styles.heiti_15_content]} numberOfLines={1}>板块：{dbArr.join('、')}</Text>
-                            <Text style={[styles.heiti_15_content]} numberOfLines={1}>小区：{commArr.join('、')}</Text>
-                        </View>
-                        <Image
-                            source={require('../images/next.png')}
-                            style={styles.nextImage}
-                        />
-                    </View>
-                </TouchableWithoutFeedback>
-            </View>
-        )
-    }
 
     _onAttentionBlockSet = (attentionList) => {
         let {navigator} = this.props;
@@ -214,13 +188,88 @@ export class Attention extends Component {
     };
 }
 
+export class Attention extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {attentionList} = this.props;
+        let districtBlockSelect = attentionList.get('district_block_select');
+        let communitySelect = attentionList.get('community_select');
+        let dbArr = districtBlockSelect.size > 0 && (districtBlockSelect.map((v) => {
+            return v.get('name');
+        })).toJS() || ['去设置板块'];
+
+        let commArr = communitySelect.size > 0 && (communitySelect.map((c) => {
+            return c.get('name')
+        })).toJS() || ['去设置小区'];
+
+        return (
+            <View style={[styles.attention]}>
+                <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
+                    <Text style={styles.bar}></Text>
+                    <Text style={[styles.flex, styles.heiti_16_header]}>我关注的房源</Text>
+                </View>
+                <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
+                    <View style={[styles.row, styles.attentionMsg, styles.alignItems]}>
+                        <View style={[styles.column, styles.flex]}>
+                            <Text style={[styles.heiti_15_content]} numberOfLines={1}>板块：{dbArr.join('、')}</Text>
+                            <Text style={[styles.heiti_15_content]} numberOfLines={1}>小区：{commArr.join('、')}</Text>
+                        </View>
+                        <Image
+                            source={require('../images/next.png')}
+                            style={styles.nextImage}
+                        />
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+        )
+    }
+}
+
+class NoData extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {attentionList} = this.props;
+        return (
+            <View style={[styles.noDataBg, styles.flex, styles.alignItems]}>
+                <Image
+                    source={require('../images/noAttention.png')}
+                    style={styles.noAttention}
+                />
+                <Text style={[styles.noAttentionText]}>关注的房源会出现在这里</Text>
+                <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
+                    <View style={[styles.noAttentionBtn, styles.alignItems]}>
+                        <Text style={styles.noAttentionBtnText}>去设置</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            </View>
+        )
+    }
+}
+
 const styles = StyleSheet.create({
     pageBgColor: {
         backgroundColor: '#eee'
     },
     searchWrap: {
-        height: 60,
+        height: 65,
+        paddingTop: 20,
         backgroundColor: '#04c1ae'
+    },
+    searchBox: {
+        height: 45,
+        paddingLeft: 15,
+        paddingRight: 15
+    },
+    searchBtn: {
+        height: 33,
+        backgroundColor: '#0eaa99',
+        borderRadius: 33
     },
     flex: {
         flex: 1
@@ -283,6 +332,9 @@ const styles = StyleSheet.create({
     alignItems: {
         alignItems: 'center',
     },
+    justifyContent: {
+        justifyContent: 'center',
+    },
     heiti_15_content: {
         fontFamily: 'Heiti SC',
         fontSize: 15,
@@ -293,5 +345,46 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#3e3e3e',
         fontWeight: 'bold'
+    },
+    noDataBg: {
+        backgroundColor: '#fff',
+    },
+    contentContainerStyle: {
+        marginTop: -20
+    },
+    noAttention: {
+        width: 97,
+        height: 116
+    },
+    noAttentionText: {
+        paddingTop: 30,
+        paddingBottom: 20,
+        fontSize: 16,
+        color: '#8d8c92'
+    },
+    noAttentionBtn: {
+        width: 80,
+        height: 40,
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 6,
+        justifyContent: 'center'
+    },
+    noAttentionBtnText: {
+        fontSize: 15,
+        color: '#8d8c92'
+    },
+    searchText: {
+        fontSize: 15,
+        color: '#fff'
+    },
+    searchTextPadding: {
+        paddingRight: 10
+    },
+    searchWhite: {
+        width: 21,
+        height: 21,
+        marginTop: 3
     }
 });

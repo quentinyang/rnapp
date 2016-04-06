@@ -20,9 +20,9 @@ export default class Autocomplete extends Component {
     }
 
     render() {
-        let self = this;
-        let items = this.props.results.map(function(item, index) {
-            return self.props.renderRow(item, index);
+        let {results, renderRow} = this.props;
+        let items = results.map((item, index) => {
+            return renderRow(item, index);
         });
 
         return (
@@ -103,7 +103,8 @@ const styles = StyleSheet.create({
         color: '#04C1AE'
     },
     list: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#eee'
     },
     item: {
         padding: 15

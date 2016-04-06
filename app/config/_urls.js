@@ -36,6 +36,9 @@ let urls = {
     attention: {
         blockAndCommunity: HOST + 'get-attention-community-block',
         saveAttentionCommunity: HOST + 'set-attention-community'
+    },
+    community: {
+        list: HOST + 'community/search/app'
     }
 }
 

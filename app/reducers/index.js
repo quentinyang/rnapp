@@ -9,7 +9,7 @@ import home from  './home';
 import detail from  './detail';
 import attentionBlockSet from  './attentionBlockSet';
 import attentionBlockSetOne from  './attentionBlockSetOne';
-import searchDemo from './searchDemo'
+import communitySearch from  './communitySearch';
 
 const rootReducer = combineReducers({
     test,
@@ -19,8 +19,8 @@ const rootReducer = combineReducers({
     home,
     detail,
     attentionBlockSet,
-    searchDemo,
-    attentionBlockSetOne
+    attentionBlockSetOne,
+    communitySearch
 });
 
 export default rootReducer;

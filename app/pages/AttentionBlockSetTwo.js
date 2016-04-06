@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, Image, StyleSheet, InteractionManager, Platform, PixelRatio, TouchableHighlight} from 'nuke';
+import {React, Component, Text, View, ScrollView, Image, StyleSheet, InteractionManager, Platform, PixelRatio, TouchableHighlight, Alert} from 'nuke';
 import Item from '../components/Item';
 import Tab from '../components/Tab';
 import {saveAttentionBlockSetService} from '../service/blockService';
@@ -60,7 +60,7 @@ export default class AttentionBlockSetTwo extends Component {
     };
 
     _conformBlockSet = () => {
-        let {attentionBlockSet, actionsOne} = this.props;
+        let {attentionBlockSet, actionsOne, actionsHome} = this.props;
         let districtBlockSelect = attentionBlockSet.get('district_block_select');
 
         let params = districtBlockSelect.map((v) => {
@@ -71,10 +71,11 @@ export default class AttentionBlockSetTwo extends Component {
             saveAttentionBlockSetService(params.toJS() || [])
             .then((oData) => {
                 actionsOne.attentionListOneBlockChanged(districtBlockSelect.toJS());
-                // Toast
+                actionsHome.fetchAttentionHouseList();
+                Alert.alert('提示', '保存成功', [{text: '确定'}]);
             })
             .catch((oData) => {
-                // Toast
+                Alert.alert('提示', oData.msg, [{text: '确定'}]);
             });
         });
     };

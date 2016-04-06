@@ -26,6 +26,14 @@ function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
                 });
             });
             break;
+        case types.ATTENTION_LIST_ONE_COMMUNITY_ADDED:
+            return state.updateIn(['community_select'], (k) => {
+                return k.push(Immutable.fromJS({
+                    id: action.community.get('id'),
+                    name: action.community.get('name')
+                }));
+            });
+            break;
         default: 
             return state;
     }

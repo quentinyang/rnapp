@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, StyleSheet, InteractionManager, Platform, PixelRatio, TouchableHighlight, TouchableWithoutFeedback} from 'nuke';
+import {React, Component, Text, View, ScrollView, StyleSheet, InteractionManager, Platform, PixelRatio, TouchableHighlight, TouchableWithoutFeedback, Alert} from 'nuke';
 import Tab from '../components/Tab';
 import TabViewContainer from '../containers/TabViewContainer';
 import {saveAttentionBlockSetService} from '../service/blockService';
@@ -86,7 +86,7 @@ export default class AttentionBlockSet extends Component {
                 });
             })
             .catch((oData) => {
-                // Toast
+                Alert.alert('提示', oData.msg, [{text: '确定'}]);
             });
         });
     };
