@@ -21,7 +21,8 @@ let urls = {
         attentionAppend: HOST + 'attention/property-list',
         attentionPrepend: HOST + 'attention/property-list',
 
-        similar: HOST + 'community/property-list'
+        similar: HOST + 'community/property-list',
+        filters: HOST + 'house/filter'
     },
     blocks: {
         attention: HOST + 'get-attention-block',

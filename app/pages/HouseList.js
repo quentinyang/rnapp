@@ -5,6 +5,9 @@ import {React, Component, Text, View, ListView, StyleSheet, Image,
 import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
 import Immutable, {List} from 'immutable';
+import Filter from '../components/Filter';
+import FilterTab from '../components/FilterTab';
+import Area from '../components/Area';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -22,54 +25,116 @@ export default class HouseList extends Component {
     }
 
     render() {
-        let {houseData} = this.props;
+        let {houseData, filterData, uiData, queryParamsData} = this.props;
         let houseList = houseData.get('properties');
         let pager = houseData.get('pager');
+        let tabType = uiData.get('tabType');
+        let onlyVerify = uiData.get('onlyVerify');
+        let areaName = uiData.get('areaName');
+        let bedroomsName = uiData.get('bedroomsName');
+        let priceName = uiData.get('priceName');
 
         return (
-            Number(pager.get('total')) > 0 ? 
-            <ListView
-                style={styles.listViewWrap}
-                dataSource={ds.cloneWithRows(houseList.toArray())}
-                renderRow={this._renderRow}
-                renderFooter={this._renderFooter}
-                initialListSize={10}
-                pageSize={10}
-                scrollRenderAheadDistance={50}
-                minPulldownDistance={30}
-                onEndReachedThreshold={50}
-                onEndReached={this._onEndReached}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={this.state.isRefreshing}
-                        onRefresh={this._onRefresh}
-                        tintColor='#04c1ae'
-                        title='松开刷新'
-                        colors={['#ff0000', '#00ff00', '#0000ff']}
-                        progressBackgroundColor='#ffff00'
-                    />
-                }
-            />
-            :
-            <View style={[styles.flex, styles.center]}>
-                <Image
-                    source={require('../images/no_house_list.png')}
-                    style={styles.noHouseList}
+            <View style={styles.flex}>
+                <Filter
+                    tabType={tabType}
+                    onlyVerify={onlyVerify}
+                    areaName={areaName}
+                    priceName={priceName}
+                    bedroomsName={bedroomsName}
+                    filterItemPress={this._filterItemPress}
+                    onlyVerifyChanged={this._onlyVerifyChanged}
                 />
-                <Text style={styles.noHouseListMsg}>没有找到符合要求的结果</Text>
+                {
+                    Number(pager.get('total')) > 0 ? 
+                    <ListView
+                        style={styles.listViewWrap}
+                        dataSource={ds.cloneWithRows(houseList.toArray())}
+                        renderRow={this._renderRow}
+                        renderFooter={this._renderFooter}
+                        initialListSize={10}
+                        pageSize={10}
+                        scrollRenderAheadDistance={50}
+                        minPulldownDistance={30}
+                        onEndReachedThreshold={50}
+                        onEndReached={this._onEndReached}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.isRefreshing}
+                                onRefresh={this._onRefresh}
+                                tintColor='#04c1ae'
+                                title='松开刷新'
+                                colors={['#ff0000', '#00ff00', '#0000ff']}
+                                progressBackgroundColor='#ffff00'
+                            />
+                        }
+                    />
+                    :
+                    <View style={[styles.flex, styles.center]}>
+                        <Image
+                            source={require('../images/no_house_list.png')}
+                            style={styles.noHouseList}
+                        />
+                        <Text style={styles.noHouseListMsg}>没有找到符合要求的结果</Text>
+                    </View>
+                }
+                {
+                    tabType && tabType != 4 ?
+                        <Text style={[styles.mask, styles.maskBg]} onPress={this._hideMask}></Text>
+                    : null
+                }
+                {
+                    tabType == 1 ? 
+                        <View style={styles.filterMask}>
+                            <Area
+                                data={filterData.get('district_block_list')}
+                                leftSelectId={queryParamsData.get('district_id')}
+                                rightSelectId={queryParamsData.get('block_id')}
+                                blockFilterChanged={this._blockFilterChanged}
+                            />
+                        </View>
+                    : null
+                }
+                {
+                    tabType == 2 ? 
+                        <View style={styles.filterMask}>
+                            <FilterTab
+                                data={filterData.get('price')}
+                                min={queryParamsData.get('min_price')}
+                                max={queryParamsData.get('max_price')}
+                                filterTabChanged={this._filterTabChanged.bind(null, 'price')}
+                            />
+                        </View>
+                    : null
+                }
+                {
+                    tabType == 3 ? 
+                        <View style={styles.filterMask}>
+                            <FilterTab
+                                data={filterData.get('bedrooms')}
+                                min={queryParamsData.get('min_bedrooms')}
+                                max={queryParamsData.get('max_bedrooms')}
+                                filterTabChanged={this._filterTabChanged.bind(null, 'bedrooms')}
+                            />
+                        </View>
+                    : null
+                }
             </View>
         )
     }
 
     componentDidMount() {
         let {loaded} = this.state;
-        let {actions, houseData} = this.props;
+        let {actions, houseData, queryParamsData} = this.props;
         let pager = houseData.get('pager');
         if (!loaded) {
             InteractionManager.runAfterInteractions(() => {
                 actions.fetchHouseList({
-                    page: Number(pager.get('current_page')) + 1
+                    page: Number(pager.get('current_page')) + 1,
+                    ...queryParamsData.toJS()
                 });
+
+                actions.fetchHouseFilter();
             });
         }
     }
@@ -86,13 +151,14 @@ export default class HouseList extends Component {
     };
 
     _onEndReached = () => { // 防止多次重复加载
-        let {actions, houseData} = this.props;
+        let {actions, houseData, queryParamsData} = this.props;
         let pager = houseData.get('pager');
 
         if (Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
             InteractionManager.runAfterInteractions(() => {
                 actions.fetchAppendHouseList({
-                    page: Number(pager.get('current_page')) + 1
+                    page: Number(pager.get('current_page')) + 1,
+                    ...queryParamsData.toJS()
                 });
             });
         }
@@ -115,11 +181,15 @@ export default class HouseList extends Component {
     };
 
     _onRefresh = () => {
-        let {actions} = this.props;
+        let {actions, queryParamsData} = this.props;
+        let queryParamsDataJs = queryParamsData.toJS();
         this.setState({isRefreshing: true});
 
         InteractionManager.runAfterInteractions(() => {
-            actions.fetchPrependHouseList({});
+            actions.fetchPrependHouseList({
+                page: 1,
+                ...queryParamsDataJs
+            });
         });
 
         this.setState({isRefreshing: false});
@@ -136,6 +206,77 @@ export default class HouseList extends Component {
             propertyId: propertyId
         });
     };
+
+    _filterItemPress = (type) => {
+        let {actions} = this.props;
+
+        actions.filterItemPressed(type)
+    };
+
+    // 过滤只看认证
+    _onlyVerifyChanged = (verify) => {
+        let {actions, queryParamsData} = this.props;
+        let queryParamsDataJs = queryParamsData.toJS();
+        queryParamsDataJs.only_verify = verify;
+
+        actions.fetchHouseList({
+            page: 1,
+            ...queryParamsDataJs
+        });
+
+        actions.onlyVerifyChanged(verify)
+    };
+
+    // 过滤区域板块
+    _blockFilterChanged = (districtId, blockId, areaName) => {
+        let {actions, queryParamsData} = this.props;
+        let queryParamsDataJs = queryParamsData.toJS();
+        queryParamsDataJs.block_id = blockId;
+        queryParamsDataJs.district_id = districtId;
+
+        actions.fetchHouseList({
+            page: 1,
+            ...queryParamsDataJs
+        });
+
+        actions.blockFilterChanged(districtId, blockId, areaName);
+        this._hideMask();
+    };
+
+    // 过滤价格或者户型
+    _filterTabChanged = (type, min, max, title) => {
+        let {actions, queryParamsData} = this.props;
+        let queryParamsDataJs = queryParamsData.toJS();
+
+        if (type == 'price') {
+            queryParamsDataJs.min_price = min;
+            queryParamsDataJs.max_price = max;
+
+            actions.fetchHouseList({
+                page: 1,
+                ...queryParamsDataJs
+            });
+            actions.filterTabPriceChanged(min, max, title);
+        } else {
+            queryParamsDataJs.min_bedrooms = min;
+            queryParamsDataJs.max_bedrooms = max;
+
+            actions.fetchHouseList({
+                page: 1,
+                ...queryParamsDataJs
+            });
+            actions.filterTabBedroomsChanged(min, max, title);
+        }
+
+        this._hideMask();
+    };
+
+    _hideMask = () => {
+        let {actions} = this.props;
+
+        actions.filterItemPressed('')
+    };
+
 }
 
 const styles = StyleSheet.create({
@@ -167,6 +308,24 @@ const styles = StyleSheet.create({
     center: {
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    mask: {
+        position: 'absolute',
+        top: 43,
+        bottom: 0,
+        left: 0,
+        right: 0
+    },
+    filterMask: {
+        position: 'absolute',
+        top: 43,
+        left: 0,
+        right: 0,
+        height: 278
+    },
+    maskBg: {
+        backgroundColor: '#000',
+        opacity: 0.5
     }
 });
 

@@ -14,3 +14,14 @@ export function isEmptyObject(obj) {
     }
     return true;
 }
+
+export function formatDate(date) {
+    var date = new Date(date);
+    var year = date.getFullYear();
+    var month = parseInt(date.getMonth()) + 1;
+    var day = date.getDate();
+
+    return {
+        year, month, day
+    }
+}

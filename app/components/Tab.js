@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, StyleSheet, Image, TouchableWithoutFeedback} from 'nuke';
+import {React, Component, Text, View, ScrollView, StyleSheet, Image, PixelRatio, TouchableWithoutFeedback} from 'nuke';
 var {Alert} = React;
 export default class Tab extends Component {
     constructor(props) {
@@ -140,10 +140,9 @@ class RightView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: 240,
         flex: 1,
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
+        borderTopWidth: 1/PixelRatio.get(),
+        borderBottomWidth: 1/PixelRatio.get(),
         borderColor: '#ddd'
     },
     row: {

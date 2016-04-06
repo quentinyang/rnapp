@@ -1,6 +1,7 @@
 'use strict';
 
 import {React, Component, Text, View, ScrollView, StyleSheet, TouchableWithoutFeedback, PixelRatio} from 'nuke';
+import {formatDate} from '../utils/CommonUtils';
 
 export default class HouseItem extends Component {
     constructor(props) {
@@ -9,28 +10,31 @@ export default class HouseItem extends Component {
 
     render() {
         let {item} = this.props;
+        let date = formatDate(item.get('updated_at'));
 
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item.get('property_id'), item.get('community_id'), item.get('community_name'))} key={item.get('property_id')}>
                 <View style={styles.item}>
-                    <View style={[styles.row]}>
-                        <View style={[styles.row, styles.flex]}>
+                    <View style={[styles.row, styles.center]}>
+                        <View style={[styles.row, styles.flex, styles.center]}>
                             <Text style={[styles.headerMsg, styles.headerPadding]}>{item.get('community_name')}</Text>
                             <Text style={[styles.headerMsg, styles.headerPadding]}>{item.get('building_num') + item.get('building_unit') + item.get('door_num')}</Text>
-                            <Text style={styles.tagNew}>新上</Text>
-                            <Text style={[styles.tagNew, styles.tagAuth]}>已认证</Text>
+                            {
+                                item.get('is_new') ? <Text style={styles.tagNew}>新上</Text> : null
+                            }
+                            {
+                                item.get('is_verify') ? <Text style={[styles.tagNew, styles.tagAuth]}>已认证</Text> : null
+                            }
                         </View>
-                        <Text style={styles.updatedAt}>{item.get('updated_at')}</Text>
+                        <Text style={styles.updatedAt}>{date.month + '月' + date.day + '日更新'}</Text>
                     </View>
                     <View style={[styles.row, styles.bedroomsWrap]}>
-                        <Text style={styles.bedrooms}>{item.get('bedrooms') + '室'}</Text>
-                        <Text style={styles.bedrooms}>{item.get('living_rooms') + '厅'}</Text>
-                        <Text style={[styles.bedrooms, styles.bedroomsPadding]}>{item.get('bathrooms') + '卫'}</Text>
+                        <Text style={[styles.bedrooms, styles.bedroomsPadding]}>{item.get('bedrooms') + '室' + item.get('living_rooms') + '厅' + item.get('bathrooms') + '卫'}</Text>
                         <Text style={[styles.bedrooms, styles.bedroomsPadding]}>{item.get('area') + '平'}</Text>
                         <Text style={[styles.bedrooms, styles.bedroomsPadding]}>{item.get('price') + '万'}</Text>
                     </View>
                     <View style={[styles.row]}>
-                        <Text style={styles.bottomMsg}>{item.get('district_name') + '-' + item.get('block_name')}</Text>
+                        <Text numberOfLines={1} style={styles.bottomMsg}>{item.get('district_name') + '-' + item.get('block_name') + ' ' + item.get('community_address')}</Text>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
@@ -53,7 +57,7 @@ const styles = StyleSheet.create({
         height: 90,
         paddingLeft: 15,
         paddingRight: 15,
-        paddingTop: 15,
+        paddingTop: 10,
         paddingBottom: 15,
         borderColor: '#d9d9d9',
         backgroundColor: '#fff',
@@ -93,11 +97,14 @@ const styles = StyleSheet.create({
         fontFamily: 'Helvetica Neue'
     },
     bedroomsPadding: {
-        paddingRight: 14
+        paddingRight: 10
     },
     bottomMsg: {
         fontSize: 12,
         color: '#9f9ea3',
         fontFamily: 'Helvetica Neue'
+    },
+    center: {
+        alignItems: 'center',
     }
 });

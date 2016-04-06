@@ -19,9 +19,9 @@ class HouseListContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {houseData} = state.houseList;
+    const {houseData, filterData, uiData, queryParamsData} = state.houseList;
     return {
-        houseData
+        houseData, filterData, uiData, queryParamsData
     }
 }
 

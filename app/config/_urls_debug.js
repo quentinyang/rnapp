@@ -20,7 +20,8 @@ let urls = {
         attentionAppend: HOST + 'house-attention-append.json',
         attentionPrepend: HOST + 'house-attention-prepend.json',
 
-        similar: HOST + 'house-similar.json'
+        similar: HOST + 'house-similar.json',
+        filters: HOST + 'filter.json'
     },
     blocks: {
         attention: HOST + 'get-attention-block',

@@ -15,8 +15,11 @@ export function fetchAppendHouseListService(params) {
     })
 }
 
-export function fetchPrependHouseListService() {
-    return ajax.get(urls.house.prepend)
+export function fetchPrependHouseListService(params) {
+    console.dir('page: ', params)
+    return ajax.get(urls.house.prepend, {
+        data: params
+    })
 }
 // 我关注的房源
 export function fetchAttentionHouseListService() {
@@ -38,6 +41,12 @@ export function fetchSimilarHouseListService(params) {
         data: params
     })
 }
+
+export function fetchHouseFilterService() {
+    return ajax.get(urls.house.filters)
+}
+
+
 
 
 

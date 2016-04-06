@@ -38,6 +38,100 @@ function houseData(state = Immutable.fromJS(initialState), action) {
     }
 }
 
+let initFilterData = {
+    price: [],
+    bedrooms: [],
+    district_block_list: [
+        {
+            "id": -1,
+            "name": "不限",
+            "blocks": [
+                {
+                    "id": -1,
+                    "name": "全部"
+                }
+            ]
+        }
+    ]
+};
+
+function filterData(state = Immutable.fromJS(initFilterData), action) {
+    switch(action.type) {
+        case types.HOUSE_FILTER_FETCHED:
+            return Immutable.fromJS(action.filterList);
+            break;
+        default:
+            return state;
+    }
+}
+
+let initQueryParams = {
+    block_id: -1,
+    district_id: -1,
+    min_price: 0,
+    max_price: 0,
+    min_bedrooms: 0,
+    max_bedrooms: 0,
+    only_verify: false,
+    community_id: '',
+    community_name: '',
+    keyword: ''
+};
+
+function queryParamsData(state = Immutable.fromJS(initQueryParams), action) {
+    switch(action.type) {
+        case types.ONLY_VERIFY_CHANGED:
+            return state.set('only_verify', action.onlyVerify);
+        case types.BLOCK_FILTER_CHANGED:
+            return state.set('block_id', action.blockId).set('district_id', action.districtId);
+        case types.FILTER_TAB_PRICE_CHANGED:
+            return state.set('min_price', action.min).set('max_price', action.max);
+        case types.FILTER_TAB_BEDROOMS_CHANGED:
+            return state.set('min_bedrooms', action.min).set('max_bedrooms', action.max);
+        case types.HOUSE_LIST_PAGE_CLEARED:
+            return Immutable.fromJS(initQueryParams);
+            break;
+        default:
+            return state;
+    }
+}
+
+let initUIData = {
+    tabType: '',
+    onlyVerify: false,
+    areaName: '',
+    priceName: '',
+    bedroomsName: ''
+};
+
+function uiData(state = Immutable.fromJS(initUIData), action) {
+    switch(action.type) {
+        case types.FILTER_ITEM_PRESSED:
+            return state.set('tabType', action.item);
+            break;
+        case types.ONLY_VERIFY_CHANGED:
+            return state.set('onlyVerify', action.onlyVerify);
+            break;
+        case types.BLOCK_FILTER_CHANGED:
+            return state.set('areaName', action.areaName);
+            break;
+        case types.FILTER_TAB_PRICE_CHANGED:
+            return state.set('priceName', action.title);
+            break;
+        case types.FILTER_TAB_BEDROOMS_CHANGED:
+            return state.set('bedroomsName', action.title);
+            break;
+        case types.HOUSE_LIST_PAGE_CLEARED:
+            return Immutable.fromJS(initUIData);
+            break;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
-    houseData
+    houseData,
+    filterData,
+    queryParamsData,
+    uiData
 });
