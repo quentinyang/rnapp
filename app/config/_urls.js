@@ -22,7 +22,9 @@ let urls = {
         attentionPrepend: HOST + 'attention/property-list',
 
         similar: HOST + 'community/property-list',
-        filters: HOST + 'house/filter'
+        filters: HOST + 'house/filter',
+
+        input: HOST + 'house/input'
     },
     blocks: {
         attention: HOST + 'get-attention-block',

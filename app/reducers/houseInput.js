@@ -108,14 +108,21 @@ export function communityKeyword(state = initCommunityKeyword, action) {
     }
 }
 
-
-
 let controlData = Immutable.fromJS({
+    'single': false, // 独栋
+    'no_unit': true, //单元
+    'villa': false, // 别墅
     'err_msg': ''
 });
 
 export function controller(state = controlData, action) {
     switch(action.type) {
+        case types.SINGLE_CHANGED:
+            return state.set('single', action.single).set('villa', false);
+        case types.NO_UNIT_CHANGED:
+            return state.set('no_unit', action.no_unit);
+        case types.VILLA_CHANGED:
+            return state.set('villa', action.villa).set('single', false);
         case types.ERR_MSG:
             return state.set('err_msg', action.err_msg);
         default:
@@ -129,27 +136,6 @@ export function defaultData(state = Immutable.fromJS([]), action) {
             return state = Immutable.fromJS(action.input_data);
         case types.INPUT_DATA_CLEARED:
             return Immutable.fromJS([]);
-        default:
-            return state;
-    }
-}
-
-let initUiState = Immutable.fromJS({
-    'aucompleteSelected': false,
-    'single': false, // 独栋
-    'villa': false // 别墅
-});
-
-export function uiState(state = initUiState, action) {
-    switch (action.type) {
-        case types.AUTOCOMPLETE_SELECTED:
-            return state.set('aucompleteSelected', action.state);
-        case types.SINGLE_CHANGED:
-            return state.set('single', action.single).set('villa', false);
-        case types.VILLA_CHANGED:
-            return state.set('villa', action.villa).set('single', false);
-        case types.INPUT_DATA_CLEARED:
-            return initUiState;
         default:
             return state;
     }
@@ -171,7 +157,6 @@ export default combineReducers({
     params,
     controller,
     defaultData,
-    uiState,
     communityList,
     communityKeyword
 });

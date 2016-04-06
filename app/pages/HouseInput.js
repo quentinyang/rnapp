@@ -37,36 +37,44 @@ class HouseInput extends Component {
                     <WithLabel
                         label='楼栋'
                         rightText='号/座'
+                        rightStyle={controller.get('single')? {color: '#fff'}: {}}
                         value={houseForm.get('building_num')}
-                        placeholder='输入楼号/座号'
+                        placeholder={controller.get('single')?'':'输入楼号/座号'}
+                        editable={controller.get('single')? false: true}
                         onChangeText={(v) => {this.singleAction('buildingChanged', v)}}
                     >
                         <Attached
-                            isSelected={false}
+                            isSelected={controller.get('single')}
                             attachedText='独栋'
+                            toggleAttach={() => this.toggleAttach('singleChanged', !controller.get('single'), 'buildingChanged')}
                         />
                     </WithLabel>
                     <WithLabel
                         label='单元'
                         value={houseForm.get('unit_num')}
-                        placeholder='(选填)输入单元号'
+                        placeholder={controller.get('no_unit')?'':'(选填)输入单元号'}
+                        editable={controller.get('no_unit')? false: true}
                         onChangeText={(v) => {this.singleAction('unitChanged', v)}}
                     >
                         <Attached
-                            isSelected={true}
+                            isSelected={controller.get('no_unit')}
                             attachedText='无'
+                            toggleAttach={() => this.toggleAttach('noUnit', !controller.get('no_unit'), 'unitChanged')}
                         />
                     </WithLabel>
                     <WithLabel
                         label='房号'
                         rightText='室'
+                        rightStyle={controller.get('villa')? {color: '#fff'}: {}}
                         value={houseForm.get('door_num')}
-                        placeholder='输入房号'
+                        placeholder={controller.get('villa')?'':'输入房号'}
+                        editable={controller.get('villa')? false: true}
                         onChangeText={(v) => {this.singleAction('doorChanged', v)}}
                     >
                         <Attached
-                            isSelected={false}
+                            isSelected={controller.get('villa')}
                             attachedText='别墅'
+                            toggleAttach={() => this.toggleAttach('villaChanged', !controller.get('villa'), 'doorChanged')}
                         />
                     </WithLabel>
                     <WithLabel
@@ -128,16 +136,26 @@ class HouseInput extends Component {
         this.props.actions[action](value);
     }
 
+    toggleAttach(action, value, secAction) {
+        if(value) {
+            this.singleAction(secAction, '');
+        }
+        this.singleAction(action, value);
+    }
+
     handleSubmit = () => {
-        let houseForm = this.props.houseInput.houseForm.toJS();
-        let msg = this.checkForm();
-        msg ? this.props.actions.error(errMsgs[msg]):'';
+        let actions = this.props.actions,
+            houseForm = this.props.houseInput.houseForm.toJS(),
+            msg = this.checkForm();
+
+        msg ? this.props.actions.error(errMsgs[msg]):actions.houseSubmit(houseForm);
     };
 
     checkForm() {
         let houseForm = this.props.houseInput.houseForm.toJS(),
             regwords =  /楼|幢|栋|号|室/g,
             regphone = /^1\d{10}$|^0\d{10,11}$|^\d{8}$/g;
+
         if(!houseForm.building_num) {
             return 'emptyBuilding';
         }
@@ -198,21 +216,25 @@ class Attached extends Component {
 
     render() {
         return (
-            <View style={styles.attached}>
-                <TouchableHighlight>
-                    {this.props.isSelected ?
-                        <Image
-                            source={require('../images/selected.png')}
-                            style={styles.selectedImage}
-                        /> :
-                        <Image
-                            source={require('../images/unSelected.png')}
-                            style={styles.selectedImage}
-                        />
-                    }
+                <TouchableHighlight
+                    style={styles.attachedTouch}
+                    underlayColor='#fff'
+                    onPress={this.props.toggleAttach}
+                >
+                    <View style={styles.attached}>
+                        {this.props.isSelected ?
+                            <Image
+                                source={require('../images/selected.png')}
+                                style={styles.selectedImage}
+                            /> :
+                            <Image
+                                source={require('../images/unSelected.png')}
+                                style={styles.selectedImage}
+                            />
+                        }
+                        <Text style={styles.attachedText}>{this.props.attachedText}</Text>
+                    </View>
                 </TouchableHighlight>
-                <Text style={styles.attachedText}>{this.props.attachedText}</Text>
-            </View>
         )
     }
 }
@@ -224,9 +246,11 @@ let styles = StyleSheet.create({
         borderTopColor: '#d9d9d9',
         backgroundColor: '#fff'
     },
+    attachedTouch: {
+        marginLeft: 45
+    },
     attached: {
         flexDirection: 'row',
-        marginLeft: 45,
         width: 55
     },
     attachedText: {

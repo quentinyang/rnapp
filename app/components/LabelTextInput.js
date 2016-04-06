@@ -18,7 +18,7 @@ export default class LabelTextInput extends Component {
     }
 
     render() {
-        let {label, arrow, rightText, children, ...props} = this.props;
+        let {label, arrow, rightText, rightStyle, children, ...props} = this.props;
         return (
             <View style={styles.inputContainer}>
                 <Text style={styles.label}>{this.props.label}</Text>
@@ -31,7 +31,7 @@ export default class LabelTextInput extends Component {
                         source={require('../images/next.png')}
                         style={styles.arrow}
                     />:
-                    <Text style={styles.rightText}>{this.props.rightText}</Text>
+                    <Text style={[styles.rightText, rightStyle]}>{this.props.rightText}</Text>
                 }
                 {this.props.children}
             </View>

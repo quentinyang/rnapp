@@ -9,4 +9,7 @@ export const PRICE_CHANGED = 'PRICE_CHANGED';
 export const ALIAS_CHANGED = 'ALIAS_CHANGED';
 export const PHONE_CHANGED = 'PHONE_CHANGED';
 
+export const SINGLE_CHANGED = 'SINGLE_CHANGED';
+export const NO_UNIT_CHANGED = 'NO_UNIT_CHANGED';
+export const VILLA_CHANGED = 'VILLA_CHANGED';
 export const ERR_MSG = 'ERR_MSG';
