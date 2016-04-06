@@ -15,12 +15,14 @@ export default class TouchableSubmit extends Component {
     }
 
     render() {
+        let {submitText, ...props} = this.props;
         return (
             <TouchableHighlight
                 style={styles.submitButton}
                 underlayColor='#04c1ae'
+                {...props}
             >
-                <Text style={styles.submitText}>{this.props.submitText}</Text>
+                <Text style={styles.submitText}>{submitText}</Text>
             </TouchableHighlight>
         )
     }

@@ -19,8 +19,9 @@ class HouseInputContainer extends Component {
 }
 
 function mapStateToProps(state) {
+    const {houseInput} = state;
     return {
-        state
+        houseInput
     }
 }
 
