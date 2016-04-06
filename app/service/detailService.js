@@ -12,3 +12,17 @@ export function getStatusService(params) {
         data: params
     });
 }
+
+export function callSellerPhone(params) {
+    return ajax.post(urls.detail.call, {
+        body: {
+            property_id: params
+        }
+    });
+}
+
+export function postFeedback(params) {
+    return ajax.post(urls.detail.feedback, {
+        body: params
+    });
+}

@@ -36,7 +36,42 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
     }
 }
 
+let initParam = {
+    scoreTipVisible: false,
+    callError: {},
+    errorTipVisible: false,
+    feedbackVisible: false,
+    sellerPhone: '',
+    washId: ''
+};
+
+function callInfo(state = Immutable.fromJS(initParam), action) {
+    switch(action.type) {
+        case types.SCORE_TIP_VISIBLE_CHANGED:
+            return state.set('scoreTipVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.ERROR_TIP_VISIBLE_CHANGED:
+            return state.set('errorTipVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.FEEDBACK_VISIBLE_CHANGED:
+            return state.set('feedbackVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.CALL_SELLER_SUCCESS:
+            return state.set('washId', Immutable.fromJS(action.logId));
+            break;
+        case types.SET_SELLER_PHONE:
+            return state.set('sellerPhone', Immutable.fromJS(action.phone));
+            break;
+        case types.CALL_SELLER_FAILED:
+            return state.set('callError', Immutable.fromJS(action.callError));
+            break;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     houseData,
-    baseInfo
+    baseInfo,
+    callInfo
 });

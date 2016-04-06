@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight } from 'nuke'
+import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, Modal, Button } from 'nuke'
 import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
 
@@ -14,11 +14,111 @@ export default class Detail extends Component {
     }
 
     render() {
-        let {sameCommunityList} = this.props;
+        let {baseInfo, sameCommunityList, callInfo} = this.props;
         let houseList = sameCommunityList.get('properties');
+        let info = baseInfo.get("baseInfo");
+
+        let phoneStr = "联系房东" + (info.get('phone_lock_status') ? ("(" + info.get('seller_phone') + ")") : (callInfo.get('sellerPhone') ? ("(" + callInfo.get('sellerPhone') + ")") : ''));
 
         return (
             <View style={styles.flex}>
+                <Modal visible={callInfo.get('scoreTipVisible')} transparent={true} onModalVisibilityChanged={this.props.actions.setScoreTipVisible}>
+                    <View style={styles.bgWrap}>
+                        <View style={styles.contentContainer}>
+                            <TouchableHighlight
+                                style={styles.closeBox}
+                                underlayColor="#fff"
+                                onPress={this.props.actions.setScoreTipVisible.bind(null, false)}
+                            >
+                                <Image
+                                    style={styles.closeIcon}
+                                    source={require("../images/close.png")}
+                                />
+                            </TouchableHighlight>
+
+                            <Text style={styles.msgTip}>消耗{info.get('see_count')}积分即可获得房东电话</Text>
+                            <Button
+                                containerStyle={[styles.btn, styles.btnMarginBottom]}
+                                itemStyle={styles.btnSize} label="确认"
+                                onPress={this._callSellerPhone.bind(this)} />
+                        </View>
+                    </View>
+                </Modal>
+
+                <Modal visible={callInfo.get('errorTipVisible')} transparent={true} onModalVisibilityChanged={this.props.actions.setErrorTipVisible}>
+                    <View style={styles.bgWrap}>
+                        <View style={styles.contentContainer}>
+                            <TouchableHighlight
+                                style={styles.closeBox}
+                                underlayColor="#fff"
+                                onPress={this.props.actions.setErrorTipVisible.bind(null, false)}
+                            >
+                                <Image
+                                    style={styles.closeIcon}
+                                    source={require("../images/close.png")}
+                                />
+                            </TouchableHighlight>
+
+                            <Text style={styles.msgTip}>{callInfo.get('callError').get('msg')}</Text>
+
+                            <TouchableHighlight
+                                style={[styles.btn, styles.borderBtn]}
+                                underlayColor="#fff"
+                                onPress={this._goPage.bind(this)}
+                            >
+                                <Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text>
+                            </TouchableHighlight>
+
+                            <TouchableHighlight
+                                style={[styles.btn, styles.borderBtn, styles.margin]}
+                                underlayColor="#fff"
+                                onPress={this._goPage.bind(this)}
+                            >
+                                <Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text>
+                            </TouchableHighlight>
+
+                        </View>
+                    </View>
+                </Modal>
+
+                <Modal visible={callInfo.get('feedbackVisible')} transparent={true} onModalVisibilityChanged={this.props.actions.setFeedbackVisible}>
+                    <View style={styles.bgWrap}>
+                        <View style={styles.contentContainer}>
+                            <Text style={styles.modalTitle}>通话反馈</Text>
+                            <Text style={styles.smallTip}>确认在卖后将获得房东电话</Text>
+
+                            <TouchableHighlight
+                                style={[styles.btn, styles.borderBtn]}
+                                underlayColor="#fff"
+                                onPress={this._callFeedback.bind(this, callInfo.get('washId'), 1)}
+                            >
+                                <Text style={{color: "#04C1AE", textAlign: "center"}}>在卖</Text>
+                            </TouchableHighlight>
+
+                            <View style={styles.hLine}></View>
+
+                            <Text style={styles.smallTip}>联系不上或虚假房源将返还本次积分</Text>
+
+                            <TouchableHighlight
+                                style={[styles.btn, styles.borderBtn]}
+                                underlayColor="#fff"
+                                onPress={this._callFeedback.bind(this, callInfo.get('washId'),  2)}
+                            >
+                                <Text style={{color: "#04C1AE", textAlign: "center"}}>联系不上</Text>
+                            </TouchableHighlight>
+
+                            <TouchableHighlight
+                                style={[styles.btn, styles.borderBtn, styles.margin]}
+                                underlayColor="#fff"
+                                onPress={this._callFeedback.bind(this, callInfo.get('washId'),  3)}
+                            >
+                                <Text style={{color: "#04C1AE", textAlign: "center"}}>虚假/不卖/已卖</Text>
+                            </TouchableHighlight>
+
+                        </View>
+                    </View>
+                </Modal>
+
                 <ListView
                     dataSource={ds.cloneWithRows(houseList.toArray())}
                     renderRow={this._renderRow}
@@ -28,17 +128,23 @@ export default class Detail extends Component {
                     renderHeader={this._renderHeader}
                     style={styles.listView}
                 />
-                {/*
                 <View style={styles.contactWrap}>
                     <TouchableHighlight
                         style={styles.contactButton}
+                        underlayColor="#04c1ae"
+                        onPress={this._clickPhoneBtn.bind(this, info.get('phone_lock_status'), callInfo.get('sellerPhone'))}
                     >
-                        <Text style={styles.contactText}>
-                            联系房东
-                        </Text>
+                        <View style={{flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
+                            <Image
+                                style={styles.phoneIcon}
+                                source={require("../images/phone.png")}
+                            />
+                            <Text style={styles.contactText}>
+                                {phoneStr}
+                            </Text>
+                        </View>
                     </TouchableHighlight>
                 </View>
-                */}
             </View>
         );
     }
@@ -57,6 +163,33 @@ export default class Detail extends Component {
             actions.fetchHouseStatus({
                 property_id: propertyId
             });
+        });
+    }
+
+    _goPage() {
+        //todo:: 跳转
+        this.props.actions.setErrorTipVisible(false);
+        console.log('go');
+    }
+
+    _clickPhoneBtn(status, phone) {
+        if(status || phone) { //1: 已解锁
+            //todo:: system call
+
+        } else {   //0: 未解锁
+            this.props.actions.setScoreTipVisible(true);
+        }
+    }
+
+    _callSellerPhone() {
+        this.props.actions.setScoreTipVisible(false);
+        this.props.actions.callSeller(this.props.route.propertyId);
+    }
+
+    _callFeedback(id, status) {
+        this.props.actions.callFeedback({
+            wash_id: id,
+            status: status
         });
     }
 
@@ -257,5 +390,68 @@ var styles = StyleSheet.create({
     gap: {
         height: 15,
         backgroundColor: '#eee'
+    },
+    phoneIcon: {
+        width: 20,
+        height: 20
+    },
+    bgWrap: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)"
+    },
+    contentContainer: {
+        width: 270,
+        borderRadius: 5,
+        padding: 20,
+        backgroundColor: "#fff",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    closeBox: {
+        position: "absolute",
+        right: 12,
+        top: 10
+    },
+    closeIcon: {
+        width: 15,
+        height: 11
+    },
+    msgTip: {
+        marginTop: 16,
+        marginBottom: 20,
+        textAlign: "center",
+        fontSize: 16
+    },
+    btn: {
+        width: 170,
+        height: 30,
+        justifyContent: "center",
+        borderRadius: 5
+    },
+    btnMarginBottom: {
+        marginBottom: 18
+    },
+    btnSize: {
+        fontSize: 16
+    },
+    borderBtn: {
+        borderWidth: 1,
+        borderColor: "#d9d9d9",
+        marginBottom: 10
+    },
+    modalTitle: {
+        fontSize: 19
+    },
+    smallTip: {
+        fontSize: 12,
+        marginTop: 13,
+        marginBottom: 13
+    },
+    hLine: {
+        width: 230,
+        borderBottomWidth: 1,
+        borderColor: "#d9d9d9"
     }
 });
