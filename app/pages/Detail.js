@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, Modal, Button } from 'nuke'
+import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, Modal, Button, Linking } from 'nuke'
 import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
 
@@ -132,7 +132,7 @@ export default class Detail extends Component {
                     <TouchableHighlight
                         style={styles.contactButton}
                         underlayColor="#04c1ae"
-                        onPress={this._clickPhoneBtn.bind(this, info.get('phone_lock_status'), callInfo.get('sellerPhone'))}
+                        onPress={this._clickPhoneBtn.bind(this, info.get('phone_lock_status'), info.get('seller_phone'), callInfo.get('sellerPhone'))}
                     >
                         <View style={{flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                             <Image
@@ -172,10 +172,12 @@ export default class Detail extends Component {
         console.log('go');
     }
 
-    _clickPhoneBtn(status, phone) {
-        if(status || phone) { //1: 已解锁
+    _clickPhoneBtn(status, phone, hasPhone) {
+        if(status || hasPhone) { //1: 已解锁
             //todo:: system call
-
+            if(Linking.canOpenURL()) {
+                Linking.openURL("tel:" + phone);
+            }
         } else {   //0: 未解锁
             this.props.actions.setScoreTipVisible(true);
         }
