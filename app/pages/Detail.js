@@ -220,6 +220,7 @@ export default class Detail extends Component {
             <View style={styles.moreWrap}>
                 <TouchableHighlight
                     style={styles.moreButton}
+                    underlayColor="#fff"
                     onPress={this._handleMoreHouseList}
                 >
                     <Text style={styles.moreText}>
@@ -263,7 +264,7 @@ export default class Detail extends Component {
             component: HouseListContainer,
             name: 'houseDetail',
             title: '房源详情',
-            hideNavBar: false,
+            hideNavBar: true,
             communityName,
             communityId
         });

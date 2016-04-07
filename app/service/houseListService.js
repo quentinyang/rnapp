@@ -16,7 +16,6 @@ export function fetchAppendHouseListService(params) {
 }
 
 export function fetchPrependHouseListService(params) {
-    console.dir('page: ', params)
     return ajax.get(urls.house.prepend, {
         data: params
     })
