@@ -6,11 +6,10 @@ function status(response, resolve, reject) {
     if((response.status >= 200 && response.status < 300) || response.status == 304) {
         resolve(response.json());
     } else {
-        if (response.status == 401) {
-            console.log('[Ajax Error] 401');
-            // TODO::go to login
-        }
-        response.json().then(reject);
+        response.json().then((oData) => {
+            oData.codeStatus = response.status;
+            return oData;
+        }).then(reject);
     }
 }
 

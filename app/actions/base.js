@@ -34,7 +34,6 @@ export function serviceAction(dispatch) {
         service(data).then((oData) => {
             successFn(oData)
         }).catch((error) => {
-            debugger
             errorFn(error);
         });
 
