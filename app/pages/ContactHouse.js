@@ -102,7 +102,7 @@ export default class ContactHouse extends Component {
         this.setState({isRefreshing: true});
 
         InteractionManager.runAfterInteractions(() => {
-            actions.fetchContactHouse({
+            actions.fetchPrependContactHouse({
                 page: 1
             });
         });

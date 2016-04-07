@@ -102,7 +102,7 @@ export default class InputHouse extends Component {
         this.setState({isRefreshing: true});
 
         InteractionManager.runAfterInteractions(() => {
-            actions.fetchInputHouse({
+            actions.fetchPrependInputHouse({
                 page: 1
             });
         });
