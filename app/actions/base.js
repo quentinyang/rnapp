@@ -19,7 +19,7 @@ export function serviceAction(dispatch) {
         }
 
         let errorFn = oData => {
-            if (oData && oData.code == 401) {
+            if (oData && oData.codeStatus == 401) {
                 dispatch(actions.webAuthentication(false))
             }
             error(oData);
@@ -34,6 +34,7 @@ export function serviceAction(dispatch) {
         service(data).then((oData) => {
             successFn(oData)
         }).catch((error) => {
+            debugger
             errorFn(error);
         });
 

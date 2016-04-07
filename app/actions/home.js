@@ -20,7 +20,7 @@ export function fetchAttentionHouseList(params) {
                 dispatch(houseAttentionFetched(oData))
             },
             error: function(oData) {
-
+debugger;
             }
         })
         
@@ -36,7 +36,7 @@ export function fetchAttentionAppendHouseList(params) {
                 dispatch(houseAttentionAppendFetched(oData))
             },
             error: function(oData) {
-                
+                debugger;
             }
         })
         
@@ -52,7 +52,7 @@ export function fetchAttentionPrependHouseList(params) {
                 dispatch(houseAttentionPrependFetched(oData))
             },
             error: function(oData) {
-                
+                debugger;
             }
         })
         
@@ -68,7 +68,7 @@ export function fetchAttentionBlockAndCommunity(params) {
                 dispatch(attentionBlockAndCommunityFetched(oData))
             },
             error: function(oData) {
-                
+                debugger;
             }
         })
         
