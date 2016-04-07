@@ -53,6 +53,8 @@ react-native bundle --platform android --entry-file index.android.js \
 --bundle-output ./android/app/src/main/assets/index.android.jsbundle \
 --assets-dest ./android/app/src/main/res/
 --dev false
+
+react-native run-android
 ```
 
 1. _[`平时不用`]_使用codepush提交更新时

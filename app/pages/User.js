@@ -217,7 +217,6 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       borderTopWidth: 1/PixelRatio.get(),
       borderColor: '#ccc',
-      alignItems: 'center',
       height: 60,
     },
     cashImage: {

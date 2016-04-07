@@ -15,6 +15,7 @@ export function serviceAction(dispatch) {
         let { service, data, success, error } = options
 
         let successFn = oData => {
+            console.log('[AjaxResponse]', oData)
             success(oData)
         }
 
@@ -26,6 +27,8 @@ export function serviceAction(dispatch) {
             if (oData && oData.codeStatus != 401) {
                 dispatch(actions.webNetWorkError(oData.msg))
             }
+            
+            console.log('[AjaxResponse]', oData)
 
             error(oData);
         }

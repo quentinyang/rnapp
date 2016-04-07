@@ -84,7 +84,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.fy360"
+        applicationId "com.xinyi.fy360"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 1

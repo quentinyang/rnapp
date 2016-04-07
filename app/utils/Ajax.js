@@ -3,9 +3,12 @@
 import deviceInfo from './DeviceInfo';
 
 function status(response, resolve, reject) {
+
     if((response.status >= 200 && response.status < 300) || response.status == 304) {
         resolve(response.json());
+        console.log('[AjaxSuccess]', response.status, response.url);
     } else {
+        console.log('[AjaxError]', response.status, response.url);
         response.json().then((oData) => {
             oData.codeStatus = response.status;
             return oData;
