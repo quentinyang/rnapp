@@ -43,12 +43,14 @@ fy360-native
 
 ```
 # IOS
+rm -rf index.ios.jsbundle assets/app/
 react-native bundle --platform ios --entry-file index.ios.js \
 --bundle-output ./index.ios.jsbundle \
 --assets-dest ./ \
 --dev false
 
 # Android
+rm -rf android/app/src/main/assets/index.android.jsbundle android/app/src/main/res/
 react-native bundle --platform android --entry-file index.android.js \
 --bundle-output ./android/app/src/main/assets/index.android.jsbundle \
 --assets-dest ./android/app/src/main/res/

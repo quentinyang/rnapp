@@ -92,7 +92,6 @@ export default class User extends Component {
         actions.fetchUserProfile({});
       });
 
-
     }
 
     render() {
@@ -106,7 +105,7 @@ export default class User extends Component {
         var settingSource = ds.cloneWithRows([{title: '设置', component: '', name: 'settings'}]);
 
         return (
-            <View style={styles.layout}>
+            <ScrollView style={styles.layout}>
                 <View style={styles.header}>
                   <Text style={styles.headerText}>我的</Text>
                 </View>
@@ -128,13 +127,8 @@ export default class User extends Component {
                   renderRow={this._renderRow.bind(this)}
                   scrollEnabled={false}
                   automaticallyAdjustContentInsets={false} />
-
-                  {/* Ugly to set background */}
-                  <View style={{height: 300}}></View>
   
-            </View>
-            
-
+            </ScrollView>
         )
     }
 
