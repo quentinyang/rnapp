@@ -15,7 +15,7 @@ let ds = new ListView.DataSource({
 
 class Profile extends Component{
   render() {
-    var portrait = this.props.portrait ? require(this.props.portrait) :  require('../images/profile.jpg');
+    var portrait = this.props.portrait ? {uri: this.props.portrait} :  require('../images/profile.jpg');
     var mobileNum = this.props.mobile ? this._formatMobileNumber(this.props.mobile) : '130****1234';
     return (
         <View style={[styles.profileContainer]}>

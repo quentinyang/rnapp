@@ -14,7 +14,7 @@ let urls = {
     user: {
         sendCode: HOST + 'passport/login/sms',
         login: HOST + 'passport/login',
-        profile: 'http://localhost:8081/app/fakedata/profile.json',
+        profile: HOST + 'user/profile',
     },
     house: {
         list: HOST + 'property-list',
