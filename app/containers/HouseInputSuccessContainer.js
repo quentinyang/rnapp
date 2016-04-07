@@ -3,8 +3,6 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/houseInput';
-import * as searchActions from '../actions/communitySearch';
 import HouseInputSuccess from '../pages/HouseInputSuccess';
 
 class HouseInputSuccessContainer extends Component {
@@ -20,10 +18,7 @@ class HouseInputSuccessContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {houseInput} = state;
-    return {
-        houseInput
-    }
+    return {}
 }
 
 function mapDispatchToProps(dispatch) {

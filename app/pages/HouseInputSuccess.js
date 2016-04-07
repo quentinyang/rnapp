@@ -10,34 +10,51 @@ import {
     Image
 } from 'nuke';
 
+import InputHouseContainer from '../containers/InputHouseContainer';
+
 export default class HouseInputSuccess extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
+        let {data} = this.props.route;
+        console.log(this.props);
         return (
             <View style={styles.container}>
                 <Image source={require('../images/success.png')} style={[styles.sucImg]}/>
-                <Text style={styles.promptTitle}>审核通过可获<Text style={styles.promptColor}>15</Text>积分</Text>
-                <Text style={styles.subPromptTitle}>1个工作日内完成审核</Text>
+                <Text style={styles.promptTitle}>审核通过可获<Text style={styles.promptColor}>{data.money}</Text>积分</Text>
+                <Text style={!data.is_special?styles.subPromptTitle:[styles.subPromptTitle, styles.fontOrange]}>{data.msg}</Text>
                 <TouchableHighlight
                     style={[styles.sucButton, styles.backgroundGreen]}
                     underlayColor='#04c1ae'
-                    onPress={this.handleSubmit}
+                    onPress={this.continueInput}
                 >
                     <Text style={[styles.sucButtonText, styles.fontWhite]}>继续发房</Text>
                 </TouchableHighlight>
                 <TouchableHighlight
                     style={[styles.sucButton, styles.backgroundWhite]}
                     underlayColor='#04c1ae'
-                    onPress={this.handleSubmit}
+                    onPress={this.lookHouse}
                 >
                     <Text style={[styles.sucButtonText, styles.fontGreen]}>查看房源</Text>
                 </TouchableHighlight>
             </View>
         )
     }
+
+    continueInput = () => {
+        this.props.navigator.pop();
+    };
+
+    lookHouse = () => {
+        this.props.navigator.replace({
+            component: InputHouseContainer,
+            name: 'InputHouse',
+            title: '发布的房源',
+            hideNavBar: false
+        });
+    };
 
     componentDidMount() {}
 
@@ -86,6 +103,9 @@ const styles = StyleSheet.create({
     },
     fontGreen: {
         color: '#04c1ae'
+    },
+    fontOrange: {
+        color: '#ffa251'
     },
     backgroundWhite: {
         backgroundColor: '#fff'

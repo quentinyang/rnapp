@@ -215,7 +215,8 @@ class HouseInput extends Component {
                 component: HouseInputSuccessContainer,
                 name: 'houseInputSuccess',
                 title: '发布成功',
-                hideNavBar: false,
+                data: oData,
+                hideNavBar: false
             });
         })
         .catch((error) => {
