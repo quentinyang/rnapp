@@ -8,9 +8,11 @@ import {
     TouchableHighlight,
     TextInput,
     PixelRatio,
+    Linking,
     ScrollView
 } from 'nuke';
 
+import Header from '../components/Header';
 import WithLabel from '../components/LabelTextInput';
 import ErrorMsg from '../components/ErrorMsg';
 import TouchableSubmit from '../components/TouchableSubmit';
@@ -25,7 +27,15 @@ class HouseInput extends Component {
             {houseForm, controller} = this.props.houseInput;
 
         return (
-            <View style={{backgroundColor: '#eee', marginTop: 40}}>
+            <View style={{backgroundColor: '#eee'}}>
+                <Header title='发布房源'>
+                    <Text
+                        style={styles.headerRight}
+                        onPress={this.linkFn}
+                    >
+                        积分规则
+                    </Text>
+                </Header>
                 <View style={styles.formBox}>
                     <WithLabel
                         label='小区'
@@ -165,6 +175,10 @@ class HouseInput extends Component {
         this.singleAction(action, value);
     }
 
+    linkFn = () => {
+        Linking.openURL('http://mp.weixin.qq.com/s?__biz=MzAxNDYyMTA0NQ==&mid=401036326&idx=1&sn=45548dc3dfb63021c4e60df9058df5df#rd').catch(err => console.log(err));
+    };
+
     handleSubmit = () => {
         let actions = this.props.actions,
             houseForm = this.props.houseInput.houseForm.toJS(),
@@ -267,6 +281,14 @@ class Attached extends Component {
 }
 
 let styles = StyleSheet.create({
+    headerRight: {
+        marginLeft: -75,
+        marginRight: 15,
+        width: 60,
+        fontSize: 15,
+        color: '#04c1ae',
+        justifyContent: 'flex-end'
+    },
     formBox: {
         marginTop: 15,
         borderTopWidth:1/PixelRatio.get(),
