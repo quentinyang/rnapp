@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Image,
     TouchableHighlight,
+    TextInput,
     PixelRatio,
     ScrollView
 } from 'nuke';
@@ -52,7 +53,7 @@ class HouseInput extends Component {
                     <WithLabel
                         label='单元'
                         value={houseForm.get('unit_num')}
-                        placeholder={controller.get('no_unit')?'':'(选填)输入单元号'}
+                        placeholder={controller.get('no_unit')?'':'输入单元号'}
                         editable={controller.get('no_unit')? false: true}
                         onChangeText={(v) => {this.singleAction('unitChanged', v)}}
                     >
@@ -79,12 +80,33 @@ class HouseInput extends Component {
                     </WithLabel>
                     <WithLabel
                         label='户型'
-                        arrow={true}
-                        value=''
-                        placeholder='请选择户型'
-                        editable={false}
-                        onFocus={() => {}}
-                    />
+                        rightText='室'
+                        inputStyle={styles.alignCenter}
+                        keyboardType='numeric'
+                        maxLength={2}
+                        value={houseForm.get('bedrooms')}
+                        placeholder='几'
+                        onChangeText={(v) => {this.singleAction('bedroomsChanged', v)}}
+                    >
+                        <TextInput
+                            keyboardType='numeric'
+                            style={[styles.inputBox, styles.alignCenter]}
+                            maxLength={1}
+                            value={houseForm.get('living_rooms')}
+                            placeholder='几'
+                            onChangeText={(v) => {this.singleAction('livingroomsChanged', v)}}
+                        />
+                        <Text>厅</Text>
+                        <TextInput
+                            keyboardType='numeric'
+                            style={[styles.inputBox, styles.alignCenter]}
+                            maxLength={1}
+                            value={houseForm.get('bathrooms')}
+                            placeholder='几'
+                            onChangeText={(v) => {this.singleAction('bathroomsChanged', v)}}
+                        />
+                        <Text>卫</Text>
+                    </WithLabel>
                     <WithLabel
                         label='面积'
                         rightText='平米'
@@ -153,17 +175,21 @@ class HouseInput extends Component {
 
     checkForm() {
         let houseForm = this.props.houseInput.houseForm.toJS(),
+            controller = this.props.houseInput.controller.toJS(),
             regwords =  /楼|幢|栋|号|室/g,
             regphone = /^1\d{10}$|^0\d{10,11}$|^\d{8}$/g;
 
-        if(!houseForm.building_num) {
+        if(!controller.single && !houseForm.building_num) {
             return 'emptyBuilding';
         }
-        if(!houseForm.unit_num) {
+        if(!controller.no_unit && !houseForm.unit_num) {
             return 'emptyUnit';
         }
-        if(!houseForm.door_num) {
+        if(!controller.villa && !houseForm.door_num) {
             return 'emptyDoor';
+        }
+        if(!(houseForm.bedrooms && houseForm.living_rooms && houseForm.bathrooms)) {
+            return 'emptyHx';
         }
         if(!houseForm.area) {
             return 'emptyArea';
@@ -201,6 +227,7 @@ let errMsgs = {
     'emptyUnit': '请确认有无单元号，有请输入，无请勾选“无”',
     'emptyDoor': '请输入房号',
     'wrongDoor': '请输入正确的房号',
+    'emptyHx': '请补全户型信息',
     'emptyArea': '请输入面积',
     'wrongArea': '所填面积超过限制面积',
     'emptyPrice': '请输入价格',
@@ -245,6 +272,16 @@ let styles = StyleSheet.create({
         borderTopWidth:1/PixelRatio.get(),
         borderTopColor: '#d9d9d9',
         backgroundColor: '#fff'
+    },
+    inputBox: {
+        flex: 1,
+        height: 45,
+        fontSize: 15,
+        fontWeight: '200',
+        textAlign: 'center'
+    },
+    alignCenter: {
+        textAlign: 'center'
     },
     attachedTouch: {
         marginLeft: 45

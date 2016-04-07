@@ -18,12 +18,15 @@ export default class LabelTextInput extends Component {
     }
 
     render() {
-        let {label, arrow, rightText, rightStyle, children, ...props} = this.props;
+        let {label, inputStyle, arrow, rightText, rightStyle, children, ...props} = this.props;
+
         return (
-            <View style={styles.inputContainer}>
+            <View
+                style={styles.inputContainer}
+            >
                 <Text style={styles.label}>{this.props.label}</Text>
                 <TextInput
-                    style={styles.inputBox}
+                    style={[styles.inputBox, inputStyle]}
                     {...props}
                 />
                 {arrow ?
@@ -33,7 +36,7 @@ export default class LabelTextInput extends Component {
                     />:
                     <Text style={[styles.rightText, rightStyle]}>{this.props.rightText}</Text>
                 }
-                {this.props.children}
+                {children}
             </View>
         )
     }
