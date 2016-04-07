@@ -2,13 +2,13 @@
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
             TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator,
-            StatusBar, WebView} from 'nuke';
+            StatusBar, WebView, Alert} from 'nuke';
+
+import TouchWebContainer from "../containers/TouchWebContainer";
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
 });
-
-import TouchWeb from './TouchWeb';
 
 class Profile extends Component{
   render() {
@@ -35,18 +35,44 @@ class CashArea extends Component{
   render() {
     return (
       <View style={[styles.cashContainer]}>
-        <View style={[styles.row, styles.cashSplit]}>
-          <Image source={require('../images/recharge.png')} style={[styles.cashImage]}/>
-          <Text style={styles.cashText}>充值</Text>
-        </View>
-        <View style={[styles.row]}>
-          <Image source={require('../images/withdraw.png')} style={[styles.cashImage]}/>
-          <Text style={styles.cashText}>提现</Text>
-        </View>
+        <TouchableWithoutFeedback onPress={this._triggerCharge}>
+          <View style={[styles.row, styles.cashSplit]}>
+            <Image source={require('../images/recharge.png')} style={[styles.cashImage]}/>
+            <Text style={styles.cashText}>充值</Text>
+          </View>
+        </TouchableWithoutFeedback>
+        
+        <TouchableWithoutFeedback onPress={this._triggerWithdraw}>
+          <View style={styles.row}>
+            <Image source={require('../images/withdraw.png')} style={[styles.cashImage]} />
+            <Text style={styles.cashText} >提现</Text>
+          </View>
+        </TouchableWithoutFeedback>
+        
+
       </View>
     );
   }
+
+  _triggerCharge = () => {
+    Alert.alert('温馨提示', '充值功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
+  };
+
+  _triggerWithdraw = () => {
+        let {navigator} = this.props;
+
+        navigator.push({
+            component: TouchWebContainer,
+            name: 'withdrawal',
+            title: '提现',
+            hideNavBar: false,
+            url: 'https://api.fangyuan360.cn/my/withdrawals/'
+        });
+  };
+
 }
+
+
 export default class User extends Component {
     constructor(props) {
         super(props);
@@ -67,10 +93,6 @@ export default class User extends Component {
     }
 
     render() {
-        // let {listData} = this.props;
-        // let houseList = houseData.get('properties');
-        var WEBVIEW_REF = 'webview';
-
         let {userProfile} = this.props;
 
         var profileData = userProfile.toJS();
@@ -86,7 +108,7 @@ export default class User extends Component {
                 </View>
                 <View>
                   <Profile {...profileData}/>
-                  <CashArea/>
+                  <CashArea navigator={this.props.navigator}/>
                 </View>
 
                 <ListView
