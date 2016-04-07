@@ -6,6 +6,9 @@ import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, P
 
 import TouchWebContainer from "../containers/TouchWebContainer";
 
+import ContactHouseContainer from '../containers/ContactHouseContainer'
+import InputHouseContainer from '../containers/InputHouseContainer'
+
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
 });
@@ -98,8 +101,9 @@ export default class User extends Component {
         var profileData = userProfile.toJS();
 
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        var featureSource = ds.cloneWithRows([{title: '联系过的房源', count: profileData.contacted}, {title: '发布的房源', count: profileData.published}]);
-        var settingSource = ds.cloneWithRows([{title: '设置'}]);
+        var featureSource = ds.cloneWithRows([{title: '联系过的房源', count: profileData.contacted, component: ContactHouseContainer, name: 'contactHouse'},
+            {title: '发布的房源', count: profileData.published, component: InputHouseContainer, name: 'inputHouse'}]);
+        var settingSource = ds.cloneWithRows([{title: '设置', component: '', name: 'settings'}]);
 
         return (
             <View style={styles.layout}>
@@ -114,14 +118,14 @@ export default class User extends Component {
                 <ListView
                   style={styles.listContainer}
                   dataSource={featureSource}
-                  renderRow={this._renderRow}
+                  renderRow={this._renderRow.bind(this)}
                   scrollEnabled={false}
                   automaticallyAdjustContentInsets={false} />
 
                 <ListView
                   style={[styles.listContainer, styles.settingContainer]}
                   dataSource={settingSource}
-                  renderRow={this._renderRow}
+                  renderRow={this._renderRow.bind(this)}
                   scrollEnabled={false}
                   automaticallyAdjustContentInsets={false} />
 
@@ -137,14 +141,31 @@ export default class User extends Component {
     _renderRow(data, section, rowId, d) {
       var separator = (rowId != 0) ? styles.listSeparator : {};
       return (
-        <View style={[styles.listItem, separator]}>
-          <Text style={styles.listText}>{data.title}</Text>
-          <Text style={[styles.listText, styles.listBadge, styles.absoluteTop]}>{data.count || ''}</Text>
-          <Image source={require('../images/arrow-right.png')} style={[styles.listIcon, styles.absoluteTop]}/>
-        </View>
+          <TouchableWithoutFeedback onPress={this._goPage.bind(this, data)}>
+              <View style={[styles.listItem, separator]}>
+                  <Text style={styles.listText}>{data.title}</Text>
+                  <Text style={[styles.listText, styles.listBadge, styles.absoluteTop]}>{data.count || ''}</Text>
+                  <Image source={require('../images/arrow-right.png')} style={[styles.listIcon, styles.absoluteTop]}/>
+              </View>
+          </TouchableWithoutFeedback>
       );
     }
+    _goPage(data) {
+        let {navigator} = this.props;
+
+        if(data.component) {
+            navigator.push({
+                component: data.component,
+                name: data.name,
+                title: data.title,
+                hideNavBar: false
+            });
+        } else {
+            Alert.alert('温馨提示', '设置功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
+        }
+    }
 }
+
 
 const styles = StyleSheet.create({
     layout: {

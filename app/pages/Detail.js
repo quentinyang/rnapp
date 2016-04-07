@@ -4,6 +4,8 @@ import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, I
 import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
 import DetailContainer from '../containers/DetailContainer';
+import HouseInputContainer from '../containers/HouseInputContainer'
+import UserContainer from '../containers/UserContainer'
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -65,7 +67,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn]}
                                 underlayColor="#fff"
-                                onPress={this._goPage.bind(this)}
+                                onPress={this._goPage.bind(this, HouseInputContainer)}
                             >
                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text>
                             </TouchableHighlight>
@@ -73,7 +75,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn, styles.margin]}
                                 underlayColor="#fff"
-                                onPress={this._goPage.bind(this)}
+                                onPress={this._goPage.bind(this, UserContainer)}
                             >
                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text>
                             </TouchableHighlight>
@@ -168,10 +170,16 @@ export default class Detail extends Component {
         });
     }
 
-    _goPage() {
-        //todo:: 跳转
+    _goPage(component) {
         this.props.actions.setErrorTipVisible(false);
-        console.log('go');
+
+        let {navigator} = this.props;
+        navigator.push({
+            component: component,
+            name: '',
+            title: '',
+            hideNavBar: true
+        });
     }
 
     _clickPhoneBtn(status, phone, hasPhone) {
