@@ -213,7 +213,7 @@ class Login extends React.Component {
         if(msg) {
             actions.errMsg(errMsgs[msg]);
         } else {
-            loginService({body:data})
+            loginService(data)
             .then((oData) => {
                 AsyncStorageComponent.save(TOKEN_KEY, oData.token);
                 gtoken = oData.token;
