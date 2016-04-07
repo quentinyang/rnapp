@@ -2,7 +2,7 @@
 
 import * as types from '../constants/AttentionBlockSet';
 import {fetchAttentionBlockSetService} from '../service/blockService';
-import {makeActionCreator} from './base';
+import {makeActionCreator, serviceAction} from './base';
 
 export const attentionBlockSetFetched = makeActionCreator(types.ATTENTION_BLOCK_SET_FETCHED, 'blockSet');
 export const attentionBlockSetAdded = makeActionCreator(types.ATTENTION_BLOCK_SET_ADDED, 'block');
@@ -12,13 +12,14 @@ export const attentionBlockSetCleared = makeActionCreator(types.ATTENTION_BLOCK_
 
 export function fetchAttentionBlockSet() {
     return dispatch => {
-        return fetchAttentionBlockSetService()
-            .then((oData) => {
-                console.info('Ajax Success: ', oData);
+        serviceAction(dispatch)({
+            service: fetchAttentionBlockSetService,
+            success: function(oData) {
                 dispatch(attentionBlockSetFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax Error: ', error);
-            })
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }

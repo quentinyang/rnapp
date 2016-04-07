@@ -1,6 +1,6 @@
 import * as types from '../constants/Login';
 import {login} from '../service/userService';
-import {makeActionCreator} from './base';
+import {makeActionCreator, serviceAction} from './base';
 
 export const phoneChanged = makeActionCreator(types.PHONE_CHANGED, 'phone');
 export const codeChanged = makeActionCreator(types.CODE_CHANGED, 'code');
@@ -13,12 +13,14 @@ export const errMsg = makeActionCreator(types.ERR_MSG, 'err_msg');
 
 export function loginSubmit(params) {
     return dispatch => {
-        return login({body:params})
-            .then((oData) => {
-                console.info('Ajax Success: ', oData);
-            })
-            .catch((error) => {
-                console.error('Ajax Error: ', error);
-            })
+        serviceAction(dispatch)({
+            service: login,
+            data: params,
+            success: function(oData) {
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }

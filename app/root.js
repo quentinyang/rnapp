@@ -1,7 +1,7 @@
 import React from 'react-native';
 import {Provider} from 'react-redux';
 import configureStore from './store/configureStore';
-import App from './containers/app';
+import App from './containers/AppContainer';
 
 const store = configureStore();
 

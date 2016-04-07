@@ -3,6 +3,7 @@
 import {combineReducers} from 'redux';
 import test from  './test';
 import login from  './login';
+import app from  './app';
 import houseList from  './houseList';
 import houseInput from  './houseInput';
 import home from  './home';
@@ -16,6 +17,7 @@ import settings from './settings';
 const rootReducer = combineReducers({
     test,
     login,
+    app,
     houseList,
     houseInput,
     home,

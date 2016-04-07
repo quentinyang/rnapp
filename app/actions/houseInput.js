@@ -1,6 +1,6 @@
 import * as types from '../constants/HouseInput';
 import {inputHouseService} from '../service/houseInputService';
-import {makeActionCreator} from './base';
+import {makeActionCreator, serviceAction} from './base';
 
 export const communityChanged = makeActionCreator(types.COMMUNITY_CHANGED, 'community');
 export const buildingChanged = makeActionCreator(types.BUILDING_CHANGED, 'building_num');
@@ -23,12 +23,14 @@ export const error = makeActionCreator(types.ERR_MSG, 'err_msg');
 
 export function houseSubmit(params) {
     return dispatch => {
-        return inputHouseService({body:params})
-            .then((oData) => {
-                console.info('Ajax Success: ', oData);
-            })
-            .catch((error) => {
-                console.log('Ajax Error: ', error);
-            })
+        serviceAction(dispatch)({
+            service: inputHouseService,
+            data: params,
+            success: function(oData) {
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }

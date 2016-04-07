@@ -8,7 +8,9 @@ module.exports=function(){
     }
 
     function loginService(data) {
-        return ajax.post(urls.user.login, data);
+        return ajax.post(urls.user.login, {
+            body: data
+        });
     }
 
     function getUserProfile(data) {

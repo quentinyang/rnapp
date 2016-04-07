@@ -66,6 +66,19 @@ class App extends Component {
         )
     }
 
+    componentDidUpdate() {
+        let {appData, actionsApp} = this.props;
+        if (!appData.get('auth')) {
+            _navigator.resetTo({
+                component: LoginContainer,
+                name: 'login',
+                title: '登录',
+                hideNavBar: true
+            });
+            actionsApp.webAuthentication(true);
+        }
+    }
+
     _configureScene = (route, routeStack) => {
         return Navigator.SceneConfigs.PushFromRight;
     };

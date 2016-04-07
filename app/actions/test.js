@@ -5,13 +5,15 @@ import {getPropertyList} from '../service/testService';
 
 export function fetchTypes() {
     return dispatch => {
-        return getPropertyList()
-            .then((oData) => {
+        serviceAction(dispatch)({
+            service: getPropertyList,
+            success: function(oData) {
                 dispatch(testLoading(true))
-            })
-            .catch((error) => {
+            },
+            error: function(oData) {
                 dispatch(testLoading(false))
-            })
+            }
+        })
     }
 }
 

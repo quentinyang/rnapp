@@ -3,7 +3,7 @@
 import * as types from '../constants/HouseList';
 import {fetchHouseListService, fetchAppendHouseListService, fetchPrependHouseListService, fetchHouseFilterService} from '../service/houseListService';
 import {fetchCommunityListService} from '../service/communityService';
-import {makeActionCreator} from './base';
+import {makeActionCreator, serviceAction} from './base';
 
 export const houseFetched = makeActionCreator(types.HOUSE_FETCHED, 'houseList');
 export const houseAppendFetched = makeActionCreator(types.HOUSE_APPEND_FETCHED, 'houseList');
@@ -27,65 +27,75 @@ export const houseListPageCleared = makeActionCreator(types.HOUSE_LIST_PAGE_CLEA
 
 export function fetchHouseList(params) {
     return dispatch => {
-        return fetchHouseListService(params)
-            .then((oData) => {
-                console.info('Ajax Success: ', oData);
+        serviceAction(dispatch)({
+            service: fetchHouseListService,
+            data: params,
+            success: function(oData) {
                 dispatch(houseFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax Error: ', error);
-            })
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }
 
 export function fetchAppendHouseList(params) {
     return dispatch => {
-        return fetchAppendHouseListService(params)
-            .then((oData) => {
-                console.info('Ajax Success: ', oData);
+        serviceAction(dispatch)({
+            service: fetchAppendHouseListService,
+            data: params,
+            success: function(oData) {
                 dispatch(houseAppendFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax Error: ', error);
-            })
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }
 
 export function fetchPrependHouseList(params) {
     return dispatch => {
-        return fetchPrependHouseListService(params)
-            .then((oData) => {
-                console.info('Ajax Success: ', oData);
+        serviceAction(dispatch)({
+            service: fetchPrependHouseListService,
+            data: params,
+            success: function(oData) {
                 dispatch(housePrependFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax Error: ', error);
-            })
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }
 
 export function fetchHouseFilter() {
     return dispatch => {
-        return fetchHouseFilterService()
-            .then((oData) => {
-                console.info('Ajax Success: ', oData);
+        serviceAction(dispatch)({
+            service: fetchHouseFilterService,
+            success: function(oData) {
                 dispatch(houseFilterFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax Error: ', error);
-            })
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }
 
 export function fetchHouseListCommunityList(params) {
     return dispatch => {
-        return fetchCommunityListService(params)
-            .then((oData) => {
+        serviceAction(dispatch)({
+            service: fetchCommunityListService,
+            data: params,
+            success: function(oData) {
                 dispatch(houseListSearchHouseFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax Error: ', error);
-            })
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }
 

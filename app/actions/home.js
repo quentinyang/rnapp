@@ -3,7 +3,7 @@
 import * as types from '../constants/Home';
 import {fetchAttentionHouseListService, fetchAttentionAppendHouseListService, fetchAttentionPrependHouseListService} from '../service/houseListService';
 import {fetchAttentionBlockAndCommunityService} from '../service/blockService';
-import {makeActionCreator} from './base';
+import {makeActionCreator, serviceAction} from './base';
 
 export const houseAttentionFetched = makeActionCreator(types.HOUSE_ATTENTION_FETCHED, 'houseList');
 export const houseAttentionAppendFetched = makeActionCreator(types.HOUSE_ATTENTION_APPEND_FETCHED, 'houseList');
@@ -13,53 +13,64 @@ export const attentionBlockAndCommunityFetched = makeActionCreator(types.ATTENTI
 
 export function fetchAttentionHouseList(params) {
     return dispatch => {
-        return fetchAttentionHouseListService()
-            .then((oData) => {
-                console.info('Ajax fetchAttentionHouseList Success: ', oData);
+        serviceAction(dispatch)({
+            service: fetchAttentionHouseListService,
+            data: params,
+            success: function(oData) {
                 dispatch(houseAttentionFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax fetchAttentionHouseList Error: ', error);
-            })
+            },
+            error: function(oData) {
+
+            }
+        })
+        
     }
 }
 
 export function fetchAttentionAppendHouseList(params) {
     return dispatch => {
-        return fetchAttentionAppendHouseListService(params)
-            .then((oData) => {
-                console.info('Ajax Success: fetchAttentionAppendHouseList', oData);
+        serviceAction(dispatch)({
+            service: fetchAttentionAppendHouseListService,
+            data: params,
+            success: function(oData) {
                 dispatch(houseAttentionAppendFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax Error: fetchAttentionAppendHouseList', error);
-            })
+            },
+            error: function(oData) {
+                
+            }
+        })
+        
     }
 }
 
 export function fetchAttentionPrependHouseList(params) {
     return dispatch => {
-        return fetchAttentionPrependHouseListService()
-            .then((oData) => {
-                console.info('Ajax Success: ', oData);
+        serviceAction(dispatch)({
+            service: fetchAttentionPrependHouseListService,
+            data: params,
+            success: function(oData) {
                 dispatch(houseAttentionPrependFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax Error: ', error);
-            })
+            },
+            error: function(oData) {
+                
+            }
+        })
+        
     }
 }
 
-export function fetchAttentionBlockAndCommunity() {
+export function fetchAttentionBlockAndCommunity(params) {
     return dispatch => {
-        return fetchAttentionBlockAndCommunityService()
-            .then((oData) => {
-                console.info(oData);
-                console.info('Ajax fetchAttentionBlockAndCommunity Success: ', oData);
+        serviceAction(dispatch)({
+            service: fetchAttentionBlockAndCommunityService,
+            data: params,
+            success: function(oData) {
                 dispatch(attentionBlockAndCommunityFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax fetchAttentionBlockAndCommunity Error: ', error);
-            })
+            },
+            error: function(oData) {
+                
+            }
+        })
+        
     }
 }

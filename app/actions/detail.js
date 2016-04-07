@@ -4,7 +4,7 @@ import * as types from '../constants/DetailType';
 import { InteractionManager } from 'nuke'
 import { getBaseInfoService, getStatusService, callSellerPhone, postFeedback } from '../service/detailService';
 import { fetchSimilarHouseListService } from '../service/houseListService';
-import {makeActionCreator} from './base';
+import {makeActionCreator, serviceAction} from './base';
 
 export const houseSimilarFetched = makeActionCreator(types.HOUSE_SIMILAR_FETCHED, 'houseList');
 export const houseBaseFetched = makeActionCreator(types.HOUSE_BASE_FETCHED, 'houseBase');
@@ -19,45 +19,55 @@ export const callSellerFailed = makeActionCreator(types.CALL_SELLER_FAILED, 'cal
 
 export function fetchBaseInfo(data) {
     return dispatch => {
-        return getBaseInfoService(data)
-             .then((oData) => {
-                 dispatch(houseBaseFetched(oData))
-             })
-            .catch((error) => {
-                console.error('Ajax Error: ', error);
-            })
+        serviceAction(dispatch)({
+            service: getBaseInfoService,
+            data: data,
+            success: function(oData) {
+                dispatch(houseBaseFetched(oData))
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }
 
 export function fetchSimilarHouseList(params) {
     return dispatch => {
-        return fetchSimilarHouseListService(params)
-            .then((oData) => {
+        serviceAction(dispatch)({
+            service: fetchSimilarHouseListService,
+            data: params,
+            success: function(oData) {
                 dispatch(houseSimilarFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax Error: ', error);
-            })
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }
 
 export function fetchHouseStatus(params) {
     return dispatch => {
-        return getStatusService(params)
-            .then((oData) => {
+        serviceAction(dispatch)({
+            service: getStatusService,
+            data: params,
+            success: function(oData) {
                 dispatch(houseStatusFetched(oData))
-            })
-            .catch((error) => {
-                console.error('Ajax Error: ', error);
-            })
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }
 
 export function callSeller(params) {
     return dispatch => {
-        return callSellerPhone(params)
-            .then((oData) => {
-                console.info('call seller Ajax Success: ', oData);
+        serviceAction(dispatch)({
+            service: callSellerPhone,
+            data: params,
+            success: function(oData) {
                 dispatch(setScoreTipVisible(false));
                 dispatch(callSellerSuccess(oData.log_id));
 
@@ -66,25 +76,28 @@ export function callSeller(params) {
                         dispatch(setFeedbackVisible(true));
                     }, 4000);
                 });
-            })
-            .catch((error) => {
+            },
+            error: function(error) {
                 dispatch(setScoreTipVisible(false));
                 dispatch(setErrorTipVisible(true));
                 dispatch(callSellerFailed(error))
-            })
+            }
+        })
     }
 }
 
 export function callFeedback(params) {
     return dispatch => {
-        return postFeedback(params)
-            .then((oData) => {
-                console.info('feedback Ajax Success: ', oData);
+        serviceAction(dispatch)({
+            service: postFeedback,
+            data: params,
+            success: function(oData) {
                 dispatch(setFeedbackVisible(false));
                 dispatch(setSellerPhone(oData.seller_phone));
-            })
-            .catch((error) => {
+            },
+            error: function(oData) {
 
-            })
+            }
+        })
     }
 }

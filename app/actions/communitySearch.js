@@ -2,7 +2,7 @@
 
 import * as types from '../constants/CommunitySearch';
 import {fetchCommunityListService} from '../service/communityService';
-import {makeActionCreator} from './base';
+import {makeActionCreator, serviceAction} from './base';
 
 export const settingSearchHouseFetched = makeActionCreator(types.SETTING_SEARCH_HOUSE_FETCHED, 'communityList');
 export const settingSearchCleared = makeActionCreator(types.SETTING_SEARCH_CLEARED);
@@ -10,14 +10,15 @@ export const settingSearchKeywordChanged = makeActionCreator(types.SETTING_SEARC
 
 export function fetchCommunityList(params) {
     return dispatch => {
-        return fetchCommunityListService(params)
-            .then((oData) => {
-                console.dir('fetchCommunityListService: ');
-                console.dir(oData)
+        serviceAction(dispatch)({
+            service: fetchCommunityListService,
+            data: params,
+            success: function(oData) {
                 dispatch(settingSearchHouseFetched(oData))
-            })
-            .catch((error) => {
-                console.log('Ajax Error: ', error);
-            })
+            },
+            error: function(oData) {
+
+            }
+        })
     }
 }
