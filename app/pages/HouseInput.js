@@ -28,7 +28,7 @@ class HouseInput extends Component {
             {houseForm, controller} = this.props.houseInput;
 
         return (
-            <View>
+            <View style={styles.container}>
             {controller.get('search') ?
                 <CommunitySearch
                     placeholder='请输入小区名'
@@ -38,7 +38,7 @@ class HouseInput extends Component {
                     onPress = {this.singleAction.bind(this)}
                 />
                 :
-                <View style={{backgroundColor: '#eee'}}>
+                <View style={styles.layout}>
                     <Header title='发布房源'>
                         <Text
                             style={styles.headerRight}
@@ -297,6 +297,13 @@ class Attached extends Component {
 }
 
 let styles = StyleSheet.create({
+    container: {
+        flex: 1
+    },
+    layout: {
+        flex: 1,
+        backgroundColor: '#eee'
+    },
     headerRight: {
         marginLeft: -75,
         marginRight: 15,
