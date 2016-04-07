@@ -38,6 +38,7 @@ export default class AttentionBlockSet extends Component {
                 <View style={styles.conformWrap}>
                     <TouchableHighlight
                         style={styles.conformButton}
+                        underlayColor="#04c1ae"
                         onPress={this._conformBlockSet}
                     >
                         <Text style={styles.conformText}>
