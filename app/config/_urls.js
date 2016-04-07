@@ -40,6 +40,10 @@ let urls = {
     },
     community: {
         list: HOST + 'community/search/app'
+    },
+    settings: {
+        contactHouse: HOST + 'my/house/contact',
+        inputHouse: HOST + 'my/house/input'
     }
 }
 
