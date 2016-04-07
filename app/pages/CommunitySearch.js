@@ -3,6 +3,7 @@
 import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, Alert} from 'nuke'
 import Autocomplete from '../components/autocomplete'
 import AutocompleteItem from '../components/AutocompleteItem'
+import * as common from '../constants/Common'
 
 export default class CommunitySearch extends Component {
     constructor(props) {
@@ -48,7 +49,9 @@ export default class CommunitySearch extends Component {
         let repeatCommunity = communitySelect.filter((v) => {
             return v.get('id') == community.get('id');
         });
-        if (repeatCommunity.size == 0) {
+        if (common.SETTING_COMMUNITY_COUNT_MAX == communitySelect.size) {
+            Alert.alert('提示', '最多关注小区' + common.SETTING_COMMUNITY_COUNT_MAX + '个', [{text: '确定'}]);
+        } else if (repeatCommunity.size == 0) {
             navigator.jumpBack();
             actionsOne.attentionListOneCommunityAdded(community)
         } else {

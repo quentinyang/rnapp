@@ -4,6 +4,7 @@ import {React, Component, Text, View, ScrollView, StyleSheet, InteractionManager
 import Tab from '../components/Tab';
 import TabViewContainer from '../containers/TabViewContainer';
 import {saveAttentionBlockSetService} from '../service/blockService';
+import * as common from '../constants/Common';
 
 export default class AttentionBlockSet extends Component {
     constructor(props) {
@@ -31,7 +32,7 @@ export default class AttentionBlockSet extends Component {
                     districtBlockList && districtBlockList.toJS().length > 0 ?
                     <Tab dataArr={districtBlockList}
                          selectedArr={districtBlockSelect}
-                         maxSelected={5}
+                         maxSelected={common.SETTING_BLOCK_COUNT_MAX}
                          onHandleBlockSelected={this._onHandleBlockSelected}/> : null
                 }
                 <View style={styles.conformWrap}>
