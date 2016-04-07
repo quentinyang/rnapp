@@ -2,6 +2,7 @@
 
 import * as types from '../constants/TestTypes';
 import {getPropertyList} from '../service/testService';
+import {makeActionCreator, serviceAction} from './base';
 
 export function fetchTypes() {
     return dispatch => {

@@ -2,7 +2,7 @@
 
 import * as types from '../constants/User';
 import {profileService} from '../service/userService';
-import {makeActionCreator} from './base';
+import {makeActionCreator, serviceAction} from './base';
 
 export const userProfileFetched = makeActionCreator(types.USER_PROFILE, 'profile');
 
