@@ -116,20 +116,6 @@ export function controller(state = controlData, action) {
     }
 }
 
-let successData = Immutable.fromJS({
-    'money': '',
-    'msg': ''
-})
-
-export function successInfo(state = Immutable.fromJS(successData), action) {
-    switch(action.type) {
-        case types.INPUT_SUCCESS:
-            return state.set('money', action.money).set('msg', action.msg);
-        default:
-            return state;
-    }
-}
-
 export function communityList(state = Immutable.fromJS([]), action) {
     switch(action.type) {
         case types.COMMUNITY_SEARCHED:
@@ -145,7 +131,6 @@ export default combineReducers({
     houseForm,
     params,
     controller,
-    successInfo,
     communityList,
     communityKeyword
 });

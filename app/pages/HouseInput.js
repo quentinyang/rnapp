@@ -378,6 +378,7 @@ let styles = StyleSheet.create({
         marginRight: 5
     },
     submitBox: {
+        marginBottom: 20,
         paddingLeft: 25,
         paddingRight: 25
     }
