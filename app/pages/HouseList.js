@@ -147,11 +147,10 @@ export default class HouseList extends Component {
         let pager = houseData.get('pager');
         if (!loaded) {
             InteractionManager.runAfterInteractions(() => {
-                actions.fetchHouseList({
-                    page: Number(pager.get('current_page')) + 1,
-                    ...queryParamsData.toJS()
-                });
-
+                // actions.fetchHouseList({
+                //     page: Number(pager.get('current_page')) + 1,
+                //     ...queryParamsData.toJS()
+                // });
                 actions.fetchHouseFilter();
             });
         }
