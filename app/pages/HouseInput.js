@@ -12,11 +12,13 @@ import {
     ScrollView
 } from 'nuke';
 
+import {inputHouseService} from '../service/houseInputService';
 import Header from '../components/Header';
 import WithLabel from '../components/LabelTextInput';
 import ErrorMsg from '../components/ErrorMsg';
 import TouchableSubmit from '../components/TouchableSubmit';
 import CommunitySearch from '../components/SearchComponent';
+import HouseInputSuccessContainer from '../containers/HouseInputSuccessContainer';
 
 class HouseInput extends Component {
     constructor(props) {
@@ -47,6 +49,11 @@ class HouseInput extends Component {
                             积分规则
                         </Text>
                     </Header>
+                    <ScrollView
+                        ref="scrollView"
+                        style={styles.container}
+                        automaticallyAdjustContentInsets={false}
+                    >
                     <View style={styles.formBox}>
                         <WithLabel
                             label='小区'
@@ -105,7 +112,6 @@ class HouseInput extends Component {
                             keyboardType='numeric'
                             maxLength={2}
                             value={houseForm.get('bedrooms')}
-                            placeholder='几'
                             onChangeText={(v) => {this.singleAction('bedroomsChanged', v)}}
                         >
                             <TextInput
@@ -113,7 +119,6 @@ class HouseInput extends Component {
                                 style={[styles.inputBox, styles.alignCenter]}
                                 maxLength={1}
                                 value={houseForm.get('living_rooms')}
-                                placeholder='几'
                                 onChangeText={(v) => {this.singleAction('livingroomsChanged', v)}}
                             />
                             <Text>厅</Text>
@@ -122,7 +127,6 @@ class HouseInput extends Component {
                                 style={[styles.inputBox, styles.alignCenter]}
                                 maxLength={1}
                                 value={houseForm.get('bathrooms')}
-                                placeholder='几'
                                 onChangeText={(v) => {this.singleAction('bathroomsChanged', v)}}
                             />
                             <Text>卫</Text>
@@ -130,6 +134,7 @@ class HouseInput extends Component {
                         <WithLabel
                             label='面积'
                             rightText='平米'
+                            maxLength={8}
                             keyboardType='numeric'
                             value={houseForm.get('area')}
                             placeholder='输入面积'
@@ -138,6 +143,7 @@ class HouseInput extends Component {
                         <WithLabel
                             label='价格'
                             rightText='万'
+                            maxLength={6}
                             keyboardType='numeric'
                             value={houseForm.get('price')}
                             placeholder='输入价格'
@@ -170,6 +176,7 @@ class HouseInput extends Component {
                             submitText='完成'
                         />
                     </View>
+                    </ScrollView>
                 </View>
             }
             </View>
@@ -196,8 +203,25 @@ class HouseInput extends Component {
             houseForm = this.props.houseInput.houseForm.toJS(),
             msg = this.checkForm();
 
-        msg ? this.props.actions.error(errMsgs[msg]):actions.houseSubmit(houseForm);
+        msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };
+
+    submitSuccess(params) {
+        let {actions, navigator} = this.props;
+
+        inputHouseService({body:params})
+        .then((oData) => {
+            navigator.push({
+                component: HouseInputSuccessContainer,
+                name: 'houseInputSuccess',
+                title: '发布成功',
+                hideNavBar: false,
+            });
+        })
+        .catch((error) => {
+            actions.error(error.msg);
+        })
+    }
 
     checkForm() {
         let houseForm = this.props.houseInput.houseForm.toJS(),

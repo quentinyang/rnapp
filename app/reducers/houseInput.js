@@ -15,16 +15,7 @@ let initInput = Immutable.fromJS({
     'area': '',
     'bedrooms': '',
     'living_rooms': '',
-    'bathrooms': '',
-    'floor': '',
-    'total_floors': '',
-    'orientation': '',
-    'fitment': '',
-    'building_type': '',
-    'tags': [],
-    'listed_year': '',
-    'listed_month': '',
-    'listed_at': ''
+    'bathrooms': ''
 });
 
 function houseForm(state = initInput, action) {
@@ -51,23 +42,6 @@ function houseForm(state = initInput, action) {
             return state.set('living_rooms', action.living_rooms);
         case types.BATHROOMS_CHANGED:
             return state.set('bathrooms', action.bathrooms);
-        case types.FLOOR_CHANGED:
-            return state.set('floor', action.floor);
-        case types.TOTALFLOOR_CHANGED:
-            return state.set('total_floors', action.total_floors);
-        case types.ORIENTATION_CHANGED:
-            return state.set('orientation', action.orientation);
-        case types.FITMENT_CHANGED:
-            return state.set('fitment', action.fitment);
-        case types.BUILDINGTYPE_CHANGED:
-            return state.set('building_type', action.building_type);
-        case types.TAGS_CHANGED:
-            return state.set('tags', action.tags);
-
-        case types.LISTEDAT_YEAR_CHANGED:
-            return state.set('listed_year', action.listed_year);
-        case types.LISTEDAT_MONTH_CHANGED:
-            return state.set('listed_month', action.listed_month);
         case types.INPUT_DATA_CLEARED:
             return initInput;
         default:
@@ -134,12 +108,15 @@ export function controller(state = controlData, action) {
     }
 }
 
-export function defaultData(state = Immutable.fromJS([]), action) {
+let successData = Immutable.fromJS({
+    'money': '',
+    'msg': ''
+})
+
+export function successInfo(state = Immutable.fromJS(successData), action) {
     switch(action.type) {
-        case types.INPUT_DATA:
-            return state = Immutable.fromJS(action.input_data);
-        case types.INPUT_DATA_CLEARED:
-            return Immutable.fromJS([]);
+        case types.INPUT_SUCCESS:
+            return state.set('money', action.money).set('msg', action.msg);
         default:
             return state;
     }
@@ -160,7 +137,7 @@ export default combineReducers({
     houseForm,
     params,
     controller,
-    defaultData,
+    successInfo,
     communityList,
     communityKeyword
 });
