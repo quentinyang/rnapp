@@ -98,7 +98,7 @@ class App extends Component {
                     RightButton: this._rightButton,
                     Title: this._title
                 }}
-                style={styles.navBar}
+                style={[styles.navBar]}
             />)
         }
     };
@@ -107,7 +107,7 @@ class App extends Component {
         return (
             <TouchableOpacity
                 onPress={() => navigator.pop()}
-                style={styles.navBarLeftButton}>
+                style={[styles.navBarLeftButton, styles.flex, styles.justifyContent, styles.alignItems]}>
                 <Image
                     source={require('../images/back.png')}
                     style={styles.icon}
@@ -115,18 +115,16 @@ class App extends Component {
             </TouchableOpacity>
         );
     };
-        // <TouchableOpacity
-        //         onPress={() => navigator.pop()}
-        //         style={styles.navBarRightButton}>
-        //         <Text style={styles.navBarText}>Right</Text>
-        //     </TouchableOpacity>
+
     _rightButton = (route, navigator, index, navState) => {
         return null;
     };
 
     _title = (route, navigator, index, navState) => {
         return (
-            <Text style={styles.navBarTitleText}>{route.title}</Text>
+            <View style={[styles.flex, styles.justifyContent, styles.alignItems]}>
+                <Text style={styles.navBarTitleText}>{route.title}</Text>
+            </View>
         )
     };
 
@@ -145,23 +143,18 @@ let styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     navBarWarp: {
-        marginTop: (Platform.OS === 'ios') ? 64: 48
+        marginTop: (Platform.OS === 'ios') ? 65: 48
     },
     navBar: {
         backgroundColor: '#fff',
         borderColor: '#ddd',
         borderWidth: 1,
-        height: (Platform.OS === 'ios') ? 64: 48,
-    },
-    navBarText: {
-        // fontSize: (Platform.OS === 'ios')? 20: 19,
-        // marginVertical: (Platform.OS === 'ios')? 11: 12,
+        height: (Platform.OS === 'ios') ? 65: 48
     },
     navBarTitleText: {
-        fontSize: (Platform.OS === 'ios')? 20: 19,
-        marginTop: (Platform.OS === 'ios')? 10: 20,
-        fontWeight: '500',
-        color: (Platform.OS === 'ios')? '#333': '#666'
+        fontSize: 19,
+        fontWeight: 'bold',
+        color: '#3e3e3e'
     },
     navBarLeftButton: {
         paddingLeft: 15
@@ -170,9 +163,14 @@ let styles = StyleSheet.create({
         marginRight: 15
     },
     icon: {
-        width: 10,
-        height: 24,
-        marginTop: (Platform.OS === 'ios')? 6: 9
+        width: 9.5,
+        height: 20.5
+    },
+    alignItems: {
+        alignItems: 'center'
+    },
+    justifyContent: {
+        justifyContent: 'center'
     }
 });
 

@@ -118,7 +118,7 @@ export default class Home extends Component {
             component: HouseListContainer,
             name: 'houseList',
             title: '全部房源',
-            hideNavBar: false
+            hideNavBar: true
         });
     };
 

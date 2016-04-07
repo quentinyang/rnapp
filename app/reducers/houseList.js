@@ -88,6 +88,13 @@ function queryParamsData(state = Immutable.fromJS(initQueryParams), action) {
             return state.set('min_price', action.min).set('max_price', action.max);
         case types.FILTER_TAB_BEDROOMS_CHANGED:
             return state.set('min_bedrooms', action.min).set('max_bedrooms', action.max);
+        case types.FILTER_COMMUNITY_NAME_CHANGED:
+            let newData = Immutable.fromJS(initQueryParams);
+            return newData.set('community_id', action.communityId).set('community_name', action.communityName);
+            break;
+        case types.FILTER_COMMUNITY_NAME_CLEARED:
+            return Immutable.fromJS(initQueryParams);
+            break;
         case types.HOUSE_LIST_PAGE_CLEARED:
             return Immutable.fromJS(initQueryParams);
             break;
@@ -101,7 +108,8 @@ let initUIData = {
     onlyVerify: false,
     areaName: '',
     priceName: '',
-    bedroomsName: ''
+    bedroomsName: '',
+    autocompleteView: false
 };
 
 function uiData(state = Immutable.fromJS(initUIData), action) {
@@ -121,8 +129,37 @@ function uiData(state = Immutable.fromJS(initUIData), action) {
         case types.FILTER_TAB_BEDROOMS_CHANGED:
             return state.set('bedroomsName', action.title);
             break;
+        case types.AUTOCOMPLETE_VIEW_SHOWED:
+            return state.set('autocompleteView', action.show);
+            break;
+        case types.FILTER_COMMUNITY_NAME_CHANGED:
+            return Immutable.fromJS(initUIData);
+            break;
+        case types.FILTER_COMMUNITY_NAME_CLEARED:
+            return Immutable.fromJS(initUIData);
+            break;
         case types.HOUSE_LIST_PAGE_CLEARED:
             return Immutable.fromJS(initUIData);
+            break;
+        default:
+            return state;
+    }
+}
+
+let initCommunityData = {
+    results: [],
+};
+
+function communityData(state = Immutable.fromJS(initCommunityData), action) {
+    switch(action.type) {
+        case types.HOUSE_LIST_SEARCH_HOUSE_FETCHED:
+            return state.set('results', Immutable.fromJS(action.communityList));
+            break;
+        case types.HOUSE_LIST_SEARCH_KEYWORD_CHANGED:
+            return state.set('keyword', action.keyword);
+            break;
+        case types.HOUSE_LIST_SEARCH_CLEARED:
+            return Immutable.fromJS(initCommunityData);
             break;
         default:
             return state;
@@ -133,5 +170,6 @@ export default combineReducers({
     houseData,
     filterData,
     queryParamsData,
-    uiData
+    uiData,
+    communityData
 });

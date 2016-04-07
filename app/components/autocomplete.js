@@ -27,7 +27,7 @@ export default class Autocomplete extends Component {
 
         return (
             <View style={[styles.flex, styles.column]}>
-                <View style={[styles.border, {height: 64}]}>
+                <View style={[styles.border, styles.box]}>
                     <View style={[styles.flex, styles.row, styles.searchContainer]}>
                         <View style={styles.searchBox}>
                             <Image
@@ -44,7 +44,7 @@ export default class Autocomplete extends Component {
                             />
                         </View>
 
-                        <TouchableHighlight style={{height: 33}} underlayColor="#fff" onPress={this.props.onCancelSearch}>
+                        <TouchableHighlight style={styles.cancelBtnBox} underlayColor="#fff" onPress={this.props.onCancelSearch}>
                             <View style={styles.cancelBox}>
                                 <Text style={styles.cancelBtn}>取消</Text>
                             </View>
@@ -68,6 +68,9 @@ const styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row',
+    },
+    box: {
+        height: 65,
     },
     column: {
         flexDirection: 'column'
@@ -97,6 +100,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center"
     },
+    cancelBtnBox: {
+        height: 33
+    },
     cancelBtn: {
         width: 60,
         textAlign: 'center',
@@ -110,7 +116,7 @@ const styles = StyleSheet.create({
         padding: 15
     },
     border: {
-        borderBottomWidth: 1,
+        borderBottomWidth: 1/PixelRatio.get(),
         borderBottomColor: '#d9d9d9',
         borderStyle: 'solid'
     }

@@ -8,6 +8,9 @@ import Immutable, {List} from 'immutable';
 import Filter from '../components/Filter';
 import FilterTab from '../components/FilterTab';
 import Area from '../components/Area';
+import SearchNavigator from '../components/SearchNavigator';
+import Autocomplete from '../components/autocomplete'
+import AutocompleteItem from '../components/AutocompleteItem'
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -25,7 +28,7 @@ export default class HouseList extends Component {
     }
 
     render() {
-        let {houseData, filterData, uiData, queryParamsData} = this.props;
+        let {houseData, filterData, uiData, queryParamsData, navigator, communityData} = this.props;
         let houseList = houseData.get('properties');
         let pager = houseData.get('pager');
         let tabType = uiData.get('tabType');
@@ -35,7 +38,11 @@ export default class HouseList extends Component {
         let priceName = uiData.get('priceName');
 
         return (
-            <View style={styles.flex}>
+            !uiData.get('autocompleteView') ? <View style={styles.flex}>
+                <SearchNavigator navigator={navigator} onSearch={this._onSearch}
+                    titleName={queryParamsData.get('community_name')}
+                    onClearKeyword={this._onClearKeyword}
+                />
                 <Filter
                     tabType={tabType}
                     onlyVerify={onlyVerify}
@@ -119,6 +126,17 @@ export default class HouseList extends Component {
                         </View>
                     : null
                 }
+            </View>
+            :
+            <View style={styles.flex}>
+                <Autocomplete
+                    placeholder="搜索小区..."
+                    keyword={queryParamsData.get('community_name')}
+                    results = {communityData.get('results')}
+                    renderRow={this._renderAutocompleteRow}
+                    onChangeText={this._onChangeText}
+                    onCancelSearch={this._cancelSearch}
+                />
             </View>
         )
     }
@@ -277,6 +295,45 @@ export default class HouseList extends Component {
         actions.filterItemPressed('')
     };
 
+    // autocomplete
+    _onSearch = () => {
+        let {actions, queryParamsData} = this.props;
+        let communityName = queryParamsData.get('community_name');
+
+        actions.autocompleteViewShowed(true)
+        actions.fetchHouseListCommunityList({keyword: communityName});
+    };
+
+    _cancelSearch = () => {
+        let {actions} = this.props;
+
+        actions.autocompleteViewShowed(false)
+    };
+
+    _onChangeText = (value) => {
+        let {actions} = this.props;
+        actions.fetchHouseListCommunityList({keyword: value});
+    };
+
+    _renderAutocompleteRow = (item, index) => {
+        return <AutocompleteItem key={index} item={item} onPress={this._autocompleteRowPress}/>;
+    };
+
+    _autocompleteRowPress = (item) => {
+        let {actions} = this.props;
+        actions.fetchHouseList({
+            page: 1,
+            community_id: item.get('id'),
+            community_name: item.get('name')
+        });
+        actions.filterCommunityNameChanged(item.get('id'), item.get('name'));
+    };
+
+    _onClearKeyword = () => {
+        let {actions} = this.props;
+        actions.fetchHouseList({page: 1});
+        actions.filterCommunityNameCleared()
+    };
 }
 
 const styles = StyleSheet.create({
@@ -311,14 +368,14 @@ const styles = StyleSheet.create({
     },
     mask: {
         position: 'absolute',
-        top: 43,
+        top: 108,
         bottom: 0,
         left: 0,
         right: 0
     },
     filterMask: {
         position: 'absolute',
-        top: 43,
+        top: 108,
         left: 0,
         right: 0,
         height: 278
