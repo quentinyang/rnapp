@@ -84,7 +84,7 @@ export default class Home extends Component {
         )
     };
 
-    _onItemPress = (propertyId, communityId, communityName) => {
+    _onItemPress = (item) => {
         let {navigator} = this.props;
 
         navigator.push({
@@ -92,9 +92,7 @@ export default class Home extends Component {
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
-            propertyId,
-            communityId,
-            communityName
+            item
         });
     };
 

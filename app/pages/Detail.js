@@ -155,7 +155,7 @@ export default class Detail extends Component {
 
     componentDidMount() {
         let {actions, route, baseInfo} = this.props;
-        let propertyId = route.propertyId;
+        let propertyId = route.item.get('property_id');
         let info = baseInfo.get("baseInfo");
 
         InteractionManager.runAfterInteractions(() => {
@@ -169,10 +169,15 @@ export default class Detail extends Component {
                 property_id: propertyId
             });
 
-            if(info.get("")) {
+            if(info.get("is_reply") === false) {
+                actions.callSellerSuccess(info.get("") || 78);
                 actions.setFeedbackVisible(true);
             }
         });
+    }
+
+    componentWillUnmount() {
+        this.props.actions.clearHouseBase();
     }
 
     _goPage(component) {
@@ -232,10 +237,10 @@ export default class Detail extends Component {
     };
 
     _renderHeader = () => {
-        let { baseInfo } = this.props;
+        let { baseInfo, route } = this.props;
         return (
             <View>
-                <BaseInfo info={baseInfo} />
+                <BaseInfo info={baseInfo} route={route} />
                 <View style={[styles.itemContainer, styles.row]}>
                     <Text style={styles.bar}></Text>
                     <Text style={styles.baseSize}>同小区房源</Text>
@@ -252,7 +257,7 @@ export default class Detail extends Component {
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
-            propertyId: propertyId
+            item
         });
     };
 
@@ -276,7 +281,8 @@ class BaseInfo extends Component {
         super(props);
     }
     render() {
-        let {info} = this.props;
+        let {info, route} = this.props;
+        let houseInfo = route.item;
         let baseInfo = info.get('baseInfo');
         let status = info.get('status');
 
@@ -289,21 +295,21 @@ class BaseInfo extends Component {
             <View style={styles.container}>
                 <View style={styles.itemContainer}>
                     <View style={[styles.row, styles.name]}>
-                        <Text numberOfLines={1} style={{fontSize: 19, flex: 1}}>{baseInfo.get('community_name') || ''} {baseInfo.get('building_num') || ''}{baseInfo.get('building_unit') || ''}{baseInfo.get('door_num') || ''}室</Text>
+                        <Text numberOfLines={1} style={{fontSize: 19, flex: 1}}>{houseInfo.get('community_name') || ''} {houseInfo.get('building_num') || ''}{houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}室</Text>
                         <Text style={{fontSize: 12, width: 68, color: '#8d8c92'}}>查看次数:{baseInfo.get('see_count')}</Text>
                     </View>
-                    <Text style={styles.baseSize}>{baseInfo.get('district_name') || ''}-{baseInfo.get('block_name') || ''}<Text style={styles.baseSpace}>{baseInfo.get('community_address') || ''}</Text></Text>
+                    <Text style={styles.baseSize}>{houseInfo.get('district_name') || baseInfo.get('district_name') || ''}-{houseInfo.get('block_name') || baseInfo.get('block_name') || ''}<Text style={styles.baseSpace}>{houseInfo.get('community_address') || baseInfo.get('community_address') || ''}</Text></Text>
                 </View>
 
                 <View style={[styles.itemContainer, styles.row]}>
                     <Text style={styles.baseSize}>户型:</Text>
-                    <Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('bedrooms') || ''}室{baseInfo.get('living_rooms') || ''}厅{baseInfo.get('bathrooms') || ''}卫</Text>
+                    <Text style={[styles.baseSize, styles.baseSpace]}>{houseInfo.get('bedrooms') || ''}室{houseInfo.get('living_rooms') || ''}厅{houseInfo.get('bathrooms') || ''}卫</Text>
                 </View>
                 <View style={[styles.itemContainer, styles.row]}>
                     <Text style={styles.baseSize}>面积:</Text>
-                    <Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('area') || ''}m²</Text>
+                    <Text style={[styles.baseSize, styles.baseSpace]}>{houseInfo.get('area') || ''}m²</Text>
                 </View>
-                <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>总价:</Text><Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('price') || ''}万</Text></View>
+                <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>总价:</Text><Text style={[styles.baseSize, styles.baseSpace]}>{houseInfo.get('price') || ''}万</Text></View>
                 <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>单价:</Text><Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('avg_price') || ''}元/m²</Text></View>
                 <View style={styles.itemContainer}>
                     <View style={styles.row}><Text style={styles.baseSize}>状态:</Text><Text style={[styles.baseSize, styles.baseSpace, {color: '#ff6d4b'}]}>{baseInfo.get('status') || ''}</Text></View>

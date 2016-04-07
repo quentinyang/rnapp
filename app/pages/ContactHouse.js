@@ -110,7 +110,7 @@ export default class ContactHouse extends Component {
         this.setState({isRefreshing: false});
     };
 
-    _onItemPress = (propertyId) => {
+    _onItemPress = (item) => {
         let {navigator} = this.props;
 
         navigator.push({
@@ -118,7 +118,7 @@ export default class ContactHouse extends Component {
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
-            propertyId: propertyId
+            item
         });
     };
 }

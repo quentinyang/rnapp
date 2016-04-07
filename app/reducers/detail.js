@@ -31,6 +31,9 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
         case types.HOUSE_STATUS_FETCHED:
             return state.set('status', Immutable.fromJS(action.houseStatus));
             break;
+        case types.CLEAR_HOUSE_BASE:
+            return Immutable.fromJS(initialBaseInfo);
+            break;
         default:
             return state;
     }

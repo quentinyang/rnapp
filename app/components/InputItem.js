@@ -14,7 +14,7 @@ export default class InputItem extends Component {
         let statusStr = ['待审核', '已通过', '未通过'],
             statusInfoStr = ['客服将在24小时内审核房源', '获得' + item.get('money') + '积分', item.get('reason')];
         return (
-            <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item.get('property_id'), item.get('community_id'), item.get('community_name'))} key={item.get('property_id')}>
+            <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
                     <View style={[styles.row, styles.center]}>
                         <View style={[styles.row, styles.flex, styles.center]}>
@@ -38,8 +38,8 @@ export default class InputItem extends Component {
         );
     }
 
-    _onHandlePress = (propertyId, communityId, communityName) => {
-        this.props.onItemPress(propertyId, communityId, communityName);
+    _onHandlePress = (item) => {
+        this.props.onItemPress(item);
     };
 }
 

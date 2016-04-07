@@ -212,7 +212,7 @@ export default class HouseList extends Component {
         this.setState({isRefreshing: false});
     };
 
-    _onItemPress = (propertyId) => {
+    _onItemPress = (item) => {
         let {navigator} = this.props;
 
         navigator.push({
@@ -220,7 +220,7 @@ export default class HouseList extends Component {
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
-            propertyId: propertyId
+            item
         });
     };
 

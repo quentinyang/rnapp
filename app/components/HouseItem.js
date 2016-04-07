@@ -13,14 +13,15 @@ export default class HouseItem extends Component {
         let date = formatDate(item.get('updated_at'));
 
         return (
-            <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item.get('property_id'), item.get('community_id'), item.get('community_name'))} key={item.get('property_id')}>
+            <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
                     <View style={[styles.row, styles.center]}>
                         <View style={[styles.row, styles.flex, styles.center]}>
-                            <Text style={[styles.headerMsg, styles.headerPadding]}>{item.get('community_name')}</Text>
-                            <Text style={[styles.headerMsg, styles.headerPadding]}>{item.get('building_num') + item.get('building_unit') + item.get('door_num')}</Text>
+
+                            <Text style={[styles.headerMsg, styles.headerPadding, styles.flex]} numberOfLines={1}>{item.get('community_name')}  {item.get('building_num') + item.get('building_unit') + item.get('door_num')}</Text>
+
                             {
-                                item.get('is_new') ? <Text style={styles.tagNew}>新上</Text> : null
+                                item.get('is_new') ? <Text style={[styles.tagNew]}>新上</Text> : null
                             }
                             {
                                 item.get('is_verify') ? <Text style={[styles.tagNew, styles.tagAuth]}>已认证</Text> : null
@@ -78,10 +79,12 @@ const styles = StyleSheet.create({
         fontSize: 12,
         padding: 2,
         fontWeight: '500',
-        marginRight: 10
+        marginRight: 10,
+        width: 30
     },
     tagAuth: {
-        backgroundColor: '#45c7c9'
+        backgroundColor: '#45c7c9',
+        width: 44
     },
     updatedAt: {
         color: '#8d8c92',

@@ -13,7 +13,7 @@ export default class ContactItem extends Component {
         let date = formatDate(item.get('reply_at'));
         let statusStr = ['未反馈', '确认在卖', '反馈虚假', '联系不上'];
         return (
-            <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item.get('property_id'), item.get('community_id'), item.get('community_name'))} key={item.get('property_id')}>
+            <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
                     <View style={[styles.row, styles.center]}>
                         <View style={[styles.row, styles.flex, styles.center]}>
@@ -48,8 +48,8 @@ export default class ContactItem extends Component {
         }
     };
 
-    _onHandlePress = (propertyId, communityId, communityName) => {
-        this.props.onItemPress(propertyId, communityId, communityName);
+    _onHandlePress = (item) => {
+        this.props.onItemPress(item);
     };
 }
 
