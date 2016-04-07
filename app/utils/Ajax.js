@@ -1,9 +1,12 @@
 'use strict';
 
 function status(response, resolve, reject) {
-    if(response.status >= 200 && response.status < 300) {
+    if((response.status >= 200 && response.status < 300) || response.status == 304) {
         resolve(response.json());
     } else {
+        if (response.status == 400) {
+            // TODO::go to login
+        }
         response.json().then(reject);
     }
 }
@@ -31,7 +34,7 @@ function get(url, params = {}) {
             ...paramsOther
         })
         .then((response) => {
-            resolve(response.json());
+            status(response, resolve, reject);
         })
         .catch((error) => {
             reject(error)

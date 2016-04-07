@@ -10,6 +10,7 @@ let urls = {
     user: {
         sendCode: HOST + 'sendcode.json',
         login: HOST + 'login.json',
+        profile: HOST + 'profile.json',
     },
     house: {
         list: HOST + 'house-list.json',
