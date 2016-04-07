@@ -17,7 +17,7 @@ export function fetchCommunityList(params) {
                 dispatch(settingSearchHouseFetched(oData))
             })
             .catch((error) => {
-                console.error('Ajax Error: ', error);
+                console.log('Ajax Error: ', error);
             })
     }
 }

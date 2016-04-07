@@ -16,6 +16,7 @@ import Header from '../components/Header';
 import WithLabel from '../components/LabelTextInput';
 import ErrorMsg from '../components/ErrorMsg';
 import TouchableSubmit from '../components/TouchableSubmit';
+import CommunitySearch from '../components/SearchComponent';
 
 class HouseInput extends Component {
     constructor(props) {
@@ -23,143 +24,154 @@ class HouseInput extends Component {
     }
 
     render() {
-        let isSelected = true,
+        let {communityData} = this.props.communitySearch,
             {houseForm, controller} = this.props.houseInput;
 
         return (
-            <View style={{backgroundColor: '#eee'}}>
-                <Header title='发布房源'>
-                    <Text
-                        style={styles.headerRight}
-                        onPress={this.linkFn}
-                    >
-                        积分规则
-                    </Text>
-                </Header>
-                <View style={styles.formBox}>
-                    <WithLabel
-                        label='小区'
-                        arrow={true}
-                        value=''
-                        placeholder='选择小区'
-                        editable={false}
-                        onFocus={() => {}}
-                    />
-                    <WithLabel
-                        label='楼栋'
-                        rightText='号/座'
-                        rightStyle={controller.get('single')? {color: '#fff'}: {}}
-                        value={houseForm.get('building_num')}
-                        placeholder={controller.get('single')?'':'输入楼号/座号'}
-                        editable={controller.get('single')? false: true}
-                        onChangeText={(v) => {this.singleAction('buildingChanged', v)}}
-                    >
-                        <Attached
-                            isSelected={controller.get('single')}
-                            attachedText='独栋'
-                            toggleAttach={() => this.toggleAttach('singleChanged', !controller.get('single'), 'buildingChanged')}
-                        />
-                    </WithLabel>
-                    <WithLabel
-                        label='单元'
-                        value={houseForm.get('unit_num')}
-                        placeholder={controller.get('no_unit')?'':'输入单元号'}
-                        editable={controller.get('no_unit')? false: true}
-                        onChangeText={(v) => {this.singleAction('unitChanged', v)}}
-                    >
-                        <Attached
-                            isSelected={controller.get('no_unit')}
-                            attachedText='无'
-                            toggleAttach={() => this.toggleAttach('noUnit', !controller.get('no_unit'), 'unitChanged')}
-                        />
-                    </WithLabel>
-                    <WithLabel
-                        label='房号'
-                        rightText='室'
-                        rightStyle={controller.get('villa')? {color: '#fff'}: {}}
-                        value={houseForm.get('door_num')}
-                        placeholder={controller.get('villa')?'':'输入房号'}
-                        editable={controller.get('villa')? false: true}
-                        onChangeText={(v) => {this.singleAction('doorChanged', v)}}
-                    >
-                        <Attached
-                            isSelected={controller.get('villa')}
-                            attachedText='别墅'
-                            toggleAttach={() => this.toggleAttach('villaChanged', !controller.get('villa'), 'doorChanged')}
-                        />
-                    </WithLabel>
-                    <WithLabel
-                        label='户型'
-                        rightText='室'
-                        inputStyle={styles.alignCenter}
-                        keyboardType='numeric'
-                        maxLength={2}
-                        value={houseForm.get('bedrooms')}
-                        placeholder='几'
-                        onChangeText={(v) => {this.singleAction('bedroomsChanged', v)}}
-                    >
-                        <TextInput
-                            keyboardType='numeric'
-                            style={[styles.inputBox, styles.alignCenter]}
-                            maxLength={1}
-                            value={houseForm.get('living_rooms')}
-                            placeholder='几'
-                            onChangeText={(v) => {this.singleAction('livingroomsChanged', v)}}
-                        />
-                        <Text>厅</Text>
-                        <TextInput
-                            keyboardType='numeric'
-                            style={[styles.inputBox, styles.alignCenter]}
-                            maxLength={1}
-                            value={houseForm.get('bathrooms')}
-                            placeholder='几'
-                            onChangeText={(v) => {this.singleAction('bathroomsChanged', v)}}
-                        />
-                        <Text>卫</Text>
-                    </WithLabel>
-                    <WithLabel
-                        label='面积'
-                        rightText='平米'
-                        keyboardType='numeric'
-                        value={houseForm.get('area')}
-                        placeholder='输入面积'
-                        onChangeText={(v) => {this.singleAction('areaChanged', v)}}
-                    />
-                    <WithLabel
-                        label='价格'
-                        rightText='万'
-                        keyboardType='numeric'
-                        value={houseForm.get('price')}
-                        placeholder='输入价格'
-                        onChangeText={(v) => {this.singleAction('priceChanged', v)}}
-                    />
-                </View>
-                <View style={styles.formBox}>
-                    <WithLabel
-                        label='称呼'
-                        value={houseForm.get('seller_alias')}
-                        placeholder='(选填)如张先生'
-                        onChangeText={(v) => {this.singleAction('aliasChanged', v)}}
-                    />
-                    <WithLabel
-                        label='电话'
-                        keyboardType='numeric'
-                        value={houseForm.get('seller_phone')}
-                        placeholder='输入联系电话'
-                        maxLength={11}
-                        onChangeText={(v) => {this.singleAction('phoneChanged', v)}}
-                    />
-                </View>
-                <ErrorMsg
-                    errBoxStyle={{paddingLeft: 20}}
-                    errText={controller.get('err_msg')}
+            <View>
+            {controller.get('search') ?
+                <CommunitySearch
+                    placeholder='请输入小区名'
+                    keyword={communityData.get('keyword')}
+                    results = {communityData.get('results')}
+                    actions = {this.props.searchActions}
+                    onPress = {this.singleAction.bind(this)}
                 />
-                <View style={styles.submitBox}>
-                    <TouchableSubmit
-                        onPress={this.handleSubmit}
-                        submitText='完成'
+                :
+                <View style={{backgroundColor: '#eee'}}>
+                    <Header title='发布房源'>
+                        <Text
+                            style={styles.headerRight}
+                            onPress={this.linkFn}
+                        >
+                            积分规则
+                        </Text>
+                    </Header>
+                    <View style={styles.formBox}>
+                        <WithLabel
+                            label='小区'
+                            arrow={true}
+                            value={houseForm.get('community_name')}
+                            placeholder='选择小区'
+                            onFocus={() => this.singleAction('searchChanged', true)}
+                        />
+                        <WithLabel
+                            label='楼栋'
+                            rightText='号/座'
+                            rightStyle={controller.get('single')? {color: '#fff'}: {}}
+                            value={houseForm.get('building_num')}
+                            placeholder={controller.get('single')?'':'输入楼号/座号'}
+                            editable={controller.get('single')? false: true}
+                            onChangeText={(v) => {this.singleAction('buildingChanged', v)}}
+                        >
+                            <Attached
+                                isSelected={controller.get('single')}
+                                attachedText='独栋'
+                                toggleAttach={() => this.toggleAttach('singleChanged', !controller.get('single'), 'buildingChanged')}
+                            />
+                        </WithLabel>
+                        <WithLabel
+                            label='单元'
+                            value={houseForm.get('unit_num')}
+                            placeholder={controller.get('no_unit')?'':'输入单元号'}
+                            editable={controller.get('no_unit')? false: true}
+                            onChangeText={(v) => {this.singleAction('unitChanged', v)}}
+                        >
+                            <Attached
+                                isSelected={controller.get('no_unit')}
+                                attachedText='无'
+                                toggleAttach={() => this.toggleAttach('noUnit', !controller.get('no_unit'), 'unitChanged')}
+                            />
+                        </WithLabel>
+                        <WithLabel
+                            label='房号'
+                            rightText='室'
+                            rightStyle={controller.get('villa')? {color: '#fff'}: {}}
+                            value={houseForm.get('door_num')}
+                            placeholder={controller.get('villa')?'':'输入房号'}
+                            editable={controller.get('villa')? false: true}
+                            onChangeText={(v) => {this.singleAction('doorChanged', v)}}
+                        >
+                            <Attached
+                                isSelected={controller.get('villa')}
+                                attachedText='别墅'
+                                toggleAttach={() => this.toggleAttach('villaChanged', !controller.get('villa'), 'doorChanged')}
+                            />
+                        </WithLabel>
+                        <WithLabel
+                            label='户型'
+                            rightText='室'
+                            inputStyle={styles.alignCenter}
+                            keyboardType='numeric'
+                            maxLength={2}
+                            value={houseForm.get('bedrooms')}
+                            placeholder='几'
+                            onChangeText={(v) => {this.singleAction('bedroomsChanged', v)}}
+                        >
+                            <TextInput
+                                keyboardType='numeric'
+                                style={[styles.inputBox, styles.alignCenter]}
+                                maxLength={1}
+                                value={houseForm.get('living_rooms')}
+                                placeholder='几'
+                                onChangeText={(v) => {this.singleAction('livingroomsChanged', v)}}
+                            />
+                            <Text>厅</Text>
+                            <TextInput
+                                keyboardType='numeric'
+                                style={[styles.inputBox, styles.alignCenter]}
+                                maxLength={1}
+                                value={houseForm.get('bathrooms')}
+                                placeholder='几'
+                                onChangeText={(v) => {this.singleAction('bathroomsChanged', v)}}
+                            />
+                            <Text>卫</Text>
+                        </WithLabel>
+                        <WithLabel
+                            label='面积'
+                            rightText='平米'
+                            keyboardType='numeric'
+                            value={houseForm.get('area')}
+                            placeholder='输入面积'
+                            onChangeText={(v) => {this.singleAction('areaChanged', v)}}
+                        />
+                        <WithLabel
+                            label='价格'
+                            rightText='万'
+                            keyboardType='numeric'
+                            value={houseForm.get('price')}
+                            placeholder='输入价格'
+                            onChangeText={(v) => {this.singleAction('priceChanged', v)}}
+                        />
+                    </View>
+                    <View style={styles.formBox}>
+                        <WithLabel
+                            label='称呼'
+                            value={houseForm.get('seller_alias')}
+                            placeholder='(选填)如张先生'
+                            onChangeText={(v) => {this.singleAction('aliasChanged', v)}}
+                        />
+                        <WithLabel
+                            label='电话'
+                            keyboardType='numeric'
+                            value={houseForm.get('seller_phone')}
+                            placeholder='输入联系电话'
+                            maxLength={11}
+                            onChangeText={(v) => {this.singleAction('phoneChanged', v)}}
+                        />
+                    </View>
+                    <ErrorMsg
+                        errBoxStyle={{paddingLeft: 20}}
+                        errText={controller.get('err_msg')}
                     />
+                    <View style={styles.submitBox}>
+                        <TouchableSubmit
+                            onPress={this.handleSubmit}
+                            submitText='完成'
+                        />
+                    </View>
                 </View>
+            }
             </View>
         );
     }
@@ -193,6 +205,9 @@ class HouseInput extends Component {
             regwords =  /楼|幢|栋|号|室/g,
             regphone = /^1\d{10}$|^0\d{10,11}$|^\d{8}$/g;
 
+        if(!controller.single && !houseForm.community_id) {
+            return 'emptyCommunity';
+        }
         if(!controller.single && !houseForm.building_num) {
             return 'emptyBuilding';
         }
@@ -236,6 +251,7 @@ class HouseInput extends Component {
 }
 
 let errMsgs = {
+    'emptyCommunity': '请选择小区',
     'emptyBuilding': '请输入楼栋号',
     'wrongBuilding': '请输入正确的楼栋号',
     'emptyUnit': '请确认有无单元号，有请输入，无请勾选“无”',
