@@ -10,17 +10,3 @@ export const codeStatus = makeActionCreator(types.CSTATUS_CHANGED, 'code_status'
 export const codeSend = makeActionCreator(types.CSEND_CHANGED, 'code_send');
 export const numChanged = makeActionCreator(types.NUM_CHANGED, 'num');
 export const errMsg = makeActionCreator(types.ERR_MSG, 'err_msg');
-
-export function loginSubmit(params) {
-    return dispatch => {
-        serviceAction(dispatch)({
-            service: login,
-            data: params,
-            success: function(oData) {
-            },
-            error: function(oData) {
-
-            }
-        })
-    }
-}

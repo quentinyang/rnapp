@@ -19,7 +19,7 @@ export default class HouseInputSuccess extends Component {
 
     render() {
         let {data} = this.props.route;
-        console.log(this.props);
+
         return (
             <View style={styles.container}>
                 <Image source={require('../images/success.png')} style={[styles.sucImg]}/>

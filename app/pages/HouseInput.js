@@ -74,7 +74,7 @@ class HouseInput extends Component {
                             <Attached
                                 isSelected={controller.get('single')}
                                 attachedText='独栋'
-                                toggleAttach={() => this.toggleAttach('singleChanged', !controller.get('single'), 'buildingChanged')}
+                                toggleAttach={() => this.toggleAttach('singleChanged', !controller.get('single'), 'buildingChanged', 'attachBuildingChanged')}
                             />
                         </WithLabel>
                         <WithLabel
@@ -102,7 +102,7 @@ class HouseInput extends Component {
                             <Attached
                                 isSelected={controller.get('villa')}
                                 attachedText='别墅'
-                                toggleAttach={() => this.toggleAttach('villaChanged', !controller.get('villa'), 'doorChanged')}
+                                toggleAttach={() => this.toggleAttach('villaChanged', !controller.get('villa'), 'doorChanged', 'attachDoorChanged')}
                             />
                         </WithLabel>
                         <WithLabel
@@ -187,10 +187,14 @@ class HouseInput extends Component {
         this.props.actions[action](value);
     }
 
-    toggleAttach(action, value, secAction) {
+    toggleAttach(action, value, secAction, thirdAction) {
         if(value) {
             this.singleAction(secAction, '');
+            if(thirdAction) {
+                this.singleAction(thirdAction, 1);
+            }
         }
+
         this.singleAction(action, value);
     }
 
@@ -218,6 +222,7 @@ class HouseInput extends Component {
                 data: oData,
                 hideNavBar: false
             });
+            actions.dataCleared();
         })
         .catch((error) => {
             actions.error(error.msg);
@@ -272,7 +277,9 @@ class HouseInput extends Component {
         return '';
     }
 
-    componentWillUnmount() {}
+    componentWillUnmount() {
+        this.props.actions.dataCleared();
+    }
 }
 
 let errMsgs = {

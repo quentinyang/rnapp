@@ -15,22 +15,13 @@ export const priceChanged = makeActionCreator(types.PRICE_CHANGED, 'price');
 export const aliasChanged = makeActionCreator(types.ALIAS_CHANGED, 'seller_alias');
 export const phoneChanged = makeActionCreator(types.PHONE_CHANGED, 'seller_phone');
 
+export const attachBuildingChanged = makeActionCreator(types.ATTACH_BUILDING_CHANGED, 'mark');
+export const attachDoorChanged = makeActionCreator(types.ATTACH_DOOR_CHANGED, 'mark');
+
 export const searchChanged = makeActionCreator(types.SEARCH_CHANGED, 'search');
 export const singleChanged = makeActionCreator(types.SINGLE_CHANGED, 'single');
 export const noUnit = makeActionCreator(types.NO_UNIT_CHANGED, 'no_unit');
 export const villaChanged = makeActionCreator(types.VILLA_CHANGED, 'villa');
 export const error = makeActionCreator(types.ERR_MSG, 'err_msg');
 
-export function houseSubmit(params) {
-    return dispatch => {
-        serviceAction(dispatch)({
-            service: inputHouseService,
-            data: params,
-            success: function(oData) {
-            },
-            error: function(oData) {
-
-            }
-        })
-    }
-}
+export const dataCleared = makeActionCreator(types.INPUT_DATA_CLEARED);

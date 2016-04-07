@@ -11,6 +11,8 @@ let initInput = Immutable.fromJS({
     'building_num': '',
     'unit_num': '',
     'door_num': '',
+    'has_no_building_num': 0,
+    'has_no_door_num': 0,
     'price': '',
     'area': '',
     'bedrooms': '',
@@ -42,6 +44,10 @@ function houseForm(state = initInput, action) {
             return state.set('living_rooms', action.living_rooms);
         case types.BATHROOMS_CHANGED:
             return state.set('bathrooms', action.bathrooms);
+        case types.ATTACH_BUILDING_CHANGED:
+            return state.set('has_no_building_num', action.mark);
+        case types.ATTACH_DOOR_CHANGED:
+            return state.set('has_no_door_num', action.mark);
         case types.INPUT_DATA_CLEARED:
             return initInput;
         default:
@@ -103,6 +109,8 @@ export function controller(state = controlData, action) {
             return state.set('villa', action.villa).set('single', false);
         case types.ERR_MSG:
             return state.set('err_msg', action.err_msg);
+        case types.INPUT_DATA_CLEARED:
+            return controlData;
         default:
             return state;
     }
