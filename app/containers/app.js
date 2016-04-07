@@ -1,7 +1,7 @@
 'use strict';
 
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
-import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image} from 'nuke';
+import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image, Alert} from 'nuke';
 import {navigationContext} from 'react-native'
 import {NaviGoBack} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
@@ -69,13 +69,31 @@ class App extends Component {
     componentDidUpdate() {
         let {appData, actionsApp} = this.props;
         if (!appData.get('auth')) {
-            _navigator.resetTo({
-                component: LoginContainer,
-                name: 'login',
-                title: '登录',
-                hideNavBar: true
-            });
-            actionsApp.webAuthentication(true);
+            Alert.alert('提示', '请重新登录', [
+                {
+                    text: '确定',
+                    onPress: () => {
+                        _navigator.resetTo({
+                            component: LoginContainer,
+                            name: 'login',
+                            title: '登录',
+                            hideNavBar: true
+                        });
+                        actionsApp.webAuthentication(true);
+                    }
+                }
+            ])
+        }
+
+        if (appData.get('msg') !== '') {
+            Alert.alert('提示', appData.get('msg'), [
+                {
+                    text: '确定',
+                    onPress: () => {
+                        actionsApp.webNetWorkError('');
+                    }
+                }
+            ])
         }
     }
 

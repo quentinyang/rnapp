@@ -22,6 +22,11 @@ export function serviceAction(dispatch) {
             if (oData && oData.codeStatus == 401) {
                 dispatch(actions.webAuthentication(false))
             }
+
+            if (oData && oData.codeStatus != 401) {
+                dispatch(actions.webNetWorkError(oData.msg))
+            }
+
             error(oData);
         }
 
