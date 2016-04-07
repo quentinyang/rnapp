@@ -3,6 +3,7 @@
 import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, Modal, Button, Linking } from 'nuke'
 import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
+import DetailContainer from '../containers/DetailContainer';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -128,6 +129,7 @@ export default class Detail extends Component {
                     renderHeader={this._renderHeader}
                     style={styles.listView}
                 />
+
                 <View style={styles.contactWrap}>
                     <TouchableHighlight
                         style={styles.contactButton}
@@ -174,7 +176,6 @@ export default class Detail extends Component {
 
     _clickPhoneBtn(status, phone, hasPhone) {
         if(status || hasPhone) { //1: 已解锁
-            //todo:: system call
             if(Linking.canOpenURL()) {
                 Linking.openURL("tel:" + phone);
             }
@@ -197,9 +198,7 @@ export default class Detail extends Component {
 
     _renderRow = (rowData: any) => {
         return (
-            <View>
-                {/*<HouseItem item={rowData} onItemPress={this._onItemPress}/>*/}
-            </View>
+            <HouseItem item={rowData} onItemPress={this._onItemPress}/>
         );
     };
 
@@ -234,7 +233,13 @@ export default class Detail extends Component {
     _onItemPress = (propertyId: string) => {
         let {navigator} = this.props;
 
-        // 重新加载数据
+        navigator.push({
+            component: DetailContainer,
+            name: 'houseDetail',
+            title: '房源详情',
+            hideNavBar: false,
+            propertyId: propertyId
+        });
     };
 
     _handleMoreHouseList = () => {
