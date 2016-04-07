@@ -170,7 +170,7 @@ export default class Detail extends Component {
             });
 
             if(info.get("is_reply") === false) {
-                actions.callSellerSuccess(info.get("") || 78);
+                actions.callSellerSuccess(info.get("log_id"));
                 actions.setFeedbackVisible(true);
             }
         });
