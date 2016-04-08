@@ -212,12 +212,21 @@ class Login extends React.Component {
             .then((oData) => {
                 AsyncStorageComponent.save(TOKEN_KEY, oData.token);
                 gtoken = oData.token;
-                navigator.resetTo({
-                    component: AttentionBlockSetContainer,
-                    name: 'AttentionBlockSetContainer',
-                    title: '设置我的关注',
-                    hideNavBar: true
-                });
+                if(oData.is_enter_attention_page) {
+                    navigator.resetTo({
+                        component: TabViewContainer,
+                        name: 'home',
+                        title: '我的主页',
+                        hideNavBar: true
+                    });
+                } else {
+                    navigator.resetTo({
+                        component: AttentionBlockSetContainer,
+                        name: 'AttentionBlockSetContainer',
+                        title: '设置我的关注',
+                        hideNavBar: true
+                    });
+                }
             })
             .catch((error) => {
                 actions.errMsg(error.msg);
