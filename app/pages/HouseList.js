@@ -55,7 +55,6 @@ export default class HouseList extends Component {
                 {
                     Number(pager.get('total')) > 0 ? 
                     <ListView
-                        style={styles.listViewWrap}
                         dataSource={ds.cloneWithRows(houseList.toArray())}
                         renderRow={this._renderRow}
                         renderFooter={this._renderFooter}
@@ -342,9 +341,6 @@ export default class HouseList extends Component {
 const styles = StyleSheet.create({
     flex: {
         flex: 1
-    },
-    listViewWrap: {
-
     },
     listFooter: {
         height: 40,

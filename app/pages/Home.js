@@ -4,7 +4,7 @@ import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, P
         TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform} from 'nuke';
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
-
+import Immutable, {List} from 'immutable';
 import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
 
@@ -319,6 +319,7 @@ const styles = StyleSheet.create({
     attentionMsg: {
         padding: 15,
         backgroundColor: '#f8f8f8',
+        height: 70
     },
     bar: {
         width: 3,
