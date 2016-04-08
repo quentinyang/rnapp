@@ -139,7 +139,7 @@ export default class User extends Component {
               <View style={[styles.listItem, separator]}>
                   <Text style={styles.listText}>{data.title}</Text>
                   <Text style={[styles.listText, styles.listBadge, styles.absoluteTop]}>{data.count || ''}</Text>
-                  <Image source={require('../images/arrow-right.png')} style={[styles.listIcon, styles.absoluteTop]}/>
+                  <Image source={require('../images/next.png')} style={[styles.listIcon, styles.absoluteTop]}/>
               </View>
           </TouchableWithoutFeedback>
       );
@@ -196,8 +196,7 @@ const styles = StyleSheet.create({
     profileImage: {
       width: 50,
       height: 50,
-      borderRadius: 25,
-      backgroundColor: '#000',
+      borderRadius: 25
     },
     profileText: {
       fontSize: 16,
@@ -220,6 +219,7 @@ const styles = StyleSheet.create({
     cashText: {
       fontSize: 16,
       color: '#3E3E3E',
+      marginLeft: 10,
     },
     cashSplit: {
       borderRightWidth: 1/PixelRatio.get(),
@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
     listText: {
       fontSize: 16,
       color: '#3E3E3E',
-      paddingLeft: 15,
+      marginLeft: 15,
     },
     absoluteTop: {
       position: 'absolute',
@@ -252,8 +252,8 @@ const styles = StyleSheet.create({
       right: 36,
     },
     listIcon: {
-      width: 14/PixelRatio.get(),
-      height: 36/PixelRatio.get(),
+      width: 9,
+      height: 18 ,
       right: 13,
     },
     listSeparator: {

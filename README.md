@@ -50,10 +50,10 @@ react-native bundle --platform ios --entry-file index.ios.js \
 --dev false
 
 # Android
-rm -rf android/app/src/main/assets/index.android.jsbundle android/app/src/main/res/
+rm -rf android/app/src/main/assets/index.android.jsbundle
 react-native bundle --platform android --entry-file index.android.js \
 --bundle-output ./android/app/src/main/assets/index.android.jsbundle \
---assets-dest ./android/app/src/main/res/
+--assets-dest ./android/app/src/main/res/ \
 --dev false
 
 react-native run-android
@@ -63,6 +63,7 @@ react-native run-android
 
 ```
 # IOS
+rm -rf index.ios.jsbundle assets/app/
 react-native bundle --platform ios --entry-file index.ios.js \
 --bundle-output ./release/index.ios.jsbundle \
 --assets-dest ./release \
@@ -145,8 +146,11 @@ code-push release FangYuan360-Release ./release 1.0.0 (Release)
  如下示例上传到`dev`环境：
 
 ```
-scp ~/Desktop/fy360\ 2016-03-25\ 15-20-00/fy360.ipa angejia@192.168.169.14:/srv/app/ios_package/fangyuan360/dev/fy360.ipa
-fy360.ipa                              
+# IOS
+scp ~/Desktop/fy360-ios-dev/fy360.ipa angejia@192.168.169.14:/srv/app/ios_package/fangyuan360/dev/fy360.ipa
+fy360.ipa
+# Android
+scp ~/Desktop/fy360-android-dev/app-debug.apk angejia@192.168.169.14:/srv/app/android_package/fangyuan360/app-dev.apk
 ```
 
 ## 参考

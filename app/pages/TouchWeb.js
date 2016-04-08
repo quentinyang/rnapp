@@ -12,7 +12,7 @@ export default class TouchWeb extends Component {
       var WEBVIEW_REF = 'webview';
 
       var url =  this.props.route.url + '?token=' + gtoken
-      console.log(gtoken);
+      console.log('[WebView]', url);
       return (
             <View style={styles.layout}>
                 <WebView
