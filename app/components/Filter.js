@@ -23,9 +23,9 @@ export default class Filter extends Component {
                                     {areaName}
                                 </Text>
                                 :
-                                <Text style={[styles.flex, styles.textAlign, styles.commonText]}>
-                                    <Text>{'区域' + ' '}<ImageItem dropUp={tabType == 1}/></Text>
-                                </Text>
+                                <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
+                                    <Text style={styles.commonText}>{'区域' + ' '}</Text><ImageItem dropUp={tabType == 1}/>
+                                </View>
                             }
                             
                         </TouchableWithoutFeedback>
@@ -37,9 +37,9 @@ export default class Filter extends Component {
                                     {priceName}
                                 </Text>
                                 :
-                                <Text style={[styles.flex, styles.textAlign, styles.commonText]}>
-                                    {'价格' + ' '}<ImageItem dropUp={tabType == 2}/>
-                                </Text>
+                                <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
+                                    <Text style={styles.commonText}>{'价格' + ' '}</Text><ImageItem dropUp={tabType == 2}/>
+                                </View>
                             }
                         </TouchableWithoutFeedback>
                     </View>
@@ -50,21 +50,21 @@ export default class Filter extends Component {
                                     {bedroomsName}
                                 </Text>
                                 :
-                                <Text style={[styles.flex, styles.textAlign, styles.commonText]}>
-                                    {'户型' + ' '}<ImageItem dropUp={tabType == 3}/>
-                                </Text>
+                                <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
+                                    <Text style={styles.commonText}>{'户型' + ' '}</Text><ImageItem dropUp={tabType == 3}/>
+                                </View>
                             }
                         </TouchableWithoutFeedback>
                     </View>
                     <View style={[styles.flex, styles.justifyContent]}>
                         <TouchableWithoutFeedback onPress={this._onlyVerify.bind(null, !onlyVerify)}>
-                            <Text style={[styles.flex, styles.textAlign, styles.commonText]}>
+                            <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
                                 {   
                                     onlyVerify ? 
                                     <Image source={require('../images/selected.png')} style={styles.checkbox}/>
                                     : <Image source={require('../images/unSelected.png')} style={styles.checkbox}/>
-                                }{' ' + '只看认证'}
-                            </Text>
+                                }<Text style={styles.commonText}>{' ' + '只看认证'}</Text>
+                            </View>
                         </TouchableWithoutFeedback>
                     </View>
                 </View>

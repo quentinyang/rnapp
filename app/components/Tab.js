@@ -77,16 +77,16 @@ class LeftView extends Component {
 
             return (
                 <TouchableWithoutFeedback key={d.get('id')} onPress={this._onHandlePress.bind(null, d.get('id'))}>
-                    <View style={[styles.flex, styles.row, styles.center, styles.itemsHeight, selected]}>
-                        <Text style={[styles.flex, styles.leftRow]}>
+                    <View style={[styles.flex, styles.row, {alignItems: "center"}, styles.itemWrap, styles.itemsHeight, selected]}>
+                        <Text style={[styles.leftRow]}>
                             {d.get('name') + ' '}
-                            {
-                                includeItem.size > 0 ? <Image
-                                    source={require('../images/dot.png')}
-                                    style={styles.dotImage}
-                                /> : null
-                            }
                         </Text>
+                        {
+                            includeItem.size > 0 ? <Image
+                                source={require('../images/dot.png')}
+                                style={styles.dotImage}
+                            /> : null
+                        }
                     </View>
                 </TouchableWithoutFeedback>
             );
@@ -186,7 +186,6 @@ const styles = StyleSheet.create({
         alignItems:'center'
     },
     leftRow: {
-        paddingLeft: 10,
         fontSize: 14,
         color:'#7C7C7C',
     },
@@ -198,11 +197,12 @@ const styles = StyleSheet.create({
     itemsHeight: {
         height: 50
     },
+    itemWrap: {
+        paddingLeft: 10
+    },
     dotImage: {
         width: 8,
         height: 8,
-        position: 'absolute',
-        top: 50,
-        marginTop: -1
+        marginTop: -4
     }
 });

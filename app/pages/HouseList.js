@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
     },
     filterMask: {
         position: 'absolute',
-        top: 108,
+        top: 88,
         left: 0,
         right: 0,
         height: 278
