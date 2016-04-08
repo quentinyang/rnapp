@@ -39,7 +39,7 @@ export default class Detail extends Component {
                                 />
                             </TouchableHighlight>
 
-                            <Text style={styles.msgTip}>消耗{info.get('see_count')}积分即可获得房东电话</Text>
+                            <Text style={styles.msgTip}>消耗{info.get('unlock_phone_cost')}积分即可获得房东电话</Text>
                             <Button
                                 containerStyle={[styles.btn, styles.btnMarginBottom]}
                                 itemStyle={styles.btnSize} label="确认"
@@ -179,6 +179,7 @@ export default class Detail extends Component {
 
     componentWillUnmount() {
         this.props.actions.clearHouseBase();
+        this.props.actions.clearCallInfo();
     }
 
     _goPage(component) {
@@ -337,7 +338,7 @@ class BaseInfo extends Component {
 
                 <View style={[styles.itemContainer, styles.row]}>
                     <Image style={styles.money_icon} source={require('../images/money.png')}/>
-                    <Text style={{fontSize: 15, marginLeft: 6}}>查看房东电话需要消耗 {baseInfo.get('see_count')} 积分</Text>
+                    <Text style={{fontSize: 15, marginLeft: 6}}>查看房东电话需要消耗 {baseInfo.get('unlock_phone_cost')} 积分</Text>
                 </View>
                 <View style={[styles.gap, styles.flex]}></View>
             </View>
@@ -458,8 +459,13 @@ var styles = StyleSheet.create({
     },
     closeBox: {
         position: "absolute",
-        right: 12,
-        top: 10
+        right: 0,
+        top: 0,
+        width: 50,
+        height: 30,
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
     },
     closeIcon: {
         width: 15,

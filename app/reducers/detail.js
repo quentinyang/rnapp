@@ -40,7 +40,7 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
 }
 
 let initParam = {
-    scoreTipVisible: false,
+    scoreTipVisible: true,
     callError: {},
     errorTipVisible: false,
     feedbackVisible: false,
@@ -67,6 +67,9 @@ function callInfo(state = Immutable.fromJS(initParam), action) {
             break;
         case types.CALL_SELLER_FAILED:
             return state.set('callError', Immutable.fromJS(action.callError));
+            break;
+        case types.CLEAR_CALL_INFO:
+            return Immutable.fromJS(initParam);
             break;
         default:
             return state;
