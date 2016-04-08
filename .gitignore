@@ -41,7 +41,7 @@ android/fy360.iml
 ios/fy360.xcodeproj/xcshareddata/
 android/gradle/wrapper/*.zip
 android/app/src/main/assets/
-android/app/src/main/res/
+android/app/src/main/res/drawable-mdpi
 
 # codepush
 release/
