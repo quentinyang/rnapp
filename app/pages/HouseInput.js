@@ -133,36 +133,48 @@ class HouseInput extends Component {
                         </WithLabel>
                         <WithLabel
                             label='面积'
+                            ref='area'
                             rightText='平米'
                             maxLength={8}
                             keyboardType='numeric'
                             value={houseForm.get('area')}
                             placeholder='输入面积'
+                            onFocus={() => this.inputFocused('area')}
+                            onBlur={() => this.inputFocused('area', 0)}
                             onChangeText={(v) => {this.singleAction('areaChanged', v)}}
                         />
                         <WithLabel
                             label='价格'
+                            ref='price'
                             rightText='万'
                             maxLength={6}
                             keyboardType='numeric'
                             value={houseForm.get('price')}
                             placeholder='输入价格'
+                            onFocus={() => this.inputFocused('price')}
+                            onBlur={() => this.inputFocused('price', 0)}
                             onChangeText={(v) => {this.singleAction('priceChanged', v)}}
                         />
                     </View>
                     <View style={styles.formBox}>
                         <WithLabel
                             label='称呼'
+                            ref='alias'
                             value={houseForm.get('seller_alias')}
                             placeholder='(选填)如张先生'
+                            onFocus={() => this.inputFocused('alias')}
+                            onBlur={() => this.inputFocused('alias', 0)}
                             onChangeText={(v) => {this.singleAction('aliasChanged', v)}}
                         />
                         <WithLabel
                             label='电话'
+                            ref='phone'
                             keyboardType='numeric'
                             value={houseForm.get('seller_phone')}
                             placeholder='输入联系电话'
                             maxLength={11}
+                            onFocus={() => this.inputFocused('phone')}
+                            onBlur={() => this.inputFocused('phone', 0)}
                             onChangeText={(v) => {this.singleAction('phoneChanged', v)}}
                         />
                     </View>
@@ -196,6 +208,18 @@ class HouseInput extends Component {
         }
 
         this.singleAction(action, value);
+    }
+
+    inputFocused(refName, height) {
+        this.timer && clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+            let scrollResponder = this.refs.scrollView.getScrollResponder();
+            scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
+                React.findNodeHandle(this.refs[refName]),
+                height || 110,
+                true
+            );
+        }, 50);
     }
 
     linkFn = () => {
@@ -378,7 +402,7 @@ let styles = StyleSheet.create({
         marginRight: 5
     },
     submitBox: {
-        marginBottom: 20,
+        marginBottom: 80,
         paddingLeft: 25,
         paddingRight: 25
     }
