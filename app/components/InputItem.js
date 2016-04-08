@@ -12,7 +12,7 @@ export default class InputItem extends Component {
         let {item} = this.props;
         let date = formatDate(item.get('created_at'));
         let statusStr = ['待审核', '已通过', '未通过'],
-            statusInfoStr = ['客服将在24小时内审核房源', '获得' + item.get('money') + '积分', item.get('reason')];
+            statusInfoStr = ['客服将在24小时内审核房源', '获得' + Number(item.get('money')) + '积分', item.get('reason')];
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
@@ -26,8 +26,10 @@ export default class InputItem extends Component {
                         <Text style={[styles.bedrooms, styles.bedroomsPadding]}>{item.get('price') + '万'}</Text>
                     </View>
                     <Text numberOfLines={1} style={[styles.bedrooms, styles.bottom]}>电话: {item.get('seller_phone') + '  (' + item.get('seller_name') + ')'}</Text>
-                    <View style={[styles.row]}>
-                        <Text style={[styles.tag, (item.get('check_status') == 1 ? styles.tagGreen : styles.tagOrange)]}>{statusStr[item.get('check_status')]}</Text>
+                    <View style={[styles.row, styles.alignCenter]}>
+                        <View style={[styles.tagWrap, (item.get('check_status') == 1 ? styles.borderGreen : styles.borderOrange)]}>
+                            <Text style={[styles.tag, (item.get('check_status') == 1 ? styles.tagGreen : styles.tagOrange)]}>{statusStr[item.get('check_status')]}</Text>
+                        </View>
                         <Text style={styles.bottomMsg}>{statusInfoStr[item.get('check_status')]}</Text>
                     </View>
                 </View>
@@ -46,6 +48,9 @@ const styles = StyleSheet.create({
     },
     flex: {
         flex: 1
+    },
+    alignCenter: {
+        alignItems: "center"
     },
     item: {
         paddingLeft: 15,
@@ -88,19 +93,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     tag: {
-        height: 16,
         fontSize: 12,
+        textAlign: "center"
+    },
+    tagWrap: {
         borderWidth: 1,
-        textAlign: "center",
-        padding: 2,
-        marginRight: 8
+        marginRight: 8,
+        paddingLeft: 2,
+        paddingRight: 2
     },
     tagOrange: {
-        color: "#FF6D4B",
-        borderColor: "#FF6D4B"
+        color: "#FF6D4B"
     },
     tagGreen: {
-        color: "#04C1AE",
+        color: "#04C1AE"
+    },
+    borderOrange: {
+        borderColor: "#FF6D4B"
+    },
+    borderGreen: {
         borderColor: "#04C1AE"
     },
     bottom: {

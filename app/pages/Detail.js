@@ -71,14 +71,15 @@ export default class Detail extends Component {
                             >
                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text>
                             </TouchableHighlight>
-
-                            <TouchableHighlight
-                                style={[styles.btn, styles.borderBtn, styles.margin]}
-                                underlayColor="#fff"
-                                onPress={this._goPage.bind(this, UserContainer)}
-                            >
-                                <Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text>
-                            </TouchableHighlight>
+                            {/*
+                             <TouchableHighlight
+                                 style={[styles.btn, styles.borderBtn, styles.margin]}
+                                 underlayColor="#fff"
+                                 onPress={this._goPage.bind(this, UserContainer)}
+                             >
+                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text>
+                             </TouchableHighlight>
+                            */}
 
                         </View>
                     </View>

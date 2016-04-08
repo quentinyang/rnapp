@@ -140,8 +140,8 @@ export default class User extends Component {
       return (
           <TouchableWithoutFeedback onPress={this._goPage.bind(this, data)}>
               <View style={[styles.listItem, separator]}>
-                  <Text style={styles.listText}>{data.title}</Text>
-                  <Text style={[styles.listText, styles.listBadge, styles.absoluteTop]}>{data.count || ''}</Text>
+                  <Text style={[styles.listText, styles.flex]}>{data.title}</Text>
+                  <Text style={[styles.listText, styles.listBadge]}>{data.count || ''}</Text>
                   <Image source={require('../images/next.png')} style={[styles.listIcon, styles.absoluteTop]}/>
               </View>
           </TouchableWithoutFeedback>
@@ -168,6 +168,9 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: '#eee'
+    },
+    flex: {
+       flex: 1
     },
     bgHeader: {
       backgroundColor: '#f8f8f8'
@@ -230,6 +233,7 @@ const styles = StyleSheet.create({
     },
     listItem: {
       height: 45,
+      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
     },
