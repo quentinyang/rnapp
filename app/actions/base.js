@@ -34,17 +34,10 @@ export function serviceAction(dispatch) {
             console.log('[AjaxResponse]', oData)
         }
 
-        service({
-            data: data,
-            success: successFn,
-            error: errorFn
-        })
-
         service(data).then((oData) => {
             successFn(oData)
         }).catch((error) => {
             errorFn(error);
         });
-
     }
 }
