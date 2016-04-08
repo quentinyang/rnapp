@@ -42,8 +42,8 @@ export default class HouseItem extends Component {
         );
     }
 
-    _onHandlePress = (propertyId, communityId, communityName) => {
-        this.props.onItemPress(propertyId, communityId, communityName);
+    _onHandlePress = (item) => {
+        this.props.onItemPress(item);
     };
 }
 

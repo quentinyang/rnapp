@@ -163,7 +163,7 @@ export default class Detail extends Component {
                 property_id: propertyId
             });
             actions.fetchSimilarHouseList({
-                community_id: propertyId
+                property_id: propertyId
             });
             actions.fetchHouseStatus({
                 property_id: propertyId
@@ -236,7 +236,8 @@ export default class Detail extends Component {
                     </Text>
                 </TouchableHighlight>
             </View>
-            : null
+            :
+            null
         )
     };
 
@@ -258,7 +259,7 @@ export default class Detail extends Component {
         )
     };
 
-    _onItemPress = (propertyId: string) => {
+    _onItemPress = (item) => {
         let {navigator} = this.props;
 
         navigator.push({
@@ -271,16 +272,17 @@ export default class Detail extends Component {
     };
 
     _handleMoreHouseList = () => {
-        let {route, navigator} = this.props;
-        let {communityName, communityId} = route;
+        let {route, navigator, actionsHouseList} = this.props;
+        let {item} = route;
         console.info('Route: ', route);
+        actionsHouseList.filterCommunityNameChanged(item.get('community_id'), item.get('community_name'));
         navigator.push({
             component: HouseListContainer,
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: true,
-            communityName,
-            communityId
+            communityName: item.get('community_name'),
+            communityId: item.get('community_id')
         });
     };
 }

@@ -4,6 +4,7 @@ import {React, Component} from 'nuke';
 import { connect } from 'react-redux';
 import { bindActionCreators} from 'redux';
 import * as actions from '../actions/detail';
+import * as actionsHouseList from '../actions/houseList';
 import Detail from '../pages/Detail';
 
 class DetailContainer extends Component {
@@ -29,7 +30,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        actions: bindActionCreators(actions, dispatch),
+        actionsHouseList: bindActionCreators(actionsHouseList, dispatch)
     }
 }
 
