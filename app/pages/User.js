@@ -4,6 +4,8 @@ import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, P
             TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator,
             StatusBar, WebView, Alert} from 'nuke';
 
+import Header from '../components/Header';
+
 import TouchWebContainer from "../containers/TouchWebContainer";
 
 import ContactHouseContainer from '../containers/ContactHouseContainer'
@@ -44,14 +46,14 @@ class CashArea extends Component{
             <Text style={styles.cashText}>充值</Text>
           </View>
         </TouchableWithoutFeedback>
-        
+
         <TouchableWithoutFeedback onPress={this._triggerWithdraw}>
           <View style={styles.row}>
             <Image source={require('../images/withdraw.png')} style={[styles.cashImage]} />
             <Text style={styles.cashText} >提现</Text>
           </View>
         </TouchableWithoutFeedback>
-        
+
 
       </View>
     );
@@ -79,9 +81,9 @@ class CashArea extends Component{
 export default class User extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
-            url: 'https://api.fangyuan360.cn/usercenter/account/?token=' + gtoken 
+            url: 'https://api.fangyuan360.cn/usercenter/account/?token=' + gtoken
         };
     }
 
@@ -105,30 +107,31 @@ export default class User extends Component {
         var settingSource = ds.cloneWithRows([{title: '设置', component: '', name: 'settings'}]);
 
         return (
-            <ScrollView style={styles.layout}>
-                <View style={styles.header}>
-                  <Text style={styles.headerText}>我的</Text>
-                </View>
-                <View>
-                  <Profile {...profileData}/>
-                  <CashArea navigator={this.props.navigator}/>
-                </View>
+            <View style={styles.container}>
+              <Header title='我的' style={styles.bgHeader} />
+              <ScrollView automaticallyAdjustContentInsets={false}>
 
-                <ListView
-                  style={styles.listContainer}
-                  dataSource={featureSource}
-                  renderRow={this._renderRow.bind(this)}
-                  scrollEnabled={false}
-                  automaticallyAdjustContentInsets={false} />
+                  <View>
+                    <Profile {...profileData}/>
+                    <CashArea navigator={this.props.navigator}/>
+                  </View>
 
-                <ListView
-                  style={[styles.listContainer, styles.settingContainer]}
-                  dataSource={settingSource}
-                  renderRow={this._renderRow.bind(this)}
-                  scrollEnabled={false}
-                  automaticallyAdjustContentInsets={false} />
-  
-            </ScrollView>
+                  <ListView
+                    style={styles.listContainer}
+                    dataSource={featureSource}
+                    renderRow={this._renderRow.bind(this)}
+                    scrollEnabled={false}
+                    automaticallyAdjustContentInsets={false} />
+
+                  <ListView
+                    style={[styles.listContainer, styles.settingContainer]}
+                    dataSource={settingSource}
+                    renderRow={this._renderRow.bind(this)}
+                    scrollEnabled={false}
+                    automaticallyAdjustContentInsets={false} />
+
+              </ScrollView>
+            </View>
         )
     }
 
@@ -162,8 +165,12 @@ export default class User extends Component {
 
 
 const styles = StyleSheet.create({
-    layout: {
-        backgroundColor: '#EEE',
+    container: {
+      flex: 1,
+      backgroundColor: '#eee'
+    },
+    bgHeader: {
+      backgroundColor: '#f8f8f8'
     },
     row: {
       flex: 1,
@@ -174,22 +181,10 @@ const styles = StyleSheet.create({
       height: 35,
       flexWrap: 'nowrap',
     },
-    // header
-    header: {
-      alignItems: 'center',
-      marginTop: 40/PixelRatio.get(),
-    },
-    headerText: {
-      fontSize: 19,
-      color: '#3E3E3E',
-      margin: 12
-    },
     // profile
     profileContainer: {
       backgroundColor: '#fff',
-      borderTopWidth: 1,
       justifyContent: 'center',
-      borderColor: '#ccc',
       height: 154,
       alignItems: 'center',
     },
@@ -264,7 +259,7 @@ const styles = StyleSheet.create({
     settingContainer: {
       height: 45
     },
-    
+
     webView: {
         height: 200,
     }

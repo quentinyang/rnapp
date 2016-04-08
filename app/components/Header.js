@@ -5,6 +5,7 @@ import {
     Component,
     View,
     Text,
+    PixelRatio,
     StyleSheet,
 } from 'nuke';
 
@@ -14,9 +15,9 @@ export default class ErrorMsg extends Component {
     }
 
     render() {
-        let {title, headerStyle, children} = this.props;
+        let {title, style, children} = this.props;
         return (
-            <View style= {[styles.header, styles.center, headerStyle]}>
+            <View style= {[styles.header, styles.center, style]}>
                 <View style={[styles.title, styles.center]}>
                     <Text style={styles.titleFont}>{title}</Text>
                 </View>
@@ -31,6 +32,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         height: 65,
         paddingTop: 25,
+        borderBottomWidth: 1/PixelRatio.get(),
+        borderBottomColor: '#d9d9d9',
         backgroundColor: '#fff'
     },
     title: {
