@@ -163,18 +163,20 @@ export default class Home extends Component {
     _renderFooter = () => {
         let {houseData, attentionList, navigator} = this.props;
         let pager = houseData.get('pager');
+        let footerView = null;
 
-        return (
-                Number(pager.get('current_page')) == Number(pager.get('last_page')) && Number(pager.get('total')) != 0 ?
-                    <View style={styles.listFooter}>
+        if (Number(pager.get('current_page')) == Number(pager.get('last_page')) && Number(pager.get('total')) != 0) {
+            footerView = <View style={styles.listFooter}>
                         <Text style={styles.noData}>已经没有数据了！</Text>
                     </View>
-                     : Number(pager.get('current_page')) != Number(pager.get('last_page')) && Number(pager.get('total')) != 0 ? 
-                    <View style={styles.listFooter}>
+        } else if(Number(pager.get('current_page')) != Number(pager.get('last_page')) && Number(pager.get('total')) != 0) {
+            footerView = <View style={styles.listFooter}>
                         <ActivityIndicator color={'#d43d3d'} styleAttr="Small"/>
                     </View>
-                    : <NoData attentionList={attentionList} navigator={navigator} onAttentionBlockSet={this._onAttentionBlockSet}/>
-        );
+        } else {
+            footerView = <NoData attentionList={attentionList} navigator={navigator} onAttentionBlockSet={this._onAttentionBlockSet}/>
+        }
+        return footerView;
     };
 
     _onAttentionBlockSet = (attentionList) => {
@@ -237,18 +239,28 @@ class NoData extends Component {
 
     render() {
         let {attentionList} = this.props;
+        let districtBlockSelect = attentionList.get('district_block_select');
+        let communitySelect = attentionList.get('community_select');
         return (
             <View style={[styles.noDataBg, styles.flex, styles.alignItems]}>
                 <Image
                     source={require('../images/noAttention.png')}
                     style={styles.noAttention}
                 />
-                <Text style={[styles.noAttentionText]}>关注的房源会出现在这里</Text>
-                <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
-                    <View style={[styles.noAttentionBtn, styles.alignItems]}>
-                        <Text style={styles.noAttentionBtnText}>去设置</Text>
-                    </View>
-                </TouchableWithoutFeedback>
+                <Text style={[styles.noAttentionText]}>
+                    {
+                        districtBlockSelect.size == 0 && communitySelect.size == 0 ? '关注的房源会出现在这里' : '关注的板块和小区没有房源'
+                    }
+                </Text>
+                {
+                    districtBlockSelect.size == 0 && communitySelect.size == 0 ? 
+                    <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
+                        <View style={[styles.noAttentionBtn, styles.alignItems]}>
+                            <Text style={styles.noAttentionBtnText}>去设置</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    : null
+                }
             </View>
         )
     }
