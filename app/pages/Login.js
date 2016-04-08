@@ -10,6 +10,7 @@ import {
     ScrollView
 } from 'nuke';
 
+
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import Countdown from '../components/Countdown'
 import {loginService, sendCodeService} from '../service/userService';
@@ -18,6 +19,7 @@ import TabViewContainer from '../containers/TabViewContainer';
 import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer';
 
 import DeviceInfo from 'react-native-device-info';
+import FormContainer from '../components/FormContainer';
 
 let TOKEN_KEY = 'user_token';
 
@@ -30,14 +32,7 @@ class Login extends React.Component {
         let {formInfo, controllerInfo} = this.props.login;
 
         return (
-            <ScrollView
-                ref="scrollView"
-                keyboardDismissMode='interactive'
-                keyboardShouldPersistTaps={false}
-                alwaysBounceVertical={false}
-                style={styles.container}
-                contentContainerStyle={styles.content}
-            >
+            <FormContainer ref="formContainer" scrollViewRef="scrollView">
                 <View style={styles.imgRightBox}>
                     <Image
                         style={styles.fyImage}
@@ -89,7 +84,7 @@ class Login extends React.Component {
                         <Text style={styles.submitText}>登录</Text>
                     </TouchableHighlight>
                 </View>
-            </ScrollView>
+            </FormContainer>
         );
     }
 
@@ -99,7 +94,7 @@ class Login extends React.Component {
 
     inputFocused (refName) {
         setTimeout(() => {
-            let scrollResponder = this.refs.scrollView.getScrollResponder();
+            let scrollResponder = this.refs.formContainer.refs.scrollView.getScrollResponder();
 
             scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
               React.findNodeHandle(this.refs[refName]),

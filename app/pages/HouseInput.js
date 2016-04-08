@@ -19,6 +19,7 @@ import ErrorMsg from '../components/ErrorMsg';
 import TouchableSubmit from '../components/TouchableSubmit';
 import CommunitySearch from '../components/SearchComponent';
 import HouseInputSuccessContainer from '../containers/HouseInputSuccessContainer';
+import FormContainer from '../components/FormContainer';
 
 class HouseInput extends Component {
     constructor(props) {
@@ -49,8 +50,9 @@ class HouseInput extends Component {
                             积分规则
                         </Text>
                     </Header>
-                    <ScrollView
-                        ref="scrollView"
+                    <FormContainer
+                        ref="formContainer"
+                        scrollViewRef="scrollView"
                         style={styles.container}
                         automaticallyAdjustContentInsets={false}
                     >
@@ -199,7 +201,7 @@ class HouseInput extends Component {
                             submitText='完成'
                         />
                     </View>
-                    </ScrollView>
+                    </FormContainer>
                 </View>
             }
             </View>
@@ -224,7 +226,7 @@ class HouseInput extends Component {
     inputFocused(refName, height) {
         this.timer && clearTimeout(this.timer);
         this.timer = setTimeout(() => {
-            let scrollResponder = this.refs.scrollView.getScrollResponder();
+            let scrollResponder = this.refs.formContainer.refs.scrollView.getScrollResponder();
             scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
                 React.findNodeHandle(this.refs[refName]),
                 height || 110,
