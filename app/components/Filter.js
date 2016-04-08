@@ -24,7 +24,7 @@ export default class Filter extends Component {
                                 </Text>
                                 :
                                 <Text style={[styles.flex, styles.textAlign, styles.commonText]}>
-                                    <Text>区域<ImageItem dropUp={tabType == 1}/></Text>
+                                    <Text>{'区域' + ' '}<ImageItem dropUp={tabType == 1}/></Text>
                                 </Text>
                             }
                             
@@ -38,7 +38,7 @@ export default class Filter extends Component {
                                 </Text>
                                 :
                                 <Text style={[styles.flex, styles.textAlign, styles.commonText]}>
-                                    价格<ImageItem dropUp={tabType == 2}/>
+                                    {'价格' + ' '}<ImageItem dropUp={tabType == 2}/>
                                 </Text>
                             }
                         </TouchableWithoutFeedback>
@@ -51,7 +51,7 @@ export default class Filter extends Component {
                                 </Text>
                                 :
                                 <Text style={[styles.flex, styles.textAlign, styles.commonText]}>
-                                    户型<ImageItem dropUp={tabType == 3}/>
+                                    {'户型' + ' '}<ImageItem dropUp={tabType == 3}/>
                                 </Text>
                             }
                         </TouchableWithoutFeedback>
@@ -63,7 +63,7 @@ export default class Filter extends Component {
                                     onlyVerify ? 
                                     <Image source={require('../images/selected.png')} style={styles.checkbox}/>
                                     : <Image source={require('../images/unSelected.png')} style={styles.checkbox}/>
-                                }只看认证
+                                }{' ' + '只看认证'}
                             </Text>
                         </TouchableWithoutFeedback>
                     </View>
@@ -90,8 +90,8 @@ class ImageItem extends Component {
     render() {
         let {dropUp} = this.props;
 
-        return dropUp ? <Image source={require('../images/dropDown.png')} style={[styles.dropDown, styles.paddingLeft]}/>
-                : <Image source={require('../images/dropUp.png')} style={[styles.dropDown, styles.paddingLeft]}/>
+        return dropUp ? <Image source={require('../images/dropUp.png')} style={[styles.dropDown, styles.paddingLeft]}/> 
+                : <Image source={require('../images/dropDown.png')} style={[styles.dropDown, styles.paddingLeft]}/>
     }
 
 }

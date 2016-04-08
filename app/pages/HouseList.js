@@ -225,9 +225,13 @@ export default class HouseList extends Component {
     };
 
     _filterItemPress = (type) => {
-        let {actions} = this.props;
-
-        actions.filterItemPressed(type)
+        let {actions, uiData} = this.props;
+        let tabType = uiData.get('tabType');
+        if (type != '' && tabType == type) {
+            actions.filterItemPressed('');
+        } else {
+            actions.filterItemPressed(type);
+        }
     };
 
     // 过滤只看认证
