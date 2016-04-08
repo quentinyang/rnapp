@@ -25,12 +25,13 @@ export function serviceAction(dispatch) {
             }
 
             if (oData && oData.codeStatus != 401) {
-                dispatch(actions.webNetWorkError(oData.msg))
+                if(error) {
+                    error(oData);
+                } else {
+                    dispatch(actions.webNetWorkError(oData.msg));
+                }
             }
-            
             console.log('[AjaxResponse]', oData)
-
-            error(oData);
         }
 
         service({
