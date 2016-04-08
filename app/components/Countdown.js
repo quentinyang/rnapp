@@ -24,9 +24,11 @@ export default class Countdown extends Component {
                 <TouchableHighlight
                     style={styles.codeButton}
                 >
-                    <Text style={styles.codeText}>
-                        {num}秒后重试
-                    </Text>
+                    <View style={styles.codeView}>
+                        <Text style={styles.codeText}>
+                            {num}秒后重试
+                        </Text>
+                    </View>
                 </TouchableHighlight>
             );
         } else {
@@ -37,9 +39,11 @@ export default class Countdown extends Component {
                         underlayColor='#fff'
                         onPress={this.props.sendCode}
                     >
-                        <Text style={[styles.codeText, {color: '#ffa251'}]}>
-                            发送验证码
-                        </Text>
+                        <View style={styles.codeView}>
+                            <Text style={[styles.codeText, {color: '#ffa251'}]}>
+                                发送验证码
+                            </Text>
+                        </View>
                     </TouchableHighlight>
                 );
             } else {
@@ -47,9 +51,11 @@ export default class Countdown extends Component {
                     <TouchableHighlight
                         style={styles.codeButton}
                     >
-                        <Text style={styles.codeText}>
-                            发送验证码
-                        </Text>
+                        <View style={styles.codeView}>
+                            <Text style={styles.codeText}>
+                                发送验证码
+                            </Text>
+                        </View>
                     </TouchableHighlight>
                 );
             }
@@ -60,6 +66,10 @@ export default class Countdown extends Component {
 const styles = StyleSheet.create({
     codeButton: {
         width: 100,
+        height: 45,
+        justifyContent: 'center'
+    },
+    codeView: {
         height: 20,
         borderLeftWidth: 1,
         borderColor: '#ccc'
