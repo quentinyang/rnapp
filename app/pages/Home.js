@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
+import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio, StatusBar,
         TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform} from 'nuke';
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
@@ -26,6 +26,10 @@ export default class Home extends Component {
         let houseList = houseData.get('properties');
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
+                <StatusBar
+                    backgroundColor='#04c1ae'
+                    barStyle='light-content'
+                />
                 <View style={styles.searchWrap}>
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>
                         <Text style={[styles.searchText, styles.searchTextPadding]}>上海</Text>
