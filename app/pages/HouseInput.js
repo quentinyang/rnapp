@@ -60,11 +60,8 @@ class HouseInput extends Component {
                         <WithLabel
                             label='小区'
                             special={true}
+                            specialText={houseForm.get('community_name')}
                             arrow={true}
-                            value={houseForm.get('community_name')}
-                            placeholder='选择小区'
-                            underlineColorAndroid = 'transparent'
-                            editable={false}
                             onClick={() => this.singleAction('searchChanged', true)}
                         />
                         <WithLabel

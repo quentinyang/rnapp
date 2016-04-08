@@ -8,7 +8,7 @@ import {
     StyleSheet,
     Image,
     TextInput,
-    TouchableHighlight,
+    TouchableOpacity,
     PixelRatio
 } from 'nuke';
 
@@ -18,7 +18,7 @@ export default class LabelTextInput extends Component {
     }
 
     render() {
-        let {ref, label, special, onClick, inputStyle, arrow, rightText, rightStyle, placeholderTextColor, children, ...props} = this.props;
+        let {ref, label, special, specialText, onClick, inputStyle, arrow, rightText, rightStyle, placeholderTextColor, children, ...props} = this.props;
 
         return (
             <View
@@ -27,19 +27,19 @@ export default class LabelTextInput extends Component {
             >
                 <Text style={styles.label}>{label}</Text>
                 {!special ?
-                <TextInput
-                    style={[styles.inputBox, inputStyle]}
-                    {...props}
-                />:
-                <TouchableHighlight
-                    style={styles.specialTouch}
-                    onPress={onClick}>
-                <TextInput
-                    style={[styles.inputBox, inputStyle]}
-                    placeholderTextColor={placeholderTextColor ? placeholderTextColor : '#ccc'}
-                    {...props}
-                />
-                </TouchableHighlight>
+                    <TextInput
+                        style={[styles.inputBox, inputStyle]}
+                        placeholderTextColor={placeholderTextColor || '#ccc'}
+                        {...props}
+                    />:
+                    <TouchableOpacity
+                        style={styles.specialTouch}
+                        onPress={onClick}
+                    >
+                        <Text style={[styles.specialText, specialText?'': styles.specialDefaultColor]}>
+                            {specialText || '选择小区'}
+                        </Text>
+                    </TouchableOpacity>
                 }
                 {arrow ?
                     <Image
@@ -71,10 +71,21 @@ const styles = StyleSheet.create({
         color: '#3e3e3e'
     },
     specialTouch: {
-        flex: 1
+        flex: 1,
+        justifyContent: 'center',
+        height: 45
+    },
+    specialText: {
+        fontSize: 15,
+        color: '#000'
+    },
+    specialDefaultColor: {
+        color: '#ccc'
     },
     inputBox: {
         flex: 1,
+        marginLeft: 0,
+        paddingLeft: 0,
         height: 45,
         fontSize: 15,
         fontWeight: '200'

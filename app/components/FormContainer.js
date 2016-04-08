@@ -7,7 +7,7 @@ import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 var TextInputState = require('TextInputState');
 
 export default class FormContainer extends Component {
-  
+
   render() {
     return (
               <ScrollView
@@ -15,7 +15,7 @@ export default class FormContainer extends Component {
                     showsVerticalScrollIndicator={true}
                     automaticallyAdjustContentInsets={false}
                     contentContainerStyle={styles.content}
-                    keyboardDismissMode='on-drag'
+                    keyboardDismissMode='none'
                     keyboardShouldPersistTaps={true}>
                     <View
                       onStartShouldSetResponderCapture={(e) => {
