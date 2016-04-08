@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, StyleSheet, Image, TouchableWithoutFeedback, PixelRatio} from 'nuke';
+import {React, Component, Text, View, ScrollView, StyleSheet, Image, TouchableWithoutFeedback, PixelRatio, Platform} from 'nuke';
 
 export default class SearchNavigator extends Component {
     constructor(props) {
@@ -63,8 +63,8 @@ export default class SearchNavigator extends Component {
 
 const styles = StyleSheet.create({
     searchWrap: {
-        height: 65,
-        paddingTop: 20,
+        height: (Platform.OS === 'ios') ? 65 : 45,
+        paddingTop: (Platform.OS === 'ios') ? 20 : 0,
         backgroundColor: '#f8f8f8',
         borderBottomWidth: 1/PixelRatio.get(),
         borderBottomColor: '#d9d9d9',

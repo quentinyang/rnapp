@@ -10,7 +10,8 @@ import {
     Image,
     TouchableHighlight,
     StyleSheet,
-    PixelRatio
+    PixelRatio,
+    Platform
 } from 'nuke'
 
 
@@ -70,13 +71,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     box: {
-        height: 65,
+        height: (Platform.OS === 'ios') ? 65 : 45,
     },
     column: {
         flexDirection: 'column'
     },
     searchContainer: {
-        marginTop: 23,
+        marginTop: (Platform.OS === 'ios') ? 23 : 6,
         marginLeft: 15
     },
     searchIcon: {

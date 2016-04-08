@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, StyleSheet, TouchableWithoutFeedback, PixelRatio} from 'nuke';
+import {React, Component, Text, View, ScrollView, StyleSheet, TouchableWithoutFeedback, PixelRatio, Platform} from 'nuke';
 import {formatDate} from '../utils/CommonUtils';
 
 export default class HouseItem extends Component {
@@ -77,10 +77,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffa251',
         color: '#fff',
         fontSize: 12,
-        padding: 2,
+        padding: (Platform.OS === 'ios') ? 2 : 0,
         fontWeight: '500',
         marginRight: 10,
-        width: 30
+        width: 30,
+        textAlign: 'center',
+        textAlignVertical: 'top'
     },
     tagAuth: {
         backgroundColor: '#45c7c9',

@@ -1,7 +1,7 @@
 'use strict';
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
-        TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator} from 'nuke';
+        TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform} from 'nuke';
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
 
@@ -142,9 +142,9 @@ export default class Home extends Component {
                     <View style={styles.allHouse}>
                         <Image
                             source={require('../images/all_house.png')}
-                            style={styles.allHouseImage}
+                            style={[styles.allHouseImage]}
                         />
-                        <Text style={[styles.flex, styles.textPadding, styles.heiti_16_header]}>{this.props.rout}</Text>
+                        <Text style={[styles.flex, styles.heiti_16_header]}>{this.props.rout}</Text>
                         <Image
                             source={require('../images/next.png')}
                             style={styles.nextImage}
@@ -255,8 +255,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#eee'
     },
     searchWrap: {
-        height: 65,
-        paddingTop: 20,
+        height: (Platform.OS === 'ios') ? 65 : 45,
+        paddingTop: (Platform.OS === 'ios') ? 20 : 0,
         backgroundColor: '#04c1ae'
     },
     searchBox: {
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     searchBtn: {
         height: 33,
         backgroundColor: '#0eaa99',
-        borderRadius: 33
+        borderRadius: (Platform.OS === 'ios') ? 33 : 15
     },
     flex: {
         flex: 1
@@ -292,7 +292,8 @@ const styles = StyleSheet.create({
     },
     allHouseImage: {
         width: 30,
-        height: 30
+        height: 30,
+        marginRight: 10
     },
     nextImage: {
         width: 9,
@@ -300,9 +301,6 @@ const styles = StyleSheet.create({
     },
     headerMarginBottom: {
         marginBottom: 15
-    },
-    textPadding: {
-        paddingLeft: 10
     },
     listFooter: {
         height: 40,
@@ -324,8 +322,10 @@ const styles = StyleSheet.create({
     },
     bar: {
         width: 3,
+        height: 15,
         backgroundColor: '#04C1AE',
-        marginRight: 8
+        marginRight: 8,
+        borderRadius: 2
     },
     alignItems: {
         alignItems: 'center',
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     contentContainerStyle: {
-        marginTop: -20
+        marginTop: (Platform.OS === 'ios') ? -20 : 0
     },
     noAttention: {
         width: 97,

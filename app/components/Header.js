@@ -31,8 +31,8 @@ export default class ErrorMsg extends Component {
 const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
-        height: (Platform.OS === 'ios') ? 65: 40,
-        paddingTop: (Platform.OS === 'ios') ? 25 : 0,
+        height: (Platform.OS === 'ios') ? 65: 45,
+        paddingTop: (Platform.OS === 'ios') ? 20 : 0,
         borderBottomWidth: 1/PixelRatio.get(),
         borderBottomColor: '#d9d9d9',
         backgroundColor: '#fff'
