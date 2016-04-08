@@ -14,6 +14,8 @@ import {
     Platform
 } from 'nuke'
 
+import FormContainer from './FormContainer'
+
 
 export default class Autocomplete extends Component {
     constructor(props) {
@@ -53,11 +55,11 @@ export default class Autocomplete extends Component {
                     </View>
                 </View>
 
-                <ScrollView
+                <FormContainer
                     style={[styles.list]}
                 >
                     {items}
-                </ScrollView>
+                </FormContainer>
             </View>
         );
     }

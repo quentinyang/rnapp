@@ -1,7 +1,7 @@
 'use strict';
 
 import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, Alert} from 'nuke'
-import Autocomplete from './autocomplete'
+import Autocomplete from './Autocomplete'
 
 export default class CommunitySearch extends Component {
     constructor(props) {

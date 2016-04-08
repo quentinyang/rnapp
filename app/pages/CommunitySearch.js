@@ -1,7 +1,7 @@
 'use strict';
 
 import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, Alert} from 'nuke'
-import Autocomplete from '../components/autocomplete'
+import Autocomplete from '../components/Autocomplete'
 import AutocompleteItem from '../components/AutocompleteItem'
 import * as common from '../constants/Common'
 

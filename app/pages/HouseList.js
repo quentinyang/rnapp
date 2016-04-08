@@ -9,7 +9,7 @@ import Filter from '../components/Filter';
 import FilterTab from '../components/FilterTab';
 import Area from '../components/Area';
 import SearchNavigator from '../components/SearchNavigator';
-import Autocomplete from '../components/autocomplete'
+import Autocomplete from '../components/Autocomplete'
 import AutocompleteItem from '../components/AutocompleteItem'
 
 let ds = new ListView.DataSource({
