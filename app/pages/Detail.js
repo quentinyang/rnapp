@@ -187,9 +187,10 @@ export default class Detail extends Component {
         let {navigator} = this.props;
         navigator.push({
             component: component,
-            name: '',
-            title: '',
-            hideNavBar: true
+            name: 'publishHouse',
+            title: '发布房源',
+            hideHeader: true,
+            hideNavBar: false
         });
     }
 

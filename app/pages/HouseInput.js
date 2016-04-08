@@ -31,6 +31,7 @@ class HouseInput extends Component {
         let {communityData} = this.props.communitySearch,
             {houseForm, controller} = this.props.houseInput;
 
+        var hideHeader =  this.props.route && this.props.route.hideHeader;
         return (
             <View style={styles.container}>
             {controller.get('search') ?
@@ -39,18 +40,16 @@ class HouseInput extends Component {
                     keyword={communityData.get('keyword')}
                     results = {communityData.get('results')}
                     actions = {this.props.searchActions}
-                    onPress = {this.singleAction.bind(this)}
-                />
+                    onPress = {this.singleAction.bind(this)}/>
                 :
                 <View style={styles.layout}>
-                    <Header title='发布房源'>
-                        <Text
-                            style={styles.headerRight}
-                            onPress={this.linkFn}
-                        >
-                            积分规则
-                        </Text>
-                    </Header>
+                    {
+                        hideHeader == true ? null :
+                        (<Header title='发布房源'>
+                            <Text style={styles.headerRight} onPress={this.linkFn}>积分规则</Text>
+                        </Header>)
+                    }
+
                     <FormContainer
                         ref="formContainer"
                         scrollViewRef="scrollView"
@@ -238,12 +237,12 @@ class HouseInput extends Component {
     linkFn = () => {
         let {navigator} = this.props;
 
+        let url = 'http://mp.weixin.qq.com/s?__biz=MzAxNDYyMTA0NQ==&mid=401036326&idx=1&sn=45548dc3dfb63021c4e60df9058df5df#rd';
         navigator.push({
             component: TouchWebContainer,
             name: 'score rule',
             title: '积分规则',
-            hideNavBar: false,
-            url: 'http://mp.weixin.qq.com/s?__biz=MzAxNDYyMTA0NQ==&mid=401036326&idx=1&sn=45548dc3dfb63021c4e60df9058df5df#rd'
+            url: url
         });
     };
 
@@ -349,6 +348,7 @@ class Attached extends Component {
     }
 
     render() {
+
         return (
                 <TouchableHighlight
                     style={styles.attachedTouch}

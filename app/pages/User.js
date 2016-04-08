@@ -82,9 +82,7 @@ export default class User extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            url: 'https://api.fangyuan360.cn/usercenter/account/?token=' + gtoken
-        };
+        this.state = {};
     }
 
     componentDidMount() {
