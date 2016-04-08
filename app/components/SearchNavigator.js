@@ -13,10 +13,12 @@ export default class SearchNavigator extends Component {
             <View style={styles.searchWrap}>
                 <View style={[styles.searchBox, styles.row, styles.alignItems]}>
                     <TouchableWithoutFeedback onPress={this._onBack}>
-                        <Image
-                            source={require('../images/back.png')}
-                            style={styles.backImage}
-                        />
+                        <View>
+                            <Image
+                                source={require('../images/back.png')}
+                                style={styles.backImage}
+                            />
+                        </View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={this._onSearch}>
                         {

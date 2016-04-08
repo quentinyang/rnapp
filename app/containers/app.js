@@ -188,7 +188,8 @@ let styles = StyleSheet.create({
         color: '#3e3e3e'
     },
     navBarLeftButton: {
-        paddingLeft: 15
+        paddingLeft: 15,
+        paddingRight: 25
     },
     navBarRightButton: {
         marginRight: 15

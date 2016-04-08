@@ -221,7 +221,10 @@ export default class Detail extends Component {
     };
 
     _renderFooter = () => {
+        let {sameCommunityList} = this.props;
+        let houseList = sameCommunityList.get('properties');
         return (
+            houseList.size > 0 ?
             <View style={styles.moreWrap}>
                 <TouchableHighlight
                     style={styles.moreButton}
@@ -233,18 +236,24 @@ export default class Detail extends Component {
                     </Text>
                 </TouchableHighlight>
             </View>
+            : null
         )
     };
 
     _renderHeader = () => {
-        let { baseInfo, route } = this.props;
+        let { baseInfo, route, sameCommunityList } = this.props;
+        let houseList = sameCommunityList.get('properties');
         return (
             <View>
                 <BaseInfo info={baseInfo} route={route} />
-                <View style={[styles.itemContainer, styles.row]}>
-                    <Text style={styles.bar}></Text>
-                    <Text style={styles.baseSize}>同小区房源</Text>
-                </View>
+                {
+                    houseList.size > 0 ?
+                    <View style={[styles.itemContainer, styles.row]}>
+                        <Text style={styles.bar}></Text>
+                        <Text style={styles.baseSize}>同小区房源</Text>
+                    </View>
+                    : null
+                }
             </View>
         )
     };
