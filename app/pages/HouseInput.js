@@ -20,6 +20,7 @@ import TouchableSubmit from '../components/TouchableSubmit';
 import CommunitySearch from '../components/SearchComponent';
 import HouseInputSuccessContainer from '../containers/HouseInputSuccessContainer';
 import FormContainer from '../components/FormContainer';
+import TouchWebContainer from "../containers/TouchWebContainer";
 
 class HouseInput extends Component {
     constructor(props) {
@@ -235,7 +236,15 @@ class HouseInput extends Component {
     }
 
     linkFn = () => {
-        Linking.openURL('http://mp.weixin.qq.com/s?__biz=MzAxNDYyMTA0NQ==&mid=401036326&idx=1&sn=45548dc3dfb63021c4e60df9058df5df#rd').catch(err => console.log(err));
+        let {navigator} = this.props;
+
+        navigator.push({
+            component: TouchWebContainer,
+            name: 'score rule',
+            title: '积分规则',
+            hideNavBar: false,
+            url: 'http://mp.weixin.qq.com/s?__biz=MzAxNDYyMTA0NQ==&mid=401036326&idx=1&sn=45548dc3dfb63021c4e60df9058df5df#rd'
+        });
     };
 
     handleSubmit = () => {
