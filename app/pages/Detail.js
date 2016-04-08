@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, Modal, Button, Linking } from 'nuke'
+import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, Alert, Modal, Button, Linking } from 'nuke'
 import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
 import DetailContainer from '../containers/DetailContainer';
@@ -20,8 +20,8 @@ export default class Detail extends Component {
         let {baseInfo, sameCommunityList, callInfo} = this.props;
         let houseList = sameCommunityList.get('properties');
         let info = baseInfo.get("baseInfo");
-
-        let phoneStr = "联系房东" + (info.get('phone_lock_status') ? ("(" + info.get('seller_phone') + ")") : (callInfo.get('sellerPhone') ? ("(" + callInfo.get('sellerPhone') + ")") : ''));
+        let status = Number(info.get('phone_lock_status'));
+        let phoneStr = "联系房东" + (status ? ("(" + info.get('seller_phone') + ")") : (callInfo.get('sellerPhone') ? ("(" + callInfo.get('sellerPhone') + ")") : ''));
 
         return (
             <View style={styles.flex}>
@@ -136,7 +136,7 @@ export default class Detail extends Component {
                     <TouchableHighlight
                         style={styles.contactButton}
                         underlayColor="#04c1ae"
-                        onPress={this._clickPhoneBtn.bind(this, info.get('phone_lock_status'), info.get('seller_phone'), callInfo.get('sellerPhone'))}
+                        onPress={this._clickPhoneBtn.bind(this, status, info.get('seller_phone'), callInfo.get('sellerPhone'))}
                     >
                         <View style={{flex: 1, flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
                             <Image
@@ -194,9 +194,15 @@ export default class Detail extends Component {
 
     _clickPhoneBtn(status, phone, hasPhone) {
         if(status || hasPhone) { //1: 已解锁
-            if(Linking.canOpenURL()) {
-                Linking.openURL("tel:" + phone);
-            }
+            let url = "tel:" + phone;
+
+            Linking.canOpenURL(url).then(supported => {
+                if (!supported) {
+                    Alert.alert('温馨提示', '您的设备不支持打电话功能', [{text: '确定'}]);
+                } else {
+                    return Linking.openURL(url);
+                }
+            }).catch(err => console.error('An error occurred', err));
         } else {   //0: 未解锁
             this.props.actions.setScoreTipVisible(true);
         }
@@ -204,7 +210,7 @@ export default class Detail extends Component {
 
     _callSellerPhone() {
         this.props.actions.setScoreTipVisible(false);
-        this.props.actions.callSeller(this.props.route.propertyId);
+        this.props.actions.callSeller(this.props.route.item.get("property_id"));
     }
 
     _callFeedback(id, status) {
@@ -274,7 +280,7 @@ export default class Detail extends Component {
     _handleMoreHouseList = () => {
         let {route, navigator, actionsHouseList} = this.props;
         let {item} = route;
-        console.info('Route: ', route);
+
         actionsHouseList.filterCommunityNameChanged(item.get('community_id'), item.get('community_name'));
         navigator.push({
             component: HouseListContainer,
@@ -355,7 +361,8 @@ var styles = StyleSheet.create({
     },
     row: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: "center"
     },
     flex: {
         flex: 1
