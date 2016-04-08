@@ -14,7 +14,7 @@ export default class TabView extends Component {
         this._renderScene = this._renderScene.bind(this);
         this._onWillFocus = this._onWillFocus.bind(this);
         this.state = {
-            tabIndex:0
+            tabIndex: 0
         };
     }
 
@@ -46,7 +46,6 @@ export default class TabView extends Component {
             <Navigator
                 style={styles.container}
                 initialRoute={tabArr[0]}
-                initialRouteStack={tabArr}
                 renderScene={this._renderScene}
                 sceneStyle={styles.sceneStyle}
                 configureScene={(route) => {
@@ -71,6 +70,8 @@ export default class TabView extends Component {
 class TabBar extends Component {
     constructor(props) {
         super(props);
+
+        this.changeNavigatorItem = this.changeNavigatorItem.bind(this);
     }
 
     render() {
@@ -90,7 +91,7 @@ class TabBar extends Component {
                                 key={tabItem.key}
                                 onPress={()=>{
                                     if(tabIndex !== tabItem.key) {
-                                        navigator.jumpTo(tabArr[tabItem.key]);
+                                        this.changeNavigatorItem(tabItem.key);
                                     }
                                 }}
                             >
@@ -108,6 +109,24 @@ class TabBar extends Component {
             }
             </View>
         );
+    }
+
+    changeNavigatorItem(key) {
+        let {tabIndex, navigator} = this.props;
+        let cRoutes = navigator.getCurrentRoutes();
+        if (cRoutes.length == 3) {
+            navigator.jumpTo(tabArr[key])
+        } else {
+            let hasKeyRoute = cRoutes.filter((route) => {
+                return route.key == key
+            });
+
+            if (hasKeyRoute.length > 0) {
+                navigator.jumpTo(tabArr[key])
+            } else {
+                navigator.push(tabArr[key])
+            }
+        }
     }
 }
 
