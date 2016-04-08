@@ -195,7 +195,8 @@ const styles = StyleSheet.create({
         marginRight: 30
     },
     itemsHeight: {
-        height: 50
+        height: 50,
+        paddingLeft: 10
     },
     itemWrap: {
         paddingLeft: 10

@@ -60,6 +60,7 @@ class HouseInput extends Component {
                             arrow={true}
                             value={houseForm.get('community_name')}
                             placeholder='选择小区'
+                            underlineColorAndroid = 'transparent'
                             onFocus={() => this.singleAction('searchChanged', true)}
                         />
                         <WithLabel
@@ -67,8 +68,9 @@ class HouseInput extends Component {
                             rightText='号/座'
                             rightStyle={controller.get('single')? {color: '#fff'}: {}}
                             value={houseForm.get('building_num')}
-                            placeholder={controller.get('single')?'':'输入楼号/座号'}
+                            placeholder={controller.get('single')?'':'请输入'}
                             editable={controller.get('single')? false: true}
+                            underlineColorAndroid = 'transparent'
                             onChangeText={(v) => {this.singleAction('buildingChanged', v)}}
                         >
                             <Attached
@@ -82,6 +84,7 @@ class HouseInput extends Component {
                             value={houseForm.get('unit_num')}
                             placeholder={controller.get('no_unit')?'':'输入单元号'}
                             editable={controller.get('no_unit')? false: true}
+                            underlineColorAndroid = 'transparent'
                             onChangeText={(v) => {this.singleAction('unitChanged', v)}}
                         >
                             <Attached
@@ -96,6 +99,7 @@ class HouseInput extends Component {
                             rightStyle={controller.get('villa')? {color: '#fff'}: {}}
                             value={houseForm.get('door_num')}
                             placeholder={controller.get('villa')?'':'输入房号'}
+                            underlineColorAndroid = 'transparent'
                             editable={controller.get('villa')? false: true}
                             onChangeText={(v) => {this.singleAction('doorChanged', v)}}
                         >
@@ -109,6 +113,7 @@ class HouseInput extends Component {
                             label='户型'
                             rightText='室'
                             inputStyle={styles.alignCenter}
+                            underlineColorAndroid = 'transparent'
                             keyboardType='numeric'
                             maxLength={2}
                             value={houseForm.get('bedrooms')}
@@ -118,6 +123,7 @@ class HouseInput extends Component {
                                 keyboardType='numeric'
                                 style={[styles.inputBox, styles.alignCenter]}
                                 maxLength={1}
+                                underlineColorAndroid = 'transparent'
                                 value={houseForm.get('living_rooms')}
                                 onChangeText={(v) => {this.singleAction('livingroomsChanged', v)}}
                             />
@@ -126,6 +132,7 @@ class HouseInput extends Component {
                                 keyboardType='numeric'
                                 style={[styles.inputBox, styles.alignCenter]}
                                 maxLength={1}
+                                underlineColorAndroid = 'transparent'
                                 value={houseForm.get('bathrooms')}
                                 onChangeText={(v) => {this.singleAction('bathroomsChanged', v)}}
                             />
@@ -139,6 +146,7 @@ class HouseInput extends Component {
                             keyboardType='numeric'
                             value={houseForm.get('area')}
                             placeholder='输入面积'
+                            underlineColorAndroid = 'transparent'
                             onFocus={() => this.inputFocused('area')}
                             onBlur={() => this.inputFocused('area', 0)}
                             onChangeText={(v) => {this.singleAction('areaChanged', v)}}
@@ -148,6 +156,7 @@ class HouseInput extends Component {
                             ref='price'
                             rightText='万'
                             maxLength={6}
+                            underlineColorAndroid = 'transparent'
                             keyboardType='numeric'
                             value={houseForm.get('price')}
                             placeholder='输入价格'
@@ -163,6 +172,7 @@ class HouseInput extends Component {
                             value={houseForm.get('seller_alias')}
                             placeholder='(选填)如张先生'
                             onFocus={() => this.inputFocused('alias')}
+                            underlineColorAndroid = 'transparent'
                             onBlur={() => this.inputFocused('alias', 0)}
                             onChangeText={(v) => {this.singleAction('aliasChanged', v)}}
                         />
@@ -172,6 +182,7 @@ class HouseInput extends Component {
                             keyboardType='numeric'
                             value={houseForm.get('seller_phone')}
                             placeholder='输入联系电话'
+                            underlineColorAndroid = 'transparent'
                             maxLength={11}
                             onFocus={() => this.inputFocused('phone')}
                             onBlur={() => this.inputFocused('phone', 0)}
@@ -334,7 +345,7 @@ class Attached extends Component {
                     underlayColor='#fff'
                     onPress={this.props.toggleAttach}
                 >
-                    <View style={styles.attached}>
+                    <View style={[styles.attached, styles.center]}>
                         {this.props.isSelected ?
                             <Image
                                 source={require('../images/selected.png')}
@@ -405,6 +416,10 @@ let styles = StyleSheet.create({
         marginBottom: 80,
         paddingLeft: 25,
         paddingRight: 25
+    },
+    center: {
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })
 

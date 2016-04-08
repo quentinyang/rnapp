@@ -31,7 +31,7 @@ export default class FilterTab extends Component {
 
         return (
             <View>
-                <ScrollView style={styles.filterTab}>
+                <ScrollView style={styles.filterTab} showsVerticalScrollIndicator={false}>
                     {filterTab}
                 </ScrollView>
             </View>

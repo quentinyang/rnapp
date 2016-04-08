@@ -18,7 +18,7 @@ export default class LabelTextInput extends Component {
     }
 
     render() {
-        let {ref, label, inputStyle, arrow, rightText, rightStyle, children, ...props} = this.props;
+        let {ref, label, inputStyle, arrow, rightText, rightStyle, placeholderTextColor, children, ...props} = this.props;
 
         return (
             <View
@@ -28,6 +28,7 @@ export default class LabelTextInput extends Component {
                 <Text style={styles.label}>{label}</Text>
                 <TextInput
                     style={[styles.inputBox, inputStyle]}
+                    placeholderTextColor={placeholderTextColor ? placeholderTextColor : '#ccc'}
                     {...props}
                 />
                 {arrow ?
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1/PixelRatio.get(),
         borderBottomColor: '#d9d9d9',
         alignItems: 'center',
+        justifyContent: 'center',
         flexDirection: 'row'
     },
     label: {
