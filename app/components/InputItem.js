@@ -17,10 +17,7 @@ export default class InputItem extends Component {
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
                     <View style={[styles.row, styles.center]}>
-                        <View style={[styles.row, styles.flex, styles.center]}>
-                            <Text style={[styles.headerMsg, styles.headerPadding]}>{item.get('community_name')}</Text>
-                            <Text style={[styles.headerMsg, styles.headerPadding]}>{item.get('building_num') + item.get('building_unit') + item.get('door_num')}</Text>
-                        </View>
+                        <Text numberOfLines={1} style={[styles.flex, styles.headerMsg, styles.headerPadding]}>{item.get('community_name')}{item.get('building_num') + item.get('building_unit') + item.get('door_num')}</Text>
                         <Text style={styles.updatedAt}>{date.month + '月' + date.day + '日发布'}</Text>
                     </View>
                     <View style={[styles.row, styles.bedroomsWrap]}>

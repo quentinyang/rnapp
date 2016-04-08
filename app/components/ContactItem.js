@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, Text, View, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, PixelRatio, Linking} from 'nuke';
+import {React, Component, Text, View, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, PixelRatio, Linking, Alert} from 'nuke';
 import {formatDate} from '../utils/CommonUtils';
 
 export default class ContactItem extends Component {
@@ -16,10 +16,7 @@ export default class ContactItem extends Component {
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
                     <View style={[styles.row, styles.center]}>
-                        <View style={[styles.row, styles.flex, styles.center]}>
-                            <Text style={[styles.headerMsg, styles.headerPadding]}>{item.get('community_name')}</Text>
-                            <Text style={[styles.headerMsg, styles.headerPadding]}>{item.get('building_num') + item.get('building_unit') + item.get('door_num')}</Text>
-                        </View>
+                        <Text numberOfLines={1} style={[styles.flex, styles.headerMsg, styles.headerPadding]}>{item.get('community_name')}  {item.get('building_num') + item.get('building_unit') + item.get('door_num')}</Text>
                         <Text style={styles.updatedAt}>{date.month + '月' + date.day + '日' + statusStr[item.get('reply_status')]}</Text>
                     </View>
                     <View style={[styles.row, styles.top]}>
@@ -43,9 +40,15 @@ export default class ContactItem extends Component {
         );
     }
     _callSeller = (phone) => {
-        if(Linking.canOpenURL()) {
-            Linking.openURL("tel:" + phone);
-        }
+        let url = "tel:" + phone;
+
+        Linking.canOpenURL(url).then(supported => {
+            if (!supported) {
+                Alert.alert('温馨提示', '您的设备不支持打电话功能', [{text: '确定'}]);
+            } else {
+                return Linking.openURL(url);
+            }
+        }).catch(err => console.error('An error occurred', err));
     };
 
     _onHandlePress = (item) => {

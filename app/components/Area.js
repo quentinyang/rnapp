@@ -58,8 +58,8 @@ class LeftView extends Component {
             }
             return (
                 <TouchableWithoutFeedback key={v.get('id')} onPress={this._onHandlePress.bind(null, v.get('id'), v.get('name'))}>
-                    <View style={[styles.justifyContent, styles.itemsHeight, selected]}>
-                        <Text style={[styles.text, styles.leftTextPadding, selectedText]}>{v.get('name')}</Text>
+                    <View style={[styles.justifyContent, styles.itemsHeight, styles.itemWrap, selected]}>
+                        <Text style={[styles.text, selectedText]}>{v.get('name')}</Text>
                     </View>
                 </TouchableWithoutFeedback>
             );
@@ -141,9 +141,6 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         flex: 3
     },
-    leftTextPadding: {
-        paddingLeft: 20
-    },
     text: {
         fontSize: 15,
         color: '#3e3e3e',
@@ -154,6 +151,9 @@ const styles = StyleSheet.create({
     },
     itemsHeight: {
         height: 40
+    },
+    itemWrap: {
+        paddingLeft: 20
     },
     justifyContent: {
         justifyContent: 'center',
