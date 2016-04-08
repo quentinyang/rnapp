@@ -18,7 +18,7 @@ export default class LabelTextInput extends Component {
     }
 
     render() {
-        let {ref, label, inputStyle, arrow, rightText, rightStyle, placeholderTextColor, children, ...props} = this.props;
+        let {ref, label, special, onClick, inputStyle, arrow, rightText, rightStyle, placeholderTextColor, children, ...props} = this.props;
 
         return (
             <View
@@ -26,11 +26,21 @@ export default class LabelTextInput extends Component {
                 style={styles.inputContainer}
             >
                 <Text style={styles.label}>{label}</Text>
+                {!special ?
+                <TextInput
+                    style={[styles.inputBox, inputStyle]}
+                    {...props}
+                />:
+                <TouchableHighlight
+                    style={styles.specialTouch}
+                    onPress={onClick}>
                 <TextInput
                     style={[styles.inputBox, inputStyle]}
                     placeholderTextColor={placeholderTextColor ? placeholderTextColor : '#ccc'}
                     {...props}
                 />
+                </TouchableHighlight>
+                }
                 {arrow ?
                     <Image
                         source={require('../images/next.png')}
@@ -59,6 +69,9 @@ const styles = StyleSheet.create({
         width: 90,
         fontSize: 16,
         color: '#3e3e3e'
+    },
+    specialTouch: {
+        flex: 1
     },
     inputBox: {
         flex: 1,

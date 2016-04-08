@@ -59,11 +59,13 @@ class HouseInput extends Component {
                     <View style={styles.formBox}>
                         <WithLabel
                             label='小区'
+                            special={true}
                             arrow={true}
                             value={houseForm.get('community_name')}
                             placeholder='选择小区'
                             underlineColorAndroid = 'transparent'
-                            onFocus={() => this.singleAction('searchChanged', true)}
+                            editable={false}
+                            onClick={() => this.singleAction('searchChanged', true)}
                         />
                         <WithLabel
                             label='楼栋'
