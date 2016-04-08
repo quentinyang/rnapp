@@ -70,7 +70,7 @@ class HouseInput extends Component {
                             rightText='号/座'
                             rightStyle={controller.get('single')? {color: '#fff'}: {}}
                             value={houseForm.get('building_num')}
-                            placeholder={controller.get('single')?'':'请输入'}
+                            placeholder={controller.get('single')?'':'输入楼号/座号'}
                             editable={controller.get('single')? false: true}
                             underlineColorAndroid = 'transparent'
                             onChangeText={(v) => {this.singleAction('buildingChanged', v)}}
@@ -355,7 +355,7 @@ class Attached extends Component {
                     underlayColor='#fff'
                     onPress={this.props.toggleAttach}
                 >
-                    <View style={[styles.attached, styles.center]}>
+                    <View style={[styles.attached]}>
                         {this.props.isSelected ?
                             <Image
                                 source={require('../images/selected.png')}
@@ -410,6 +410,7 @@ let styles = StyleSheet.create({
     },
     attached: {
         flexDirection: 'row',
+        alignItems: 'center',
         width: 55
     },
     attachedText: {
