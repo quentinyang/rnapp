@@ -2,8 +2,8 @@
 
 // let HOST = 'http://360.feature-fy360.dev.angejia.com/service/';
 // let HOST = 'http://360.master.stage.angejia.com/service/';
-let HOST = 'http://360.feature-fy360.test.angejia.com/service/';
-// let HOST = 'https://api.fangyuan360.cn/service/';
+// let HOST = 'http://360.feature-fy360.test.angejia.com/service/';
+let HOST = 'https://api.fangyuan360.cn/service/';
 
 let urls = {
     detail: {

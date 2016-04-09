@@ -4,6 +4,9 @@ import {React, Component, AppRegistry, StyleSheet} from 'nuke';
 import Root from './app/root';
 import codePush from "react-native-code-push";
 
+// disable Yellow Box
+// console.disableYellowBox = true; 
+
 class fy360 extends Component {
     componentDidMount() {
         // download silently and installed the next time the app is restarted
