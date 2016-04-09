@@ -2,7 +2,7 @@
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
             TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator,
-            StatusBar, WebView, Alert} from 'nuke';
+            WebView, Alert} from 'nuke';
 
 import Header from '../components/Header';
 
