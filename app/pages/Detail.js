@@ -106,7 +106,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn]}
                                 underlayColor="#fff"
-                                onPress={this._callFeedback.bind(this, callInfo.get('washId'),  2)}
+                                onPress={this._callFeedback.bind(this, callInfo.get('washId'), 3)}
                             >
                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>联系不上</Text>
                             </TouchableHighlight>
@@ -114,7 +114,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn, styles.margin]}
                                 underlayColor="#fff"
-                                onPress={this._callFeedback.bind(this, callInfo.get('washId'),  3)}
+                                onPress={this._callFeedback.bind(this, callInfo.get('washId'), 2)}
                             >
                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>虚假/不卖/已卖</Text>
                             </TouchableHighlight>
@@ -282,17 +282,25 @@ export default class Detail extends Component {
 
     _handleMoreHouseList = () => {
         let {route, navigator, actionsHouseList} = this.props;
-        let {item} = route;
+        let {item} = route, routeArr = navigator.getCurrentRoutes(), preRoute = routeArr[routeArr.length - 2];
 
         actionsHouseList.filterCommunityNameChanged(item.get('community_id'), item.get('community_name'));
-        navigator.push({
-            component: HouseListContainer,
-            name: 'houseDetail',
-            title: '房源详情',
-            hideNavBar: true,
-            communityName: item.get('community_name'),
-            communityId: item.get('community_id')
-        });
+        actionsHouseList.fetchHouseList({
+             page: 1,
+             community_id: item.get('community_id')
+         });
+        if(preRoute.name && preRoute.name == "houseList") {
+            navigator.pop();
+        } else {
+            navigator.push({
+                component: HouseListContainer,
+                name: 'houseList',
+                title: '房源列表',
+                hideNavBar: true,
+                communityName: item.get('community_name'),
+                communityId: item.get('community_id')
+            });
+        }
     };
 }
 
