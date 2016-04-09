@@ -33,7 +33,7 @@ class Profile extends Component{
   }
 
   _formatMobileNumber(number) {
-    return number.slice(0, 3) + '****' + number.slice(-3);
+    return number.slice(0, 3) + '****' + number.slice(-4);
   }
 }
 
@@ -160,12 +160,17 @@ export default class User extends Component {
     _loginOut() {
         let {navigator} = this.props;
         AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
-        navigator.resetTo({
-            component: LoginContainer,
-            name: 'home',
-            title: '首页',
-            hideNavBar: true
-        });
+        AsyncStorageComponent.get('user_phone')
+        .then((value) => {
+            navigator.resetTo({
+              component: LoginContainer,
+              name: 'login',
+              title: '登录',
+              phone: value,
+              hideNavBar: true
+            });
+        })
+
     }
 }
 

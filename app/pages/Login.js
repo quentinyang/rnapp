@@ -88,6 +88,7 @@ class Login extends React.Component {
     }
 
     componentWillUnmount() {
+        this.singleAction('loginCleared');
         this.timer && clearTimeout(this.timer);
     }
 
@@ -110,7 +111,12 @@ class Login extends React.Component {
     }
 
     componentDidMount() {
-        let {navigator} = this.props;
+        let phone = this.props.route.phone;
+
+        if(phone && /^1\d{10}$/.test(phone)) {
+            this.singleAction('phoneChanged', phone);
+            this.singleAction('codeStatus', true);
+        }
     }
 
     inputPhone = (value) => {
@@ -210,6 +216,7 @@ class Login extends React.Component {
             loginService(data)
             .then((oData) => {
                 AsyncStorageComponent.save(common.USER_TOKEN_KEY, oData.token);
+                AsyncStorageComponent.save(common.USER_PHONE, data.phone);
                 gtoken = oData.token;
                 if(oData.is_enter_attention_page) {
                     navigator.resetTo({

@@ -8,3 +8,5 @@ export const CTEXT_CHANGED = 'CTEXT_CHANGED';
 export const NUM_CHANGED = 'NUM_CHANGED';
 
 export const ERR_MSG = 'ERR_MSG';
+
+export const LOGIN_CLEARED = 'LOGIN_CLEARED';

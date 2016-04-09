@@ -23,6 +23,8 @@ function formInfo(state = Immutable.fromJS(initialState.formData), action) {
             return state.set('phone', Immutable.fromJS(action.phone));
         case types.CODE_CHANGED:
             return state.set('code', Immutable.fromJS(action.code));
+        case types.LOGIN_CLEARED:
+            return Immutable.fromJS(initialState.formData);
         default:
             return state;
     }
@@ -38,6 +40,8 @@ function controllerInfo(state = Immutable.fromJS(initialState.controllerData), a
             return state.set('err_msg', Immutable.fromJS(action.err_msg));
         case types.NUM_CHANGED:
             return state.set('num', Immutable.fromJS(action.num));
+        case types.LOGIN_CLEARED:
+            return Immutable.fromJS(initialState.controllerData);
         default:
             return state;
     }
