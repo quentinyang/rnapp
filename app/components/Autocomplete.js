@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column'
     },
     searchContainer: {
-        marginTop: (Platform.OS === 'ios') ? 23 : 6,
+        marginTop: (Platform.OS === 'ios') ? 25 : 6,
         marginLeft: 15
     },
     searchIcon: {

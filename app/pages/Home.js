@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     searchBtn: {
         height: 33,
         backgroundColor: '#0eaa99',
-        borderRadius: (Platform.OS === 'ios') ? 33 : 15
+        borderRadius: 5
     },
     flex: {
         flex: 1

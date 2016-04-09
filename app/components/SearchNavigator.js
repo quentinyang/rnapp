@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     searchBtn: {
         height: 33,
         backgroundColor: '#eee',
-        borderRadius: 10
+        borderRadius: 5
     },
     searchImage: {
         width: 15.5,
