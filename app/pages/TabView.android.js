@@ -59,6 +59,7 @@ export default class TabView extends Component {
                     <TabBar
                         navigator={_navigator}
                         tabIndex={this.state.tabIndex}
+                        actionsUser={this.props.actionsUser}
                     />
                 }
                 onWillFocus={this._onWillFocus}
@@ -75,7 +76,7 @@ class TabBar extends Component {
     }
 
     render() {
-        let {tabIndex, navigator} = this.props;
+        let {tabIndex, navigator, actionsUser} = this.props;
 
         return (
             <View style={styles.tabbar}>
@@ -92,6 +93,9 @@ class TabBar extends Component {
                                 onPress={()=>{
                                     if(tabIndex !== tabItem.key) {
                                         this.changeNavigatorItem(tabItem.key);
+                                    }
+                                    if (tabItem.key == 2) {
+                                        actionsUser.fetchUserProfile({});
                                     }
                                 }}
                             >

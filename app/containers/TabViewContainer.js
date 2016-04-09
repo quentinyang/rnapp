@@ -3,7 +3,7 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/test';
+import * as actionsUser from '../actions/user';
 import TabView from '../pages/TabView';
 
 class TabViewContainer extends Component {
@@ -19,15 +19,12 @@ class TabViewContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {test} = state;
-    return {
-        test
-    }
+    return {}
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        actionsUser: bindActionCreators(actionsUser, dispatch)
     }
 }
 

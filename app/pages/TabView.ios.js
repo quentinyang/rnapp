@@ -17,6 +17,7 @@ export default class TabView extends Component {
     }
 
     render() {
+        let {actionsUser} = this.props;
         return (
             <View style={styles.container}>
                 <TabBar
@@ -36,6 +37,9 @@ export default class TabView extends Component {
                                             this.setState({
                                                 tabIndex: val.key
                                             });
+                                            if (val.key == 2) {
+                                                actionsUser.fetchUserProfile({});
+                                            }
                                         }}>
                                             {this._renderScene()}
                                     </TabBar.Item>
@@ -49,7 +53,7 @@ export default class TabView extends Component {
     }
 
     _renderScene() {
-        let {navigator} = this.props;
+        let {navigator, actionsUser} = this.props;
         let {tabIndex} = this.state;
 
         switch(tabIndex) {

@@ -85,15 +85,6 @@ export default class User extends Component {
         this.state = {};
     }
 
-    componentDidMount() {
-      let {actions} = this.props;
-
-      InteractionManager.runAfterInteractions(() => {
-        actions.fetchUserProfile({});
-      });
-
-    }
-
     render() {
         let {userProfile} = this.props;
 
