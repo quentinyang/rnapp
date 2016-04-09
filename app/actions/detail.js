@@ -8,9 +8,8 @@ import {makeActionCreator, serviceAction} from './base';
 
 export const houseSimilarFetched = makeActionCreator(types.HOUSE_SIMILAR_FETCHED, 'houseList');
 export const houseBaseFetched = makeActionCreator(types.HOUSE_BASE_FETCHED, 'houseBase');
-export const clearHouseBase = makeActionCreator(types.CLEAR_HOUSE_BASE);
+export const clearHouseDetailPage = makeActionCreator(types.CLEAR_HOUSE_DETAIL_PAGE);
 export const houseStatusFetched = makeActionCreator(types.HOUSE_STATUS_FETCHED, 'houseStatus');
-export const clearCallInfo = makeActionCreator(types.CLEAR_CALL_INFO);
 export const setScoreTipVisible = makeActionCreator(types.SCORE_TIP_VISIBLE_CHANGED, 'visible');
 export const setErrorTipVisible = makeActionCreator(types.ERROR_TIP_VISIBLE_CHANGED, 'visible');
 export const setFeedbackVisible = makeActionCreator(types.FEEDBACK_VISIBLE_CHANGED, 'visible');

@@ -178,8 +178,7 @@ export default class Detail extends Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.clearHouseBase();
-        this.props.actions.clearCallInfo();
+        this.props.actions.clearHouseDetailPage();
     }
 
     _goPage(component) {
@@ -256,6 +255,9 @@ export default class Detail extends Component {
         return (
             <View>
                 <BaseInfo info={baseInfo} route={route} />
+                {
+                    houseList.size > 0 ? <View style={[styles.gap, styles.flex]}></View>: null
+                }
                 {
                     houseList.size > 0 ?
                     <View style={[styles.itemContainer, styles.row]}>
@@ -348,7 +350,6 @@ class BaseInfo extends Component {
                     <Image style={styles.money_icon} source={require('../images/money.png')}/>
                     <Text style={{fontSize: 15, marginLeft: 6}}>查看房东电话需要消耗 {baseInfo.get('unlock_phone_cost')} 积分</Text>
                 </View>
-                <View style={[styles.gap, styles.flex]}></View>
             </View>
         );
     }

@@ -13,6 +13,9 @@ function houseData(state = Immutable.fromJS(initialState), action) {
         case types.HOUSE_SIMILAR_FETCHED:
             return Immutable.fromJS(action.houseList);
             break;
+        case types.CLEAR_HOUSE_DETAIL_PAGE:
+            return Immutable.fromJS(initialState);
+            break;
         default: 
             return state;
     }
@@ -31,7 +34,7 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
         case types.HOUSE_STATUS_FETCHED:
             return state.set('status', Immutable.fromJS(action.houseStatus));
             break;
-        case types.CLEAR_HOUSE_BASE:
+        case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initialBaseInfo);
             break;
         default:
@@ -70,7 +73,7 @@ function callInfo(state = Immutable.fromJS(initParam), action) {
         case types.CALL_SELLER_FAILED:
             return state.set('callError', Immutable.fromJS(action.callError));
             break;
-        case types.CLEAR_CALL_INFO:
+        case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initParam);
             break;
         default:
