@@ -152,7 +152,7 @@ class RightView extends Component {
         let {maxSelected, selectedArr} = this.props;
 
         if (insert && selectedArr.size == maxSelected) {
-            Alert.alert('温馨提醒', '最多选择' + maxSelected + '项');
+            Alert.alert(null, '最多能设置' + maxSelected + '个关注的板块', [{text: '确定'}]);
         } else {
             this.props.onHandlePressItem(block, insert)
         }

@@ -50,7 +50,7 @@ export default class CommunitySearch extends Component {
             return v.get('id') == community.get('id');
         });
         if (common.SETTING_COMMUNITY_COUNT_MAX == communitySelect.size) {
-            Alert.alert('提示', '最多关注小区' + common.SETTING_COMMUNITY_COUNT_MAX + '个', [{text: '确定'}]);
+            Alert.alert(null, '最多能设置' + common.SETTING_COMMUNITY_COUNT_MAX + '个关注的小区', [{text: '确定'}]);
         } else if (repeatCommunity.size == 0) {
             navigator.jumpBack();
             actionsOne.attentionListOneCommunityAdded(community)
