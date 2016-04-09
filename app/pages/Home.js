@@ -151,6 +151,7 @@ export default class Home extends Component {
                         />
                     </View>
                 </TouchableWithoutFeedback>
+                <View style={[styles.headerLine]}></View>
                 <Attention attentionList={attentionList} navigator={navigator} onAttentionBlockSet={this._onAttentionBlockSet}/>
             </View>
         )
@@ -264,7 +265,7 @@ class NoData extends Component {
 
 const styles = StyleSheet.create({
     pageBgColor: {
-        backgroundColor: '#eee'
+        backgroundColor: '#fff'
     },
     searchWrap: {
         height: (Platform.OS === 'ios') ? 65 : 45,
@@ -299,8 +300,12 @@ const styles = StyleSheet.create({
         paddingRight: 15,
         backgroundColor: '#fff',
         borderColor: '#ddd',
-        marginBottom: 10,
+        // marginBottom: 10,
         borderWidth: 1/PixelRatio.get()
+    },
+    headerLine: {
+        height: 10,
+        backgroundColor: '#eee'
     },
     allHouseImage: {
         width: 30,
