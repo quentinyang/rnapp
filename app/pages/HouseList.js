@@ -70,8 +70,8 @@ export default class HouseList extends Component {
                                 onRefresh={this._onRefresh}
                                 tintColor='#04c1ae'
                                 title='松开刷新'
-                                colors={['#ff0000', '#00ff00', '#0000ff']}
-                                progressBackgroundColor='#ffff00'
+                                colors={['#fff']}
+                                progressBackgroundColor='#04c1ae'
                             />
                         }
                     />

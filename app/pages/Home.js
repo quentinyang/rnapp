@@ -60,7 +60,7 @@ export default class Home extends Component {
                             onRefresh={this._onRefresh}
                             tintColor='#04c1ae'
                             title='松开刷新'
-                            colors={['#ffa251']}
+                            colors={['#fff']}
                             progressBackgroundColor='#04c1ae'
                         />
                     }

@@ -17,7 +17,10 @@ export default class AutocompleteItem extends Component {
                 onPress={this.props.onPress.bind(null, item)}
             >
                 <View style={[styles.flex, styles.row, styles.alignItems, styles.item]}>
-                    <Text style={[styles.text, styles.flex]}>{item.get('name')}</Text>
+                    <View style={[styles.flex, styles.justifyContent]}>
+                        <Text style={styles.text}>{item.get('name')}</Text>
+                        <Text style={[styles.text_1, styles.fontColor]}>{item.get('address')}</Text>
+                    </View>
                     <Text style={[styles.text, styles.text_1]}>{'约' + item.get('selling_house_count') + '套在售'}</Text>
                 </View>
             </TouchableHighlight>
@@ -54,5 +57,8 @@ const styles = StyleSheet.create({
     },
     text_1: {
         fontSize: 12
+    },
+    fontColor: {
+        color: '#8d8c92'
     }
 });

@@ -85,7 +85,7 @@ export default class AttentionBlockSetOne extends Component {
     };
 
     _conformCommunitySet = () => {
-        let {attentionList, actions, actionsHome} = this.props;
+        let {attentionList, actions, actionsHome, navigator} = this.props;
         let communitySelect = attentionList.get('community_select');
         let params = communitySelect.map((v) => {
             return v.get('id')
@@ -95,7 +95,7 @@ export default class AttentionBlockSetOne extends Component {
             .then((oData) => {
                 actions.attentionListOneCommunityChanged(communitySelect.toJS());
                 actionsHome.fetchAttentionHouseList();
-                Alert.alert('提示', '保存成功', [{text: '确定'}]);
+                navigator.pop();
             })
             .catch((oData) => {
                 Alert.alert('提示', oData.msg, [{text: '确定'}]);

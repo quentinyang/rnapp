@@ -61,7 +61,7 @@ export default class AttentionBlockSetTwo extends Component {
     };
 
     _conformBlockSet = () => {
-        let {attentionBlockSet, actionsOne, actionsHome} = this.props;
+        let {attentionBlockSet, actionsOne, actionsHome, navigator} = this.props;
         let districtBlockSelect = attentionBlockSet.get('district_block_select');
 
         let params = districtBlockSelect.map((v) => {
@@ -73,7 +73,7 @@ export default class AttentionBlockSetTwo extends Component {
             .then((oData) => {
                 actionsOne.attentionListOneBlockChanged(districtBlockSelect.toJS());
                 actionsHome.fetchAttentionHouseList();
-                Alert.alert('提示', '保存成功', [{text: '确定'}]);
+                navigator.pop();
             })
             .catch((oData) => {
                 Alert.alert('提示', oData.msg, [{text: '确定'}]);
