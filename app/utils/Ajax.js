@@ -130,10 +130,11 @@ function put(url, params) {
     return new Promise((resolve, reject) => {
         fetch(url, {
             method: 'PUT',
+            headers: _getHeader(),
             ...params
         })
         .then((response) => {
-            resolve(response.json());
+            status(response, resolve, reject);
         })
         .catch((error) => {
             reject(error)

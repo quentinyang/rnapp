@@ -55,6 +55,7 @@ export default class AttentionBlockSet extends Component {
 
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionBlockSet();
+            actions.enterAttentionBlockSet();
         });
     }
 

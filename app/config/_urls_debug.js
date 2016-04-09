@@ -30,7 +30,8 @@ let urls = {
     },
     attention: {
         blockAndCommunity: HOST + 'get-attention-community-block',
-        saveAttentionCommunity: HOST + 'set-attention-community'
+        saveAttentionCommunity: HOST + 'set-attention-community',
+        enter: HOST + 'set-attention-enter'
     },
     community: {
         list: HOST + 'communityList.json'
