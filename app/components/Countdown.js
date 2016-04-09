@@ -72,7 +72,8 @@ const styles = StyleSheet.create({
     codeView: {
         height: 20,
         borderLeftWidth: 1,
-        borderColor: '#ccc'
+        borderColor: '#ccc',
+        justifyContent: 'center'
     },
     codeText: {
         marginVertical: 2,

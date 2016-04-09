@@ -7,6 +7,7 @@ import {
     Image,
     TextInput,
     TouchableHighlight,
+    PixelRatio,
     ScrollView
 } from 'nuke';
 
@@ -62,16 +63,19 @@ class Login extends React.Component {
                             actions={this.props.actions}
                         />
                     </View>
-                    <TextInput
-                        ref='code'
-                        style={styles.fiCode}
-                        onChangeText={(code) => this.singleAction('codeChanged', code)}
-                        keyboardType='numeric'
-                        placeholder='验证码'
-                        maxLength={4}
-                        value={formInfo.get('code')}
-                        onFocus={this.inputFocused.bind(this, 'phone')}
-                    />
+                    <View style={styles.codeBox}>
+                        <TextInput
+                            ref='code'
+                            style={styles.fiPhone}
+                            onChangeText={(code) => this.singleAction('codeChanged', code)}
+                            keyboardType='numeric'
+                            placeholder='验证码'
+                            maxLength={4}
+                            underlineColorAndroid='transparent'
+                            value={formInfo.get('code')}
+                            onFocus={this.inputFocused.bind(this, 'phone')}
+                        />
+                    </View>
                     <View style={styles.errMsgBox}>
                         <Text style={styles.errMsgText}>{controllerInfo.get('err_msg')}</Text>
                     </View>
@@ -286,7 +290,7 @@ let styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 15,
-        borderWidth: 1,
+        borderWidth: 1/PixelRatio.get(),
         borderColor: '#d9d9d9',
         borderRadius: 1
     },
@@ -310,13 +314,9 @@ let styles = StyleSheet.create({
         color: '#8d8c92',
         textAlign: 'center'
     },
-    fiCode: {
-        paddingLeft: 10,
-        height: 45,
-        fontSize: 16,
-        color: '#3e3e3e',
+    codeBox: {
         borderColor: '#d9d9d9',
-        borderWidth: 1,
+        borderWidth: 1/PixelRatio.get(),
         borderRadius: 1
     },
     errMsgBox: {

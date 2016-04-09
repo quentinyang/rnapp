@@ -70,7 +70,7 @@ class HouseInput extends Component {
                             rightText='号/座'
                             rightStyle={controller.get('single')? {color: '#fff'}: {}}
                             value={houseForm.get('building_num')}
-                            placeholder={controller.get('single')?'':'输入楼号/座号'}
+                            placeholder={controller.get('single')?'':'输入楼/座号'}
                             editable={controller.get('single')? false: true}
                             underlineColorAndroid = 'transparent'
                             onChangeText={(v) => {this.singleAction('buildingChanged', v)}}
@@ -383,9 +383,9 @@ let styles = StyleSheet.create({
         backgroundColor: '#eee'
     },
     headerRight: {
-        marginLeft: -75,
+        marginLeft: -80,
         marginRight: 15,
-        width: 60,
+        width: 65,
         fontSize: 15,
         color: '#04c1ae',
         justifyContent: 'flex-end'
@@ -407,7 +407,7 @@ let styles = StyleSheet.create({
         textAlign: 'center'
     },
     attachedTouch: {
-        marginLeft: 45
+        marginLeft: 35
     },
     attached: {
         flexDirection: 'row',

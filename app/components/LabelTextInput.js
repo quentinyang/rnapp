@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     label: {
-        width: 90,
+        width: 80,
         fontSize: 16,
         color: '#3e3e3e'
     },
