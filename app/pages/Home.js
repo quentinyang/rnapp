@@ -29,7 +29,7 @@ export default class Home extends Component {
                 <View style={styles.searchWrap}>
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>
                         <Text style={[styles.searchText, styles.searchTextPadding]}>上海</Text>
-                        <TouchableWithoutFeedback onPress={this._onHandlePress}>
+                        <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, 'search')}>
                             <View style={[styles.flex, styles.searchBtn, styles.alignItems, styles.justifyContent, styles.row]}>
                                 <Image
                                     source={require('../images/searchWhite.png')}
@@ -109,9 +109,11 @@ export default class Home extends Component {
         })
     };
 
-    _onHandlePress = () => {
+    _onHandlePress = (type) => {
         let {navigator, actionsHouseList} = this.props;
-        actionsHouseList.autocompleteViewShowed(true);
+        if (type == 'search') {
+            actionsHouseList.autocompleteViewShowed(true);
+        }
         navigator.push({
             component: HouseListContainer,
             name: 'houseList',
@@ -138,7 +140,7 @@ export default class Home extends Component {
 
         return (
             <View>
-                <TouchableWithoutFeedback  onPress={this._onHandlePress}>
+                <TouchableWithoutFeedback  onPress={this._onHandlePress.bind(null, 'list')}>
                     <View style={styles.allHouse}>
                         <Image
                             source={require('../images/all_house.png')}
