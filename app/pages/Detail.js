@@ -39,7 +39,7 @@ export default class Detail extends Component {
                                 />
                             </TouchableHighlight>
 
-                            <Text style={styles.msgTip}>消耗{info.get('unlock_phone_cost')}积分即可获得房东电话</Text>
+                            <Text style={[styles.msgTip, styles.baseColor]}>消耗{info.get('unlock_phone_cost')}积分即可获得房东电话</Text>
                             <Button
                                 containerStyle={[styles.btn, styles.btnMarginBottom]}
                                 itemStyle={styles.btnSize} label="确认"
@@ -62,7 +62,7 @@ export default class Detail extends Component {
                                 />
                             </TouchableHighlight>
 
-                            <Text style={styles.msgTip}>{callInfo.get('callError').get('msg')}</Text>
+                            <Text style={[styles.msgTip, styles.baseColor]}>{callInfo.get('callError').get('msg')}</Text>
 
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn]}
@@ -88,8 +88,8 @@ export default class Detail extends Component {
                 <Modal visible={callInfo.get('feedbackVisible')} transparent={true} onModalVisibilityChanged={this.props.actions.setFeedbackVisible}>
                     <View style={styles.bgWrap}>
                         <View style={styles.contentContainer}>
-                            <Text style={styles.modalTitle}>通话反馈</Text>
-                            <Text style={styles.smallTip}>确认在卖后将获得房东电话</Text>
+                            <Text style={[styles.modalTitle, styles.baseColor]}>通话反馈</Text>
+                            <Text style={[styles.smallTip, styles.baseColor]}>确认在卖后将获得房东电话</Text>
 
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn]}
@@ -101,7 +101,7 @@ export default class Detail extends Component {
 
                             <View style={styles.hLine}></View>
 
-                            <Text style={styles.smallTip}>联系不上或虚假房源将返还本次积分</Text>
+                            <Text style={[styles.smallTip, styles.baseColor]}>联系不上或虚假房源将返还本次积分</Text>
 
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn]}
@@ -262,7 +262,7 @@ export default class Detail extends Component {
                     houseList.size > 0 ?
                     <View style={[styles.itemContainer, styles.row]}>
                         <Text style={styles.bar}></Text>
-                        <Text style={styles.baseSize}>同小区房源</Text>
+                        <Text style={[styles.baseSize, styles.baseColor]}>同小区房源</Text>
                     </View>
                     : null
                 }
@@ -325,30 +325,30 @@ class BaseInfo extends Component {
             <View style={styles.container}>
                 <View style={styles.itemContainer}>
                     <View style={[styles.row, styles.name]}>
-                        <Text numberOfLines={1} style={{fontSize: 19, flex: 1}}>{houseInfo.get('community_name') || ''} {houseInfo.get('building_num') || ''}{houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}室</Text>
+                        <Text numberOfLines={1} style={[styles.baseColor, {fontSize: 19, flex: 1}]}>{houseInfo.get('community_name') || ''} {houseInfo.get('building_num') || ''}{houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}室</Text>
                         <Text style={{fontSize: 12, width: 68, color: '#8d8c92'}}>查看次数:{baseInfo.get('see_count')}</Text>
                     </View>
-                    <Text style={styles.baseSize}>{houseInfo.get('district_name') || baseInfo.get('district_name') || ''}-{houseInfo.get('block_name') || baseInfo.get('block_name') || ''}<Text style={styles.baseSpace}>{houseInfo.get('community_address') || baseInfo.get('community_address') || ''}</Text></Text>
+                    <Text style={[styles.baseSize, styles.baseColor]}>{houseInfo.get('district_name') || baseInfo.get('district_name') || ''}-{houseInfo.get('block_name') || baseInfo.get('block_name') || ''}<Text style={styles.baseSpace}>{houseInfo.get('community_address') || baseInfo.get('community_address') || ''}</Text></Text>
                 </View>
 
                 <View style={[styles.itemContainer, styles.row]}>
-                    <Text style={styles.baseSize}>户型:</Text>
-                    <Text style={[styles.baseSize, styles.baseSpace]}>{houseInfo.get('bedrooms') || ''}室{houseInfo.get('living_rooms') || ''}厅{houseInfo.get('bathrooms') || ''}卫</Text>
+                    <Text style={[styles.baseSize, styles.baseColor]}>户型:</Text>
+                    <Text style={[styles.baseSize, styles.baseColor, styles.baseSpace]}>{houseInfo.get('bedrooms') || ''}室{houseInfo.get('living_rooms') || ''}厅{houseInfo.get('bathrooms') || ''}卫</Text>
                 </View>
                 <View style={[styles.itemContainer, styles.row]}>
-                    <Text style={styles.baseSize}>面积:</Text>
-                    <Text style={[styles.baseSize, styles.baseSpace]}>{houseInfo.get('area') || ''}m²</Text>
+                    <Text style={[styles.baseSize, styles.baseColor]}>面积:</Text>
+                    <Text style={[styles.baseSize, styles.baseColor, styles.baseSpace]}>{houseInfo.get('area') || ''}m²</Text>
                 </View>
-                <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>总价:</Text><Text style={[styles.baseSize, styles.baseSpace]}>{houseInfo.get('price') || ''}万</Text></View>
-                <View style={[styles.itemContainer, styles.row]}><Text style={styles.baseSize}>单价:</Text><Text style={[styles.baseSize, styles.baseSpace]}>{baseInfo.get('avg_price') || ''}元/m²</Text></View>
+                <View style={[styles.itemContainer, styles.row]}><Text style={[styles.baseSize, styles.baseColor]}>总价:</Text><Text style={[styles.baseSize, styles.baseColor, styles.baseSpace]}>{houseInfo.get('price') || ''}万</Text></View>
+                <View style={[styles.itemContainer, styles.row]}><Text style={[styles.baseSize, styles.baseColor]}>单价:</Text><Text style={[styles.baseSize, styles.baseColor, styles.baseSpace]}>{baseInfo.get('avg_price') || ''}元/m²</Text></View>
                 <View style={styles.itemContainer}>
-                    <View style={styles.row}><Text style={styles.baseSize}>状态:</Text><Text style={[styles.baseSize, styles.baseSpace, {color: '#ff6d4b'}]}>{baseInfo.get('status') || ''}</Text></View>
+                    <View style={styles.row}><Text style={[styles.baseSize, styles.baseColor]}>状态:</Text><Text style={[styles.baseSize, styles.baseSpace, {color: '#ff6d4b'}]}>{baseInfo.get('status') || ''}</Text></View>
                     {statusList}
                 </View>
 
                 <View style={[styles.itemContainer, styles.row]}>
                     <Image style={styles.money_icon} source={require('../images/money.png')}/>
-                    <Text style={{fontSize: 15, marginLeft: 6}}>查看房东电话需要消耗 {baseInfo.get('unlock_phone_cost')} 积分</Text>
+                    <Text style={[styles.baseColor, {fontSize: 15, marginLeft: 6}]}>查看房东电话需要消耗 {baseInfo.get('unlock_phone_cost')} 积分</Text>
                 </View>
             </View>
         );
@@ -367,6 +367,9 @@ var styles = StyleSheet.create({
         borderStyle: 'solid',
         borderBottomColor: '#d9d9d9',
         padding: 15
+    },
+    baseColor: {
+        color: "#3e3e3e"
     },
     baseSize: {
         fontSize: 16
