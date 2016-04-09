@@ -40,6 +40,7 @@ export default class Autocomplete extends Component {
                             <TextInput
                                 style={styles.keyword}
                                 placeholder={this.props.placeholder}
+                                placeholderTextColor='#8d8c92'
                                 defaultValue={this.props.keyword}
                                 autoFocus={true}
                                 onChangeText={this.props.onChangeText}
@@ -98,6 +99,7 @@ const styles = StyleSheet.create({
     },
     keyword: {
         flex: 1,
+        fontSize: 15,
         padding: 0
     },
     cancelBox: {
@@ -110,6 +112,7 @@ const styles = StyleSheet.create({
     cancelBtn: {
         width: 60,
         textAlign: 'center',
+        fontSize: 15,
         color: '#04C1AE'
     },
     list: {
