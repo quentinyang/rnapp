@@ -154,6 +154,14 @@ fy360.ipa
 scp ~/Desktop/fy360-android-dev/app-debug.apk angejia@192.168.169.14:/srv/app/android_package/fangyuan360/app-dev.apk
 ```
 
+## Android签名备忘
+
+- Password&Key Password: `FY360@2016#RN`
+- Alias: `Android-Signature`
+- First and Last Name: `XinYi`
+- Organization: `XinYi`
+- City or Locality: `Shanghai`
+
 ## 参考
 
  - [Code Push@Quentin github](https://github.com/quentinyang/sharing/blob/master/App/codepush.md)
