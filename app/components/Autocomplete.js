@@ -24,7 +24,7 @@ export default class Autocomplete extends Component {
 
     render() {
         let {results, renderRow} = this.props;
-        let items = results.map((item, index) => {
+        let items = results.valueSeq().map((item, index) => {
             return renderRow(item, index);
         });
 
