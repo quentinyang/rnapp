@@ -74,7 +74,7 @@ export function callSeller(params) {
                 InteractionManager.runAfterInteractions(() => {
                     setTimeout(() => {
                         dispatch(setFeedbackVisible(true));
-                    }, 4000);
+                    }, 5000);
                 });
             },
             error: function(error) {
