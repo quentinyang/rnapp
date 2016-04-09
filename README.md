@@ -63,21 +63,22 @@ react-native run-android
 
 ```
 # IOS
-rm -rf index.ios.jsbundle assets/app/
+rm -rf ./release/index.ios.jsbundle ./release/assets/app/
 react-native bundle --platform ios --entry-file index.ios.js \
 --bundle-output ./release/index.ios.jsbundle \
 --assets-dest ./release \
 --dev false
 
 # Android
+rm -rf ./release/index.android.jsbundle ./release/drawable-mdpi
 react-native bundle --platform android --entry-file index.android.js  \
 --bundle-output ./release/index.android.jsbundle \
 --assets-dest ./release \
 --dev false
 
 # 推送到云
-code-push release FangYuan360 ./release 1.0.0 (Debug)
-code-push release FangYuan360-Release ./release 1.0.0 (Release)
+ - Debug: `code-push release FangYuan360 ./release 1.0.0`
+ - Release: `code-push release FangYuan360-Release ./release 1.0.0`
 
 ```
 
