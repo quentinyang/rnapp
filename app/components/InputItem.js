@@ -25,7 +25,7 @@ export default class InputItem extends Component {
                         <Text style={[styles.bedrooms, styles.bedroomsPadding]}>{item.get('area') + '平'}</Text>
                         <Text style={[styles.bedrooms, styles.bedroomsPadding]}>{item.get('price') + '万'}</Text>
                     </View>
-                    <Text numberOfLines={1} style={[styles.bedrooms, styles.bottom]}>电话: {item.get('seller_phone') + '  (' + item.get('seller_name') + ')'}</Text>
+                    <Text numberOfLines={1} style={[styles.bedrooms, styles.bottom]}>电话: {item.get('seller_phone')}</Text>
                     <View style={[styles.row, styles.alignCenter]}>
                         <View style={[styles.tagWrap, (item.get('check_status') == 1 ? styles.borderGreen : styles.borderOrange)]}>
                             <Text style={[styles.tag, (item.get('check_status') == 1 ? styles.tagGreen : styles.tagOrange)]}>{statusStr[item.get('check_status')]}</Text>
