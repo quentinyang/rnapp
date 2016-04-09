@@ -50,7 +50,7 @@ react-native bundle --platform ios --entry-file index.ios.js \
 --dev false
 
 # Android
-rm -rf android/app/src/main/assets/index.android.jsbundle
+rm -rf android/app/src/main/assets/index.android.jsbundle android/app/src/main/res/drawable-mdpi
 react-native bundle --platform android --entry-file index.android.js \
 --bundle-output ./android/app/src/main/assets/index.android.jsbundle \
 --assets-dest ./android/app/src/main/res/ \
@@ -102,7 +102,7 @@ react-native bundle --platform android --entry-file index.android.js  \
  
  线上生产环境：`_GhPy-CMXi1mTX0CetRfMU82NLvZ4yoltiYTl`
  
- 1. 修改`./fy360-native/android/app/src/main/java/com/fy360/MainActivity.java`文件，找到如下代码修改Key值：
+ 1. 修改`./fy360-native/android/app/src/main/java/com/xinyi/fy360/MainActivity.java`文件，找到如下代码修改Key值：
  
  ```
  new CodePush("Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl", this, BuildConfig.DEBUG);
@@ -123,6 +123,22 @@ react-native bundle --platform android --entry-file index.android.js  \
   #define kGtAppSecret       @"dtztWFamWJ6ZRAOV94LcX5"
  #endif
  ```
+ - Android `./fy360-native/android/app/src/main/AndroidManifest.xml`
+ 
+ 注意：APPID 有两个地方，线上的AppId, AppKey, AppSecret参照上面的。
+
+ ```
+ <meta-data
+     android:name="PUSH_APPID"
+     android:value="ay6BIg9J4bA2Hb9FPZ00v8" /><!--替换为第三方应用的APPID-->
+ <meta-data
+     android:name="PUSH_APPKEY"
+     android:value="SvO4Xb1j0FA1ZHQPUQWjQ6" /><!--替换为第三方应用的APPKEY-->
+ <meta-data
+     android:name="PUSH_APPSECRET"
+     android:value="dtztWFamWJ6ZRAOV94LcX5" /><!--替换为第三方应用的APPSECRET-->
+ ```
+
 
 1. 友盟
 
@@ -137,6 +153,16 @@ react-native bundle --platform android --entry-file index.android.js  \
  NSString * const UMengChannelId = @"";
  #endif
  ```
+ - Android `android/app/src/main/AndroidManifest.xml`
+  - Development `56fe1060e0f55a1eea002284`
+  - AppStore `56fe116867e58e6deb001a08`
+
+ ```
+ <meta-data android:value="56fe1060e0f55a1eea002284" android:name="UMENG_APPKEY"></meta-data>
+ <meta-data android:value="AppStore" android:name="UMENG_CHANNEL"/>
+ ```
+配置： [友盟配置](http://dev.umeng.com/analytics/android-doc/integration#1_3)
+  
 
 ## 内部打包上传说明
 

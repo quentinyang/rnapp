@@ -144,4 +144,7 @@ dependencies {
 
     compile project(":react-native-device-info")
     compile fileTree(dir: "node_modules/react-native-device-info/android/libs", include: ["*.jar"])
+
+    // UMeng
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }
