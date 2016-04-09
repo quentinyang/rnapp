@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
         paddingRight: 10
     },
     bottomMsg: {
+        flex: 1,
         fontSize: 12,
         color: '#9f9ea3',
         fontFamily: 'Helvetica Neue'
