@@ -78,6 +78,10 @@ export default class Home extends Component {
         });
     }
 
+    componentWillUnmount() {
+        this.props.actions.clearHomePage();
+    }
+
     _renderRow = (rowData: any) => {
         return (
             <HouseItem item={rowData} onItemPress={this._onItemPress}/>

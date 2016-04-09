@@ -31,6 +31,9 @@ function houseData(state = Immutable.fromJS(initialState), action) {
             break;
         case types.HOUSE_ATTENTION_PREPEND_FETCHED:
             return Immutable.fromJS(action.houseList);
+        case types.CLEAR_HOME_PAGE:
+            return Immutable.fromJS(initialState);
+            break;
         default: 
             return state;
     }
@@ -56,6 +59,9 @@ function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
             return state.updateIn(['community_select'], (v) => {
                 return Immutable.fromJS(action.communityList)
             });
+            break;
+        case types.CLEAR_HOME_PAGE:
+            return Immutable.fromJS(initialAttentionList);
             break;
         default: 
             return state;
