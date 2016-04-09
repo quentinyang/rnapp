@@ -20,8 +20,7 @@ import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer
 
 import DeviceInfo from 'react-native-device-info';
 import FormContainer from '../components/FormContainer';
-
-let TOKEN_KEY = 'user_token';
+import * as common from '../constants/Common';
 
 class Login extends React.Component {
     constructor(props) {
@@ -210,7 +209,7 @@ class Login extends React.Component {
         } else {
             loginService(data)
             .then((oData) => {
-                AsyncStorageComponent.save(TOKEN_KEY, oData.token);
+                AsyncStorageComponent.save(common.USER_TOKEN_KEY, oData.token);
                 gtoken = oData.token;
                 if(oData.is_enter_attention_page) {
                     navigator.resetTo({

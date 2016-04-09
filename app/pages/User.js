@@ -5,11 +5,12 @@ import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, P
             WebView, Alert} from 'nuke';
 
 import Header from '../components/Header';
-
 import TouchWebContainer from "../containers/TouchWebContainer";
-
 import ContactHouseContainer from '../containers/ContactHouseContainer'
 import InputHouseContainer from '../containers/InputHouseContainer'
+import LoginContainer from '../containers/LoginContainer'
+import AsyncStorageComponent from '../utils/AsyncStorageComponent';
+import * as common from '../constants/Common';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -119,6 +120,11 @@ export default class User extends Component {
                     scrollEnabled={false}
                     automaticallyAdjustContentInsets={false} />
 
+                  <TouchableWithoutFeedback onPress={this._loginOut.bind(this)}>
+                      <View style={[styles.listItem, styles.listTop, styles.itemBg, styles.justifyContent]}>
+                          <Text style={[styles.listText]}>退出</Text>
+                      </View>
+                  </TouchableWithoutFeedback>
               </ScrollView>
             </View>
         )
@@ -149,6 +155,17 @@ export default class User extends Component {
         } else {
             Alert.alert('温馨提示', '设置功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
         }
+    }
+
+    _loginOut() {
+        let {navigator} = this.props;
+        AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
+        navigator.resetTo({
+            component: LoginContainer,
+            name: 'home',
+            title: '首页',
+            hideNavBar: true
+        });
     }
 }
 
@@ -255,5 +272,15 @@ const styles = StyleSheet.create({
 
     webView: {
         height: 200,
+    },
+
+    listTop: {
+        marginTop: 15
+    },
+    justifyContent: {
+        justifyContent: 'center',
+    },
+    itemBg: {
+        backgroundColor: '#fff'
     }
 });
