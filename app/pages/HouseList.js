@@ -167,7 +167,6 @@ export default class HouseList extends Component {
     };
 
     _onEndReached = () => { // 防止多次重复加载
-        console.dir('防止多次重复加载')
         let {actions, houseData, queryParamsData} = this.props;
         let pager = houseData.get('pager');
 
