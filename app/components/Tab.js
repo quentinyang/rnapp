@@ -121,12 +121,13 @@ class RightView extends Component {
             });
 
             return (
-                <View key={d.get('id')} style={[styles.flex, styles.row, styles.center, styles.itemsHeight]}>
-                    <Text style={[styles.leftRow, styles.flex]}>{d.get('name')}</Text>
-                    <TouchableWithoutFeedback
-                        style={[styles.leftRow]}
-                        onPress={this._onHandlePress.bind(null, d, isSelected ? false : true)}
-                    >
+                <TouchableWithoutFeedback
+                    key={d.get('id')}
+                    style={[styles.leftRow]}
+                    onPress={this._onHandlePress.bind(null, d, isSelected ? false : true)}
+                >
+                    <View style={[styles.flex, styles.row, styles.center, styles.itemsHeight]}>
+                        <Text style={[styles.leftRow, styles.flex]}>{d.get('name')}</Text>
                         {isSelected ? 
                             <Image
                                 source={require('../images/selected.png')}
@@ -137,8 +138,8 @@ class RightView extends Component {
                                 style={styles.selectedImage}
                             />
                         }
-                    </TouchableWithoutFeedback>
-                </View>
+                    </View>
+                </TouchableWithoutFeedback>
             )
         });
         return (
