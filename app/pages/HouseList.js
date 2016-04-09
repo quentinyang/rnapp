@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, Text, View, ListView, StyleSheet, Image,
+import {React, Component, Text, View, ListView, StyleSheet, Image, Platform,
         TouchableWithoutFeedback, RefreshControl, ActivityIndicator, InteractionManager} from 'nuke';
 import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
     },
     filterMask: {
         position: 'absolute',
-        top: 88,
+        top: (Platform.OS == "ios" ? 108 : 88),
         left: 0,
         right: 0,
         height: 278

@@ -271,7 +271,7 @@ export default class Detail extends Component {
     _onItemPress = (item) => {
         let {navigator} = this.props;
 
-        navigator.push({
+        navigator.replace({
             component: DetailContainer,
             name: 'houseDetail',
             title: '房源详情',
