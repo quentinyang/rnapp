@@ -110,8 +110,8 @@ export default class Home extends Component {
     };
 
     _onHandlePress = () => {
-        let {navigator} = this.props;
-
+        let {navigator, actionsHouseList} = this.props;
+        actionsHouseList.autocompleteViewShowed(true);
         navigator.push({
             component: HouseListContainer,
             name: 'houseList',

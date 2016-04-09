@@ -160,6 +160,8 @@ function communityData(state = Immutable.fromJS(initCommunityData), action) {
             break;
         case types.HOUSE_LIST_SEARCH_CLEARED:
             return Immutable.fromJS(initCommunityData);
+        case types.HOUSE_LIST_PAGE_CLEARED:
+            return Immutable.fromJS(initCommunityData);
             break;
         default:
             return state;
