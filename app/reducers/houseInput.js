@@ -8,6 +8,7 @@ let initInput = Immutable.fromJS({
     'city_id': '',
     'community_id': '',
     'community_name': '',
+    'address': '',
     'building_num': '',
     'unit_num': '',
     'door_num': '',
@@ -27,7 +28,7 @@ function houseForm(state = initInput, action) {
         case types.PHONE_CHANGED:
             return state.set('seller_phone', action.seller_phone);
         case types.COMMUNITY_CHANGED:
-            return state.set('community_id', action.community.id).set('community_name', action.community.name);
+            return state.set('community_id', action.community.id).set('community_name', action.community.name).set('address', action.community.address);
         case types.BUILDING_CHANGED:
             return state.set('building_num', action.building_num);
         case types.UNIT_CHANGED:
@@ -50,40 +51,6 @@ function houseForm(state = initInput, action) {
             return state.set('has_no_door_num', action.mark);
         case types.INPUT_DATA_CLEARED:
             return initInput;
-        default:
-            return state;
-    }
-}
-
-let initParams = Immutable.fromJS({
-    'community_id': '',
-    'community_name': '',
-    'keyword': ''
-});
-
-export function params(state = initParams, action) {
-    switch(action.type) {
-        case types.COMMUNITY_CHANGED:
-            return state.set('community_id', action.id).set('community_name', action.name).set('keyword', '');
-        case types.KEYWORD_CHANGED:
-            return state.set('keyword', action.keyword).set('community_id', '').set('community_name', '');
-        case types.INPUT_DATA_CLEARED:
-            return initParams;
-        default:
-            return state;
-    }
-}
-
-let initCommunityKeyword = Immutable.fromJS({
-    'keyword': ''
-})
-
-export function communityKeyword(state = initCommunityKeyword, action) {
-    switch(action.type) {
-        case types.COMMUNITY_KEYWORD_CHANGED:
-            return state.set('keyword', action.keyword);
-        case types.INPUT_DATA_CLEARED:
-            return initCommunityKeyword;
         default:
             return state;
     }
@@ -116,12 +83,22 @@ export function controller(state = controlData, action) {
     }
 }
 
-export function communityList(state = Immutable.fromJS([]), action) {
+let initialState = {
+    results: [],
+    keyword: ''
+};
+
+function communityData(state = Immutable.fromJS(initialState), action) {
     switch(action.type) {
-        case types.COMMUNITY_SEARCHED:
-            return Immutable.fromJS(action.communityList);
-        case types.INPUT_DATA_CLEARED:
-            return Immutable.fromJS([]);
+        case types.HI_SEARCH_HOUSE_FETCHED:
+            return state.set('results', Immutable.fromJS(action.communityList));
+            break;
+        case types.HI_SEARCH_KEYWORD_CHANGED:
+            return state.set('keyword', action.keyword);
+            break;
+        case types.HI_SEARCH_CLEARED:
+            return Immutable.fromJS(initialState);
+            break;
         default:
             return state;
     }
@@ -129,8 +106,6 @@ export function communityList(state = Immutable.fromJS([]), action) {
 
 export default combineReducers({
     houseForm,
-    params,
     controller,
-    communityList,
-    communityKeyword
+    communityData
 });

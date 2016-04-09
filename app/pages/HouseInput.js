@@ -28,8 +28,7 @@ class HouseInput extends Component {
     }
 
     render() {
-        let {communityData} = this.props.communitySearch,
-            {houseForm, controller} = this.props.houseInput;
+        let {houseForm, controller, communityData} = this.props.houseInput;
 
         var hideHeader =  this.props.route && this.props.route.hideHeader;
         return (
@@ -39,8 +38,9 @@ class HouseInput extends Component {
                     placeholder='请输入小区名'
                     keyword={communityData.get('keyword')}
                     results = {communityData.get('results')}
-                    actions = {this.props.searchActions}
-                    onPress = {this.singleAction.bind(this)}/>
+                    actions = {this.props.actions}
+                    onPress = {this.singleAction.bind(this)}
+                />
                 :
                 <View style={styles.layout}>
                     {
@@ -60,7 +60,8 @@ class HouseInput extends Component {
                         <WithLabel
                             label='小区'
                             special={true}
-                            specialText={houseForm.get('community_name')}
+                            specialText1={houseForm.get('community_name')}
+                            specialText2={houseForm.get('address')}
                             arrow={true}
                             onClick={() => this.singleAction('searchChanged', true)}
                         />

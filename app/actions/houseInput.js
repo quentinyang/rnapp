@@ -1,5 +1,6 @@
 import * as types from '../constants/HouseInput';
 import {inputHouseService} from '../service/houseInputService';
+import {fetchCommunityListService} from '../service/communityService';
 import {makeActionCreator, serviceAction} from './base';
 
 export const communityChanged = makeActionCreator(types.COMMUNITY_CHANGED, 'community');
@@ -25,3 +26,24 @@ export const villaChanged = makeActionCreator(types.VILLA_CHANGED, 'villa');
 export const error = makeActionCreator(types.ERR_MSG, 'err_msg');
 
 export const dataCleared = makeActionCreator(types.INPUT_DATA_CLEARED);
+
+
+/*搜索小区*/
+export const hiSearchHouseFetched = makeActionCreator(types.HI_SEARCH_HOUSE_FETCHED, 'communityList');
+export const hiSearchCleared = makeActionCreator(types.HI_SEARCH_CLEARED);
+export const hiSearchKeywordChanged = makeActionCreator(types.HI_SEARCH_KEYWORD_CHANGED, 'keyword');
+
+export function fetchCommunityList(params) {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: fetchCommunityListService,
+            data: params,
+            success: function(oData) {
+                dispatch(hiSearchHouseFetched(oData))
+            },
+            error: function(oData) {
+
+            }
+        })
+    }
+}

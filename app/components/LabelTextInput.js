@@ -18,7 +18,7 @@ export default class LabelTextInput extends Component {
     }
 
     render() {
-        let {ref, label, special, specialText, onClick, inputStyle, arrow, rightText, rightStyle, placeholderTextColor, children, ...props} = this.props;
+        let {ref, label, special, specialText1, specialText2, onClick, inputStyle, arrow, rightText, rightStyle, placeholderTextColor, children, ...props} = this.props;
 
         return (
             <View
@@ -36,9 +36,21 @@ export default class LabelTextInput extends Component {
                         style={styles.specialTouch}
                         onPress={onClick}
                     >
-                        <Text style={[styles.specialText, specialText?'': styles.specialDefaultColor]}>
-                            {specialText || '选择小区'}
+                    {!specialText1?
+                        <View style={styles.specialView}>
+                        <Text style={[styles.specialText, styles.specialDefaultColor]}>
+                            选择小区
                         </Text>
+                        </View>:
+                        <View style={styles.specialView}>
+                        <Text style={styles.specialText}>
+                            {specialText1}
+                        </Text>
+                        <Text style={[styles.specialText, styles.specialAttach]}>
+                            {specialText2}
+                        </Text>
+                        </View>
+                    }
                     </TouchableOpacity>
                 }
                 {arrow ?
@@ -98,4 +110,12 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: '200'
     },
+    specialView: {
+        flex: 1,
+        justifyContent: 'center'
+    },
+    specialAttach: {
+        fontSize: 12,
+        color: '#8d8c92'
+    }
 });

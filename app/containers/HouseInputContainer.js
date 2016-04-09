@@ -4,7 +4,6 @@ import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/houseInput';
-import * as searchActions from '../actions/communitySearch';
 import HouseInput from '../pages/HouseInput';
 
 class HouseInputContainer extends Component {
@@ -20,17 +19,15 @@ class HouseInputContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {houseInput, communitySearch} = state;
+    const {houseInput} = state;
     return {
-        houseInput,
-        communitySearch
+        houseInput
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch),
-        searchActions: bindActionCreators(searchActions, dispatch)
+        actions: bindActionCreators(actions, dispatch)
     }
 }
 
