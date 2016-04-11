@@ -2,6 +2,7 @@
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
         TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform} from 'nuke';
+
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
 import Immutable, {List} from 'immutable';
@@ -43,8 +44,10 @@ export default class Home extends Component {
                     </View>
                 </View>
                 <ListView
+                    style={styles.noDataBg}
                     contentContainerStyle={styles.contentContainerStyle}
                     dataSource={ds.cloneWithRows(houseList.toArray())}
+                    automaticallyAdjustContentInsets={false}
                     renderRow={this._renderRow}
                     initialListSize={10}
                     pageSize={10}
@@ -221,7 +224,7 @@ export class Attention extends Component {
         })).toJS() || ['去设置小区'];
 
         return (
-            <View style={[styles.attention]}>
+            <View style={styles.attention}>
                 <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
                     <Text style={styles.bar}></Text>
                     <Text style={[styles.flex, styles.heiti_16_header]}>我关注的房源</Text>
@@ -253,7 +256,7 @@ class NoData extends Component {
         let districtBlockSelect = attentionList.get('district_block_select');
         let communitySelect = attentionList.get('community_select');
         return (
-            <View style={[styles.noDataBg, styles.flex, styles.alignItems]}>
+            <View style={styles.alignItems}>
                 <Image
                     source={require('../images/noAttention.png')}
                     style={styles.noAttention}
@@ -279,7 +282,7 @@ class NoData extends Component {
 
 const styles = StyleSheet.create({
     pageBgColor: {
-        backgroundColor: '#fff'
+        backgroundColor: '#eee'
     },
     searchWrap: {
         height: (Platform.OS === 'ios') ? 65 : 45,
@@ -380,14 +383,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     contentContainerStyle: {
-        marginTop: (Platform.OS === 'ios') ? -20 : 0
     },
     noAttention: {
         width: 97,
         height: 116
     },
     noAttentionText: {
-        paddingTop: 30,
+        paddingTop: 25,
         paddingBottom: 20,
         fontSize: 16,
         color: '#8d8c92'
