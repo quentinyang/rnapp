@@ -21,10 +21,12 @@ export default class HouseList extends Component {
     constructor(props) {
         super(props);
 
+        let fromHomeSearch = this.props.route.from ? true: false;
         this.state = {
             isRefreshing: false,
-            loaded: false
-        }
+            loaded: false,
+            homeSearch: fromHomeSearch
+        };
     }
 
     render() {
@@ -53,7 +55,7 @@ export default class HouseList extends Component {
                     onlyVerifyChanged={this._onlyVerifyChanged}
                 />
                 {
-                    Number(pager.get('total')) > 0 ? 
+                    Number(pager.get('total')) > 0 ?
                     <ListView
                         dataSource={ds.cloneWithRows(houseList.toArray())}
                         renderRow={this._renderRow}
@@ -90,7 +92,7 @@ export default class HouseList extends Component {
                     : null
                 }
                 {
-                    tabType == 1 ? 
+                    tabType == 1 ?
                         <View style={styles.filterMask}>
                             <Area
                                 data={filterData.get('district_block_list')}
@@ -102,7 +104,7 @@ export default class HouseList extends Component {
                     : null
                 }
                 {
-                    tabType == 2 ? 
+                    tabType == 2 ?
                         <View style={styles.filterMask}>
                             <FilterTab
                                 data={filterData.get('price')}
@@ -114,7 +116,7 @@ export default class HouseList extends Component {
                     : null
                 }
                 {
-                    tabType == 3 ? 
+                    tabType == 3 ?
                         <View style={styles.filterMask}>
                             <FilterTab
                                 data={filterData.get('bedrooms')}
@@ -185,7 +187,7 @@ export default class HouseList extends Component {
         let pager = houseData.get('pager');
 
         return (
-                Number(pager.get('current_page')) == Number(pager.get('last_page')) ? 
+                Number(pager.get('current_page')) == Number(pager.get('last_page')) ?
                     <View style={styles.listFooter}>
                         <Text style={styles.noData}>已经没有数据了！</Text>
                     </View>
@@ -308,8 +310,11 @@ export default class HouseList extends Component {
 
     _cancelSearch = () => {
         let {actions} = this.props;
-
-        actions.autocompleteViewShowed(false)
+        if(this.state.homeSearch) {
+            this.props.navigator.pop();
+        } else {
+            actions.autocompleteViewShowed(false);
+        }
     };
 
     _onChangeText = (value) => {
@@ -323,6 +328,11 @@ export default class HouseList extends Component {
 
     _autocompleteRowPress = (item) => {
         let {actions} = this.props;
+        if(this.state.homeSearch) {
+            this.setState({
+                homeSearch: false
+            });
+        }
         actions.fetchHouseList({
             page: 1,
             community_id: item.get('id'),

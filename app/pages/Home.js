@@ -117,13 +117,21 @@ export default class Home extends Component {
         let {navigator, actionsHouseList} = this.props;
         if (type == 'search') {
             actionsHouseList.autocompleteViewShowed(true);
+            navigator.push({
+                component: HouseListContainer,
+                name: 'houseList',
+                title: '全部房源',
+                from: 'homeSearch',
+                hideNavBar: true
+            });
+        } else {
+            navigator.push({
+                component: HouseListContainer,
+                name: 'houseList',
+                title: '全部房源',
+                hideNavBar: true
+            });
         }
-        navigator.push({
-            component: HouseListContainer,
-            name: 'houseList',
-            title: '全部房源',
-            hideNavBar: true
-        });
     };
 
     _onEndReached = () => {
@@ -256,7 +264,7 @@ class NoData extends Component {
                     }
                 </Text>
                 {
-                    districtBlockSelect.size == 0 && communitySelect.size == 0 ? 
+                    districtBlockSelect.size == 0 && communitySelect.size == 0 ?
                     <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
                         <View style={[styles.noAttentionBtn, styles.alignItems]}>
                             <Text style={styles.noAttentionBtnText}>去设置</Text>
