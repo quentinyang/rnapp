@@ -5,7 +5,7 @@ import Root from './app/root';
 import codePush from "react-native-code-push";
 
 // disable Yellow Box
-// console.disableYellowBox = true; 
+console.disableYellowBox = true; 
 
 class fy360 extends Component {
     componentDidMount() {

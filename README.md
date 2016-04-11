@@ -101,6 +101,30 @@ react-native bundle --platform android --entry-file index.android.js  \
  线下开发环境：`Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl`
  
  线上生产环境：`_GhPy-CMXi1mTX0CetRfMU82NLvZ4yoltiYTl`
+
+ 额外，检查版本号
+
+ IOS`./fy360-native/ios/fy360/Info.plist`需要检查`CFBundleShortVersionString`值，下一个版本要自动加1：
+
+ ```
+         <key>CFBundlePackageType</key>
+         <string>APPL</string>
+         <key>CFBundleShortVersionString</key>
+ -       <string>1.0.1</string>
+ +       <string>1.0.2</string>
+         <key>CFBundleVersion</key>
+ -       <string>1.0.1.2</string>
+ +       <string>1.0.2.0</string>
+ ```
+ Android `android/app/build.gradle`，更新`versionName`值
+
+ ```
+ android{
+   defaultConfig {
+     versionName "1.0.2"
+   }  
+ }
+ ```
  
  1. 修改`./fy360-native/android/app/src/main/java/com/xinyi/fy360/MainActivity.java`文件，找到如下代码修改Key值：
  
@@ -138,7 +162,6 @@ react-native bundle --platform android --entry-file index.android.js  \
      android:name="PUSH_APPSECRET"
      android:value="dtztWFamWJ6ZRAOV94LcX5" /><!--替换为第三方应用的APPSECRET-->
  ```
-
 
 1. 友盟
 
