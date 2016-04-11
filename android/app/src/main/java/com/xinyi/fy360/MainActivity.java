@@ -18,6 +18,7 @@ import java.util.List;
 
 // Import react native device info
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends ReactActivity {
 
@@ -78,5 +79,14 @@ public class MainActivity extends ReactActivity {
         super.onCreate(savedInstanceState);
         PushManager.getInstance().initialize(this.getApplicationContext());
 
+    }
+
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }
