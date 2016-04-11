@@ -1,0 +1,23 @@
+{
+    "property_id": 932,
+    "community_id": 13709,
+    "community_name": "上海奥林匹克花园（一至三期）",
+    "community_address": "南京路光通大厦",
+    "building_num": "3",
+    "building_unit": "号",
+    "door_num": "209",
+    "district_name": "松江",
+    "block_name": "九亭",
+    "avg_price" : 23121,
+    "price": 24,
+    "area": 12,
+    "bedrooms": 2,
+    "living_rooms": 1,
+    "bathrooms": 1,
+    "seller_phone" : 1232312321,
+    "seller_name": "房东",
+    "unlock_phone_cost": 2,
+    "phone_lock_status": 1,
+    "see_count": 11,
+    "status":"在卖"
+}

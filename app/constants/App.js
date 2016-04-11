@@ -1,0 +1,5 @@
+'use strict';
+
+export const WEB_AUTHENTICATION = 'WEB_AUTHENTICATION';
+export const WEB_NETWORK_ERROR = 'WEB_NETWORK_ERROR';
+

@@ -1,0 +1,330 @@
+{
+    "properties": [
+        {
+            "property_id": 950,
+            "community_id": 2,
+            "community_name": "绿绿xxxxxx",
+            "building_num": "3",
+            "building_unit": "号",
+            "door_num": "202",
+            "avg_price": 33333,
+            "district_id": 6,
+            "district_name": "长宁",
+            "block_id": 51,
+            "block_name": "古北",
+            "price": 400,
+            "area": 120,
+            "bedrooms": 2,
+            "living_rooms": 2,
+            "bathrooms": 2,
+            "listed_at": "2015-12",
+            "house_lock_status": 1,
+            "unlock_house_cost": 0,
+            "unlock_phone_cost": 2,
+            "tags": [
+                {
+                    "id": "16",
+                    "name": "满五年"
+                },
+                {
+                    "id": "17",
+                    "name": "唯一住房"
+                }
+            ],
+            "updated_at": "2015-12-15"
+        },
+        {
+            "property_id": 951,
+            "community_id": 13709,
+            "community_name": "上海奥林匹克花园（一至三期）",
+            "building_num": "91",
+            "building_unit": "号",
+            "door_num": "109",
+            "avg_price": 20000,
+            "district_id": 15,
+            "district_name": "松江",
+            "block_id": 141,
+            "block_name": "九亭",
+            "price": 160,
+            "area": 80,
+            "bedrooms": 2,
+            "living_rooms": 1,
+            "bathrooms": 1,
+            "listed_at": "2014-11",
+            "house_lock_status": 1,
+            "unlock_house_cost": 0,
+            "unlock_phone_cost": 2,
+            "tags": [
+                {
+                    "id": "16",
+                    "name": "满五年"
+                },
+                {
+                    "id": "17",
+                    "name": "唯一住房"
+                }
+            ],
+            "updated_at": "2015-12-14"
+        },
+        {
+            "property_id": 952,
+            "community_id": 16983,
+            "community_name": "美好家",
+            "building_num": "16",
+            "building_unit": "号",
+            "door_num": "166",
+            "avg_price": 28409,
+            "district_id": 13,
+            "district_name": "宝山",
+            "block_id": 2253,
+            "block_name": "大场",
+            "price": 250,
+            "area": 88,
+            "bedrooms": 2,
+            "living_rooms": 1,
+            "bathrooms": 0,
+            "listed_at": "2015-12",
+            "house_lock_status": 1,
+            "unlock_house_cost": 0,
+            "unlock_phone_cost": 2,
+            "tags": [
+                {
+                    "id": "16",
+                    "name": "满五年"
+                },
+                {
+                    "id": "17",
+                    "name": "唯一住房"
+                }
+            ],
+            "updated_at": "2015-12-11"
+        },
+        {
+            "property_id": 953,
+            "community_id": 15888,
+            "community_name": "中亚公寓",
+            "building_num": "1470",
+            "building_unit": "号",
+            "door_num": "508",
+            "avg_price": 10000,
+            "district_id": 10,
+            "district_name": "普陀",
+            "block_id": 176,
+            "block_name": "真如",
+            "price": 120,
+            "area": 120,
+            "bedrooms": 1,
+            "living_rooms": 1,
+            "bathrooms": 1,
+            "listed_at": "2014-01",
+            "house_lock_status": 1,
+            "unlock_house_cost": 0,
+            "unlock_phone_cost": 2,
+            "tags": [
+                {
+                    "id": "16",
+                    "name": "满五年"
+                }
+            ],
+            "updated_at": "2015-12-11"
+        },
+        {
+            "property_id": 954,
+            "community_id": 13709,
+            "community_name": "上海奥林匹克花园（一至三期）",
+            "building_num": "15",
+            "building_unit": "号",
+            "door_num": "25",
+            "avg_price": 340,
+            "district_id": 15,
+            "district_name": "松江",
+            "block_id": 141,
+            "block_name": "九亭",
+            "price": 158,
+            "area": 4646,
+            "bedrooms": 1,
+            "living_rooms": 1,
+            "bathrooms": 1,
+            "listed_at": "2014-02",
+            "house_lock_status": 1,
+            "unlock_house_cost": 0,
+            "unlock_phone_cost": 2,
+            "tags": [
+                {
+                    "id": "16",
+                    "name": "满五年"
+                },
+                {
+                    "id": "17",
+                    "name": "唯一住房"
+                }
+            ],
+            "updated_at": "2015-12-11"
+        },
+        {
+            "property_id": 955,
+            "community_id": 13709,
+            "community_name": "上海奥林匹克花园（一至三期）",
+            "building_num": "258",
+            "building_unit": "号",
+            "door_num": "809",
+            "avg_price": 8503,
+            "district_id": 15,
+            "district_name": "松江",
+            "block_id": 141,
+            "block_name": "九亭",
+            "price": 125,
+            "area": 147,
+            "bedrooms": 1,
+            "living_rooms": 1,
+            "bathrooms": 1,
+            "listed_at": "2015-03",
+            "house_lock_status": 1,
+            "unlock_house_cost": 0,
+            "unlock_phone_cost": 2,
+            "tags": [
+                {
+                    "id": "16",
+                    "name": "满五年"
+                },
+                {
+                    "id": "17",
+                    "name": "唯一住房"
+                }
+            ],
+            "updated_at": "2015-12-11"
+        },
+        {
+            "property_id": 956,
+            "community_id": 13709,
+            "community_name": "上海奥林匹克花园（一至三期）",
+            "building_num": "14",
+            "building_unit": "号",
+            "door_num": "908",
+            "avg_price": 29090,
+            "district_id": 15,
+            "district_name": "松江",
+            "block_id": 141,
+            "block_name": "九亭",
+            "price": 32,
+            "area": 11,
+            "bedrooms": 5,
+            "living_rooms": 1,
+            "bathrooms": 1,
+            "listed_at": "2015-12",
+            "house_lock_status": 1,
+            "unlock_house_cost": 0,
+            "unlock_phone_cost": 2,
+            "tags": [
+                {
+                    "id": "16",
+                    "name": "满五年"
+                },
+                {
+                    "id": "17",
+                    "name": "唯一住房"
+                }
+            ],
+            "updated_at": "2015-12-11"
+        },
+        {
+            "property_id": 957,
+            "community_id": 13709,
+            "community_name": "上海奥林匹克花园（一至三期）",
+            "building_num": "14",
+            "building_unit": "号",
+            "door_num": "908",
+            "avg_price": 20000,
+            "district_id": 15,
+            "district_name": "松江",
+            "block_id": 141,
+            "block_name": "九亭",
+            "price": 22,
+            "area": 11,
+            "bedrooms": 2,
+            "living_rooms": 1,
+            "bathrooms": 1,
+            "listed_at": "2015-12",
+            "house_lock_status": 1,
+            "unlock_house_cost": 0,
+            "unlock_phone_cost": 2,
+            "tags": [
+                {
+                    "id": "16",
+                    "name": "满五年"
+                },
+                {
+                    "id": "17",
+                    "name": "唯一住房"
+                }
+            ],
+            "updated_at": "2015-12-10"
+        },
+        {
+            "property_id": 958,
+            "community_id": 13709,
+            "community_name": "上海奥林匹克花园（一至三期）",
+            "building_num": "3",
+            "building_unit": "号",
+            "door_num": "209",
+            "avg_price": 20000,
+            "district_id": 15,
+            "district_name": "松江",
+            "block_id": 141,
+            "block_name": "九亭",
+            "price": 24,
+            "area": 12,
+            "bedrooms": 2,
+            "living_rooms": 1,
+            "bathrooms": 1,
+            "listed_at": "2015-12-10",
+            "house_lock_status": 1,
+            "unlock_house_cost": 0,
+            "unlock_phone_cost": 2,
+            "tags": [
+                {
+                    "id": "16",
+                    "name": "满五年"
+                },
+                {
+                    "id": "17",
+                    "name": "唯一住房"
+                }
+            ],
+            "updated_at": "2015-12-11"
+        },
+        {
+            "property_id": 959,
+            "community_id": 13709,
+            "community_name": "上海奥林匹克花园（一至三期）",
+            "building_num": "3",
+            "building_unit": "号",
+            "door_num": "209",
+            "avg_price": 20000,
+            "district_id": 15,
+            "district_name": "松江",
+            "block_id": 141,
+            "block_name": "九亭",
+            "price": 24,
+            "area": 12,
+            "bedrooms": 2,
+            "living_rooms": 1,
+            "bathrooms": 1,
+            "listed_at": "2015-12",
+            "house_lock_status": 1,
+            "unlock_house_cost": 0,
+            "unlock_phone_cost": 2,
+            "tags": [
+                {
+                    "id": "16",
+                    "name": "满五年"
+                },
+                {
+                    "id": "17",
+                    "name": "唯一住房"
+                }
+            ],
+            "updated_at": "2015-12-10"
+        }
+    ]
+}

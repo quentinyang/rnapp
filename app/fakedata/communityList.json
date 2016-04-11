@@ -1,0 +1,37 @@
+[
+    {
+        "id":11989,
+        "city_id":1,
+        "name":"灵石LOFT公寓",
+        "address":"灵石路871号",
+        "selling_house_count":12
+    },
+    {
+        "id":3675,
+        "city_id":1,
+        "name":"上城uptown",
+        "address":"古北路1398弄",
+        "selling_house_count":12
+    },
+    {
+        "id":17873,
+        "city_id":1,
+        "name":"复兴中路现代loft",
+        "address":"复兴中路1号",
+        "selling_house_count":12
+    },
+    {
+        "id":7655,
+        "city_id":1,
+        "name":"SOLO TOWN·丽舍",
+        "address":"虹口广粤路289号（近广灵四路）",
+        "selling_house_count":12
+    },
+    {
+        "id":10672,
+        "city_id":1,
+        "name":"春申景城MID-TOWN",
+        "address":"锦梅路1398弄",
+        "selling_house_count":12
+    }
+]
