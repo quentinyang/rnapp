@@ -159,18 +159,26 @@ export default class User extends Component {
 
     _loginOut() {
         let {navigator} = this.props;
-        AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
-        AsyncStorageComponent.get('user_phone')
-        .then((value) => {
-            navigator.resetTo({
-              component: LoginContainer,
-              name: 'login',
-              title: '登录',
-              phone: value,
-              hideNavBar: true
-            });
-        })
-
+        Alert.alert(
+          '提示',
+          '确定要退出吗？',
+          [
+            {text: '取消'},
+            {text: '确认', onPress: () => {
+              AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
+              AsyncStorageComponent.get('user_phone')
+              .then((value) => {
+                  navigator.resetTo({
+                    component: LoginContainer,
+                    name: 'login',
+                    title: '登录',
+                    phone: value,
+                    hideNavBar: true
+                  });
+              })
+            }}
+          ]
+        );
     }
 }
 
