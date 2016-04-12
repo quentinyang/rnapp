@@ -43,6 +43,9 @@ export default class Area extends Component {
                 leftSelectName: name
             });
         }
+        if(id == -1) {
+            this.props.blockFilterChanged(-1, -1, '');
+        }
     };
 }
 
