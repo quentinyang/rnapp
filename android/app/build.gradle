@@ -116,6 +116,10 @@ android {
             signingConfig signingConfigs.release
         }
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -127,6 +131,12 @@ android {
                 output.versionCodeOverride =
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
             }
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
         }
     }
 }
@@ -147,4 +157,8 @@ dependencies {
 
     // UMeng
     compile 'com.umeng.analytics:analytics:latest.integration'
+
+    compile(name:'actionlog-debug', ext:'aar')
+    compile(name:'commonutils-debug', ext:'aar')
+
 }

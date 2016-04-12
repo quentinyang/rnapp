@@ -1,8 +1,14 @@
 package com.xinyi.fy360;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
+
+import com.custom.component.ActionPackage;
+import com.custom.component.ActionUtil;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -69,8 +75,10 @@ public class MainActivity extends ReactActivity {
         return Arrays.<ReactPackage>asList(
                 new RNDeviceInfo(),
                 new MainReactPackage(),
+                new ActionPackage(),
                 this._codePush.getReactPackage()
         );
+
     }
 
     @Override
@@ -78,7 +86,21 @@ public class MainActivity extends ReactActivity {
         Log.d("onCreate", "initializing sdk...");
         super.onCreate(savedInstanceState);
         PushManager.getInstance().initialize(this.getApplicationContext());
+        checkHash();
+        //ActionUtil.setAction("11221212");
+    }
 
+    //检查hash
+    private void checkHash() {
+        PackageInfo info = null;
+        try {
+            info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature sig : info.signatures) {
+                android.util.Log.i("grj" , "sig:" + sig.hashCode() + "");
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onResume() {
@@ -90,3 +112,5 @@ public class MainActivity extends ReactActivity {
         MobclickAgent.onPause(this);
     }
 }
+
+

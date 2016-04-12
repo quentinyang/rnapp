@@ -23,9 +23,15 @@ import DeviceInfo from 'react-native-device-info';
 import FormContainer from '../components/FormContainer';
 import * as common from '../constants/Common';
 
+let ActionUtil = require( '../utils/ActionLog');
+
 class Login extends React.Component {
     constructor(props) {
         super(props);
+
+        ActionUtil.setAction("101-500000");
+        //let test = JSON.stringify({key: "123"});
+        //ActionUtil.setActionWithExtend("action-log with extend", test);
     }
 
     render() {
