@@ -283,26 +283,23 @@ export default class Detail extends Component {
     };
 
     _handleMoreHouseList = () => {
-        let {route, navigator, actionsHouseList} = this.props;
-        let {item} = route, routeArr = navigator.getCurrentRoutes(), preRoute = routeArr[routeArr.length - 2];
+        let {navigator, actionsHouseList} = this.props;
 
         actionsHouseList.filterCommunityNameChanged(item.get('community_id'), item.get('community_name'));
         actionsHouseList.fetchHouseList({
-             page: 1,
-             community_id: item.get('community_id')
-         });
-        if(preRoute.name && preRoute.name == "houseList") {
-            navigator.pop();
-        } else {
-            navigator.push({
-                component: HouseListContainer,
-                name: 'houseList',
-                title: '房源列表',
-                hideNavBar: true,
-                communityName: item.get('community_name'),
-                communityId: item.get('community_id')
-            });
-        }
+            page: 1,
+            community_id: item.get('community_id')
+        });
+
+        navigator.replace({
+            component: HouseListContainer,
+            name: 'houseList',
+            title: '房源列表',
+            hideNavBar: true,
+            communityName: item.get('community_name'),
+            communityId: item.get('community_id')
+        });
+
     };
 }
 
