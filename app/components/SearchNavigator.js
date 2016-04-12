@@ -25,10 +25,12 @@ export default class SearchNavigator extends Component {
                             titleName ? <View style={[styles.flex, styles.searchBtn, styles.alignItems, styles.justifyContent, styles.row]}>
                                     <Text style={[styles.flex, styles.textAlign, styles.titleNamePadding]}>{titleName}</Text>
                                     <TouchableWithoutFeedback onPress={this.props.onClearKeyword}>
-                                        <Image
-                                            source={require('../images/qingchu.png')}
-                                            style={styles.qingchuImage}
-                                        />
+                                        <View style={[styles.clearBox, styles.justifyContent]}>
+                                            <Image
+                                                source={require('../images/qingchu.png')}
+                                                style={styles.qingchuImage}
+                                            />
+                                        </View>
                                     </TouchableWithoutFeedback>
                                 </View> :
                                 <View style={[styles.flex, styles.searchBtn, styles.alignItems, styles.justifyContent, styles.row]}>
@@ -113,6 +115,9 @@ const styles = StyleSheet.create({
     searchText: {
         fontSize: 15,
         color: '#8d8c92'
+    },
+    clearBox: {
+        height: 33
     },
     qingchuImage: {
         width: 15,
