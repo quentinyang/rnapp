@@ -26,7 +26,8 @@ export default class Tab extends Component {
                         onHandlePressItem={this.onHandlePressLeftItem}
                         selectedArr={selectedArr}
                     />
-                    <RightView 
+                    <RightView
+                        ref='tabRightContainer' scrollViewRef='tabRightScrollView'
                         data={dataArr}
                         mainIndex={this.state.leftSelectId}
                         maxSelected={maxSelected}
@@ -39,9 +40,12 @@ export default class Tab extends Component {
     }
 
     onHandlePressLeftItem = (id) => {
-        this.setState({
-            leftSelectId: id
-        })
+        if (id != this.state.leftSelectId) {
+            this.refs.tabRightContainer.refs.tabRightScrollView.scrollTo({x: 0, y: 0, animated: false});
+            this.setState({
+                leftSelectId: id
+            })
+        }
     };
 
     onHandlePressRightItem = (block, insert:boolen) => {
@@ -143,7 +147,7 @@ class RightView extends Component {
             )
         });
         return (
-            <ScrollView style={[styles.rightView]} showsVerticalScrollIndicator={false}>
+            <ScrollView ref='tabRightScrollView' style={[styles.rightView]} showsVerticalScrollIndicator={false}>
                 {rightView}
             </ScrollView>
         )
