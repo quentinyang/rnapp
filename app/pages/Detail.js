@@ -283,7 +283,8 @@ export default class Detail extends Component {
     };
 
     _handleMoreHouseList = () => {
-        let {navigator, actionsHouseList} = this.props;
+        let {route, navigator, actionsHouseList} = this.props,
+            {item} = route;
 
         actionsHouseList.filterCommunityNameChanged(item.get('community_id'), item.get('community_name'));
         actionsHouseList.fetchHouseList({
