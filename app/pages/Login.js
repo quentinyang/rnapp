@@ -30,7 +30,7 @@ class Login extends React.Component {
         super(props);
 
         ActionUtil.setAction("101-500000");
-        //let test = JSON.stringify({key: "123"});
+        //let test = {key: "123"};
         //ActionUtil.setActionWithExtend("action-log with extend", test);
     }
 
