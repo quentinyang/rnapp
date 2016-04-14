@@ -76,6 +76,7 @@ function _createURL(url, params) {
 
 function get(url, params = {}) {
     let {data, ...paramsOther} = params;
+    console.log('Request Parameters', params);
 
     return new Promise((resolve, reject) => {
         fetch(_createURL(url, data || {}), {
@@ -94,6 +95,7 @@ function get(url, params = {}) {
 
 function post(url, params = {}) {
     let {body, ...paramsOther} = params;
+    console.log('Request Parameters', params);
 
     return new Promise((resolve, reject) => {
         fetch(url, {
