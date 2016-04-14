@@ -7,6 +7,14 @@ import {NaviGoBack} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 
+var GeTui = require('react-native').NativeModules.GeTui;
+
+var {
+  NativeAppEventEmitter
+} = React;
+debugger;
+var { DeviceEventEmitter } = require('react-native');
+
 let _navigator;
 global.gtoken = '';
 class App extends Component {
@@ -42,6 +50,15 @@ class App extends Component {
         .catch((error) => {
             console.log(error);
         });
+
+        // GeTui.getClientId(function(cId) {
+        //     Alert.alert('code' + cId)
+        //     global.geTuiCid = cId;
+        // })
+
+        GeTui.getClientId(function(cId) {
+            Alert.alert('code' + cId);
+        })
     }
 
     render() {
@@ -95,6 +112,23 @@ class App extends Component {
                 }
             ])
         }
+    }
+
+    componentDidMount() {
+        this.unlistenNotification =  NativeAppEventEmitter.addListener(
+            'notify',
+            (notifData) => {
+                Alert.alert(notifData);
+            }
+        );
+
+        // DeviceEventEmitter.addListener('geTuiDataReceived', (notifData) => {
+        //     Alert.alert('1111')
+        // });
+    }
+
+    componentWillUnmount() {
+        this.unlistenNotification.remove();
     }
 
     _configureScene = (route, routeStack) => {

@@ -15,6 +15,8 @@
 
 #import "MobClick.h"
 
+#import "GeTui.h"
+
 NSString *const NotificationCategoryIdent = @"ACTIONABLE";
 //NSString *const NotificationActionOneIdent = @"ACTION_ONE";
 //NSString *const NotificationActionTwoIdent = @"ACTION_TWO";
@@ -27,11 +29,19 @@ NSString * const UMengAppKey = @"56fe11cce0f55a61740009e4";
 NSString * const UMengChannelId = @"";
 #endif
 
+@interface AppDelegate ()
+
+@property (nonatomic, strong) RCTRootView *rootView;
+
+@end
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
+  
+  NSLog(@"sdfsdfsdf");
   
   // [UMeng] Start
   NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
@@ -80,14 +90,14 @@ NSString * const UMengChannelId = @"";
     jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
   #endif
 
-  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
+  self.rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"fy360"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
+  rootViewController.view = self.rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
@@ -208,6 +218,7 @@ NSString * const UMengChannelId = @"";
 - (void)GeTuiSdkDidRegisterClient:(NSString *)clientId {
   //个推SDK已注册，返回clientId
   NSLog(@"\n>>>[GeTuiSdk RegisterClient]:%@\n\n", clientId);
+  [GeTui setClientId:clientId];
 }
 
 
@@ -226,6 +237,9 @@ NSString * const UMengChannelId = @"";
   
   NSString *msg = [NSString stringWithFormat:@"%@ : %@%@", [self formateTime:[NSDate date]], payloadMsg, offLine ? @"<离线消息>" : @""];
   NSLog(@"\n>>>[GexinSdk ReceivePayload Message]:%@, taskId: %@, msgId :%@", msg, taskId, msgId);
+
+  GeTui *geTui = [GeTui sharedInstance];
+  [geTui handleRemoteNotificationReceived:payloadMsg withRoot:self.rootView];
   
   // 汇报个推自定义事件
   [GeTuiSdk sendFeedbackMessage:90001 taskId:taskId msgId:msgId];

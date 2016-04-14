@@ -6,3 +6,7 @@ project(':react-native-code-push').projectDir = new File(rootProject.projectDir,
 // react-native-device-info dependency
 include ':react-native-device-info'
 project(':react-native-device-info').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-device-info/android')
+
+// getui dependency
+include ':getui'
+project(':getui').projectDir = new File(rootProject.projectDir, '../node_modules/nuke/source-native/GeTui/Android/getui')

@@ -4,7 +4,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 
 import com.custom.component.ActionPackage;
@@ -25,6 +24,8 @@ import java.util.List;
 // Import react native device info
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.umeng.analytics.MobclickAgent;
+
+import com.xinyi.fy360.getui.GeTuiManager;
 
 public class MainActivity extends ReactActivity {
 
@@ -76,6 +77,7 @@ public class MainActivity extends ReactActivity {
                 new RNDeviceInfo(),
                 new MainReactPackage(),
                 new ActionPackage(),
+                new GeTuiManager(),
                 this._codePush.getReactPackage()
         );
 

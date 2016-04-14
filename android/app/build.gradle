@@ -152,6 +152,9 @@ dependencies {
     compile files('libs/GetuiExt-2.0.3.jar')
     compile 'com.android.support:support-v4'
 
+    // custom getui
+    compile project(':getui')
+
     compile project(":react-native-device-info")
     compile fileTree(dir: "node_modules/react-native-device-info/android/libs", include: ["*.jar"])
 
