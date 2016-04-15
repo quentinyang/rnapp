@@ -67,9 +67,6 @@ replaceFileContent('android/app/src/main/java/com/xinyi/fy360/MainActivity.java'
 var gtConfigs = destConfigs.getui;
 var umConfigs = destConfigs.umeng;
 
-console.log('GT', gtConfigs)
-console.log('UM', umConfigs)
-console.log('Default', defaultConfigs)
 // ios - unnecessary to do
 // android
 replaceFileContent('android/app/src/main/AndroidManifest.xml', [
