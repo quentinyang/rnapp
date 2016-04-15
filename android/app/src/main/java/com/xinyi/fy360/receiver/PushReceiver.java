@@ -20,6 +20,9 @@ import com.igexin.sdk.PushConsts;
 import com.xinyi.fy360.R;
 import com.xinyi.fy360.getui.GeTuiManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class PushReceiver extends BroadcastReceiver {
 
     @Override
@@ -44,12 +47,16 @@ public class PushReceiver extends BroadcastReceiver {
                 byte[] payload = bundle.getByteArray("payload");
                 if (payload != null)
                 {
-                    String data = new String(payload);
+                    String dataString = new String(payload);
+                    Log.d("GetuiSdkDemo", "Got Payload:" + dataString);
 
-                    Log.d("GetuiSdkDemo", "Got Payload:" + data);
-
-                    showNotifyToActivityWithExtra(context, data, intent);
-                    GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", null);
+                    try {
+                        JSONObject dataObject = new JSONObject(dataString);
+                        showNotifyToActivityWithExtra(context, dataObject.getJSONObject("data").getString("msg"), intent);
+                        GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", dataString);
+                    } catch(JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             default:
@@ -65,7 +72,7 @@ public class PushReceiver extends BroadcastReceiver {
 
     public static void showNotifyToActivityWithExtra(Context context, String title, Intent intent) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.app_images_all_house)
+                .setSmallIcon(R.mipmap.ic_icon_notify)
                 .setLargeIcon(getNotifyLargeIcon(context, R.mipmap.ic_launcher))
                 .setTicker("房源360:" + title)
                 .setContentTitle("房源360")

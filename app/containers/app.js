@@ -56,9 +56,7 @@ class App extends Component {
         //     global.geTuiCid = cId;
         // })
 
-        GeTui.getClientId(function(cId) {
-            Alert.alert('code' + cId);
-        })
+        
     }
 
     render() {
@@ -115,20 +113,24 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.unlistenNotification =  NativeAppEventEmitter.addListener(
-            'notify',
-            (notifData) => {
-                Alert.alert(notifData);
-            }
-        );
+        // this.unlistenNotification =  NativeAppEventEmitter.addListener(
+        //     'notify',
+        //     (notifData) => {
+        //         Alert.alert(notifData);
+        //     }
+        // );
+        // GeTui.getClientId(function(cId) {
+        //     Alert.alert('code' + cId);
+        // })
 
         // DeviceEventEmitter.addListener('geTuiDataReceived', (notifData) => {
-        //     Alert.alert('1111')
+        //     let newNotifData = JSON.parse(notifData);
+        //     Alert.alert(newNotifData.data.msg);
         // });
     }
 
     componentWillUnmount() {
-        this.unlistenNotification.remove();
+        // this.unlistenNotification.remove();
     }
 
     _configureScene = (route, routeStack) => {
