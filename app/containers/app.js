@@ -12,7 +12,7 @@ var GeTui = require('react-native').NativeModules.GeTui;
 var {
   NativeAppEventEmitter
 } = React;
-debugger;
+
 var { DeviceEventEmitter } = require('react-native');
 
 let _navigator;
@@ -51,12 +51,16 @@ class App extends Component {
             console.log(error);
         });
 
-        // GeTui.getClientId(function(cId) {
-        //     Alert.alert('code' + cId)
-        //     global.geTuiCid = cId;
-        // })
+        DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
+            Alert.alert(cId);
+        });
 
-        
+        this.unlistenNotification =  NativeAppEventEmitter.addListener(
+            'clientIdReceived',
+            (cId) => {
+                Alert.alert('clientIdReceived' + cId);
+            }
+        );
     }
 
     render() {
@@ -113,15 +117,16 @@ class App extends Component {
     }
 
     componentDidMount() {
-        // this.unlistenNotification =  NativeAppEventEmitter.addListener(
-        //     'notify',
-        //     (notifData) => {
-        //         Alert.alert(notifData);
-        //     }
-        // );
-        // GeTui.getClientId(function(cId) {
-        //     Alert.alert('code' + cId);
-        // })
+        this.unlistenNotification =  NativeAppEventEmitter.addListener(
+            'geTuiDataReceived',
+            (notifData) => {
+                let newNotifData = JSON.parse(notifData);
+                Alert.alert(newNotifData.data.msg);
+            }
+        );
+        GeTui.getClientId(function(cId) {
+            Alert.alert('code' + cId);
+        });
 
         // DeviceEventEmitter.addListener('geTuiDataReceived', (notifData) => {
         //     let newNotifData = JSON.parse(notifData);
@@ -131,6 +136,8 @@ class App extends Component {
 
     componentWillUnmount() {
         // this.unlistenNotification.remove();
+        // DeviceEventEmitter.removeAllListeners('clientIdReceived');
+        // DeviceEventEmitter.removeAllListeners('geTuiDataReceived');
     }
 
     _configureScene = (route, routeStack) => {

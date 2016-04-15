@@ -39,6 +39,7 @@ public class PushReceiver extends BroadcastReceiver {
 
                 Log.d("GetuiSdkDemo", "Got CID:" + cid);
                 GeTuiManager.module.setClientId(cid);
+                GeTuiManager.module.handleRemoteNotificationReceived("clientIdReceived", cid);
                 break;
             case PushConsts.GET_MSG_DATA:
                 // 获取透传（payload）数据
