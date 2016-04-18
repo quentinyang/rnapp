@@ -157,7 +157,7 @@
 
         <!-- 个推SDK配置结束 -->
         <!-- Start: UMeng -->
-        <meta-data android:value="56fe116867e58e6deb001a08" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="56fe1060e0f55a1eea002284" android:name="UMENG_APPKEY"></meta-data>
         <meta-data android:value="AppStore" android:name="UMENG_CHANNEL"/>
         <!-- End: UMeng -->
     </application>
