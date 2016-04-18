@@ -11,10 +11,14 @@ import {
 } from 'nuke';
 
 import InputHouseContainer from '../containers/InputHouseContainer';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 export default class HouseInputSuccess extends Component {
     constructor(props) {
         super(props);
+        this.pageId = actionType.BA_SEND_SUCCESS;
+        ActionUtil.setActionWithExtend(actionType.BA_SEND_SUCCESS_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -44,15 +48,19 @@ export default class HouseInputSuccess extends Component {
     }
 
     continueInput = () => {
+        ActionUtil.setAction(actionType.BA_SEND_SUCCESS_CONTINIUE);
         this.props.navigator.pop();
     };
 
     lookHouse = () => {
+        ActionUtil.setAction(actionType.BA_SEND_SUCCESS_ALLHOUSE);
         this.props.navigator.replace({
             component: InputHouseContainer,
             name: 'InputHouse',
             title: '发布的房源',
-            hideNavBar: false
+            hideNavBar: false,
+            backLog: actionType.BA_MINE_RELEASE_RETURN,
+            bp: this.pageId
         });
     };
 

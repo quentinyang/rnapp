@@ -11,6 +11,8 @@ import Area from '../components/Area';
 import SearchNavigator from '../components/SearchNavigator';
 import Autocomplete from '../components/Autocomplete'
 import AutocompleteItem from '../components/AutocompleteItem'
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -20,6 +22,8 @@ let ds = new ListView.DataSource({
 export default class HouseList extends Component {
     constructor(props) {
         super(props);
+        this.pageId = actionType.BA_ALLHOUSE_LIST;
+        ActionUtil.setActionWithExtend(actionType.BA_ALLHOUSE_LIST_ONVIEW, {"bp": this.props.route.bp});
 
         let fromHomeSearch = this.props.route.from ? true: false;
         this.state = {
@@ -43,6 +47,7 @@ export default class HouseList extends Component {
             !uiData.get('autocompleteView') ? <View style={styles.flex}>
                 <SearchNavigator navigator={navigator} onSearch={this._onSearch}
                     titleName={queryParamsData.get('community_name')}
+                    backLog={actionType.BA_ALLHOUSE_LIST_RETURN}
                     onClearKeyword={this._onClearKeyword}
                 />
                 <Filter
@@ -137,6 +142,8 @@ export default class HouseList extends Component {
                     renderRow={this._renderAutocompleteRow}
                     onChangeText={this._onChangeText}
                     onCancelSearch={this._cancelSearch}
+                    visibleLog={this.state.homeSearch ? actionType.BA_LOOK_HOME_SEARCH_ONVIEW : actionType.BA_LOOK_LIST_SEARCH_ONVIEW}
+                    bp={this.state.homeSearch ? actionType.BA_HOME_PAGE : actionType.BA_ALLHOUSE_LIST}
                 />
             </View>
         )
@@ -173,6 +180,7 @@ export default class HouseList extends Component {
         let pager = houseData.get('pager');
 
         if (Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
+            ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_SLIDEUP);
             InteractionManager.runAfterInteractions(() => {
                 actions.fetchAppendHouseList({
                     page: Number(pager.get('current_page')) + 1,
@@ -199,6 +207,7 @@ export default class HouseList extends Component {
     };
 
     _onRefresh = () => {
+        ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_SLIDEDOWN);
         let {actions, queryParamsData} = this.props;
         let queryParamsDataJs = queryParamsData.toJS();
         this.setState({isRefreshing: true});
@@ -214,6 +223,7 @@ export default class HouseList extends Component {
     };
 
     _onItemPress = (item) => {
+        ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_CLICKDETAIL);
         let {navigator} = this.props;
 
         navigator.push({
@@ -221,6 +231,8 @@ export default class HouseList extends Component {
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
+            backLog: actionType.BA_DETAIL_RETURN,
+            bp: this.pageId,
             item
         });
     };
@@ -237,6 +249,7 @@ export default class HouseList extends Component {
 
     // 过滤只看认证
     _onlyVerifyChanged = (verify) => {
+        ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_FILTERCERTIFY);
         let {actions, queryParamsData} = this.props;
         let queryParamsDataJs = queryParamsData.toJS();
         queryParamsDataJs.only_verify = verify;
@@ -251,6 +264,7 @@ export default class HouseList extends Component {
 
     // 过滤区域板块
     _blockFilterChanged = (districtId, blockId, areaName) => {
+        ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_FILTERAREA);
         let {actions, queryParamsData} = this.props;
         let queryParamsDataJs = queryParamsData.toJS();
         queryParamsDataJs.block_id = blockId;
@@ -271,6 +285,7 @@ export default class HouseList extends Component {
         let queryParamsDataJs = queryParamsData.toJS();
 
         if (type == 'price') {
+            ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_FILTERPRICE);
             queryParamsDataJs.min_price = min;
             queryParamsDataJs.max_price = max;
 
@@ -280,6 +295,7 @@ export default class HouseList extends Component {
             });
             actions.filterTabPriceChanged(min, max, title);
         } else {
+            ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_FILTERSTYLE);
             queryParamsDataJs.min_bedrooms = min;
             queryParamsDataJs.max_bedrooms = max;
 
@@ -301,6 +317,7 @@ export default class HouseList extends Component {
 
     // autocomplete
     _onSearch = () => {
+        ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_SEARCH);
         let {actions, queryParamsData} = this.props;
         let communityName = queryParamsData.get('community_name');
 
@@ -309,6 +326,7 @@ export default class HouseList extends Component {
     };
 
     _cancelSearch = () => {
+        ActionUtil.setAction(this.state.homeSearch ? actionType.BA_LOOK_HOME_SEARCH_CANCEL : actionType.BA_LOOK_LIST_SEARCH_CANCEL);
         let {actions} = this.props;
         if(this.state.homeSearch) {
             this.props.navigator.pop();
@@ -327,6 +345,7 @@ export default class HouseList extends Component {
     };
 
     _autocompleteRowPress = (item) => {
+        ActionUtil.setAction(this.state.homeSearch ? actionType.BA_LOOK_HOME_SEARCH_ASSOCIATION : actionType.BA_LOOK_LIST_SEARCH_ASSOCIATION);
         let {actions} = this.props;
         if(this.state.homeSearch) {
             this.setState({

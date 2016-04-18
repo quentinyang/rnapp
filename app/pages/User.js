@@ -11,6 +11,8 @@ import InputHouseContainer from '../containers/InputHouseContainer'
 import LoginContainer from '../containers/LoginContainer'
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import * as common from '../constants/Common';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -61,10 +63,12 @@ class CashArea extends Component{
   }
 
   _triggerCharge = () => {
+      ActionUtil.setAction(actionType.BA_MINE_RECHANGE);
     Alert.alert('温馨提示', '充值功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
   };
 
   _triggerWithdraw = () => {
+      ActionUtil.setAction(actionType.BA_MINE_CASH);
         let {navigator} = this.props;
 
         navigator.push({
@@ -83,6 +87,8 @@ export default class User extends Component {
     constructor(props) {
         super(props);
 
+        this.pageId = actionType.BA_MINE;
+        ActionUtil.setActionWithExtend(actionType.BA_MINE_ONVIEW, {"bp": this.props.route.bp});
         this.state = {};
     }
 
@@ -92,9 +98,9 @@ export default class User extends Component {
         var profileData = userProfile.toJS();
 
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        var featureSource = ds.cloneWithRows([{title: '联系过的房源', count: profileData.contacted, component: ContactHouseContainer, name: 'contactHouse'},
-            {title: '发布的房源', count: profileData.published, component: InputHouseContainer, name: 'inputHouse'}]);
-        var settingSource = ds.cloneWithRows([{title: '设置', component: '', name: 'settings'}]);
+        var featureSource = ds.cloneWithRows([{title: '联系过的房源', count: profileData.contacted, component: ContactHouseContainer, name: 'contactHouse', actionLog: actionType.BA_MINE_CONNECT, backLog: actionType.BA_MINE_CONTACT_RETURN},
+            {title: '发布的房源', count: profileData.published, component: InputHouseContainer, name: 'inputHouse', actionLog: actionType.BA_MINE_RELEASED, backLog: actionType.BA_MINE_RELEASE_RETURN}]);
+        var settingSource = ds.cloneWithRows([{title: '设置', component: '', name: 'settings', actionLog: actionType.BA_MINE_SET}]);
 
         return (
             <View style={styles.container}>
@@ -145,12 +151,18 @@ export default class User extends Component {
     _goPage(data) {
         let {navigator} = this.props;
 
+        if(data.actionLog) {
+            ActionUtil.setAction(data.actionLog);
+        }
+
         if(data.component) {
             navigator.push({
                 component: data.component,
                 name: data.name,
                 title: data.title,
-                hideNavBar: false
+                hideNavBar: false,
+                backLog: data.backLog,
+                bp: this.pageId
             });
         } else {
             Alert.alert('温馨提示', '设置功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
@@ -166,6 +178,8 @@ export default class User extends Component {
             {text: '取消'},
             {text: '确认', onPress: () => {
               AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
+              AsyncStorageComponent.remove(common.USER_ID);
+              ActionUtil.setUid("");
               AsyncStorageComponent.get('user_phone')
               .then((value) => {
                   navigator.resetTo({
@@ -173,7 +187,8 @@ export default class User extends Component {
                     name: 'login',
                     title: '登录',
                     phone: value,
-                    hideNavBar: true
+                    hideNavBar: true,
+                    bp: this.pageId
                   });
               })
             }}

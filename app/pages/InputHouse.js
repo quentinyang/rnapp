@@ -6,6 +6,8 @@ import {React, Component, Text, View, ListView, StyleSheet, Image,
 import InputItem from '../components/InputItem';
 import DetailContainer from '../containers/DetailContainer';
 import Immutable, {List} from 'immutable';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -16,6 +18,8 @@ export default class InputHouse extends Component {
     constructor(props) {
         super(props);
 
+        this.pageId = actionType.BA_MINE_RELEASE;
+        ActionUtil.setActionWithExtend(actionType.BA_MINE_RELEASE_ONVIEW, {"bp": this.props.route.bp});
         this.state = {
             isRefreshing: false,
             loaded: false
@@ -111,6 +115,7 @@ export default class InputHouse extends Component {
     };
 
     _onItemPress = (item) => {
+        ActionUtil.setAction(actionType.BA_MINE_RELEASE_DETAIL);
         let {navigator} = this.props;
 
         navigator.push({
@@ -118,6 +123,8 @@ export default class InputHouse extends Component {
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
+            backLog: actionType.BA_DETAIL_RETURN,
+            bp: this.pageId,
             item
         });
     };

@@ -5,10 +5,14 @@ import Item from '../components/Item';
 import AttentionBlockSetTwoContainer from '../containers/AttentionBlockSetTwoContainer';
 import {saveAttentionCommunitySetService} from '../service/blockService';
 import CommunitySearchContainer from '../containers/CommunitySearchContainer'
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 export default class AttentionBlockSetOne extends Component {
     constructor(props) {
         super(props);
+        this.pageId = actionType.BA_SETFOCUS;
+        ActionUtil.setActionWithExtend(actionType.BA_SETFOCUS_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -58,22 +62,27 @@ export default class AttentionBlockSetOne extends Component {
     }
 
     _onPress = () => {
+        ActionUtil.setAction(actionType.BA_SETFOCUS_SETAREA);
         let {navigator} = this.props;
 
         navigator.push({
             component: AttentionBlockSetTwoContainer,
             name: 'attentionTow',
             title: '设置我的关注',
-            hideNavBar: false
+            hideNavBar: false,
+            backLog: actionType.BA_SETFOCUS_AREA_RETURN,
+            bp: this.pageId
         });
     };
 
     _handleDelete = (communityId) => {
+        ActionUtil.setAction(actionType.BA_SETFOCUS_DELCOM);
         let {actions} = this.props;
         actions.attentionListOneCommunityRomoved(communityId);
     };
 
     _handleAdd = () => {
+        ActionUtil.setAction(actionType.BA_SETFOCUS_SETCOM);
         let {navigator} = this.props;
 
         navigator.push({
@@ -85,6 +94,7 @@ export default class AttentionBlockSetOne extends Component {
     };
 
     _conformCommunitySet = () => {
+        ActionUtil.setAction(actionType.BA_SETFOCUS_SAVE);
         let {attentionList, actions, actionsHome, navigator} = this.props;
         let communitySelect = attentionList.get('community_select');
         let params = communitySelect.map((v) => {

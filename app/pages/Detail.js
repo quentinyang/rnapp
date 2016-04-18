@@ -6,6 +6,8 @@ import HouseListContainer from '../containers/HouseListContainer';
 import DetailContainer from '../containers/DetailContainer';
 import HouseInputContainer from '../containers/HouseInputContainer'
 import UserContainer from '../containers/UserContainer'
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -14,6 +16,9 @@ let ds = new ListView.DataSource({
 export default class Detail extends Component {
     constructor(props) {
         super(props);
+
+        this.pageId = actionType.BA_DETAIL;
+        ActionUtil.setActionWithExtend(actionType.BA_DETAIL_ONVIEW, {"vpid": this.props.route.item.get('property_id'), "bp": this.props.route.bp});
     }
 
     render() {
@@ -31,7 +36,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={styles.closeBox}
                                 underlayColor="#fff"
-                                onPress={this.props.actions.setScoreTipVisible.bind(null, false)}
+                                onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_PAYPOINTS_CLOSE);this.props.actions.setScoreTipVisible.bind(null, false)}}
                             >
                                 <Image
                                     style={styles.closeIcon}
@@ -54,7 +59,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={styles.closeBox}
                                 underlayColor="#fff"
-                                onPress={this.props.actions.setErrorTipVisible.bind(null, false)}
+                                onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);this.props.actions.setErrorTipVisible.bind(null, false)}}
                             >
                                 <Image
                                     style={styles.closeIcon}
@@ -67,7 +72,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn]}
                                 underlayColor="#fff"
-                                onPress={this._goPage.bind(this, HouseInputContainer)}
+                                onPress={this._goPage.bind(this, HouseInputContainer, actionType.BA_DETAIL_CASH)}
                             >
                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text>
                             </TouchableHighlight>
@@ -75,7 +80,7 @@ export default class Detail extends Component {
                              <TouchableHighlight
                                  style={[styles.btn, styles.borderBtn, styles.margin]}
                                  underlayColor="#fff"
-                                 onPress={this._goPage.bind(this, UserContainer)}
+                                 onPress={this._goPage.bind(this, UserContainer, actionType.BA_DETAIL_RECHANGE)}
                              >
                                  <Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text>
                              </TouchableHighlight>
@@ -94,7 +99,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn]}
                                 underlayColor="#fff"
-                                onPress={this._callFeedback.bind(this, callInfo.get('washId'), 1)}
+                                onPress={this._callFeedback.bind(this, callInfo.get('washId'), 1, actionType.BA_DETAIL_ONSALE)}
                             >
                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>在卖</Text>
                             </TouchableHighlight>
@@ -106,7 +111,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn]}
                                 underlayColor="#fff"
-                                onPress={this._callFeedback.bind(this, callInfo.get('washId'), 3)}
+                                onPress={this._callFeedback.bind(this, callInfo.get('washId'), 3, actionType.BA_DETAIL_UNCONNECT)}
                             >
                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>联系不上</Text>
                             </TouchableHighlight>
@@ -114,7 +119,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn, styles.margin]}
                                 underlayColor="#fff"
-                                onPress={this._callFeedback.bind(this, callInfo.get('washId'), 2)}
+                                onPress={this._callFeedback.bind(this, callInfo.get('washId'), 2, actionType.BA_DETAIL_FALSE)}
                             >
                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>虚假/不卖/已卖</Text>
                             </TouchableHighlight>
@@ -181,7 +186,8 @@ export default class Detail extends Component {
         this.props.actions.clearHouseDetailPage();
     }
 
-    _goPage(component) {
+    _goPage(component, actionLog) {
+        ActionUtil.setAction(actionLog);
         this.props.actions.setErrorTipVisible(false);
 
         let {navigator} = this.props;
@@ -190,11 +196,13 @@ export default class Detail extends Component {
             name: 'publishHouse',
             title: '发布房源',
             hideHeader: true,
-            hideNavBar: false
+            hideNavBar: false,
+            bp: this.pageId
         });
     }
 
     _clickPhoneBtn(status, phone, hasPhone) {
+        ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
         if(status || hasPhone) { //1: 已解锁
             let url = "tel:" + phone;
 
@@ -211,11 +219,13 @@ export default class Detail extends Component {
     }
 
     _callSellerPhone() {
+        ActionUtil.setAction(actionType.BA_DETAIL_PAYPOINTS);
         this.props.actions.setScoreTipVisible(false);
         this.props.actions.callSeller(this.props.route.item.get("property_id"));
     }
 
-    _callFeedback(id, status) {
+    _callFeedback(id, status, actionLog) {
+        ActionUtil.setAction(actionLog);
         this.props.actions.callFeedback({
             wash_id: id,
             status: status
@@ -271,6 +281,7 @@ export default class Detail extends Component {
     };
 
     _onItemPress = (item) => {
+        ActionUtil.setAction(actionType.BA_DETAIL_SAMECOM_DETAIL);
         let {navigator} = this.props;
 
         navigator.replace({
@@ -278,11 +289,14 @@ export default class Detail extends Component {
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
+            backLog: actionType.BA_DETAIL_RETURN,
+            bp: this.pageId,
             item
         });
     };
 
     _handleMoreHouseList = () => {
+        ActionUtil.setAction(actionType.BA_DETAIL_COMMUNITYHOUSE);
         let {route, navigator, actionsHouseList} = this.props,
             {item} = route;
 
@@ -298,7 +312,8 @@ export default class Detail extends Component {
             title: '房源列表',
             hideNavBar: true,
             communityName: item.get('community_name'),
-            communityId: item.get('community_id')
+            communityId: item.get('community_id'),
+            bp: this.pageId
         });
 
     };

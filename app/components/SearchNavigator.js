@@ -1,6 +1,7 @@
 'use strict';
 
 import {React, Component, Text, View, ScrollView, StyleSheet, Image, TouchableWithoutFeedback, PixelRatio, Platform} from 'nuke';
+let ActionUtil = require( '../utils/ActionLog');
 
 export default class SearchNavigator extends Component {
     constructor(props) {
@@ -50,7 +51,10 @@ export default class SearchNavigator extends Component {
     }
 
     _onBack = () => {
-        let {onBack, navigator} = this.props;
+        let {onBack, navigator, backLog} = this.props;
+        if(backLog) {
+            ActionUtil.setAction(backLog);
+        }
         if (onBack) {
             onBack()
         } else {

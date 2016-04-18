@@ -6,6 +6,8 @@ import {React, Component, Text, View, ListView, StyleSheet, Image,
 import ContactItem from '../components/ContactItem';
 import DetailContainer from '../containers/DetailContainer';
 import Immutable, {List} from 'immutable';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -15,6 +17,8 @@ let ds = new ListView.DataSource({
 export default class ContactHouse extends Component {
     constructor(props) {
         super(props);
+        this.pageId = actionType.BA_MINE_CONTACT;
+        ActionUtil.setActionWithExtend(actionType.BA_MINE_CONTACT_ONVIEW, {"bp": this.props.route.bp});
         this.state = {
             isRefreshing: false,
             loaded: false
@@ -111,6 +115,7 @@ export default class ContactHouse extends Component {
     };
 
     _onItemPress = (item) => {
+        ActionUtil.setAction(actionType.BA_MINE_CONTACT_DETAIL);
         let {navigator} = this.props;
 
         navigator.push({
@@ -118,6 +123,8 @@ export default class ContactHouse extends Component {
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
+            backLog: actionType.BA_DETAIL_RETURN,
+            bp: this.pageId,
             item
         });
     };

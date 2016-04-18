@@ -8,9 +8,15 @@ import LoginContainer from '../containers/LoginContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 import * as common from '../constants/Common';
 
-let GeTui = require('react-native').NativeModules.GeTui;
-let { NativeAppEventEmitter } = React;
-let { DeviceEventEmitter } = require('react-native');
+var GeTui = require('react-native').NativeModules.GeTui;
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
+
+var {
+  NativeAppEventEmitter
+} = React;
+
+var { DeviceEventEmitter } = require('react-native');
 
 let _navigator;
 global.gtoken = '';
@@ -59,6 +65,27 @@ class App extends Component {
                 self._clientIdReceived(cId);
             });
         }
+
+        AsyncStorageComponent.get('user_id')
+        .then((value) => {
+            if(value) {
+                ActionUtil.setUid(value);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+        DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
+            Alert.alert(cId);
+        });
+
+        this.unlistenNotification =  NativeAppEventEmitter.addListener(
+            'clientIdReceived',
+            (cId) => {
+                Alert.alert('clientIdReceived' + cId);
+            }
+        );
     }
 
     render() {
@@ -77,7 +104,8 @@ class App extends Component {
                     component: this.state.component,
                     name: this.state.name,
                     hideNavBar: true,
-                    title: this.state.title
+                    title: this.state.title,
+                    bp: ''
                 }}
             /> : null
         )
@@ -94,7 +122,8 @@ class App extends Component {
                             component: LoginContainer,
                             name: 'login',
                             title: '登录',
-                            hideNavBar: true
+                            hideNavBar: true,
+                            bp: actionType.BA_LOGIN
                         });
                         actionsApp.webAuthentication(true);
                     }
@@ -219,7 +248,7 @@ class App extends Component {
     _leftButton = (route, navigator, index, navState) => {
         return (
             <TouchableOpacity
-                onPress={() => navigator.pop()}
+                onPress={() => {ActionUtil.setAction(route.backLog);navigator.pop()}}
                 style={[styles.navBarLeftButton]}>
                 <View style={[styles.flex, styles.justifyContent, styles.alignItems, styles.navBarLeftButtonBox]}>
                     <Image

@@ -22,16 +22,14 @@ import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer
 import DeviceInfo from 'react-native-device-info';
 import FormContainer from '../components/FormContainer';
 import * as common from '../constants/Common';
-
 let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 class Login extends React.Component {
     constructor(props) {
         super(props);
-
-        ActionUtil.setAction("101-500000");
-        //let test = {key: "123"};
-        //ActionUtil.setActionWithExtend("action-log with extend", test);
+        this.pageId = actionType.BA_LOGIN;
+        ActionUtil.setAction(actionType.BA_LOGIN_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -59,7 +57,7 @@ class Login extends React.Component {
                             maxLength={11}
                             underlineColorAndroid='transparent'
                             value={formInfo.get('phone')}
-                            onFocus={this.inputFocused.bind(this, 'phone')}
+                            onFocus={this.inputFocused.bind(this, 'phone', actionType.BA_LOGIN_PHONENUM)}
                         />
                         <Countdown
                             num={controllerInfo.get('num')}
@@ -79,7 +77,7 @@ class Login extends React.Component {
                             maxLength={4}
                             underlineColorAndroid='transparent'
                             value={formInfo.get('code')}
-                            onFocus={this.inputFocused.bind(this, 'phone')}
+                            onFocus={this.inputFocused.bind(this, 'code', actionType.BA_LOGIN_INPUTCODE)}
                         />
                     </View>
                     <View style={styles.errMsgBox}>
@@ -102,7 +100,8 @@ class Login extends React.Component {
         this.timer && clearTimeout(this.timer);
     }
 
-    inputFocused (refName) {
+    inputFocused (refName, actionLog) {
+        ActionUtil.setAction(actionLog);
         setTimeout(() => {
             let scrollResponder = this.refs.formContainer.refs.scrollView.getScrollResponder();
 
@@ -153,6 +152,7 @@ class Login extends React.Component {
     };
 
     sendCode = () => {
+        ActionUtil.setAction(actionType.BA_LOGIN_SENDCODE);
         let self = this,
             {login, actions} = self.props,
             data = {
@@ -216,6 +216,7 @@ class Login extends React.Component {
     };
 
     handleSubmit = (e) => {
+        ActionUtil.setAction(actionType.BA_LOGIN_ENSURE);
         let msg = this.checkForm(),
             {actions, navigator, login} = this.props,
             data = Object.assign({}, login.formInfo.toJS(), {device_id: DeviceInfo.getUniqueID()});
@@ -227,20 +228,24 @@ class Login extends React.Component {
             .then((oData) => {
                 AsyncStorageComponent.save(common.USER_TOKEN_KEY, oData.token);
                 AsyncStorageComponent.save(common.USER_PHONE, data.phone);
+                AsyncStorageComponent.save(common.USER_ID, oData.user_id);
+                ActionUtil.setUid(oData.user_id);
                 gtoken = oData.token;
                 if(oData.is_enter_attention_page) {
                     navigator.resetTo({
                         component: TabViewContainer,
                         name: 'home',
                         title: '我的主页',
-                        hideNavBar: true
+                        hideNavBar: true,
+                        bp: this.pageId
                     });
                 } else {
                     navigator.resetTo({
                         component: AttentionBlockSetContainer,
                         name: 'AttentionBlockSetContainer',
                         title: '设置我的关注',
-                        hideNavBar: true
+                        hideNavBar: true,
+                        bp: this.pageId
                     });
                 }
             })

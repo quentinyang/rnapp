@@ -5,10 +5,14 @@ import Item from '../components/Item';
 import Tab from '../components/Tab';
 import {saveAttentionBlockSetService} from '../service/blockService';
 import Immutable from 'immutable';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 export default class AttentionBlockSetTwo extends Component {
     constructor(props) {
         super(props);
+        this.pageId = actionType.BA_SETFOCUS_AREA;
+        ActionUtil.setActionWithExtend(actionType.BA_SETFOCUS_AREA_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -51,6 +55,7 @@ export default class AttentionBlockSetTwo extends Component {
     }
 
     _onHandleBlockSelected = (block, insert:boolen) => {
+        ActionUtil.setAction(actionType.BA_SETFOCUS_AREA_CHOOSE);
         let {actions} = this.props;
 
         if (insert) {
@@ -61,6 +66,7 @@ export default class AttentionBlockSetTwo extends Component {
     };
 
     _conformBlockSet = () => {
+        ActionUtil.setAction(actionType.BA_SETFOCUS_AREA_ENSURE);
         let {attentionBlockSet, actionsOne, actionsHome, navigator} = this.props;
         let districtBlockSelect = attentionBlockSet.get('district_block_select');
 

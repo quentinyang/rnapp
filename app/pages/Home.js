@@ -8,6 +8,8 @@ import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneCon
 import Immutable, {List} from 'immutable';
 import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -16,10 +18,13 @@ let ds = new ListView.DataSource({
 export default class Home extends Component {
     constructor(props) {
         super(props);
-
+        console.log("=======");
+        console.log(this.props.route);
         this.state = {
             isRefreshing: false
         };
+        this.pageId = actionType.BA_HOME_PAGE;
+        ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -92,6 +97,7 @@ export default class Home extends Component {
     };
 
     _onItemPress = (item) => {
+        ActionUtil.setAction(actionType.BA_HOME_PAGE_CLICKDETAIL);
         let {navigator} = this.props;
 
         navigator.push({
@@ -99,11 +105,14 @@ export default class Home extends Component {
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
+            backLog: actionType.BA_DETAIL_RETURN,
+            bp: this.pageId,
             item
         });
     };
 
     _onRefresh = () => {
+        ActionUtil.setAction(actionType.BA_HOME_PAGE_SLIDEDOWN);
         let {actions} = this.props;
         this.setState({
             isRefreshing: true
@@ -119,6 +128,7 @@ export default class Home extends Component {
     _onHandlePress = (type) => {
         let {navigator, actionsHouseList} = this.props;
         if (type == 'search') {
+            ActionUtil.setAction(actionType.BA_HOME_PAGE_SEARCH);
             actionsHouseList.autocompleteViewShowed(true);
             navigator.push({
                 component: HouseListContainer,
@@ -128,6 +138,7 @@ export default class Home extends Component {
                 hideNavBar: true
             });
         } else {
+            ActionUtil.setAction(actionType.BA_HOME_PAGE_ALLHOUSELIST);
             navigator.push({
                 component: HouseListContainer,
                 name: 'houseList',
@@ -138,6 +149,7 @@ export default class Home extends Component {
     };
 
     _onEndReached = () => {
+        ActionUtil.setAction(actionType.BA_HOME_PAGE_SLIDEUP);
         let {actions, houseData} = this.props;
         let pager = houseData.get('pager');
 
@@ -194,6 +206,7 @@ export default class Home extends Component {
     };
 
     _onAttentionBlockSet = (attentionList) => {
+        ActionUtil.setAction(actionType.BA_HOME_PAGE_SETFOCUS);
         let {navigator} = this.props;
 
         navigator.push({
@@ -201,6 +214,8 @@ export default class Home extends Component {
             name: 'AttentionBlockSetOneContainer',
             title: '设置我的关注',
             hideNavBar: false,
+            backLog: actionType.BA_SETFOCUS_RETURN,
+            bp: this.pageId,
             attentionList
         });
     };
