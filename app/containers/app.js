@@ -6,17 +6,16 @@ import {navigationContext} from 'react-native'
 import {NaviGoBack} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
 import TabViewContainer from '../containers/TabViewContainer';
+import * as common from '../constants/Common';
 
-var GeTui = require('react-native').NativeModules.GeTui;
-
-var {
-  NativeAppEventEmitter
-} = React;
-
-var { DeviceEventEmitter } = require('react-native');
+let GeTui = require('react-native').NativeModules.GeTui;
+let { NativeAppEventEmitter } = React;
+let { DeviceEventEmitter } = require('react-native');
 
 let _navigator;
 global.gtoken = '';
+global.gcid = '';
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -51,16 +50,15 @@ class App extends Component {
             console.log(error);
         });
 
-        DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
-            Alert.alert(cId);
-        });
-
-        this.unlistenNotification =  NativeAppEventEmitter.addListener(
-            'clientIdReceived',
-            (cId) => {
-                Alert.alert('clientIdReceived' + cId);
-            }
-        );
+        if(Platform.OS === 'ios') {
+            this.unlistenNotification =  NativeAppEventEmitter.addListener('clientIdReceived', (cId) => {
+                self._clientIdReceived(cId);
+            });
+        } else {
+            DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
+                self._clientIdReceived(cId);
+            });
+        }
     }
 
     render() {
@@ -117,28 +115,69 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.unlistenNotification =  NativeAppEventEmitter.addListener(
-            'geTuiDataReceived',
-            (notifData) => {
-                let newNotifData = JSON.parse(notifData);
-                Alert.alert(newNotifData.data.msg);
-            }
-        );
-        GeTui.getClientId(function(cId) {
-            Alert.alert('code' + cId);
+        GeTui.getClientId((cId) => {
+            this._clientIdReceived(cId)
         });
-
-        // DeviceEventEmitter.addListener('geTuiDataReceived', (notifData) => {
-        //     let newNotifData = JSON.parse(notifData);
-        //     Alert.alert(newNotifData.data.msg);
-        // });
+        if(Platform.OS === 'ios') {
+            this.unlistenNotification =  NativeAppEventEmitter.addListener('geTuiDataReceived', (notifData) => {
+                this._geTuiDataReceivedHandle(notifData);
+            });
+        } else {
+            DeviceEventEmitter.addListener('geTuiDataReceived', (notifData) => {
+                this._geTuiDataReceivedHandle(notifData);
+            });
+        }
     }
 
     componentWillUnmount() {
-        // this.unlistenNotification.remove();
-        // DeviceEventEmitter.removeAllListeners('clientIdReceived');
-        // DeviceEventEmitter.removeAllListeners('geTuiDataReceived');
+        if(Platform.OS === 'ios') {
+            this.unlistenNotification.remove();
+        } else {
+            DeviceEventEmitter.removeAllListeners('clientIdReceived');
+            DeviceEventEmitter.removeAllListeners('geTuiDataReceived');
+        }
     }
+
+    _clientIdReceived = (cId) => {
+        let {actionsApp} = this.props;
+
+        if (!gcid) {
+            gcid = cId;
+            actionsApp.setWebStartConfig({
+                cId: cId
+            });
+        }
+    };
+
+    _geTuiDataReceivedHandle = (notifData) => {
+        let newNotifData = JSON.parse(notifData);
+        let {actionsHome} = this.props;
+
+        switch(Number(newNotifData.type)) {
+            case 1: // 普通推送
+                actionsHome.fetchAttentionPrependHouseList({});
+                break;
+            case 2: // 互踢
+                Alert.alert('提示', '您的房源360账号已经在另外一台设备上登录？', [
+                    {text: '知道了', onPress: () => {
+                        AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
+                        AsyncStorageComponent.get('user_phone')
+                        .then((value) => {
+                            _navigator.resetTo({
+                                component: LoginContainer,
+                                name: 'login',
+                                title: '登录',
+                                phone: value,
+                                hideNavBar: true
+                            });
+                        });
+                    }}
+                ]);
+                break;
+            default:
+                break;
+        }
+    };
 
     _configureScene = (route, routeStack) => {
         return Navigator.SceneConfigs.PushFromRight;

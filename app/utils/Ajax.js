@@ -58,6 +58,7 @@ function _getHeader() {
             'Angejia-Stringify': '1',// JSON 数据使用字符串形式的值
             'Angejia-Env': '',// 移动应用访问的 Mobile API 环境
             'Angejia-Payload': '',// 返回内容结构（兼容设置）
+            'cid': global.gcid, // getui client id
     }
     console.log('Http Header', header);
     return header;

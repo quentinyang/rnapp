@@ -4,6 +4,7 @@ import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/app';
+import * as actionsHome from '../actions/home';
 import App from '../containers/app';
 
 class AppContainer extends Component {
@@ -27,7 +28,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actionsApp: bindActionCreators(actions, dispatch)
+        actionsApp: bindActionCreators(actions, dispatch),
+        actionsHome: bindActionCreators(actionsHome, dispatch),
     }
 }
 
