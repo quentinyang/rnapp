@@ -24,7 +24,6 @@ public class MyApp extends Application {
          * @param timeInterval 发送间隔 单位秒
          * @param logMaxNum 当log累计达该数量时发送
          */
-        ActionLog.reactNativeInit(-297722831, -297722831, "fy360", this, 3 * 60, 1);
-        //PhoneInfoUtil.
+        ActionLog.reactNativeInit(-297722831, -297722831, "fy360", this, 3 * 60, 5);
     }
 }

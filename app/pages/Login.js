@@ -29,7 +29,7 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.pageId = actionType.BA_LOGIN;
-        ActionUtil.setAction(actionType.BA_LOGIN_ONVIEW, {"bp": this.props.route.bp});
+        ActionUtil.setActionWithExtend(actionType.BA_LOGIN_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
