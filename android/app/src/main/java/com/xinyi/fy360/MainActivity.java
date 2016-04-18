@@ -90,7 +90,7 @@ public class MainActivity extends ReactActivity {
         super.onCreate(savedInstanceState);
         PushManager.getInstance().initialize(this.getApplicationContext());
         //checkHash();
-        DevUtil.setDebug(false);
+        DevUtil.setDebug(true);
     }
 
     //检查hash
