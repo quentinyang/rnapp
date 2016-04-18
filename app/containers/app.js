@@ -75,17 +75,6 @@ class App extends Component {
         .catch((error) => {
             console.log(error);
         });
-
-        DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
-            Alert.alert(cId);
-        });
-
-        this.unlistenNotification =  NativeAppEventEmitter.addListener(
-            'clientIdReceived',
-            (cId) => {
-                Alert.alert('clientIdReceived' + cId);
-            }
-        );
     }
 
     render() {
