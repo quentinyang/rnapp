@@ -6,6 +6,7 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.angejia.android.commonutils.common.DevUtil;
 import com.custom.component.ActionPackage;
 import com.custom.component.ActionUtil;
 import com.facebook.react.ReactActivity;
@@ -88,8 +89,8 @@ public class MainActivity extends ReactActivity {
         Log.d("onCreate", "initializing sdk...");
         super.onCreate(savedInstanceState);
         PushManager.getInstance().initialize(this.getApplicationContext());
-        checkHash();
-        //ActionUtil.setAction("11221212");
+        //checkHash();
+        DevUtil.setDebug(false);
     }
 
     //检查hash

@@ -228,8 +228,8 @@ class Login extends React.Component {
             .then((oData) => {
                 AsyncStorageComponent.save(common.USER_TOKEN_KEY, oData.token);
                 AsyncStorageComponent.save(common.USER_PHONE, data.phone);
-                AsyncStorageComponent.save(common.USER_ID, oData.user_id);
-                ActionUtil.setUid(oData.user_id);
+                AsyncStorageComponent.save(common.USER_ID, oData.user_id || "");
+                ActionUtil.setUid(oData.user_id || "");
                 gtoken = oData.token;
                 if(oData.is_enter_attention_page) {
                     navigator.resetTo({
