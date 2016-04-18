@@ -61,7 +61,13 @@ function replaceFileContent(filepath, findStr, replaceStr) {
 // [codepush]
 var cpConfigs = destConfigs.codepush;
 replaceFileContent('ios/fy360/Info.plist', defaultConfigs.codepush.key, cpConfigs.key);
-replaceFileContent('android/app/src/main/java/com/xinyi/fy360/MainActivity.java', defaultConfigs.codepush.key, cpConfigs.key);
+replaceFileContent('android/app/src/main/java/com/xinyi/fy360/MainActivity.java', [{
+    find: defaultConfigs.codepush.key,
+    replace: cpConfigs.key
+}, {
+    find: 'DevUtil\\.setDebug\\(true\\)',
+    replace: 'DevUtil.setDebug(false)'
+}]);
 
 // [GeTui] & [UMeng]
 var gtConfigs = destConfigs.getui;

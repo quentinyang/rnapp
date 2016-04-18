@@ -90,6 +90,7 @@ public class MainActivity extends ReactActivity {
         super.onCreate(savedInstanceState);
         PushManager.getInstance().initialize(this.getApplicationContext());
         //checkHash();
+        // Important::please do not change this code, unless change it in the `switch.js`
         DevUtil.setDebug(true);
     }
 
