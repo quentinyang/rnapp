@@ -1,0 +1,15 @@
+{
+    "getui": {
+        "appId": "Ln5H71Iykf94XdqPoLTHI8",
+        "appKey": "NA6fia56568ieAobzLmJw5",
+        "appSecret": "Ntat8Ou93MAvkeE3uxSOj3",
+        "masterSecret": "NkTRqNidrc7vLhsvf6R436"
+    },
+    "umeng": {
+        "android": "56fe1060e0f55a1eea002284",
+        "ios": "56fe11a6e0f55ac112001746"
+    },
+    "codepush": {
+        "key": "Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl"
+    }
+}

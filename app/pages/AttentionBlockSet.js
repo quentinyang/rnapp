@@ -5,10 +5,15 @@ import Tab from '../components/Tab';
 import TabViewContainer from '../containers/TabViewContainer';
 import {saveAttentionBlockSetService} from '../service/blockService';
 import * as common from '../constants/Common';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 export default class AttentionBlockSet extends Component {
     constructor(props) {
         super(props);
+
+        this.pageId = actionType.BA_LOGFOCUS_AREA;
+        ActionUtil.setActionWithExtend(actionType.BA_LOGFOCUS_AREA_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -60,17 +65,20 @@ export default class AttentionBlockSet extends Component {
     }
 
     _skip = () => {
+        ActionUtil.setAction(actionType.BA_LOGFOCUS_AREA_SKIP);
         let {navigator, actions} = this.props;
         actions.attentionBlockSetCleared();
         navigator.resetTo({
             component: TabViewContainer,
             name: 'home',
             title: '我的主页',
-            hideNavBar: true
+            hideNavBar: true,
+            bp: this.pageId
         });
     };
 
     _conformBlockSet = () => {
+        ActionUtil.setAction(actionType.BA_LOGFOCUS_AREA_ENSURE);
         let {attentionBlockSet, navigator} = this.props;
         let districtBlockSelect = attentionBlockSet.get('district_block_select');
 
@@ -85,7 +93,8 @@ export default class AttentionBlockSet extends Component {
                     component: TabViewContainer,
                     name: 'home',
                     title: '我的主页',
-                    hideNavBar: true
+                    hideNavBar: true,
+                    bp: this.pageId
                 });
             })
             .catch((oData) => {
@@ -95,6 +104,7 @@ export default class AttentionBlockSet extends Component {
     };
 
     _onHandleBlockSelected = (block, insert:boolen) => {
+        ActionUtil.setAction(actionType.BA_LOGFOCUS_AREA_CHOOSE);
         let {actions} = this.props;
 
         if (insert) {

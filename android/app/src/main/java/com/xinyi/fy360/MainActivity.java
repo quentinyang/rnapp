@@ -1,8 +1,14 @@
 package com.xinyi.fy360;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
+
+import com.angejia.android.commonutils.common.DevUtil;
+import com.custom.component.ActionPackage;
+import com.custom.component.ActionUtil;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -19,6 +25,8 @@ import java.util.List;
 // Import react native device info
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.umeng.analytics.MobclickAgent;
+
+import com.xinyi.fy360.getui.GeTuiManager;
 
 public class MainActivity extends ReactActivity {
 
@@ -69,8 +77,11 @@ public class MainActivity extends ReactActivity {
         return Arrays.<ReactPackage>asList(
                 new RNDeviceInfo(),
                 new MainReactPackage(),
+                new ActionPackage(),
+                new GeTuiManager(),
                 this._codePush.getReactPackage()
         );
+
     }
 
     @Override
@@ -78,7 +89,22 @@ public class MainActivity extends ReactActivity {
         Log.d("onCreate", "initializing sdk...");
         super.onCreate(savedInstanceState);
         PushManager.getInstance().initialize(this.getApplicationContext());
+        //checkHash();
+        // Important::please do not change this code, unless change it in the `switch.js`
+        DevUtil.setDebug(true);
+    }
 
+    //检查hash
+    private void checkHash() {
+        PackageInfo info = null;
+        try {
+            info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
+            for (Signature sig : info.signatures) {
+                android.util.Log.i("grj" , "sig:" + sig.hashCode() + "");
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onResume() {
@@ -90,3 +116,5 @@ public class MainActivity extends ReactActivity {
         MobclickAgent.onPause(this);
     }
 }
+
+

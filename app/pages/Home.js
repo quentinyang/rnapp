@@ -2,11 +2,14 @@
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
         TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform} from 'nuke';
+
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
 import Immutable, {List} from 'immutable';
 import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -15,10 +18,13 @@ let ds = new ListView.DataSource({
 export default class Home extends Component {
     constructor(props) {
         super(props);
-
+        console.log("=======");
+        console.log(this.props.route);
         this.state = {
             isRefreshing: false
         };
+        this.pageId = actionType.BA_HOME_PAGE;
+        ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -43,8 +49,10 @@ export default class Home extends Component {
                     </View>
                 </View>
                 <ListView
+                    style={styles.noDataBg}
                     contentContainerStyle={styles.contentContainerStyle}
                     dataSource={ds.cloneWithRows(houseList.toArray())}
+                    automaticallyAdjustContentInsets={false}
                     renderRow={this._renderRow}
                     initialListSize={10}
                     pageSize={10}
@@ -89,6 +97,7 @@ export default class Home extends Component {
     };
 
     _onItemPress = (item) => {
+        ActionUtil.setAction(actionType.BA_HOME_PAGE_CLICKDETAIL);
         let {navigator} = this.props;
 
         navigator.push({
@@ -96,11 +105,14 @@ export default class Home extends Component {
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
+            backLog: actionType.BA_DETAIL_RETURN,
+            bp: this.pageId,
             item
         });
     };
 
     _onRefresh = () => {
+        ActionUtil.setAction(actionType.BA_HOME_PAGE_SLIDEDOWN);
         let {actions} = this.props;
         this.setState({
             isRefreshing: true
@@ -116,17 +128,28 @@ export default class Home extends Component {
     _onHandlePress = (type) => {
         let {navigator, actionsHouseList} = this.props;
         if (type == 'search') {
+            ActionUtil.setAction(actionType.BA_HOME_PAGE_SEARCH);
             actionsHouseList.autocompleteViewShowed(true);
+            navigator.push({
+                component: HouseListContainer,
+                name: 'houseList',
+                title: '全部房源',
+                from: 'homeSearch',
+                hideNavBar: true
+            });
+        } else {
+            ActionUtil.setAction(actionType.BA_HOME_PAGE_ALLHOUSELIST);
+            navigator.push({
+                component: HouseListContainer,
+                name: 'houseList',
+                title: '全部房源',
+                hideNavBar: true
+            });
         }
-        navigator.push({
-            component: HouseListContainer,
-            name: 'houseList',
-            title: '全部房源',
-            hideNavBar: true
-        });
     };
 
     _onEndReached = () => {
+        ActionUtil.setAction(actionType.BA_HOME_PAGE_SLIDEUP);
         let {actions, houseData} = this.props;
         let pager = houseData.get('pager');
 
@@ -183,6 +206,7 @@ export default class Home extends Component {
     };
 
     _onAttentionBlockSet = (attentionList) => {
+        ActionUtil.setAction(actionType.BA_HOME_PAGE_SETFOCUS);
         let {navigator} = this.props;
 
         navigator.push({
@@ -190,6 +214,8 @@ export default class Home extends Component {
             name: 'AttentionBlockSetOneContainer',
             title: '设置我的关注',
             hideNavBar: false,
+            backLog: actionType.BA_SETFOCUS_RETURN,
+            bp: this.pageId,
             attentionList
         });
     };
@@ -213,7 +239,7 @@ export class Attention extends Component {
         })).toJS() || ['去设置小区'];
 
         return (
-            <View style={[styles.attention]}>
+            <View style={styles.attention}>
                 <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
                     <Text style={styles.bar}></Text>
                     <Text style={[styles.flex, styles.heiti_16_header]}>我关注的房源</Text>
@@ -245,7 +271,7 @@ class NoData extends Component {
         let districtBlockSelect = attentionList.get('district_block_select');
         let communitySelect = attentionList.get('community_select');
         return (
-            <View style={[styles.noDataBg, styles.flex, styles.alignItems]}>
+            <View style={styles.alignItems}>
                 <Image
                     source={require('../images/noAttention.png')}
                     style={styles.noAttention}
@@ -256,7 +282,7 @@ class NoData extends Component {
                     }
                 </Text>
                 {
-                    districtBlockSelect.size == 0 && communitySelect.size == 0 ? 
+                    districtBlockSelect.size == 0 && communitySelect.size == 0 ?
                     <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
                         <View style={[styles.noAttentionBtn, styles.alignItems]}>
                             <Text style={styles.noAttentionBtnText}>去设置</Text>
@@ -271,7 +297,7 @@ class NoData extends Component {
 
 const styles = StyleSheet.create({
     pageBgColor: {
-        backgroundColor: '#fff'
+        backgroundColor: '#eee'
     },
     searchWrap: {
         height: (Platform.OS === 'ios') ? 65 : 45,
@@ -372,14 +398,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     contentContainerStyle: {
-        marginTop: (Platform.OS === 'ios') ? -20 : 0
     },
     noAttention: {
         width: 97,
         height: 116
     },
     noAttentionText: {
-        paddingTop: 30,
+        paddingTop: 25,
         paddingBottom: 20,
         fontSize: 16,
         color: '#8d8c92'

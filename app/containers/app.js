@@ -6,9 +6,22 @@ import {navigationContext} from 'react-native'
 import {NaviGoBack} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
 import TabViewContainer from '../containers/TabViewContainer';
+import * as common from '../constants/Common';
+
+var GeTui = require('react-native').NativeModules.GeTui;
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
+
+var {
+  NativeAppEventEmitter
+} = React;
+
+var { DeviceEventEmitter } = require('react-native');
 
 let _navigator;
 global.gtoken = '';
+global.gcid = '';
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -42,6 +55,26 @@ class App extends Component {
         .catch((error) => {
             console.log(error);
         });
+
+        if(Platform.OS === 'ios') {
+            this.unlistenNotification =  NativeAppEventEmitter.addListener('clientIdReceived', (cId) => {
+                self._clientIdReceived(cId);
+            });
+        } else {
+            DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
+                self._clientIdReceived(cId);
+            });
+        }
+
+        AsyncStorageComponent.get('user_id')
+        .then((value) => {
+            if(value) {
+                ActionUtil.setUid(value);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     render() {
@@ -60,7 +93,8 @@ class App extends Component {
                     component: this.state.component,
                     name: this.state.name,
                     hideNavBar: true,
-                    title: this.state.title
+                    title: this.state.title,
+                    bp: ''
                 }}
             /> : null
         )
@@ -77,7 +111,8 @@ class App extends Component {
                             component: LoginContainer,
                             name: 'login',
                             title: '登录',
-                            hideNavBar: true
+                            hideNavBar: true,
+                            bp: actionType.BA_LOGIN
                         });
                         actionsApp.webAuthentication(true);
                     }
@@ -96,6 +131,71 @@ class App extends Component {
             ])
         }
     }
+
+    componentDidMount() {
+        GeTui.getClientId((cId) => {
+            this._clientIdReceived(cId)
+        });
+        if(Platform.OS === 'ios') {
+            this.unlistenNotification =  NativeAppEventEmitter.addListener('geTuiDataReceived', (notifData) => {
+                this._geTuiDataReceivedHandle(notifData);
+            });
+        } else {
+            DeviceEventEmitter.addListener('geTuiDataReceived', (notifData) => {
+                this._geTuiDataReceivedHandle(notifData);
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        if(Platform.OS === 'ios') {
+            this.unlistenNotification.remove();
+        } else {
+            DeviceEventEmitter.removeAllListeners('clientIdReceived');
+            DeviceEventEmitter.removeAllListeners('geTuiDataReceived');
+        }
+    }
+
+    _clientIdReceived = (cId) => {
+        let {actionsApp} = this.props;
+
+        if (!gcid) {
+            gcid = cId;
+            actionsApp.setWebStartConfig({
+                cId: cId
+            });
+        }
+    };
+
+    _geTuiDataReceivedHandle = (notifData) => {
+        let newNotifData = JSON.parse(notifData);
+        let {actionsHome} = this.props;
+
+        switch(Number(newNotifData.type)) {
+            case 1: // 普通推送
+                actionsHome.fetchAttentionPrependHouseList({});
+                break;
+            case 2: // 互踢
+                Alert.alert('提示', '您的账号已在另外一台设备登陆，已被迫下线！', [
+                    {text: '知道了', onPress: () => {
+                        AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
+                        AsyncStorageComponent.get('user_phone')
+                        .then((value) => {
+                            _navigator.resetTo({
+                                component: LoginContainer,
+                                name: 'login',
+                                title: '登录',
+                                phone: value,
+                                hideNavBar: true
+                            });
+                        });
+                    }}
+                ]);
+                break;
+            default:
+                break;
+        }
+    };
 
     _configureScene = (route, routeStack) => {
         return Navigator.SceneConfigs.PushFromRight;
@@ -137,7 +237,7 @@ class App extends Component {
     _leftButton = (route, navigator, index, navState) => {
         return (
             <TouchableOpacity
-                onPress={() => navigator.pop()}
+                onPress={() => {ActionUtil.setAction(route.backLog);navigator.pop()}}
                 style={[styles.navBarLeftButton]}>
                 <View style={[styles.flex, styles.justifyContent, styles.alignItems, styles.navBarLeftButtonBox]}>
                     <Image

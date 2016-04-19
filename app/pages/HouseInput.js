@@ -8,6 +8,7 @@ import {
     TouchableHighlight,
     TextInput,
     PixelRatio,
+    Dimensions,
     Linking,
     ScrollView
 } from 'nuke';
@@ -21,16 +22,20 @@ import CommunitySearch from '../components/SearchComponent';
 import HouseInputSuccessContainer from '../containers/HouseInputSuccessContainer';
 import FormContainer from '../components/FormContainer';
 import TouchWebContainer from "../containers/TouchWebContainer";
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 class HouseInput extends Component {
     constructor(props) {
         super(props);
+        this.pageId = actionType.BA_SEND;
+        ActionUtil.setActionWithExtend(actionType.BA_SEND_ONVIEW, {"bp": this.props.route.bp});
+        this.height = Dimensions.get('window').height;
     }
 
     render() {
-        let {houseForm, controller, communityData} = this.props.houseInput;
-
-        var hideHeader =  this.props.route && this.props.route.hideHeader;
+        let {houseForm, controller, communityData, route} = this.props.houseInput,
+            hideHeader = route && route.hideHeader;
         return (
             <View style={styles.container}>
             {controller.get('search') ?
@@ -63,7 +68,7 @@ class HouseInput extends Component {
                             specialText1={houseForm.get('community_name')}
                             specialText2={houseForm.get('address')}
                             arrow={true}
-                            onClick={() => this.singleAction('searchChanged', true)}
+                            onClick={() => {ActionUtil.setAction(actionType.BA_SEND_ADDCOM); this.singleAction('searchChanged', true)}}
                         />
                         <WithLabel
                             label='楼栋'
@@ -73,12 +78,13 @@ class HouseInput extends Component {
                             placeholder={controller.get('single')?'':'输入楼/座号'}
                             editable={controller.get('single')? false: true}
                             underlineColorAndroid = 'transparent'
+                            onFocus={() => ActionUtil.setAction(actionType.BA_SEND_ADDBUILDINGNUM)}
                             onChangeText={(v) => {this.singleAction('buildingChanged', v)}}
                         >
                             <Attached
                                 isSelected={controller.get('single')}
                                 attachedText='独栋'
-                                toggleAttach={() => this.toggleAttach('singleChanged', !controller.get('single'), 'buildingChanged', 'attachBuildingChanged')}
+                                toggleAttach={() => this.toggleAttach(actionType.BA_SEND_SINGLEBUILDING, 'singleChanged', !controller.get('single'), 'buildingChanged', 'attachBuildingChanged')}
                             />
                         </WithLabel>
                         <WithLabel
@@ -87,14 +93,16 @@ class HouseInput extends Component {
                             placeholder={controller.get('no_unit')?'':'输入单元号'}
                             editable={controller.get('no_unit')? false: true}
                             underlineColorAndroid = 'transparent'
+                            onFocus={() => ActionUtil.setAction(actionType.BA_SEND_ADDUNIT)}
                             onChangeText={(v) => {this.singleAction('unitChanged', v)}}
                         >
                             <Attached
                                 isSelected={controller.get('no_unit')}
                                 attachedText='无'
-                                toggleAttach={() => this.toggleAttach('noUnit', !controller.get('no_unit'), 'unitChanged')}
+                                toggleAttach={() => this.toggleAttach(actionType.BA_SEND_CLICKNULL, 'noUnit', !controller.get('no_unit'), 'unitChanged')}
                             />
                         </WithLabel>
+                        <View ref='doorBox'>
                         <WithLabel
                             label='房号'
                             rightText='室'
@@ -103,14 +111,18 @@ class HouseInput extends Component {
                             placeholder={controller.get('villa')?'':'输入房号'}
                             underlineColorAndroid = 'transparent'
                             editable={controller.get('villa')? false: true}
+                            onFocus={() => this.inputFocused(actionType.BA_SEND_ADDROOMNUM, 'doorBox', 55)}
+                            onBlur={() => this.inputBlur()}
                             onChangeText={(v) => {this.singleAction('doorChanged', v)}}
                         >
                             <Attached
                                 isSelected={controller.get('villa')}
                                 attachedText='别墅'
-                                toggleAttach={() => this.toggleAttach('villaChanged', !controller.get('villa'), 'doorChanged', 'attachDoorChanged')}
+                                toggleAttach={() => this.toggleAttach(actionType.BA_SEND_VILA, 'villaChanged', !controller.get('villa'), 'doorChanged', 'attachDoorChanged')}
                             />
                         </WithLabel>
+                        </View>
+                        <View ref='hxBox'>
                         <WithLabel
                             label='户型'
                             rightText='室'
@@ -119,6 +131,8 @@ class HouseInput extends Component {
                             keyboardType='numeric'
                             maxLength={2}
                             value={houseForm.get('bedrooms')}
+                            onFocus={() => this.inputFocused(actionType.BA_SEND_ADDHOUSETYPE, 'areaBox', 55)}
+                            onBlur={() => this.inputBlur()}
                             onChangeText={(v) => {this.singleAction('bedroomsChanged', v)}}
                         >
                             <TextInput
@@ -127,6 +141,8 @@ class HouseInput extends Component {
                                 maxLength={1}
                                 underlineColorAndroid = 'transparent'
                                 value={houseForm.get('living_rooms')}
+                                onFocus={() => this.inputFocused(actionType.BA_SEND_ADDHOUSETYPE, 'areaBox', 55)}
+                                onBlur={() => this.inputBlur()}
                                 onChangeText={(v) => {this.singleAction('livingroomsChanged', v)}}
                             />
                             <Text>厅</Text>
@@ -136,10 +152,14 @@ class HouseInput extends Component {
                                 maxLength={1}
                                 underlineColorAndroid = 'transparent'
                                 value={houseForm.get('bathrooms')}
+                                onFocus={() => this.inputFocused(actionType.BA_SEND_ADDHOUSETYPE, 'areaBox', 55)}
+                                onBlur={() => this.inputBlur()}
                                 onChangeText={(v) => {this.singleAction('bathroomsChanged', v)}}
                             />
                             <Text>卫</Text>
                         </WithLabel>
+                        </View>
+                        <View ref='areaBox'>
                         <WithLabel
                             label='面积'
                             ref='area'
@@ -149,10 +169,12 @@ class HouseInput extends Component {
                             value={houseForm.get('area')}
                             placeholder='输入面积'
                             underlineColorAndroid = 'transparent'
-                            onFocus={() => this.inputFocused('area')}
-                            onBlur={() => this.inputFocused('area', 0)}
+                            onFocus={() => this.inputFocused(actionType.BA_SEND_ADDAREA,'areaBox', 55)}
+                            onBlur={() => this.inputBlur()}
                             onChangeText={(v) => {this.singleAction('areaChanged', v)}}
                         />
+                        </View>
+                        <View ref='priceBox'>
                         <WithLabel
                             label='价格'
                             ref='price'
@@ -162,22 +184,26 @@ class HouseInput extends Component {
                             keyboardType='numeric'
                             value={houseForm.get('price')}
                             placeholder='输入价格'
-                            onFocus={() => this.inputFocused('price')}
-                            onBlur={() => this.inputFocused('price', 0)}
+                            onFocus={() => this.inputFocused(actionType.BA_SEND_ADDPRICE, 'priceBox',55)}
+                            onBlur={() => this.inputBlur()}
                             onChangeText={(v) => {this.singleAction('priceChanged', v)}}
                         />
+                        </View>
                     </View>
                     <View style={styles.formBox}>
+                        <View ref='aliasBox'>
                         <WithLabel
                             label='称呼'
                             ref='alias'
                             value={houseForm.get('seller_alias')}
                             placeholder='(选填)如张先生'
-                            onFocus={() => this.inputFocused('alias')}
+                            onFocus={() => this.inputFocused(actionType.BA_SEND_ADDNAME, 'aliasBox', 380)}
+                            onBlur={() => this.inputBlur()}
                             underlineColorAndroid = 'transparent'
-                            onBlur={() => this.inputFocused('alias', 0)}
                             onChangeText={(v) => {this.singleAction('aliasChanged', v)}}
                         />
+                        </View>
+                        <View ref='phoneBox'>
                         <WithLabel
                             label='电话'
                             ref='phone'
@@ -186,10 +212,11 @@ class HouseInput extends Component {
                             placeholder='输入联系电话'
                             underlineColorAndroid = 'transparent'
                             maxLength={11}
-                            onFocus={() => this.inputFocused('phone')}
-                            onBlur={() => this.inputFocused('phone', 0)}
+                            onFocus={() => this.inputFocused(actionType.BA_SEND_ADDHPHONE, 'phoneBox', 380)}
+                            onBlur={() => this.inputBlur()}
                             onChangeText={(v) => {this.singleAction('phoneChanged', v)}}
                         />
+                        </View>
                     </View>
                     <ErrorMsg
                         errBoxStyle={{paddingLeft: 20}}
@@ -212,7 +239,8 @@ class HouseInput extends Component {
         this.props.actions[action](value);
     }
 
-    toggleAttach(action, value, secAction, thirdAction) {
+    toggleAttach(actionLog, action, value, secAction, thirdAction) {
+        ActionUtil.setAction(actionLog);
         if(value) {
             this.singleAction(secAction, '');
             if(thirdAction) {
@@ -223,19 +251,23 @@ class HouseInput extends Component {
         this.singleAction(action, value);
     }
 
-    inputFocused(refName, height) {
-        this.timer && clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
-            let scrollResponder = this.refs.formContainer.refs.scrollView.getScrollResponder();
-            scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-                React.findNodeHandle(this.refs[refName]),
-                height || 110,
-                true
-            );
-        }, 50);
+    inputFocused(actionLog, refName, top) {
+        ActionUtil.setAction(actionLog);
+        this.refs[refName].measure((x, y, width, height) => {
+            if(this.height - 300 - top < y) {
+                let h = y + 390 + top - this.height;
+                this.refs.formContainer.refs.scrollView.scrollTo({x: 0, y: h, animated: true});
+            }
+        })
+    }
+
+    inputBlur() {
+        let h = this.height > 640 ? 0: (640 - this.height);
+        this.refs.formContainer.refs.scrollView.scrollTo({x: 0, y: h, animated: true});
     }
 
     linkFn = () => {
+        ActionUtil.setAction(actionType.BA_SEND_POINTSRULE);
         let {navigator} = this.props;
 
         let url = 'http://mp.weixin.qq.com/s?__biz=MzAxNDYyMTA0NQ==&mid=401036326&idx=1&sn=45548dc3dfb63021c4e60df9058df5df#rd';
@@ -248,6 +280,7 @@ class HouseInput extends Component {
     };
 
     handleSubmit = () => {
+        ActionUtil.setAction(actionType.BA_SEND_FINISH);
         let actions = this.props.actions,
             houseForm = this.props.houseInput.houseForm.toJS(),
             msg = this.checkForm();
@@ -265,7 +298,9 @@ class HouseInput extends Component {
                 name: 'houseInputSuccess',
                 title: '发布成功',
                 data: oData,
-                hideNavBar: false
+                hideNavBar: false,
+                backLog: actionType.BA_SEND_SUCCESS_RETURN,
+                bp: this.pageId
             });
             actions.dataCleared();
         })

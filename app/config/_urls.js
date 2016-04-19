@@ -46,6 +46,10 @@ let urls = {
     settings: {
         contactHouse: HOST + 'my/house/contact',
         inputHouse: HOST + 'my/house/input'
+    },
+    app: {
+        config: HOST + 'update/push',
+        deletePush: HOST + 'delete/push',
     }
 }
 

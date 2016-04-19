@@ -22,23 +22,33 @@ export default class Area extends Component {
                     mainIndex={this.state.leftSelectId}
                     onHandlePressItem={this._onHandlePressItem}
                 />
+                {this.state.leftSelectId != -1?
                 <RightView
+                    ref='areaRightContainer' scrollViewRef='areaRightScrollView'
                     data={data}
                     mainIndex={this.state.leftSelectId}
                     mainName={this.state.leftSelectName}
                     leftSelectId={leftSelectId}
                     rightSelectId={rightSelectId}
                     blockFilterChanged={this.props.blockFilterChanged}
-                />
+                />:null}
             </View>
         );
     }
 
     _onHandlePressItem = (id, name) => {
-        this.setState({
-            leftSelectId: id,
-            leftSelectName: name
-        });
+        if (id != this.state.leftSelectId) {
+            if(this.state.leftSelectId != -1) {
+                this.refs.areaRightContainer.refs.areaRightScrollView.scrollTo({x: 0, y: 0, animated: false});
+            }
+            this.setState({
+                leftSelectId: id,
+                leftSelectName: name
+            });
+        }
+        if(id == -1) {
+            this.props.blockFilterChanged(-1, -1, '');
+        }
     };
 }
 
@@ -105,7 +115,7 @@ class RightView extends Component {
             );
         });
         return (
-            <ScrollView style={[styles.rightView]} showsVerticalScrollIndicator={false}>
+            <ScrollView style={[styles.rightView]} ref='areaRightScrollView' showsVerticalScrollIndicator={false}>
                 {rightView}
             </ScrollView>
         )

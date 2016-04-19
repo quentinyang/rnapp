@@ -2,6 +2,8 @@
 
 import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, Alert} from 'nuke'
 import Autocomplete from './Autocomplete'
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 export default class CommunitySearch extends Component {
     constructor(props) {
@@ -22,6 +24,8 @@ export default class CommunitySearch extends Component {
                 renderRow={this.renderRow}
                 onChangeText={this.onChangeText}
                 onCancelSearch={this.cancelSearch}
+                visibleLog={actionType.BA_LOOK_COM_SEARCH_ONVIEW}
+                bp={actionType.BA_SETFOCUS}
             />
         );
     }
@@ -41,11 +45,15 @@ export default class CommunitySearch extends Component {
     }
 
     onPress(community) {
+        ActionUtil.setAction(actionType.BA_LOOK_COM_SEARCH_ASSOCIATION);
         this.props.onPress('communityChanged', community.toJS());
-        this.cancelSearch();
+        this.clearSearch();
     }
-
     cancelSearch() {
+        ActionUtil.setAction(actionType.BA_LOOK_COM_SEARCH_CANCEL);
+        this.clearSearch();
+    }
+    clearSearch() {
         this.props.onPress('searchChanged', false);
         this.props.actions.hiSearchCleared();
     }

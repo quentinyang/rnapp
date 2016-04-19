@@ -1,6 +1,7 @@
 'use strict';
 
 import {React, Component, Text, View, ScrollView, StyleSheet, Image, TouchableWithoutFeedback, PixelRatio, Platform} from 'nuke';
+let ActionUtil = require( '../utils/ActionLog');
 
 export default class SearchNavigator extends Component {
     constructor(props) {
@@ -13,7 +14,7 @@ export default class SearchNavigator extends Component {
             <View style={styles.searchWrap}>
                 <View style={[styles.searchBox, styles.row, styles.alignItems]}>
                     <TouchableWithoutFeedback onPress={this._onBack}>
-                        <View>
+                        <View style={styles.backBox}>
                             <Image
                                 source={require('../images/back.png')}
                                 style={styles.backImage}
@@ -25,10 +26,12 @@ export default class SearchNavigator extends Component {
                             titleName ? <View style={[styles.flex, styles.searchBtn, styles.alignItems, styles.justifyContent, styles.row]}>
                                     <Text style={[styles.flex, styles.textAlign, styles.titleNamePadding]}>{titleName}</Text>
                                     <TouchableWithoutFeedback onPress={this.props.onClearKeyword}>
-                                        <Image
-                                            source={require('../images/qingchu.png')}
-                                            style={styles.qingchuImage}
-                                        />
+                                        <View style={[styles.clearBox, styles.justifyContent]}>
+                                            <Image
+                                                source={require('../images/qingchu.png')}
+                                                style={styles.qingchuImage}
+                                            />
+                                        </View>
                                     </TouchableWithoutFeedback>
                                 </View> :
                                 <View style={[styles.flex, styles.searchBtn, styles.alignItems, styles.justifyContent, styles.row]}>
@@ -48,7 +51,10 @@ export default class SearchNavigator extends Component {
     }
 
     _onBack = () => {
-        let {onBack, navigator} = this.props;
+        let {onBack, navigator, backLog} = this.props;
+        if(backLog) {
+            ActionUtil.setAction(backLog);
+        }
         if (onBack) {
             onBack()
         } else {
@@ -72,8 +78,12 @@ const styles = StyleSheet.create({
     },
     searchBox: {
         height: 45,
-        paddingLeft: 15,
         paddingRight: 15
+    },
+    backBox: {
+        paddingLeft: 15,
+        height: 33,
+        justifyContent: 'center'
     },
     backImage: {
         width: 9.5,
@@ -109,6 +119,9 @@ const styles = StyleSheet.create({
     searchText: {
         fontSize: 15,
         color: '#8d8c92'
+    },
+    clearBox: {
+        height: 33
     },
     qingchuImage: {
         width: 15,

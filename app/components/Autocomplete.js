@@ -15,11 +15,12 @@ import {
 } from 'nuke'
 
 import FormContainer from './FormContainer'
-
+let ActionUtil = require( '../utils/ActionLog');
 
 export default class Autocomplete extends Component {
     constructor(props) {
         super(props);
+        ActionUtil.setActionWithExtend(this.props.visibleLog, {"bp": this.props.bp});
     }
 
     render() {

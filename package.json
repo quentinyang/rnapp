@@ -6,6 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
+    "commander": "^2.9.0",
     "immutable": "^3.7.6",
     "react-addons-pure-render-mixin": "^0.14.6",
     "react-native": "^0.21.0",

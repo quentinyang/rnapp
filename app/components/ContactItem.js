@@ -2,6 +2,8 @@
 
 import {React, Component, Text, View, StyleSheet, TouchableWithoutFeedback, TouchableHighlight, PixelRatio, Linking, Alert} from 'nuke';
 import {formatDate} from '../utils/CommonUtils';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 export default class ContactItem extends Component {
     constructor(props) {
@@ -40,6 +42,7 @@ export default class ContactItem extends Component {
         );
     }
     _callSeller = (phone) => {
+        ActionUtil.setAction(actionType.BA_MINE_CONTACT_CONTACTLANDLORD);
         let url = "tel:" + phone;
 
         Linking.canOpenURL(url).then(supported => {
