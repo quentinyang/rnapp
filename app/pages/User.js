@@ -170,13 +170,14 @@ export default class User extends Component {
     }
 
     _loginOut() {
-        let {navigator} = this.props;
+        let {navigator, actionsApp} = this.props;
         Alert.alert(
           '提示',
           '确定要退出吗？',
           [
             {text: '取消'},
             {text: '确认', onPress: () => {
+              actionsApp.deletePush(); // 解绑个推
               AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
               AsyncStorageComponent.remove(common.USER_ID);
               ActionUtil.setUid("");

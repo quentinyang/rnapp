@@ -8,3 +8,7 @@ export function setWebStartConfigService(params) {
         }
     });
 };
+
+export function deletePushService() {
+    return ajax.put(urls.app.deletePush);
+}
