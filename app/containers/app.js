@@ -176,7 +176,7 @@ class App extends Component {
                 actionsHome.fetchAttentionPrependHouseList({});
                 break;
             case 2: // 互踢
-                Alert.alert('提示', '您的房源360账号已经在另外一台设备上登录？', [
+                Alert.alert('提示', '您的账号已在另外一台设备登陆，已被迫下线！', [
                     {text: '知道了', onPress: () => {
                         AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
                         AsyncStorageComponent.get('user_phone')
