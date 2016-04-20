@@ -18,8 +18,7 @@ let ds = new ListView.DataSource({
 export default class Home extends Component {
     constructor(props) {
         super(props);
-        console.log("=======");
-        console.log(this.props.route);
+
         this.state = {
             isRefreshing: false
         };

@@ -22,6 +22,7 @@ export default class Detail extends Component {
     }
 
     render() {
+        let self = this;
         let {baseInfo, sameCommunityList, callInfo} = this.props;
         let houseList = sameCommunityList.get('properties');
         let info = baseInfo.get("baseInfo");
@@ -36,7 +37,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={styles.closeBox}
                                 underlayColor="#fff"
-                                onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_PAYPOINTS_CLOSE);this.props.actions.setScoreTipVisible.bind(null, false)}}
+                                onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_PAYPOINTS_CLOSE);self.props.actions.setScoreTipVisible(false);}}
                             >
                                 <Image
                                     style={styles.closeIcon}
@@ -59,7 +60,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={styles.closeBox}
                                 underlayColor="#fff"
-                                onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);this.props.actions.setErrorTipVisible.bind(null, false)}}
+                                onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);self.props.actions.setErrorTipVisible(false)}}
                             >
                                 <Image
                                     style={styles.closeIcon}
