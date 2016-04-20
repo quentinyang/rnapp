@@ -166,8 +166,12 @@ export default class HouseList extends Component {
     }
 
     componentWillUnmount() {
-        let {actions} = this.props;
-        actions.houseListPageCleared();
+        let {actionsNavigation, route} = this.props;
+        if(route.from == 'houseDetail') {
+            actionsNavigation.detailPopRoute();
+        } else if(route.from == 'houseList') {
+            actionsNavigation.listPopRoute();
+        }
     }
 
     _renderRow = (rowData: any, sectionID: number, rowID: number) => {
@@ -225,10 +229,11 @@ export default class HouseList extends Component {
 
     _onItemPress = (item) => {
         ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_CLICKDETAIL);
-        let {navigator} = this.props;
-
+        let {navigator, actionsNavigation} = this.props;
+        actionsNavigation.listPushRoute();
         navigator.push({
             component: DetailContainer,
+            from: 'houseList',
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,

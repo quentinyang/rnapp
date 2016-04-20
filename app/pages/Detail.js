@@ -183,7 +183,11 @@ export default class Detail extends Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.clearHouseDetailPage();
+        if(this.props.route.from == 'houseDetail') {
+            this.props.actionsNavigation.detailPopRoute();
+        } else if(this.props.route.from == 'houseList') {
+            this.props.actionsNavigation.listPopRoute();
+        }
     }
 
     _goPage(component, actionLog) {
@@ -285,11 +289,12 @@ export default class Detail extends Component {
 
     _onItemPress = (item) => {
         ActionUtil.setAction(actionType.BA_DETAIL_SAMECOM_DETAIL);
-        let {navigator} = this.props;
-
-        navigator.replace({
+        let {navigator, actionsNavigation} = this.props;
+        actionsNavigation.detailPushRoute();
+        navigator.push({
             component: DetailContainer,
             name: 'houseDetail',
+            from: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
             backLog: actionType.BA_DETAIL_RETURN,
@@ -300,7 +305,7 @@ export default class Detail extends Component {
 
     _handleMoreHouseList = () => {
         ActionUtil.setAction(actionType.BA_DETAIL_COMMUNITYHOUSE);
-        let {route, navigator, actionsHouseList} = this.props,
+        let {route, navigator, actionsHouseList, actionsNavigation} = this.props,
             {item} = route;
 
         actionsHouseList.filterCommunityNameChanged(item.get('community_id'), item.get('community_name'));
@@ -309,9 +314,11 @@ export default class Detail extends Component {
             community_id: item.get('community_id')
         });
 
-        navigator.replace({
+        actionsNavigation.detailPushRoute();
+        navigator.push({
             component: HouseListContainer,
             name: 'houseList',
+            from: 'houseDetail',
             title: '房源列表',
             hideNavBar: true,
             communityName: item.get('community_name'),

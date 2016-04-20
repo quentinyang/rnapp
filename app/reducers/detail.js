@@ -3,12 +3,13 @@
 import { combineReducers } from 'redux';
 import * as types from '../constants/DetailType';
 import Immutable from 'immutable';
+import navigation from './navigation';
 
 let initialState = {
     properties: []
 };
 
-function houseData(state = Immutable.fromJS(initialState), action) {
+function houseData(state, action) {
     switch(action.type) {
         case types.HOUSE_SIMILAR_FETCHED:
             return Immutable.fromJS(action.houseList);
@@ -16,7 +17,7 @@ function houseData(state = Immutable.fromJS(initialState), action) {
         case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initialState);
             break;
-        default: 
+        default:
             return state;
     }
 }
@@ -26,7 +27,7 @@ let initialBaseInfo = {
     status: []
 };
 
-function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
+function baseInfo(state, action) {
     switch(action.type) {
         case types.HOUSE_BASE_FETCHED:
             return state.set('baseInfo', Immutable.fromJS(action.houseBase));
@@ -53,7 +54,7 @@ let initParam = {
     washId: ''
 };
 
-function callInfo(state = Immutable.fromJS(initParam), action) {
+function callInfo(state, action) {
     switch(action.type) {
         case types.SCORE_TIP_VISIBLE_CHANGED:
             return state.set('scoreTipVisible', Immutable.fromJS(action.visible));
@@ -81,8 +82,18 @@ function callInfo(state = Immutable.fromJS(initParam), action) {
     }
 }
 
-export default combineReducers({
-    houseData,
-    baseInfo,
-    callInfo
-});
+let base = {
+    houseData: Immutable.fromJS(initialState),
+    baseInfo: Immutable.fromJS(initialBaseInfo),
+    callInfo: Immutable.fromJS(initParam)
+};
+
+function houseDetail(state, action) {
+    return {
+        houseData: houseData(state.houseData, action),
+        baseInfo: baseInfo(state.baseInfo, action),
+        callInfo: callInfo(state.callInfo, action)
+    };
+}
+
+export default navigation(houseDetail, base, 'houseDetail');
