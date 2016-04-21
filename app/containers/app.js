@@ -92,8 +92,10 @@ class App extends Component {
                                 underlayColor='#fff'
                                 onPress={this._hideModel.bind(this)}
                             >
+                            <View style={styles.flex}>
                                 <Text style={[styles.modalBtn, styles.flex]}>知道了</Text>
-                            </TouchableHighlight>
+                            </View>
+                        </TouchableHighlight>
                     </View>
                 </View>
             </Modal>
@@ -119,8 +121,18 @@ class App extends Component {
     }
 
     _hideModel() {
-        this.setState({
-            showModal: false
+        AsyncStorageComponent.get('user_phone')
+        .then((value) => {
+            this.setState({
+                showModal: false
+            });
+            _navigator.resetTo({
+                component: LoginContainer,
+                name: 'login',
+                title: '登录',
+                phone: value,
+                hideNavBar: true
+            });
         });
     }
 
@@ -218,7 +230,7 @@ class App extends Component {
                     ]);
                 } else {
                     this.setState({
-                        showModal: false
+                        showModal: true
                     });
                 }
                 break;
