@@ -181,6 +181,13 @@ class App extends Component {
                 this._geTuiDataReceivedHandle(notifData);
             });
         }
+
+        AsyncStorageComponent.get(common.GETUI_CLIENT_ID)
+        .then((storageId) => {
+            if (storageId) {
+                gcid = storageId;
+            }
+        });
     }
 
     componentWillUnmount() {
@@ -194,11 +201,16 @@ class App extends Component {
 
     _clientIdReceived = (cId) => {
         let {actionsApp} = this.props;
-
-        if (!gcid) {
-            gcid = cId;
-            actionsApp.setWebStartConfig({
-                cId: cId
+        if (cId) {
+            AsyncStorageComponent.get(common.GETUI_CLIENT_ID)
+            .then((storageId) => {
+                if (!storageId) {
+                    AsyncStorageComponent.save(common.GETUI_CLIENT_ID, cId);
+                    gcid = cId;
+                    actionsApp.setWebStartConfig({
+                        cId: cId
+                    });
+                }
             });
         }
     };
