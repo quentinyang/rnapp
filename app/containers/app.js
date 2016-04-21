@@ -1,7 +1,7 @@
 'use strict';
 
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
-import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image, Alert} from 'nuke';
+import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image, Alert, Modal, TouchableHighlight} from 'nuke';
 import {navigationContext} from 'react-native'
 import {NaviGoBack} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
@@ -31,7 +31,8 @@ class App extends Component {
             name: '',
             title: '',
             hideNavBar: true,
-            initialRoute: null
+            initialRoute: null,
+            showModal: false,
         };
 
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
@@ -81,7 +82,22 @@ class App extends Component {
         let {component} = this.state;
 
         return (
-            component ?
+            <View style={styles.flex}>
+            <Modal visible={this.state.showModal} transparent={true}>
+                <View style={styles.bgWrap}>
+                    <View style={styles.contentContainer}>
+                        <Text style={[styles.modalTitle, styles.baseColor]}>提示</Text>
+                        <Text style={[styles.modalContent, styles.baseColor]}>您的帐号在另外一个设备登录，被迫下线！</Text>
+                        <TouchableHighlight
+                                underlayColor='#fff'
+                                onPress={this._hideModel.bind(this)}
+                            >
+                                <Text style={[styles.modalBtn, styles.flex]}>知道了</Text>
+                            </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
+            {component ?
             <Navigator
                 style={styles.flex}
                 configureScene={this._configureScene}
@@ -97,7 +113,15 @@ class App extends Component {
                     bp: ''
                 }}
             /> : null
+            }
+            </View>
         )
+    }
+
+    _hideModel() {
+        this.setState({
+            showModal: false
+        });
     }
 
     componentDidUpdate() {
@@ -176,21 +200,27 @@ class App extends Component {
                 actionsHome.fetchAttentionPrependHouseList({});
                 break;
             case 2: // 互踢
-                Alert.alert('提示', '您的账号已在另外一台设备登陆，已被迫下线！', [
-                    {text: '知道了', onPress: () => {
-                        AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
-                        AsyncStorageComponent.get('user_phone')
-                        .then((value) => {
-                            _navigator.resetTo({
-                                component: LoginContainer,
-                                name: 'login',
-                                title: '登录',
-                                phone: value,
-                                hideNavBar: true
+                AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
+                if (Platform.OS === 'ios') {
+                    Alert.alert('提示', '您的账号在另外一台设备登陆，被迫下线！', [
+                        {text: '知道了', onPress: () => {
+                            AsyncStorageComponent.get('user_phone')
+                            .then((value) => {
+                                _navigator.resetTo({
+                                    component: LoginContainer,
+                                    name: 'login',
+                                    title: '登录',
+                                    phone: value,
+                                    hideNavBar: true
+                                });
                             });
-                        });
-                    }}
-                ]);
+                        }}
+                    ]);
+                } else {
+                    this.setState({
+                        showModal: false
+                    });
+                }
                 break;
             default:
                 break;
@@ -311,7 +341,39 @@ let styles = StyleSheet.create({
     },
     justifyContent: {
         justifyContent: 'center'
-    }
+    },
+    bgWrap: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)"
+    },
+    contentContainer: {
+        width: 270,
+        borderRadius: 5,
+        padding: 20,
+        backgroundColor: "#fff",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    modalTitle: {
+        fontSize: 17,
+        fontWeight: 'bold'
+    },
+    modalContent: {
+        textAlign: 'center',
+        fontSize: 12,
+        marginTop: 5,
+        marginBottom: 20
+    },
+    modalBtn: {
+        color: "#04C1AE",
+        textAlign: "center",
+        fontSize: 16
+    },
+    baseColor: {
+        color: "#3e3e3e"
+    },
 });
 
 export default App;

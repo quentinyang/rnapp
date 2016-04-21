@@ -38,15 +38,17 @@ public class PushReceiver extends BroadcastReceiver {
                 String cid = bundle.getString("clientid");
 
                 Log.d("GetuiSdkDemo", "Got CID:" + cid);
-                GeTuiManager.module.setClientId(cid);
-                GeTuiManager.module.handleRemoteNotificationReceived("clientIdReceived", cid);
+                if (null != GeTuiManager.module){
+                    GeTuiManager.module.setClientId(cid);
+                    GeTuiManager.module.handleRemoteNotificationReceived("clientIdReceived", cid);
+                }
                 break;
             case PushConsts.GET_MSG_DATA:
                 // 获取透传（payload）数据
                 String taskid = bundle.getString("taskid");
                 String messageid = bundle.getString("messageid");
                 byte[] payload = bundle.getByteArray("payload");
-                if (payload != null)
+                if (payload != null && null != GeTuiManager.module)
                 {
                     String dataString = new String(payload);
                     Log.d("GetuiSdkDemo", "Got Payload:" + dataString);
