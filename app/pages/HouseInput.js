@@ -293,6 +293,7 @@ class HouseInput extends Component {
 
         inputHouseService({body:params})
         .then((oData) => {
+            ActionUtil.setActionWithExtend(actionType.BA_SEND_HOUSE_SUCCESS, {"vpid": oData.property_id});
             navigator.push({
                 component: HouseInputSuccessContainer,
                 name: 'houseInputSuccess',

@@ -220,7 +220,7 @@ export default class Detail extends Component {
     }
 
     _callSellerPhone() {
-        ActionUtil.setAction(actionType.BA_DETAIL_PAYPOINTS);
+        ActionUtil.setActionWithExtend(actionType.BA_DETAIL_PAYPOINTS, {"vpid": this.props.route.item.get('property_id')});
         this.props.actions.setScoreTipVisible(false);
         this.props.actions.callSeller(this.props.route.item.get("property_id"));
     }
