@@ -16,18 +16,18 @@ let ds = new ListView.DataSource({
 export default class Detail extends Component {
     constructor(props) {
         super(props);
-
+        this.flag = false;
         this.pageId = actionType.BA_DETAIL;
         ActionUtil.setActionWithExtend(actionType.BA_DETAIL_ONVIEW, {"vpid": this.props.route.item.get('property_id'), "bp": this.props.route.bp});
     }
 
     render() {
+        let self = this;
         let {baseInfo, sameCommunityList, callInfo} = this.props;
         let houseList = sameCommunityList.get('properties');
         let info = baseInfo.get("baseInfo");
         let status = Number(info.get('phone_lock_status'));
         let phoneStr = "联系房东" + (status ? ("(" + info.get('seller_phone') + ")") : (callInfo.get('sellerPhone') ? ("(" + callInfo.get('sellerPhone') + ")") : ''));
-
         return (
             <View style={styles.flex}>
                 <Modal visible={callInfo.get('scoreTipVisible')} transparent={true} onModalVisibilityChanged={this.props.actions.setScoreTipVisible}>
@@ -36,7 +36,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={styles.closeBox}
                                 underlayColor="#fff"
-                                onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_PAYPOINTS_CLOSE);this.props.actions.setScoreTipVisible.bind(null, false)}}
+                                onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_PAYPOINTS_CLOSE);self.props.actions.setScoreTipVisible(false);}}
                             >
                                 <Image
                                     style={styles.closeIcon}
@@ -59,7 +59,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={styles.closeBox}
                                 underlayColor="#fff"
-                                onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);this.props.actions.setErrorTipVisible.bind(null, false)}}
+                                onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);self.props.actions.setErrorTipVisible(false)}}
                             >
                                 <Image
                                     style={styles.closeIcon}
@@ -182,6 +182,12 @@ export default class Detail extends Component {
         });
     }
 
+    componentDidUpdate() {
+        if(!this.props.callInfo.get('feedbackVisible') && this.flag) {
+            this.flag = false;
+        }
+    }
+
     componentWillUnmount() {
         this.props.actions.clearHouseDetailPage();
     }
@@ -219,17 +225,20 @@ export default class Detail extends Component {
     }
 
     _callSellerPhone() {
-        ActionUtil.setAction(actionType.BA_DETAIL_PAYPOINTS);
+        ActionUtil.setActionWithExtend(actionType.BA_DETAIL_PAYPOINTS, {"vpid": this.props.route.item.get('property_id')});
         this.props.actions.setScoreTipVisible(false);
         this.props.actions.callSeller(this.props.route.item.get("property_id"));
     }
 
     _callFeedback(id, status, actionLog) {
-        ActionUtil.setAction(actionLog);
-        this.props.actions.callFeedback({
-            wash_id: id,
-            status: status
-        });
+        if(!this.flag) {
+            this.flag = true;
+            ActionUtil.setAction(actionLog);
+            this.props.actions.callFeedback({
+                wash_id: id,
+                status: status
+            });
+        }
     }
 
     _renderRow = (rowData: any) => {

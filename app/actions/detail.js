@@ -1,5 +1,8 @@
 'use strict';
 
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
+
 import * as types from '../constants/DetailType';
 import { InteractionManager } from 'nuke'
 import { getBaseInfoService, getStatusService, callSellerPhone, postFeedback } from '../service/detailService';
@@ -68,6 +71,8 @@ export function callSeller(params) {
             service: callSellerPhone,
             data: params,
             success: function(oData) {
+                ActionUtil.setAction(actionType.BA_DETAIL_CALL_SUCCESS);
+
                 dispatch(setScoreTipVisible(false));
                 dispatch(callSellerSuccess(oData.log_id));
 

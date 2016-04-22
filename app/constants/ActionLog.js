@@ -15,6 +15,7 @@ export const BA_DETAIL_UNCONNECT = "101-100012"
 export const BA_DETAIL_FALSE = "101-100013"
 export const BA_DETAIL_SAMECOM_DETAIL = "101-100015"
 export const BA_DETAIL_SLIDEUP = "101-100016"
+export const BA_DETAIL_CALL_SUCCESS = "101-100017"
 
 //设置我的关注 - 1 (跳过)
 export const BA_LOGFOCUS_AREA = "101-110000"
@@ -100,6 +101,7 @@ export const BA_SEND_ADDPRICE = "101-300012"
 export const BA_SEND_ADDNAME = "101-300013"
 export const BA_SEND_ADDHPHONE = "101-300014"
 export const BA_SEND_FINISH = "101-300015"
+export const BA_SEND_HOUSE_SUCCESS = "101-300016"
 
 //发房成功页
 export const BA_SEND_SUCCESS = "101-320000"

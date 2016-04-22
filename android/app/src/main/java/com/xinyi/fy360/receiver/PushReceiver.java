@@ -17,6 +17,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.igexin.sdk.PushConsts;
 
+import com.xinyi.fy360.MainActivity;
 import com.xinyi.fy360.R;
 import com.xinyi.fy360.getui.GeTuiManager;
 
@@ -38,15 +39,17 @@ public class PushReceiver extends BroadcastReceiver {
                 String cid = bundle.getString("clientid");
 
                 Log.d("GetuiSdkDemo", "Got CID:" + cid);
-                GeTuiManager.module.setClientId(cid);
-                GeTuiManager.module.handleRemoteNotificationReceived("clientIdReceived", cid);
+                if (null != GeTuiManager.module){
+                    GeTuiManager.module.setClientId(cid);
+                    GeTuiManager.module.handleRemoteNotificationReceived("clientIdReceived", cid);
+                }
                 break;
             case PushConsts.GET_MSG_DATA:
                 // 获取透传（payload）数据
                 String taskid = bundle.getString("taskid");
                 String messageid = bundle.getString("messageid");
                 byte[] payload = bundle.getByteArray("payload");
-                if (payload != null)
+                if (payload != null && null != GeTuiManager.module)
                 {
                     String dataString = new String(payload);
                     Log.d("GetuiSdkDemo", "Got Payload:" + dataString);
@@ -81,8 +84,8 @@ public class PushReceiver extends BroadcastReceiver {
                 .setOnlyAlertOnce(false)
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setClass(context, MainActivity.class);
         PendingIntent pendingIntent;
         pendingIntent = PendingIntent.getActivity(context, 900009, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
