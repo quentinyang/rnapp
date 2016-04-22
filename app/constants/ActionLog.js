@@ -15,6 +15,7 @@ export const BA_DETAIL_UNCONNECT = "101-100012"
 export const BA_DETAIL_FALSE = "101-100013"
 export const BA_DETAIL_SAMECOM_DETAIL = "101-100015"
 export const BA_DETAIL_SLIDEUP = "101-100016"
+export const BA_DETAIL_CALL_SUCCESS = "101-100017"
 
 //设置我的关注 - 1 (跳过)
 export const BA_LOGFOCUS_AREA = "101-110000"
