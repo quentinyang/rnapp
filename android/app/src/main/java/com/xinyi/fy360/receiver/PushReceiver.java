@@ -17,6 +17,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.igexin.sdk.PushConsts;
 
+import com.xinyi.fy360.MainActivity;
 import com.xinyi.fy360.R;
 import com.xinyi.fy360.getui.GeTuiManager;
 
@@ -83,8 +84,8 @@ public class PushReceiver extends BroadcastReceiver {
                 .setOnlyAlertOnce(false)
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setClass(context, MainActivity.class);
         PendingIntent pendingIntent;
         pendingIntent = PendingIntent.getActivity(context, 900009, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
