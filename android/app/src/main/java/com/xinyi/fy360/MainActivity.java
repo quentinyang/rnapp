@@ -71,7 +71,7 @@ public class MainActivity extends ReactActivity {
 
         // 4. Instantiate an instance of the CodePush runtime, using the right deployment key. If you don't
         // already have it, you can run "code-push deployment ls <appName> -k" to retrieve your key.
-        this._codePush = new CodePush("Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl", this, BuildConfig.DEBUG);
+        this._codePush = new CodePush("h1P3-9fxoznO3bDQ9qubMvvG0ewm4yoltiYTl", this, BuildConfig.DEBUG);
 
         // 5. Add the CodePush package to the list of existing packages
         return Arrays.<ReactPackage>asList(

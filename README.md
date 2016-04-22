@@ -93,12 +93,12 @@ react-native bundle --platform android --entry-file index.android.js  \
 
  ```
  <key>CodePushDeploymentKey</key>
- <string>Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl</string>
+ <string>h1P3-9fxoznO3bDQ9qubMvvG0ewm4yoltiYTl</string>
  ```
  
  备注：
  
- 线下开发环境：`Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl`
+ 线下开发环境：`h1P3-9fxoznO3bDQ9qubMvvG0ewm4yoltiYTl`
  
  线上生产环境：`_GhPy-CMXi1mTX0CetRfMU82NLvZ4yoltiYTl`
 
@@ -129,7 +129,7 @@ react-native bundle --platform android --entry-file index.android.js  \
  1. 修改`./fy360-native/android/app/src/main/java/com/xinyi/fy360/MainActivity.java`文件，找到如下代码修改Key值：
  
  ```
- new CodePush("Oj0a7yqg1CpDnMfpKp-7O3aZZ_US4yoltiYTl", this, BuildConfig.DEBUG);
+ new CodePush("h1P3-9fxoznO3bDQ9qubMvvG0ewm4yoltiYTl", this, BuildConfig.DEBUG);
  ```
 1. 个推
 
