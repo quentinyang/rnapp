@@ -59,6 +59,11 @@ import com.android.build.OutputFile
  * ]
  */
 
+project.ext.react = [
+    // the name of the generated asset file containing your JS bundle
+    bundleAssetName: "index.android.bundle"
+];
+
 apply from: "react.gradle"
 
 // Only needed in v1.8.0+ of the plugin
