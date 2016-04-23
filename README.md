@@ -80,6 +80,11 @@ react-native bundle --platform android --entry-file index.android.js  \
  - Debug: `code-push release FangYuan360 ./release 1.0.0`
  - Release: `code-push release FangYuan360-Release ./release 1.0.0`
 
+ PS: 
+
+ - `code-push deployment history FangYuan360 Staging` 查看历史
+ - `code-push deployment ls FangYuan360 -k` 查看Key
+
 ```
 
 ## 正式打包Todo List：
