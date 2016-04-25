@@ -10,10 +10,19 @@ import com.angejia.android.commonutils.common.PhoneInfoUtil;
  */
 public class MyApp extends Application {
 
+    public static MyApp _instance;
+    public static MyApp getInstance() {
+        if (_instance == null) {
+            _instance = new MyApp();
+        }
+        return _instance;
+    }
+
+
     @Override
     public void onCreate() {
         super.onCreate();
-
+        _instance = this;
         //初始化
         /**
          *

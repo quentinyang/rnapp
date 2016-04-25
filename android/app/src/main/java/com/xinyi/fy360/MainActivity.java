@@ -1,5 +1,6 @@
 package com.xinyi.fy360;
 
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -71,6 +72,7 @@ public class MainActivity extends ReactActivity {
 
         // 4. Instantiate an instance of the CodePush runtime, using the right deployment key. If you don't
         // already have it, you can run "code-push deployment ls <appName> -k" to retrieve your key.
+        //this._codePush = new CodePush(BuildConfig.CODE_PUSH_KEY, this, BuildConfig.DEBUG);
         this._codePush = new CodePush("h1P3-9fxoznO3bDQ9qubMvvG0ewm4yoltiYTl", this, BuildConfig.DEBUG);
 
         // 5. Add the CodePush package to the list of existing packages
@@ -92,6 +94,8 @@ public class MainActivity extends ReactActivity {
         //checkHash();
         // Important::please do not change this code, unless change it in the `switch.js`
         DevUtil.setDebug(true);
+        setPushAction(getIntent());
+        //Log.d("umengKey", "UmengKey:" + BuildConfig.umengKey);
     }
 
     //检查hash
@@ -105,6 +109,19 @@ public class MainActivity extends ReactActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setPushAction(intent);
+    }
+
+    private void setPushAction(Intent intent){
+        if (intent.getStringExtra("type").equals("1")){
+            ActionUtil.setAction("101-600001");
+        }
+
     }
 
     public void onResume() {
