@@ -183,10 +183,12 @@ export default class Detail extends Component {
     }
 
     componentWillUnmount() {
-        if(this.props.route.from == 'houseDetail') {
-            this.props.actionsNavigation.detailPopRoute();
-        } else if(this.props.route.from == 'houseList') {
-            this.props.actionsNavigation.listPopRoute();
+        let {route, actions, actionsNavigation} = this.props;
+        actions.clearHouseDetailPage();
+        if(route.from == 'houseDetail') {
+            actionsNavigation.detailPopRoute();
+        } else if(route.from == 'houseList') {
+            actionsNavigation.listPopRoute();
         }
     }
 

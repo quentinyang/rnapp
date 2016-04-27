@@ -166,7 +166,8 @@ export default class HouseList extends Component {
     }
 
     componentWillUnmount() {
-        let {actionsNavigation, route} = this.props;
+        let {actions, actionsNavigation, route} = this.props;
+        actions.houseListPageCleared();
         if(route.from == 'houseDetail') {
             actionsNavigation.detailPopRoute();
         } else if(route.from == 'houseList') {
