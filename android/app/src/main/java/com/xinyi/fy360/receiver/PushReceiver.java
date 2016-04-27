@@ -14,12 +14,12 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 
 import com.igexin.sdk.PushConsts;
 
 import com.xinyi.fy360.MainActivity;
-import com.xinyi.fy360.MyApp;
 import com.xinyi.fy360.R;
 import com.xinyi.fy360.getui.GeTuiManager;
 
@@ -71,7 +71,7 @@ public class PushReceiver extends BroadcastReceiver {
     }
 
     private static Bitmap getNotifyLargeIcon(Context context, int resId) {
-        BitmapDrawable bd = (BitmapDrawable) context.getResources().getDrawable(resId);
+        BitmapDrawable bd = (BitmapDrawable) ResourcesCompat.getDrawable(context.getResources(), resId, context.getTheme());
         Bitmap largeIcon = bd.getBitmap();
         return largeIcon;
     }

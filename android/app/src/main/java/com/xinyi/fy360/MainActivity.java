@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.angejia.android.commonutils.common.DevUtil;
 import com.custom.component.ActionPackage;
-import com.custom.component.ActionUtil;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -83,7 +82,6 @@ public class MainActivity extends ReactActivity {
                 new GeTuiManager(),
                 this._codePush.getReactPackage()
         );
-
     }
 
     @Override
@@ -118,17 +116,17 @@ public class MainActivity extends ReactActivity {
     }
 
     private void setPushAction(Intent intent){
-        if (intent.getStringExtra("type").equals("1")){
-            ActionUtil.setAction("101-600001");
+        if (null != intent.getStringExtra("type") && intent.getStringExtra("type").equals("1")){
+            if (null != GeTuiManager.module) {
+                GeTuiManager.module.handleRemoteNotificationReceived("setGeTuiOpenAction", "");
+            }
         }
 
     }
 
-    public void onResume() {
+    @Override
+    protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
     }
-
 }
-
-

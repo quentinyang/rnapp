@@ -140,3 +140,7 @@ export const BA_LOGIN_PHONENUM = "101-500002"
 export const BA_LOGIN_SENDCODE = "101-500003"
 export const BA_LOGIN_INPUTCODE = "101-500004"
 export const BA_LOGIN_ENSURE = "101-500005"
+
+// 打开个推进入App
+export const BA_PUSH_PAGE = "101-700000"
+export const BA_PUSH_OPEN = "101-600001"
