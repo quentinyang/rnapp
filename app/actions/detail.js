@@ -71,7 +71,9 @@ export function callSeller(params) {
             service: callSellerPhone,
             data: params,
             success: function(oData) {
-                ActionUtil.setAction(actionType.BA_DETAIL_CALL_SUCCESS);
+                ActionUtil.setActionWithExtend(actionType.BA_DETAIL_CALL_SUCCESS, {
+                    vpid: params
+                });
 
                 dispatch(setScoreTipVisible(false));
                 dispatch(callSellerSuccess(oData.log_id));
