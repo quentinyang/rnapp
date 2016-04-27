@@ -14,7 +14,9 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
+
 import com.igexin.sdk.PushConsts;
 
 import com.xinyi.fy360.MainActivity;
@@ -39,7 +41,7 @@ public class PushReceiver extends BroadcastReceiver {
                 String cid = bundle.getString("clientid");
 
                 Log.d("GetuiSdkDemo", "Got CID:" + cid);
-                if (null != GeTuiManager.module){
+                if (null != GeTuiManager.module) {
                     GeTuiManager.module.setClientId(cid);
                     GeTuiManager.module.handleRemoteNotificationReceived("clientIdReceived", cid);
                 }
@@ -49,16 +51,16 @@ public class PushReceiver extends BroadcastReceiver {
                 String taskid = bundle.getString("taskid");
                 String messageid = bundle.getString("messageid");
                 byte[] payload = bundle.getByteArray("payload");
-                if (payload != null && null != GeTuiManager.module)
-                {
+                if (payload != null && null != GeTuiManager.module) {
                     String dataString = new String(payload);
                     Log.d("GetuiSdkDemo", "Got Payload:" + dataString);
 
                     try {
                         JSONObject dataObject = new JSONObject(dataString);
-                        showNotifyToActivityWithExtra(context, dataObject.getJSONObject("data").getString("msg"), intent);
+
+                        showNotifyToActivityWithExtra(context, dataObject, intent);
                         GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", dataString);
-                    } catch(JSONException e) {
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
@@ -69,12 +71,23 @@ public class PushReceiver extends BroadcastReceiver {
     }
 
     private static Bitmap getNotifyLargeIcon(Context context, int resId) {
-        BitmapDrawable bd = (BitmapDrawable) context.getResources().getDrawable(resId);
+        BitmapDrawable bd = (BitmapDrawable) ResourcesCompat.getDrawable(context.getResources(), resId, context.getTheme());
         Bitmap largeIcon = bd.getBitmap();
         return largeIcon;
     }
 
-    public static void showNotifyToActivityWithExtra(Context context, String title, Intent intent) {
+    public static void showNotifyToActivityWithExtra(Context context, JSONObject dataObject, Intent intent) {
+        String title = "";
+        String type = "";
+
+        try {
+            title = dataObject.getJSONObject("data").getString("msg");
+            type = dataObject.getString("type");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_icon_notify)
                 .setLargeIcon(getNotifyLargeIcon(context, R.mipmap.ic_launcher))
@@ -86,6 +99,7 @@ public class PushReceiver extends BroadcastReceiver {
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setClass(context, MainActivity.class);
+        intent.putExtra("type", type);
         PendingIntent pendingIntent;
         pendingIntent = PendingIntent.getActivity(context, 900009, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

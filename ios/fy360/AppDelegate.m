@@ -192,7 +192,8 @@ NSString * const UMengChannelId = @"";
   // [4-EXT]:处理APN
   NSString *record = [NSString stringWithFormat:@"[APN]%@, %@", [NSDate date], userInfo];
   NSLog(@"\n>>>[GeTuiSdk DidAPN]:%@\n\n", record);
-  
+  GeTui *geTui = [GeTui sharedInstance];
+  [geTui handleRemoteNotificationReceived:@"setGeTuiOpenAction" andPayloadMsg:@"" withRoot:self.rootView];
   completionHandler(UIBackgroundFetchResultNewData);
 }
 

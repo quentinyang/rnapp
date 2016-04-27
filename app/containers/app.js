@@ -35,6 +35,8 @@ class App extends Component {
             showModal: false,
         };
 
+        this.setGeTuiOpenActionFlag = false;
+
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
         AsyncStorageComponent.get('user_token')
         .then((value) => {
@@ -173,12 +175,23 @@ class App extends Component {
             this._clientIdReceived(cId)
         });
         if(Platform.OS === 'ios') {
-            this.unlistenNotification =  NativeAppEventEmitter.addListener('geTuiDataReceived', (notifData) => {
+            this.geTuiDataReceived =  NativeAppEventEmitter.addListener('geTuiDataReceived', (notifData) => {
                 this._geTuiDataReceivedHandle(notifData);
+            });
+
+            this.setGeTuiOpenAction =  NativeAppEventEmitter.addListener('setGeTuiOpenAction', () => {
+                this.setGeTuiOpenActionFlag = true;
             });
         } else {
             DeviceEventEmitter.addListener('geTuiDataReceived', (notifData) => {
                 this._geTuiDataReceivedHandle(notifData);
+            });
+
+            // 个推打开的action监听
+            DeviceEventEmitter.addListener('setGeTuiOpenAction', () => {
+                ActionUtil.setActionWithExtend(actionType.BA_PUSH_OPEN, {
+                    bp: actionType.BA_PUSH_PAGE
+                });
             });
         }
 
@@ -193,9 +206,12 @@ class App extends Component {
     componentWillUnmount() {
         if(Platform.OS === 'ios') {
             this.unlistenNotification.remove();
+            this.geTuiDataReceived.remove();
+            this.setGeTuiOpenAction.remove();
         } else {
             DeviceEventEmitter.removeAllListeners('clientIdReceived');
             DeviceEventEmitter.removeAllListeners('geTuiDataReceived');
+            DeviceEventEmitter.removeAllListeners('setGeTuiOpenAction');
         }
     }
 
@@ -219,6 +235,12 @@ class App extends Component {
         let newNotifData = JSON.parse(notifData);
         let {actionsHome} = this.props;
 
+        if (this.setGeTuiOpenActionFlag && newNotifData.type == 1) {
+            this.setGeTuiOpenActionFlag = false;
+            ActionUtil.setActionWithExtend(actionType.BA_PUSH_OPEN, {
+                bp: actionType.BA_PUSH_PAGE
+            });
+        }
         switch(Number(newNotifData.type)) {
             case 1: // 普通推送
                 actionsHome.fetchAttentionPrependHouseList({});

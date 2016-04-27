@@ -1,5 +1,6 @@
 package com.xinyi.fy360;
 
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -8,7 +9,6 @@ import android.util.Log;
 
 import com.angejia.android.commonutils.common.DevUtil;
 import com.custom.component.ActionPackage;
-import com.custom.component.ActionUtil;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -71,6 +71,7 @@ public class MainActivity extends ReactActivity {
 
         // 4. Instantiate an instance of the CodePush runtime, using the right deployment key. If you don't
         // already have it, you can run "code-push deployment ls <appName> -k" to retrieve your key.
+        //this._codePush = new CodePush(BuildConfig.CODE_PUSH_KEY, this, BuildConfig.DEBUG);
         this._codePush = new CodePush("h1P3-9fxoznO3bDQ9qubMvvG0ewm4yoltiYTl", this, BuildConfig.DEBUG);
 
         // 5. Add the CodePush package to the list of existing packages
@@ -81,17 +82,20 @@ public class MainActivity extends ReactActivity {
                 new GeTuiManager(),
                 this._codePush.getReactPackage()
         );
-
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d("onCreate", "initializing sdk...");
         super.onCreate(savedInstanceState);
-        PushManager.getInstance().initialize(this.getApplicationContext());
+        if (!PushManager.getInstance().isPushTurnedOn(this.getApplicationContext())) {
+            PushManager.getInstance().initialize(this.getApplicationContext());
+        }
         //checkHash();
         // Important::please do not change this code, unless change it in the `switch.js`
         DevUtil.setDebug(true);
+        setPushAction(getIntent());
+        //Log.d("umengKey", "UmengKey:" + BuildConfig.umengKey);
     }
 
     //检查hash
@@ -107,11 +111,24 @@ public class MainActivity extends ReactActivity {
         }
     }
 
-    public void onResume() {
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setPushAction(intent);
+    }
+
+    private void setPushAction(Intent intent){
+        if (null != intent.getStringExtra("type") && intent.getStringExtra("type").equals("1")){
+            if (null != GeTuiManager.module) {
+                GeTuiManager.module.handleRemoteNotificationReceived("setGeTuiOpenAction", "");
+            }
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
     }
-
 }
-
-
