@@ -88,7 +88,9 @@ public class MainActivity extends ReactActivity {
     public void onCreate(Bundle savedInstanceState) {
         Log.d("onCreate", "initializing sdk...");
         super.onCreate(savedInstanceState);
-        PushManager.getInstance().initialize(this.getApplicationContext());
+        if (!PushManager.getInstance().isPushTurnedOn(this.getApplicationContext())) {
+            PushManager.getInstance().initialize(this.getApplicationContext());
+        }
         //checkHash();
         // Important::please do not change this code, unless change it in the `switch.js`
         DevUtil.setDebug(true);
