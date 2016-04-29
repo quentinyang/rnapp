@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
+import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio, Modal, Button, TouchableHighlight,
         TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform} from 'nuke';
 
 import HouseListContainer from '../containers/HouseListContainer';
@@ -8,12 +8,62 @@ import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneCon
 import Immutable, {List} from 'immutable';
 import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
+import ScoreRule from './ScoreRule';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
 });
+
+class ScoreModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        let {modalInfo, actions} = this.props;
+        return (
+            <Modal visible={modalInfo.get('visible')} transparent={true} onModalVisibilityChanged={actions.setScoreModalVisible}>
+                <View style={styles.bgWrap}>
+                    <View style={styles.contentContainer}>
+                        <TouchableHighlight
+                            style={styles.closeBox}
+                            underlayColor="#fff"
+                            onPress={() => {ActionUtil.setAction(actionType.BA_FIRSTOPEN_DELETE);actions.setScoreModalVisible(false);}}
+                        >
+                            <Image
+                                style={styles.closeIcon}
+                                source={require("../images/close.png")}
+                            />
+                        </TouchableHighlight>
+
+                        <Text style={[styles.msgTip]}>领<Text style={styles.orange}>{modalInfo.get('score')}</Text>积分免费看房源</Text>
+                        <Button
+                            containerStyle={[styles.btn, styles.btnMarginBottom]}
+                            itemStyle={styles.btnSize} label="立即领取"
+                            onPress={this._goScoreDetail.bind(this)} />
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+
+    _goScoreDetail() {
+        let {actions, navigator} = this.props;
+        actions.setScoreModalVisible(false);
+        ActionUtil.setAction(actionType.BA_FIRSTOPEN_GETSOON);
+
+        navigator.push({
+            component: ScoreRule,
+            name: 'scoreRule',
+            title: '积分规则',
+            hideNavBar: false,
+            bp: actionType.BA_HOME_PAGE,
+            backLog: actionType.BA_FIRSTOPEN_RETURN,
+            score: this.props.modalInfo.get('score')
+        });
+    }
+}
 
 export default class Home extends Component {
     constructor(props) {
@@ -27,10 +77,11 @@ export default class Home extends Component {
     }
 
     render() {
-        let {houseData} = this.props;
+        let {houseData, scoreModalInfo, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
+                <ScoreModal modalInfo={scoreModalInfo} actions={actions} navigator={navigator} />
                 <View style={styles.searchWrap}>
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>
                         <Text style={[styles.searchText, styles.searchTextPadding]}>上海</Text>
@@ -82,6 +133,7 @@ export default class Home extends Component {
         InteractionManager.runAfterInteractions(() => {
             // actions.fetchAttentionHouseList({});
             actions.fetchAttentionBlockAndCommunity({});
+            actions.fetchScoreModalStatus();
         });
     }
 
@@ -134,7 +186,8 @@ export default class Home extends Component {
                 name: 'houseList',
                 title: '全部房源',
                 from: 'homeSearch',
-                hideNavBar: true
+                hideNavBar: true,
+                bp: this.pageId
             });
         } else {
             ActionUtil.setAction(actionType.BA_HOME_PAGE_ALLHOUSELIST);
@@ -142,7 +195,8 @@ export default class Home extends Component {
                 component: HouseListContainer,
                 name: 'houseList',
                 title: '全部房源',
-                hideNavBar: true
+                hideNavBar: true,
+                bp: this.pageId
             });
         }
     };
@@ -432,5 +486,54 @@ const styles = StyleSheet.create({
         width: 21,
         height: 21,
         marginTop: 3
-    }
+    },
+    bgWrap: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)"
+    },
+    contentContainer: {
+        width: 270,
+        borderRadius: 10,
+        padding: 20,
+        backgroundColor: "#fff",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    closeBox: {
+        position: "absolute",
+        right: 0,
+        top: 0,
+        width: 50,
+        height: 30,
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    closeIcon: {
+        width: 15,
+        height: 11
+    },
+    msgTip: {
+        marginTop: 16,
+        marginBottom: 20,
+        textAlign: "center",
+        color: "#3E3E3E",
+        fontSize: 19
+    },
+    orange: {
+        color: "#FD9673"
+    },
+    btn: {
+        width: 220,
+        justifyContent: "center",
+        borderRadius: 5
+    },
+    btnMarginBottom: {
+        marginBottom: 5
+    },
+    btnSize: {
+        fontSize: 18
+    },
 });

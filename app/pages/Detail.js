@@ -346,10 +346,7 @@ class BaseInfo extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.itemContainer}>
-                    <View style={[styles.row, styles.name]}>
-                        <Text numberOfLines={1} style={[styles.baseColor, {fontSize: 19, flex: 1}]}>{houseInfo.get('community_name') || ''} {houseInfo.get('building_num') || ''}{houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}室</Text>
-                        <Text style={{fontSize: 12, width: 68, color: '#8d8c92'}}>查看次数:{baseInfo.get('see_count')}</Text>
-                    </View>
+                    <Text style={[styles.baseColor, {fontSize: 19, lineHeight: 30, marginBottom: 6, marginTop: -6}]}>{houseInfo.get('community_name') || ''} {houseInfo.get('building_num') || ''}{houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}室</Text>
                     <Text style={[styles.baseSize, styles.baseColor]}>{houseInfo.get('district_name') || baseInfo.get('district_name') || ''}-{houseInfo.get('block_name') || baseInfo.get('block_name') || ''}<Text style={styles.baseSpace}>{houseInfo.get('community_address') || baseInfo.get('community_address') || ''}</Text></Text>
                 </View>
 
@@ -370,7 +367,8 @@ class BaseInfo extends Component {
 
                 <View style={[styles.itemContainer, styles.row]}>
                     <Image style={styles.money_icon} source={require('../images/money.png')}/>
-                    <Text style={[styles.baseColor, {fontSize: 15, marginLeft: 6}]}>查看房东电话需要消耗 {baseInfo.get('unlock_phone_cost')} 积分</Text>
+                    <Text style={[styles.baseColor, {fontSize: 15, marginLeft: 6}]}>查看房东电话需 {baseInfo.get('unlock_phone_cost')} 积分</Text>
+                    <Text style={{fontSize: 12, position: 'absolute', right: 15, color: '#8d8c92'}}>查看次数:{baseInfo.get('see_count')}</Text>
                 </View>
             </View>
         );
@@ -403,10 +401,6 @@ var styles = StyleSheet.create({
     },
     flex: {
         flex: 1
-    },
-    name: {
-        justifyContent: 'space-between',
-        marginBottom: 10
     },
     baseSpace: {
         marginLeft: 12

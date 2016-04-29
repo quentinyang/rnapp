@@ -144,3 +144,12 @@ export const BA_LOGIN_ENSURE = "101-500005"
 // 打开个推进入App
 export const BA_PUSH_PAGE = "101-700000"
 export const BA_PUSH_OPEN = "101-600001"
+
+//首次进入APP提醒
+export const BA_FIRSTOPEN = "101-111000"
+export const BA_FIRSTOPEN_ONVIEW = "101-111001"
+export const BA_FIRSTOPEN_GETSOON = "101-111002"
+export const BA_FIRSTOPEN_DELETE = "101-111003"
+export const BA_FIRSTOPEN_FIND = "101-111004"
+export const BA_FIRSTOPEN_SEND = "101-111005"
+export const BA_FIRSTOPEN_RETURN = "101-111006"
