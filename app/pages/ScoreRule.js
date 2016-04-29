@@ -46,7 +46,7 @@ export default class ScoreRule extends Component {
                 </TouchableHighlight>
                 <TouchableHighlight
                     style={[styles.sucButton, styles.backgroundWhite]}
-                    underlayColor='#04c1ae'
+                    underlayColor='#fff'
                     onPress={this.continueInput}
                 >
                     <Text style={[styles.sucButtonText, styles.fontGreen]}>试试发房</Text>

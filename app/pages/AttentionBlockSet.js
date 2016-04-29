@@ -85,7 +85,7 @@ export default class AttentionBlockSet extends Component {
             return v.get('id')
         });
 
-        ActionUtil.setActionWithExtend(actionType.BA_LOGFOCUS_AREA_ENSURE, {"block_arr": params.toJS() || []});
+        ActionUtil.setActionWithExtend(actionType.BA_LOGFOCUS_AREA_ENSURE, {"block_arr": params.toJS().join(",")});
 
         InteractionManager.runAfterInteractions(() => {
             saveAttentionBlockSetService(params.toJS() || [])

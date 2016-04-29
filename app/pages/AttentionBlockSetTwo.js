@@ -73,7 +73,7 @@ export default class AttentionBlockSetTwo extends Component {
         let params = districtBlockSelect.map((v) => {
             return v.get('id')
         });
-        ActionUtil.setActionWithExtend(actionType.BA_SETFOCUS_AREA_ENSURE, {"block_arr": params.toJS() || []});
+        ActionUtil.setActionWithExtend(actionType.BA_SETFOCUS_AREA_ENSURE, {"block_arr": params.toJS().join(",")});
 
         InteractionManager.runAfterInteractions(() => {
             saveAttentionBlockSetService(params.toJS() || [])
