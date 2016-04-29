@@ -78,13 +78,14 @@ export default class AttentionBlockSet extends Component {
     };
 
     _conformBlockSet = () => {
-        ActionUtil.setAction(actionType.BA_LOGFOCUS_AREA_ENSURE);
         let {attentionBlockSet, navigator} = this.props;
         let districtBlockSelect = attentionBlockSet.get('district_block_select');
 
         let params = districtBlockSelect.map((v) => {
             return v.get('id')
         });
+
+        ActionUtil.setActionWithExtend(actionType.BA_LOGFOCUS_AREA_ENSURE, {"block_arr": params.toJS().join(",")});
 
         InteractionManager.runAfterInteractions(() => {
             saveAttentionBlockSetService(params.toJS() || [])
@@ -104,12 +105,13 @@ export default class AttentionBlockSet extends Component {
     };
 
     _onHandleBlockSelected = (block, insert:boolen) => {
-        ActionUtil.setAction(actionType.BA_LOGFOCUS_AREA_CHOOSE);
         let {actions} = this.props;
 
         if (insert) {
+            ActionUtil.setActionWithExtend(actionType.BA_LOGFOCUS_AREA_CHOOSE, {"block_id": block.get("id"), "block_name": block.get("name")});
             actions.attentionBlockSetAdded(block);
         } else {
+            ActionUtil.setActionWithExtend(actionType.BA_LOGFOCUS_AREA_DELETE, {"block_id": block.get("id"), "block_name": block.get("name")});
             actions.attentionBlockSetDeleted(block);
         }
     };

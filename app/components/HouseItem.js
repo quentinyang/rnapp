@@ -21,10 +21,10 @@ export default class HouseItem extends Component {
                             <Text style={[styles.headerMsg, styles.headerPadding, styles.flex]} numberOfLines={1}>{item.get('community_name')}  {item.get('building_num') + item.get('building_unit') + item.get('door_num')}</Text>
 
                             {
-                                item.get('is_new') ? <Text style={[styles.tagNew]}>新上</Text> : null
+                                item.get('is_new') ? <Text style={[styles.tagNew]}>新</Text> : null
                             }
                             {
-                                item.get('is_verify') ? <Text style={[styles.tagNew, styles.tagAuth]}>已认证</Text> : null
+                                item.get('is_verify') ? <Text style={[styles.tagNew, styles.tagAuth]}>认</Text> : null
                             }
                         </View>
                         <Text style={styles.updatedAt}>{date.month + '月' + date.day + '日更新'}</Text>
@@ -80,13 +80,12 @@ const styles = StyleSheet.create({
         padding: (Platform.OS === 'ios') ? 2 : 0,
         fontWeight: '500',
         marginRight: 10,
-        width: 30,
+        width: 16,
         textAlign: 'center',
         textAlignVertical: 'top'
     },
     tagAuth: {
-        backgroundColor: '#45c7c9',
-        width: 44
+        backgroundColor: '#45c7c9'
     },
     updatedAt: {
         color: '#8d8c92',

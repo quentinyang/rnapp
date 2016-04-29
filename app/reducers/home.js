@@ -68,7 +68,26 @@ function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
     }
 }
 
+let initialScoreInfo = {
+    visible: false,
+    score: 8
+};
+
+function scoreModalInfo(state = Immutable.fromJS(initialScoreInfo), action) {
+    switch (action.type) {
+        case types.SCORE_MODAL_VISIBLE_CHANGED:
+            return state.set('visible', Immutable.fromJS(action.visible));
+            break;
+        case types.SCORE_MODAL_STATUS:
+            return Immutable.fromJS(action.status);
+            break;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     houseData,
-    attentionList
+    attentionList,
+    scoreModalInfo
 });

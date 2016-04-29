@@ -21,6 +21,7 @@ export const BA_DETAIL_CALL_SUCCESS = "101-100017"
 export const BA_LOGFOCUS_AREA = "101-110000"
 export const BA_LOGFOCUS_AREA_ONVIEW = "101-110001"
 export const BA_LOGFOCUS_AREA_CHOOSE = "101-110002"
+export const BA_LOGFOCUS_AREA_DELETE = '101-110005'
 export const BA_LOGFOCUS_AREA_SKIP = "101-110003"
 export const BA_LOGFOCUS_AREA_ENSURE = "101-110004"
 
@@ -28,6 +29,7 @@ export const BA_LOGFOCUS_AREA_ENSURE = "101-110004"
 export const BA_SETFOCUS_AREA = "101-120000"
 export const BA_SETFOCUS_AREA_ONVIEW = "101-120001"
 export const BA_SETFOCUS_AREA_CHOOSE = "101-120002"
+export const BA_SETFOCUS_AREA_DELETE = '101-120005'
 export const BA_SETFOCUS_AREA_RETURN = "101-120003"
 export const BA_SETFOCUS_AREA_ENSURE = "101-120004"
 
@@ -39,6 +41,13 @@ export const BA_SETFOCUS_SAVE = "101-130003"
 export const BA_SETFOCUS_SETAREA = "101-130004"
 export const BA_SETFOCUS_SETCOM = "101-130005"
 export const BA_SETFOCUS_DELCOM = "101-130006"
+export const BA_SETFOCUS_SEARCH = "101-130007"
+
+//搜索--设置关注的小区
+export const BA_SEND_SEARCH = "101-310000"
+export const BA_SEND_SEARCH_ONVIEW = "101-310001"
+export const BA_SEND_SEARCH_CANCEL = "101-310002"
+export const BA_SEND_SEARCH_ASSOCIATION = "101-310003"
 
 //全部房源列表
 export const BA_ALLHOUSE_LIST = "101-140000"        //???  2次?????
@@ -60,7 +69,7 @@ export const BA_LOOK_HOME_SEARCH_CANCEL = "101-150002"
 export const BA_LOOK_HOME_SEARCH_ASSOCIATION = "101-150003"
 export const BA_LOOK_HOME_SEARCH_FLUSH = "101-150004"
 
-//搜索页-2 (小区搜索)
+//搜索页-2 (小区搜索)---发房模块
 export const BA_LOOK_COM_SEARCH = "101-160000"
 export const BA_LOOK_COM_SEARCH_ONVIEW = "101-160001"
 export const BA_LOOK_COM_SEARCH_CANCEL = "101-160002"
@@ -102,6 +111,7 @@ export const BA_SEND_ADDNAME = "101-300013"
 export const BA_SEND_ADDHPHONE = "101-300014"
 export const BA_SEND_FINISH = "101-300015"
 export const BA_SEND_HOUSE_SUCCESS = "101-300016"
+export const BA_SEND_HOUSE_FAIL = "101-300017"
 
 //发房成功页
 export const BA_SEND_SUCCESS = "101-320000"
@@ -144,3 +154,13 @@ export const BA_LOGIN_ENSURE = "101-500005"
 // 打开个推进入App
 export const BA_PUSH_PAGE = "101-700000"
 export const BA_PUSH_OPEN = "101-600001"
+export const BA_PUSH_RECIVED = "101-600003"
+
+//首次进入APP提醒
+export const BA_FIRSTOPEN = "101-111000"
+export const BA_FIRSTOPEN_ONVIEW = "101-111001"
+export const BA_FIRSTOPEN_GETSOON = "101-111002"
+export const BA_FIRSTOPEN_DELETE = "101-111003"
+export const BA_FIRSTOPEN_FIND = "101-111004"
+export const BA_FIRSTOPEN_SEND = "101-111005"
+export const BA_FIRSTOPEN_RETURN = "101-111006"

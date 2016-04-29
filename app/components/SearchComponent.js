@@ -4,7 +4,7 @@ import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, I
 import Autocomplete from './Autocomplete'
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
-
+//发房模块中的小区搜索
 export default class CommunitySearch extends Component {
     constructor(props) {
         super(props);
@@ -45,7 +45,7 @@ export default class CommunitySearch extends Component {
     }
 
     onPress(community) {
-        ActionUtil.setAction(actionType.BA_LOOK_COM_SEARCH_ASSOCIATION);
+        ActionUtil.setActionWithExtend(actionType.BA_LOOK_COM_SEARCH_ASSOCIATION, {"keyword": this.props.keyword, "comm_id": community.get("id"), "comm_name": community.get("name")});
         this.props.onPress('communityChanged', community.toJS());
         this.clearSearch();
     }

@@ -17,9 +17,15 @@ module.exports=function(){
         return ajax.get(urls.user.profile, data);
     }
 
+
+    function fetchScoreModalStatusService() {
+        return ajax.get(urls.user.isFirst)
+    }
+
     return {
         sendCodeService: sendCodeService,
         loginService: loginService,
         profileService: getUserProfile,
+        fetchScoreModalStatusService: fetchScoreModalStatusService,
     };
 }();

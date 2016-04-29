@@ -243,6 +243,7 @@ class App extends Component {
         }
         switch(Number(newNotifData.type)) {
             case 1: // 普通推送
+                ActionUtil.setActionWithExtend(actionType.BA_PUSH_RECIVED, newNotifData);
                 actionsHome.fetchAttentionPrependHouseList({});
                 break;
             case 2: // 互踢

@@ -34,8 +34,10 @@ class HouseInput extends Component {
     }
 
     render() {
-        let {houseForm, controller, communityData, route} = this.props.houseInput,
+        let route = this.props.route;
+        let {houseForm, controller, communityData} = this.props.houseInput,
             hideHeader = route && route.hideHeader;
+
         return (
             <View style={styles.container}>
             {controller.get('search') ?
@@ -306,6 +308,7 @@ class HouseInput extends Component {
             actions.dataCleared();
         })
         .catch((error) => {
+            ActionUtil.setActionWithExtend(actionType.BA_SEND_HOUSE_FAIL, error);
             actions.error(error.msg);
         })
     }
