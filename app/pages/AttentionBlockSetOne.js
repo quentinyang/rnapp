@@ -89,7 +89,8 @@ export default class AttentionBlockSetOne extends Component {
             component: CommunitySearchContainer,
             name: 'CommunitySearchContainer',
             title: '搜索小区',
-            hideNavBar: true
+            hideNavBar: true,
+            bp: this.pageId
         });
     };
 

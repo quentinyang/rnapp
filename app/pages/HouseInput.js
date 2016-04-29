@@ -308,6 +308,7 @@ class HouseInput extends Component {
             actions.dataCleared();
         })
         .catch((error) => {
+            ActionUtil.setActionWithExtend(actionType.BA_SEND_HOUSE_FAIL, error);
             actions.error(error.msg);
         })
     }

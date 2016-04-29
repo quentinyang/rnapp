@@ -233,7 +233,7 @@ export default class Detail extends Component {
     _callFeedback(id, status, actionLog) {
         if(!this.flag) {
             this.flag = true;
-            ActionUtil.setAction(actionLog);
+            ActionUtil.setActionWithExtend(actionLog, {"vpid": this.props.route.item.get('property_id')});
             this.props.actions.callFeedback({
                 wash_id: id,
                 status: status

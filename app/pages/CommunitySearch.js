@@ -4,11 +4,15 @@ import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, I
 import Autocomplete from '../components/Autocomplete'
 import AutocompleteItem from '../components/AutocompleteItem'
 import * as common from '../constants/Common'
-
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
+//设置我的关注中的小区搜索
 export default class CommunitySearch extends Component {
     constructor(props) {
         super(props);
 
+        this.pageId = actionType.BA_SEND_SEARCH;
+        ActionUtil.setActionWithExtend(actionType.BA_SEND_SEARCH_ONVIEW, {"bp": this.props.route.bp});
         this.renderRow = this.renderRow.bind(this);
         this.onChangeText = this.onChangeText.bind(this);
         this.cancelSearch = this.cancelSearch.bind(this);
@@ -43,6 +47,7 @@ export default class CommunitySearch extends Component {
     }
 
     onPress(community) {
+        ActionUtil.setActionWithExtend(actionType.BA_SETFOCUS_SEARCH, {"keyword": this.props.keyword, "comm_id": community.get("id"), "comm_name": community.get("name")});
         let {actions, actionsOne, navigator, attentionList} = this.props;
         let communitySelect = attentionList.get('community_select');
 
@@ -60,6 +65,7 @@ export default class CommunitySearch extends Component {
     }
 
     cancelSearch() {
+        ActionUtil.setAction(actionType.BA_SEND_SEARCH_CANCEL);
         this.props.navigator.jumpBack();
     }
 }

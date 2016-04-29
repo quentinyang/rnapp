@@ -82,7 +82,7 @@ export function fetchScoreModalStatus() {
             success: function(oData) {
                 console.dir(oData);
                 dispatch(scoreModalStatusFetched({
-                    visible: oData.is_notify || false,
+                    visible: Number(oData.is_notify) || false,
                     score: oData.point || 8
                 }))
             },

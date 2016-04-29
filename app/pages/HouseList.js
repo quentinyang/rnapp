@@ -31,6 +31,7 @@ export default class HouseList extends Component {
             loaded: false,
             homeSearch: fromHomeSearch
         };
+        this.keyword = "";
     }
 
     render() {
@@ -337,15 +338,20 @@ export default class HouseList extends Component {
 
     _onChangeText = (value) => {
         let {actions} = this.props;
+        this.keyword = value;
         actions.fetchHouseListCommunityList({keyword: value});
     };
 
     _renderAutocompleteRow = (item, index) => {
-        return <AutocompleteItem key={index} item={item} onPress={this._autocompleteRowPress}/>;
+        return <AutocompleteItem key={index} item={item} onPress={this._autocompleteRowPress.bind(this)}/>;
     };
 
     _autocompleteRowPress = (item) => {
-        ActionUtil.setAction(this.state.homeSearch ? actionType.BA_LOOK_HOME_SEARCH_ASSOCIATION : actionType.BA_LOOK_LIST_SEARCH_ASSOCIATION);
+        if(this.state.homeSearch) {
+            ActionUtil.setActionWithExtend(actionType.BA_LOOK_HOME_SEARCH_ASSOCIATION, {"keyword": this.keyword, "comm_id": item.get("id"), "comm_name": item.get("name")});
+        } else {
+            ActionUtil.setActionWithExtend(actionType.BA_LOOK_LIST_SEARCH_ASSOCIATION, {"keyword": this.keyword, "comm_id": item.get("id"), "comm_name": item.get("name")});
+        }
         let {actions} = this.props;
         if(this.state.homeSearch) {
             this.setState({

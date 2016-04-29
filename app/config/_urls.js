@@ -1,8 +1,7 @@
 'use strict';
 
-// let HOST = 'http://360.feature-fy360.dev.angejia.com/service/';
 // let HOST = 'http://360.master.stage.angejia.com/service/';
-// let HOST = 'http://360.feature-fy360.test.angejia.com/service/';
+// let HOST = 'http://360.master.dev.angejia.com/service/';
 let HOST = 'https://api.fangyuan360.cn/service/';
 
 let urls = {
@@ -16,6 +15,7 @@ let urls = {
         sendCode: HOST + 'passport/login/sms',
         login: HOST + 'passport/login',
         profile: HOST + 'user/profile',
+        isFirst: HOST + 'point/notify',
     },
     house: {
         list: HOST + 'property-list',
