@@ -75,9 +75,8 @@ public class ActionUtil extends ReactContextBaseJavaModule {
                     extend.setAppCloseTime(params.getString(key));
                     break;
                 default:
-                    String a = params.getType(key).toString();
-                    jsonObject.put(key, params.getType(key).toString());
-                    //jsonObject.put(key, params.getString(key));
+                    //jsonObject.put(key, params.getType(key).toString());
+                    jsonObject.put(key, params.getString(key));
                     break;
             }
         }
