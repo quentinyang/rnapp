@@ -14,6 +14,14 @@ export default class AsyncStorageComponent {
         }
     }
 
+    static async multiGet(key_arr) {
+        try {
+            return await AsyncStorage.multiGet(key_arr);
+        } catch (error) {
+            this._appendMessage('AsyncStorage error: ' + error.message);
+        }
+    }
+
     static async save(storage_key, selectedValue) {
         try {
             await AsyncStorage.setItem(storage_key, selectedValue);
@@ -22,9 +30,33 @@ export default class AsyncStorageComponent {
         }
     }
 
+    static async multiSave(keyValuePaires) {
+        try {
+            await AsyncStorage.multiSet(keyValuePaires);
+        } catch (error) {
+            this._appendMessage('AsyncStorage error: ' + error.message);
+        }
+    }
+
     static async remove(storage_key) {
         try {
             await AsyncStorage.removeItem(storage_key);
+        } catch (error) {
+            this._appendMessage('AsyncStorage error: ' + error.message);
+        }
+    }
+
+    static async multiRemove(key_arr) {
+        try {
+            await AsyncStorage.multiRemove(key_arr);
+        } catch (error) {
+            this._appendMessage('AsyncStorage error: ' + error.message);
+        }
+    }
+
+    static async removeAll() {
+        try {
+            await AsyncStorage.clear();
         } catch (error) {
             this._appendMessage('AsyncStorage error: ' + error.message);
         }
