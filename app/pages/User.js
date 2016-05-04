@@ -2,7 +2,7 @@
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
             TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator,
-            WebView, Alert} from 'nuke';
+            WebView, Alert, Platform} from 'nuke';
 
 import Header from '../components/Header';
 import TouchWebContainer from "../containers/TouchWebContainer";
@@ -13,6 +13,7 @@ import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import * as common from '../constants/Common';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
+import deviceInfo from '../utils/DeviceInfo';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -127,8 +128,13 @@ export default class User extends Component {
                     automaticallyAdjustContentInsets={false} />
 
                   <TouchableWithoutFeedback onPress={this._loginOut.bind(this)}>
-                      <View style={[styles.listItem, styles.listTop, styles.itemBg, styles.justifyContent]}>
-                          <Text style={[styles.listText]}>退出</Text>
+                      <View>
+                          <View style={[styles.listItem, styles.listTop, styles.itemBg, styles.justifyContent]}>
+                              <Text style={[styles.listText, styles.clearMarginLeft]}>退出</Text>
+                          </View>
+                          <View style={[styles.alignItems]}>
+                              <Text style={[styles.versionText]}>{Platform.OS === 'ios' ? 'V' + deviceInfo.buildNum : 'V' + deviceInfo.readableVersion}</Text>
+                          </View>
                       </View>
                   </TouchableWithoutFeedback>
               </ScrollView>
@@ -311,5 +317,15 @@ const styles = StyleSheet.create({
     },
     itemBg: {
         backgroundColor: '#fff'
+    },
+    alignItems: {
+        alignItems: 'center'
+    },
+    versionText: {
+        color: '#888',
+        marginTop: 10
+    },
+    clearMarginLeft: {
+        marginLeft: 0
     }
 });
