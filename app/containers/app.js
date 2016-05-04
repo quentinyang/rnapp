@@ -45,18 +45,19 @@ class App extends Component {
                 switch (value[i][0]) {
                     case common.USER_TOKEN_KEY:
                         gtoken = value[i][1];
-                        self.setState({
-                            component: TabViewContainer,
-                            name: 'home',
-                            title: '我的主页'
-                        });
                         break;
                     case common.USER_ID:
                         ActionUtil.setUid(value[i][1]);
                         break;
                 }
             }
-            if(!gtoken) {
+            if(gtoken) {
+                self.setState({
+                    component: TabViewContainer,
+                    name: 'home',
+                    title: '我的主页'
+                });
+            } else {
                 self.setState({
                     component: LoginContainer,
                     name: 'login',
