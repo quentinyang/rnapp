@@ -162,7 +162,6 @@ export default class Detail extends Component {
     componentDidMount() {
         let {actions, route, baseInfo} = this.props;
         let propertyId = route.item.get('property_id');
-        let info = baseInfo.get("baseInfo");
 
         InteractionManager.runAfterInteractions(() => {
             actions.fetchBaseInfo({
@@ -174,11 +173,6 @@ export default class Detail extends Component {
             actions.fetchHouseStatus({
                 property_id: propertyId
             });
-
-            if(info.get("is_reply") === false) {
-                actions.callSellerSuccess(info.get("log_id"));
-                actions.setFeedbackVisible(true);
-            }
         });
     }
 

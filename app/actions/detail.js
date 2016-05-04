@@ -26,6 +26,11 @@ export function fetchBaseInfo(data) {
             service: getBaseInfoService,
             data: data,
             success: function(oData) {
+                if(!Number(oData.is_reply)) {
+                    dispatch(callSellerSuccess(oData.log_id));
+                    dispatch(setFeedbackVisible(true));
+                }
+
                 dispatch(houseBaseFetched(oData))
             },
             error: function(oData) {

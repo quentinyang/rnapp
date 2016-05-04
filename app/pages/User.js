@@ -184,8 +184,7 @@ export default class User extends Component {
             {text: '取消'},
             {text: '确认', onPress: () => {
               actionsApp.deletePush(); // 解绑个推
-              AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
-              AsyncStorageComponent.remove(common.USER_ID);
+              AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
               ActionUtil.setUid("");
               AsyncStorageComponent.get('user_phone')
               .then((value) => {

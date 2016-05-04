@@ -38,16 +38,25 @@ class App extends Component {
         this.setGeTuiOpenActionFlag = false;
 
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
-        AsyncStorageComponent.get('user_token')
+        AsyncStorageComponent.multiGet([common.USER_TOKEN_KEY, common.USER_ID])
         .then((value) => {
-            if(value) {
-                gtoken = value;
-                self.setState({
-                    component: TabViewContainer,
-                    name: 'home',
-                    title: '我的主页'
-                });
-            } else {
+            let len = value.length;
+            for(let i=0; i<len; i++) {
+                switch (value[i][0]) {
+                    case common.USER_TOKEN_KEY:
+                        gtoken = value[i][1];
+                        self.setState({
+                            component: TabViewContainer,
+                            name: 'home',
+                            title: '我的主页'
+                        });
+                        break;
+                    case common.USER_ID:
+                        ActionUtil.setUid(value[i][1]);
+                        break;
+                }
+            }
+            if(!gtoken) {
                 self.setState({
                     component: LoginContainer,
                     name: 'login',
@@ -68,16 +77,6 @@ class App extends Component {
                 self._clientIdReceived(cId);
             });
         }
-
-        AsyncStorageComponent.get('user_id')
-        .then((value) => {
-            if(value) {
-                ActionUtil.setUid(value);
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
     }
 
     render() {
@@ -247,7 +246,7 @@ class App extends Component {
                 actionsHome.fetchAttentionPrependHouseList({});
                 break;
             case 2: // 互踢
-                AsyncStorageComponent.remove(common.USER_TOKEN_KEY);
+                AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
                 if (Platform.OS === 'ios') {
                     Alert.alert('提示', '您的账号在另外一台设备登陆，被迫下线！', [
                         {text: '知道了', onPress: () => {
