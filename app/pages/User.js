@@ -2,7 +2,7 @@
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
             TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator,
-            WebView, Alert} from 'nuke';
+            WebView, Alert, Platform} from 'nuke';
 
 import Header from '../components/Header';
 import TouchWebContainer from "../containers/TouchWebContainer";
@@ -133,7 +133,7 @@ export default class User extends Component {
                               <Text style={[styles.listText, styles.clearMarginLeft]}>退出</Text>
                           </View>
                           <View style={[styles.alignItems]}>
-                              <Text style={[styles.versionText]}>{'V' + deviceInfo.version}</Text>
+                              <Text style={[styles.versionText]}>{Platform.OS === 'ios' ? 'V' + deviceInfo.buildNum : 'V' + deviceInfo.readableVersion}</Text>
                           </View>
                       </View>
                   </TouchableWithoutFeedback>
