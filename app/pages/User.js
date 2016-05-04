@@ -9,11 +9,9 @@ import TouchWebContainer from "../containers/TouchWebContainer";
 import ContactHouseContainer from '../containers/ContactHouseContainer'
 import InputHouseContainer from '../containers/InputHouseContainer'
 import LoginContainer from '../containers/LoginContainer'
-import AsyncStorageComponent from '../utils/AsyncStorageComponent';
-import * as common from '../constants/Common';
+import SettingContainer from '../containers/SettingContainer'
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
-import deviceInfo from '../utils/DeviceInfo';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -101,7 +99,7 @@ export default class User extends Component {
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         var featureSource = ds.cloneWithRows([{title: '联系过的房源', count: profileData.contacted, component: ContactHouseContainer, name: 'contactHouse', actionLog: actionType.BA_MINE_CONNECT, backLog: actionType.BA_MINE_CONTACT_RETURN},
             {title: '发布的房源', count: profileData.published, component: InputHouseContainer, name: 'inputHouse', actionLog: actionType.BA_MINE_RELEASED, backLog: actionType.BA_MINE_RELEASE_RETURN}]);
-        var settingSource = ds.cloneWithRows([{title: '设置', component: '', name: 'settings', actionLog: actionType.BA_MINE_SET}]);
+        var settingSource = ds.cloneWithRows([{title: '设置', component: SettingContainer, name: 'settings', actionLog: actionType.BA_MINE_SET}]);
 
         return (
             <View style={styles.container}>
@@ -126,17 +124,6 @@ export default class User extends Component {
                     renderRow={this._renderRow.bind(this)}
                     scrollEnabled={false}
                     automaticallyAdjustContentInsets={false} />
-
-                  <TouchableWithoutFeedback onPress={this._loginOut.bind(this)}>
-                      <View>
-                          <View style={[styles.listItem, styles.listTop, styles.itemBg, styles.justifyContent]}>
-                              <Text style={[styles.listText, styles.clearMarginLeft]}>退出</Text>
-                          </View>
-                          <View style={[styles.alignItems]}>
-                              <Text style={[styles.versionText]}>{Platform.OS === 'ios' ? 'V' + deviceInfo.buildNum : 'V' + deviceInfo.readableVersion}</Text>
-                          </View>
-                      </View>
-                  </TouchableWithoutFeedback>
               </ScrollView>
             </View>
         )
@@ -170,36 +157,7 @@ export default class User extends Component {
                 backLog: data.backLog,
                 bp: this.pageId
             });
-        } else {
-            Alert.alert('温馨提示', '设置功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
         }
-    }
-
-    _loginOut() {
-        let {navigator, actionsApp} = this.props;
-        Alert.alert(
-          '提示',
-          '确定要退出吗？',
-          [
-            {text: '取消'},
-            {text: '确认', onPress: () => {
-              actionsApp.deletePush(); // 解绑个推
-              AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
-              ActionUtil.setUid("");
-              AsyncStorageComponent.get('user_phone')
-              .then((value) => {
-                  navigator.resetTo({
-                    component: LoginContainer,
-                    name: 'login',
-                    title: '登录',
-                    phone: value,
-                    hideNavBar: true,
-                    bp: this.pageId
-                  });
-              })
-            }}
-          ]
-        );
     }
 }
 
@@ -303,28 +261,13 @@ const styles = StyleSheet.create({
     settingContainer: {
       height: 45
     },
-
     webView: {
         height: 200,
-    },
-
-    listTop: {
-        marginTop: 15
     },
     justifyContent: {
         justifyContent: 'center',
     },
-    itemBg: {
-        backgroundColor: '#fff'
-    },
     alignItems: {
         alignItems: 'center'
-    },
-    versionText: {
-        color: '#888',
-        marginTop: 10
-    },
-    clearMarginLeft: {
-        marginLeft: 0
     }
 });

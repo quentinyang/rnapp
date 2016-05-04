@@ -3,32 +3,31 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/user';
-import User from '../pages/User';
+import * as actionsApp from '../actions/app';
+import Setting from '../pages/Setting';
 
-class UserContainer extends Component {
+class SettingContainer extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-            <User {...this.props}/>
+            <Setting {...this.props}/>
         );
     }
 }
 
 function mapStateToProps(state) {
-    const {userProfile} = state.user;
     return {
-        userProfile
+
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        actionsApp: bindActionCreators(actionsApp, dispatch)
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SettingContainer);

@@ -1,75 +1,160 @@
-import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
-        TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, WebView} from 'nuke';
+import {React, Component, Text, View, ScrollView, TouchableWithoutFeedback, StyleSheet, Image, PixelRatio, Alert, Linking, Platform} from 'nuke';
+import TouchWebContainer from "../containers/TouchWebContainer";
+import LoginContainer from '../containers/LoginContainer';
+import * as common from '../constants/Common';
+import AsyncStorageComponent from '../utils/AsyncStorageComponent';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog';
+import deviceInfo from '../utils/DeviceInfo';
 
 
-class Setting extends Component {
+export default class Setting extends Component {
     constructor(props) {
         super(props);
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.state = {
-            dataSource: ds.cloneWithRows(['row 1', 'row 2']),
-            url: 'https://api.fangyuan360.cn/usercenter/account/?token=' + gtoken
-        };
+        this.pageId = actionType.BA_MINE;
     }
 
     render() {
-        var WEBVIEW_REF = 'webview'
         return (
-            <View style={styles.layout}>
-                <WebView
-                  ref={WEBVIEW_REF}
-                  automaticallyAdjustContentInsets={false}
-                  style={styles.webView}
-                  source={{uri: this.state.url}}
-                  javaScriptEnabled={true}
-                  domStorageEnabled={true}
-                  decelerationRate="normal"
-                  onNavigationStateChange={this.onNavigationStateChange}
-                  onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest}
-                  startInLoadingState={true}
-                  scalesPageToFit={this.state.scalesPageToFit}
-                />
+            <ScrollView
+                style={styles.container}
+                automaticallyAdjustContentInsets={false}
+            >
+                <View style={styles.box}>
+                    <LinkBox
+                        navigator={this.props.navigator}
+                        data={{
+                            url:'http://mp.weixin.qq.com/s?__biz=MzAxNDYyMTA0NQ==&mid=401036326&idx=1&sn=45548dc3dfb63021c4e60df9058df5df#rd',
+                            title: '积分规则',
+                            name: 'score rule',
+                            component: TouchWebContainer
+                        }}
+                    />
+                    <LinkBox
+                        navigator={this.props.navigator}
+                        data={{
+                            url:'http://www.fangyuan360.cn/agreement/',
+                            title: '房源360用户协议',
+                            name: 'user rule',
+                            component: TouchWebContainer
+                        }}
+                    />
+                </View>
+                <View style={styles.box}>
+                    <LinkBox
+                        onPress={this.goAppStore}
+                        navigator={this.props.navigator}
+                        title='喜欢房源360吗？鼓励一下吧'
+                    />
+                </View>
+                <TouchableWithoutFeedback onPress={this.loginOut}>
+                    <View style={[styles.box, styles.linkBox, styles.center]}>
+                        <Text style={{fontSize: 16, color: '#3e3e3e'}}>退出</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+                <Text style={styles.version}>{Platform.OS === 'ios' ? 'V' + deviceInfo.buildNum : 'V' + deviceInfo.readableVersion}</Text>
+            </ScrollView>
+        )
+    }
 
-            </View>
-            
+    goAppStore = () => {
+        let url = '';
 
+        if(Platform.OS === 'ios') {
+            url = 'https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1086107243&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8';
+        } else {
+            url = 'market://details?id=com.xinyi.fy360';
+        }
+        Linking.canOpenURL(url).then(supported => {
+            if (supported) {
+                Linking.openURL(url);
+            } else {
+                console.log('Don\'t know how to open URI: ' + url);
+            }
+        });
+    };
+
+    loginOut = () => {
+        let {navigator, actionsApp} = this.props;
+        Alert.alert(
+            '提示',
+            '确定要退出吗？',
+            [
+            {text: '取消'},
+            {text: '确认', onPress: () => {
+                actionsApp.deletePush(); // 解绑个推
+                AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
+                ActionUtil.setUid("");
+                AsyncStorageComponent.get('user_phone')
+                .then((value) => {
+                    navigator.resetTo({
+                        component: LoginContainer,
+                        name: 'login',
+                        title: '登录',
+                        phone: value,
+                        hideNavBar: true,
+                        bp: this.pageId
+                    });
+                })
+            }}
+            ]
+        );
+    };
+}
+
+class LinkBox extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {onPress, navigator, data, title} = this.props;
+        return (
+            <TouchableWithoutFeedback onPress={onPress? onPress:() => navigator.push(data)}>
+                <View style={styles.linkBox}>
+                    <Text style={styles.linkContent}>{title ? title: data.title}</Text>
+                    <Image source={require('../images/next.png')} style={styles.arrowIcon} />
+                </View>
+            </TouchableWithoutFeedback>
         )
     }
 }
 
-class Withdraw extends Component {
-    constructor(props) {
-        super(props);
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.state = {
-            dataSource: ds.cloneWithRows(['row 1', 'row 2']),
-            url: 'https://api.fangyuan360.cn/usercenter/account/?token=' + gtoken
-        };
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: '#eee'
+    },
+    box: {
+        marginTop: 10,
+        backgroundColor: '#fff',
+        borderTopWidth: 1/PixelRatio.get(),
+        borderTopColor: '#ccc'
+    },
+    linkBox: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 45,
+        paddingHorizontal: 10,
+        borderBottomWidth: 1/PixelRatio.get(),
+        borderBottomColor: '#ccc'
+    },
+    linkContent: {
+        flex: 1,
+        fontSize: 16,
+        color: '#3e3e3e'
+    },
+    arrowIcon: {
+        width: 8,
+        height: 18
+    },
+    center: {
+        justifyContent: 'center'
+    },
+    version: {
+        marginTop: 10,
+        color: '#888',
+        textAlign: 'center'
     }
-
-    render() {
-        var WEBVIEW_REF = 'webview'
-        return (
-            <View style={styles.layout}>
-                <WebView
-                  ref={WEBVIEW_REF}
-                  automaticallyAdjustContentInsets={false}
-                  style={styles.webView}
-                  source={{uri: this.state.url}}
-                  javaScriptEnabled={true}
-                  domStorageEnabled={true}
-                  decelerationRate="normal"
-                  onNavigationStateChange={this.onNavigationStateChange}
-                  onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest}
-                  startInLoadingState={true}
-                  scalesPageToFit={this.state.scalesPageToFit}
-                />
-
-            </View>
-            
-
-        )
-    }
-}
-
-
+});
