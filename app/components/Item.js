@@ -51,12 +51,12 @@ export default class Item extends Component {
         return (
             <View style={[styles.communityWrap]}>
                 <Text style={[styles.header, styles.headerText]}>{list.size == 0 ? titleName: ''}</Text>
-                
+
                 <TouchableWithoutFeedback
                     onPress={this._handleAdd}
                     style={styles.flex}
                     >
-                    <Text style={[styles.flex, styles.contentText, styles.addColor]}>添加小区</Text>
+                    <View><Text style={[styles.flex, styles.contentText, styles.addColor]}>添加小区</Text></View>
                 </TouchableWithoutFeedback>
             </View>
         )

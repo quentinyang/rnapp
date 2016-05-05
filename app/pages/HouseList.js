@@ -199,9 +199,10 @@ export default class HouseList extends Component {
     _renderFooter = () => {
         let {houseData} = this.props;
         let pager = houseData.get('pager');
+        let propertiesLength = houseData.get('properties').size;
 
         return (
-                Number(pager.get('current_page')) == Number(pager.get('last_page')) ?
+                (Number(pager.get('current_page')) == Number(pager.get('last_page')) || (Number(pager.get('current_page')) > 0 && propertiesLength < 10 )) ?
                     <View style={styles.listFooter}>
                         <Text style={styles.noData}>已经没有数据了！</Text>
                     </View>

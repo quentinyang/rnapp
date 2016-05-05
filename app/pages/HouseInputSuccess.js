@@ -34,14 +34,14 @@ export default class HouseInputSuccess extends Component {
                     underlayColor='#04c1ae'
                     onPress={this.continueInput}
                 >
-                    <Text style={[styles.sucButtonText, styles.fontWhite]}>继续发房</Text>
+                    <View><Text style={[styles.sucButtonText, styles.fontWhite]}>继续发房</Text></View>
                 </TouchableHighlight>
                 <TouchableHighlight
                     style={[styles.sucButton, styles.backgroundWhite]}
                     underlayColor='#04c1ae'
                     onPress={this.lookHouse}
                 >
-                    <Text style={[styles.sucButtonText, styles.fontGreen]}>查看房源</Text>
+                    <View><Text style={[styles.sucButtonText, styles.fontGreen]}>查看房源</Text></View>
                 </TouchableHighlight>
             </View>
         )

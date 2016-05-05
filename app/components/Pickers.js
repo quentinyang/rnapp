@@ -31,13 +31,13 @@ export default class Pickers extends Component {
                             <TouchableOpacity onPress={() => {
                                     this.setState({modalVisible: false});
                                 }}>
-                                <Text>取消</Text>
+                                <View><Text>取消</Text></View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                     if(this.props.onSubmit) this.props.onSubmit(this.state.selectedOption);
                                     this.setState({modalVisible: false});
                                 }}>
-                                <Text>确定</Text>
+                                <View><Text>确定</Text></View>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.pickerBox}>

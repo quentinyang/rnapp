@@ -74,7 +74,7 @@ export default class Detail extends Component {
                                 underlayColor="#fff"
                                 onPress={this._goPage.bind(this, HouseInputContainer, actionType.BA_DETAIL_CASH)}
                             >
-                                <Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text>
+                                <View><Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text></View>
                             </TouchableHighlight>
                             {/*
                              <TouchableHighlight
@@ -82,7 +82,7 @@ export default class Detail extends Component {
                                  underlayColor="#fff"
                                  onPress={this._goPage.bind(this, UserContainer, actionType.BA_DETAIL_RECHANGE)}
                              >
-                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text>
+                                <View><Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text></View>
                              </TouchableHighlight>
                             */}
 
@@ -101,7 +101,7 @@ export default class Detail extends Component {
                                 underlayColor="#fff"
                                 onPress={this._callFeedback.bind(this, callInfo.get('washId'), 1, actionType.BA_DETAIL_ONSALE)}
                             >
-                                <Text style={{color: "#04C1AE", textAlign: "center"}}>在卖</Text>
+                                <View><Text style={{color: "#04C1AE", textAlign: "center"}}>在卖</Text></View>
                             </TouchableHighlight>
 
                             <View style={styles.hLine}></View>
@@ -113,7 +113,7 @@ export default class Detail extends Component {
                                 underlayColor="#fff"
                                 onPress={this._callFeedback.bind(this, callInfo.get('washId'), 3, actionType.BA_DETAIL_UNCONNECT)}
                             >
-                                <Text style={{color: "#04C1AE", textAlign: "center"}}>联系不上</Text>
+                                <View><Text style={{color: "#04C1AE", textAlign: "center"}}>联系不上</Text></View>
                             </TouchableHighlight>
 
                             <TouchableHighlight
@@ -121,7 +121,7 @@ export default class Detail extends Component {
                                 underlayColor="#fff"
                                 onPress={this._callFeedback.bind(this, callInfo.get('washId'), 2, actionType.BA_DETAIL_FALSE)}
                             >
-                                <Text style={{color: "#04C1AE", textAlign: "center"}}>虚假/不卖/已卖</Text>
+                                <View><Text style={{color: "#04C1AE", textAlign: "center"}}>虚假/不卖/已卖</Text></View>
                             </TouchableHighlight>
 
                         </View>
@@ -258,9 +258,9 @@ export default class Detail extends Component {
                     underlayColor="#fff"
                     onPress={this._handleMoreHouseList}
                 >
-                    <Text style={styles.moreText}>
+                    <View><Text style={styles.moreText}>
                         查看更多
-                    </Text>
+                    </Text></View>
                 </TouchableHighlight>
             </View>
             :

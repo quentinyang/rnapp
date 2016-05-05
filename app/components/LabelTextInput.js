@@ -38,17 +38,17 @@ export default class LabelTextInput extends Component {
                     >
                     {!specialText1?
                         <View style={styles.specialView}>
-                        <Text style={[styles.specialText, styles.specialDefaultColor]}>
-                            选择小区
-                        </Text>
+                            <Text style={[styles.specialText, styles.specialDefaultColor]}>
+                                选择小区
+                            </Text>
                         </View>:
                         <View style={styles.specialView}>
-                        <Text style={styles.specialText}>
-                            {specialText1}
-                        </Text>
-                        <Text style={[styles.specialText, styles.specialAttach]}>
-                            {specialText2}
-                        </Text>
+                            <Text style={styles.specialText}>
+                                {specialText1}
+                            </Text>
+                            <Text style={[styles.specialText, styles.specialAttach]}>
+                                {specialText2}
+                            </Text>
                         </View>
                     }
                     </TouchableOpacity>

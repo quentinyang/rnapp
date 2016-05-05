@@ -11,7 +11,6 @@ import {
     ScrollView
 } from 'nuke';
 
-
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import Countdown from '../components/Countdown'
 import {loginService, sendCodeService} from '../service/userService';
@@ -88,7 +87,7 @@ class Login extends React.Component {
                         underlayColor='#04c1ae'
                         onPress={this.handleSubmit}
                     >
-                        <Text style={styles.submitText}>登录</Text>
+                        <View><Text style={styles.submitText}>登录</Text></View>
                     </TouchableHighlight>
                 </View>
             </FormContainer>
@@ -102,6 +101,7 @@ class Login extends React.Component {
 
     inputFocused (refName, actionLog) {
         ActionUtil.setAction(actionLog);
+
         setTimeout(() => {
             let scrollResponder = this.refs.formContainer.refs.scrollView.getScrollResponder();
 
