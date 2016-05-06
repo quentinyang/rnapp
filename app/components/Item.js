@@ -56,7 +56,7 @@ export default class Item extends Component {
                     onPress={this._handleAdd}
                     style={styles.flex}
                     >
-                    <View><Text style={[styles.flex, styles.contentText, styles.addColor]}>添加小区</Text></View>
+                    <View style={styles.flex}><Text style={[styles.flex, styles.contentText, styles.addColor]}>添加小区</Text></View>
                 </TouchableWithoutFeedback>
             </View>
         )
