@@ -1,6 +1,6 @@
 rootProject.name = 'fy360'
 
-include ':app', ':react-native-code-push'
+include ':app', ':react-native-code-push', ':deviceid'
 project(':react-native-code-push').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-code-push/android/app')
 
 // react-native-device-info dependency
@@ -10,3 +10,7 @@ project(':react-native-device-info').projectDir = new File(rootProject.projectDi
 // getui dependency
 include ':getui'
 project(':getui').projectDir = new File(rootProject.projectDir, '../node_modules/nuke/source-native/GeTui/Android/getui')
+
+// device id dependency
+include ':deviceid'
+project(':deviceid').projectDir = new File(rootProject.projectDir, '../node_modules/nuke/native-libs/DeviceID/android/deviceid')
