@@ -41,9 +41,9 @@ class Main extends React.Component {
                 style={styles.drawerContent}
                 onPress={this.onPressDrawerItem.bind(this, index)}
             >
-                <Text style={styles.drawerText}>
+                <View><Text style={styles.drawerText}>
                     {text}
-                </Text>
+                </Text></View>
             </TouchableOpacity>
         )
     }

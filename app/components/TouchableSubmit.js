@@ -22,7 +22,7 @@ export default class TouchableSubmit extends Component {
                 underlayColor='#04c1ae'
                 {...props}
             >
-                <Text style={styles.submitText}>{submitText}</Text>
+                <View><Text style={styles.submitText}>{submitText}</Text></View>
             </TouchableHighlight>
         )
     }

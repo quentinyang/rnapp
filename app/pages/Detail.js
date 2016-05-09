@@ -74,7 +74,7 @@ export default class Detail extends Component {
                                 underlayColor="#fff"
                                 onPress={this._goPage.bind(this, HouseInputContainer, actionType.BA_DETAIL_CASH)}
                             >
-                                <Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text>
+                                <View><Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text></View>
                             </TouchableHighlight>
                             {/*
                              <TouchableHighlight
@@ -82,7 +82,7 @@ export default class Detail extends Component {
                                  underlayColor="#fff"
                                  onPress={this._goPage.bind(this, UserContainer, actionType.BA_DETAIL_RECHANGE)}
                              >
-                                 <Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text>
+                                <View><Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text></View>
                              </TouchableHighlight>
                             */}
 
@@ -101,7 +101,7 @@ export default class Detail extends Component {
                                 underlayColor="#fff"
                                 onPress={this._callFeedback.bind(this, callInfo.get('washId'), 1, actionType.BA_DETAIL_ONSALE)}
                             >
-                                <Text style={{color: "#04C1AE", textAlign: "center"}}>在卖</Text>
+                                <View><Text style={{color: "#04C1AE", textAlign: "center"}}>在卖</Text></View>
                             </TouchableHighlight>
 
                             <View style={styles.hLine}></View>
@@ -113,7 +113,7 @@ export default class Detail extends Component {
                                 underlayColor="#fff"
                                 onPress={this._callFeedback.bind(this, callInfo.get('washId'), 3, actionType.BA_DETAIL_UNCONNECT)}
                             >
-                                <Text style={{color: "#04C1AE", textAlign: "center"}}>联系不上</Text>
+                                <View><Text style={{color: "#04C1AE", textAlign: "center"}}>联系不上</Text></View>
                             </TouchableHighlight>
 
                             <TouchableHighlight
@@ -121,7 +121,7 @@ export default class Detail extends Component {
                                 underlayColor="#fff"
                                 onPress={this._callFeedback.bind(this, callInfo.get('washId'), 2, actionType.BA_DETAIL_FALSE)}
                             >
-                                <Text style={{color: "#04C1AE", textAlign: "center"}}>虚假/不卖/已卖</Text>
+                                <View><Text style={{color: "#04C1AE", textAlign: "center"}}>虚假/不卖/已卖</Text></View>
                             </TouchableHighlight>
 
                         </View>
@@ -183,7 +183,13 @@ export default class Detail extends Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.clearHouseDetailPage();
+        let {route, actions, actionsNavigation} = this.props;
+        actions.clearHouseDetailPage();
+        if(route.from == 'houseDetail') {
+            actionsNavigation.detailPopRoute();
+        } else if(route.from == 'houseList') {
+            actionsNavigation.listPopRoute();
+        }
     }
 
     _goPage(component, actionLog) {
@@ -252,9 +258,9 @@ export default class Detail extends Component {
                     underlayColor="#fff"
                     onPress={this._handleMoreHouseList}
                 >
-                    <Text style={styles.moreText}>
+                    <View><Text style={styles.moreText}>
                         查看更多
-                    </Text>
+                    </Text></View>
                 </TouchableHighlight>
             </View>
             :
@@ -285,11 +291,12 @@ export default class Detail extends Component {
 
     _onItemPress = (item) => {
         ActionUtil.setAction(actionType.BA_DETAIL_SAMECOM_DETAIL);
-        let {navigator} = this.props;
-
-        navigator.replace({
+        let {navigator, actionsNavigation} = this.props;
+        actionsNavigation.detailPushRoute();
+        navigator.push({
             component: DetailContainer,
             name: 'houseDetail',
+            from: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
             backLog: actionType.BA_DETAIL_RETURN,
@@ -300,7 +307,7 @@ export default class Detail extends Component {
 
     _handleMoreHouseList = () => {
         ActionUtil.setAction(actionType.BA_DETAIL_COMMUNITYHOUSE);
-        let {route, navigator, actionsHouseList} = this.props,
+        let {route, navigator, actionsHouseList, actionsNavigation} = this.props,
             {item} = route;
 
         actionsHouseList.filterCommunityNameChanged(item.get('community_id'), item.get('community_name'));
@@ -309,9 +316,11 @@ export default class Detail extends Component {
             community_id: item.get('community_id')
         });
 
-        navigator.replace({
+        actionsNavigation.detailPushRoute();
+        navigator.push({
             component: HouseListContainer,
             name: 'houseList',
+            from: 'houseDetail',
             title: '房源列表',
             hideNavBar: true,
             communityName: item.get('community_name'),

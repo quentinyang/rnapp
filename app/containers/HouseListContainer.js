@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/houseList';
 import HouseList from '../pages/HouseList';
+import * as actionsNavigation from '../actions/navigation';
 
 class HouseListContainer extends Component {
     constructor(props) {
@@ -27,7 +28,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        actions: bindActionCreators(actions, dispatch),
+        actionsNavigation: bindActionCreators(actionsNavigation, dispatch)
     }
 }
 

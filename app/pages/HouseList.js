@@ -166,8 +166,13 @@ export default class HouseList extends Component {
     }
 
     componentWillUnmount() {
-        let {actions} = this.props;
+        let {actions, actionsNavigation, route} = this.props;
         actions.houseListPageCleared();
+        if(route.from == 'houseDetail') {
+            actionsNavigation.detailPopRoute();
+        } else if(route.from == 'houseList') {
+            actionsNavigation.listPopRoute();
+        }
     }
 
     _renderRow = (rowData: any, sectionID: number, rowID: number) => {
@@ -194,9 +199,10 @@ export default class HouseList extends Component {
     _renderFooter = () => {
         let {houseData} = this.props;
         let pager = houseData.get('pager');
+        let propertiesLength = houseData.get('properties').size;
 
         return (
-                Number(pager.get('current_page')) == Number(pager.get('last_page')) ?
+                (Number(pager.get('current_page')) == Number(pager.get('last_page')) || (Number(pager.get('current_page')) > 0 && propertiesLength < 10 )) ?
                     <View style={styles.listFooter}>
                         <Text style={styles.noData}>已经没有数据了！</Text>
                     </View>
@@ -225,10 +231,11 @@ export default class HouseList extends Component {
 
     _onItemPress = (item) => {
         ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_CLICKDETAIL);
-        let {navigator} = this.props;
-
+        let {navigator, actionsNavigation} = this.props;
+        actionsNavigation.listPushRoute();
         navigator.push({
             component: DetailContainer,
+            from: 'houseList',
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,

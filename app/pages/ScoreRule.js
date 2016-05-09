@@ -42,14 +42,14 @@ export default class ScoreRule extends Component {
                     underlayColor='#04c1ae'
                     onPress={this.lookHouse}
                 >
-                    <Text style={[styles.sucButtonText, styles.fontWhite]}>立即看房</Text>
+                    <View><Text style={[styles.sucButtonText, styles.fontWhite]}>立即看房</Text></View>
                 </TouchableHighlight>
                 <TouchableHighlight
                     style={[styles.sucButton, styles.backgroundWhite]}
                     underlayColor='#fff'
                     onPress={this.continueInput}
                 >
-                    <Text style={[styles.sucButtonText, styles.fontGreen]}>试试发房</Text>
+                    <View><Text style={[styles.sucButtonText, styles.fontGreen]}>试试发房</Text></View>
                 </TouchableHighlight>
             </View>
         )

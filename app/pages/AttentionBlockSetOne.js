@@ -45,9 +45,9 @@ export default class AttentionBlockSetOne extends Component {
                         underlayColor="#04c1ae"
                         onPress={this._conformCommunitySet}
                     >
-                        <Text style={styles.conformText}>
+                        <View><Text style={styles.conformText}>
                             确定
-                        </Text>
+                        </Text></View>
                     </TouchableHighlight>
                 </View>
             </View>
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
         width: 9,
         height: 18
     },
-    
+
     header: {
         width: 65
     },

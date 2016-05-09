@@ -26,7 +26,7 @@ export default class AttentionBlockSet extends Component {
             <View style={[styles.flex, styles.pageMarginBottom]}>
                 <View style={[styles.right, styles.marginTop]}>
                     <TouchableWithoutFeedback onPress={this._skip}>
-                        <Text style={[styles.topSubHeader, styles.skip]}>跳过</Text>
+                        <View><Text style={[styles.topSubHeader, styles.skip]}>跳过</Text></View>
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={styles.topMsg}>
@@ -46,9 +46,9 @@ export default class AttentionBlockSet extends Component {
                         underlayColor="#04c1ae"
                         onPress={this._conformBlockSet}
                     >
-                        <Text style={styles.conformText}>
+                        <View><Text style={styles.conformText}>
                             确定
-                        </Text>
+                        </Text></View>
                     </TouchableHighlight>
                 </View>
             </View>

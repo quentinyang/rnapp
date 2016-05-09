@@ -31,7 +31,7 @@ export default class ContactItem extends Component {
                             ? <View style={[styles.row, styles.top]}>
                                   <Text numberOfLines={1} style={styles.bottomMsg}>电话:</Text>
                                   <TouchableHighlight underlayColor="#fff" onPress={this._callSeller.bind(null, item.get('seller_phone'))}>
-                                      <Text style={[styles.bottomMsg, styles.green]}>{item.get('seller_phone')}</Text>
+                                      <View><Text style={[styles.bottomMsg, styles.green]}>{item.get('seller_phone')}</Text></View>
                                   </TouchableHighlight>
                                   <Text style={styles.bottomMsg}>{'(' + item.get('seller_name') + ')'}</Text>
                               </View>

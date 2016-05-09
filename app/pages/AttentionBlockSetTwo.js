@@ -25,7 +25,7 @@ export default class AttentionBlockSetTwo extends Component {
                 {
                     districtBlockList.toJS().length > 0 ?
                     <Tab dataArr={districtBlockList}
-                         selectedArr={districtBlockSelect} 
+                         selectedArr={districtBlockSelect}
                          maxSelected={5}
                          onHandleBlockSelected={this._onHandleBlockSelected}/>
                     : <View style={styles.flex}></View>
@@ -36,9 +36,9 @@ export default class AttentionBlockSetTwo extends Component {
                         underlayColor="#04c1ae"
                         onPress={this._conformBlockSet}
                     >
-                        <Text style={styles.conformText}>
+                        <View><Text style={styles.conformText}>
                             确定
-                        </Text>
+                        </Text></View>
                     </TouchableHighlight>
                 </View>
             </View>

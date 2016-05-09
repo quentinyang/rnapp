@@ -3,6 +3,7 @@
 import { combineReducers } from 'redux';
 import * as types from '../constants/HouseList';
 import Immutable from 'immutable';
+import navigation from './navigation';
 
 let initialState = {
     properties: [],
@@ -14,7 +15,7 @@ let initialState = {
     }
 };
 
-function houseData(state = Immutable.fromJS(initialState), action) {
+function houseData(state, action) {
     switch(action.type) {
         case types.HOUSE_FETCHED:
             return Immutable.fromJS(action.houseList);
@@ -55,7 +56,7 @@ let initFilterData = {
     ]
 };
 
-function filterData(state = Immutable.fromJS(initFilterData), action) {
+function filterData(state, action) {
     switch(action.type) {
         case types.HOUSE_FILTER_FETCHED:
             return Immutable.fromJS(action.filterList);
@@ -78,7 +79,7 @@ let initQueryParams = {
     keyword: ''
 };
 
-function queryParamsData(state = Immutable.fromJS(initQueryParams), action) {
+function queryParamsData(state, action) {
     switch(action.type) {
         case types.ONLY_VERIFY_CHANGED:
             return state.set('only_verify', action.onlyVerify);
@@ -112,7 +113,7 @@ let initUIData = {
     autocompleteView: false
 };
 
-function uiData(state = Immutable.fromJS(initUIData), action) {
+function uiData(state, action) {
     switch(action.type) {
         case types.FILTER_ITEM_PRESSED:
             return state.set('tabType', action.item);
@@ -150,7 +151,7 @@ let initCommunityData = {
     results: [],
 };
 
-function communityData(state = Immutable.fromJS(initCommunityData), action) {
+function communityData(state, action) {
     switch(action.type) {
         case types.HOUSE_LIST_SEARCH_HOUSE_FETCHED:
             return state.set('results', Immutable.fromJS(action.communityList));
@@ -168,10 +169,22 @@ function communityData(state = Immutable.fromJS(initCommunityData), action) {
     }
 }
 
-export default combineReducers({
-    houseData,
-    filterData,
-    queryParamsData,
-    uiData,
-    communityData
-});
+let base = {
+    houseData: Immutable.fromJS(initialState),
+    filterData: Immutable.fromJS(initFilterData),
+    queryParamsData: Immutable.fromJS(initQueryParams),
+    uiData: Immutable.fromJS(initUIData),
+    communityData: Immutable.fromJS(initCommunityData)
+};
+
+function houseList(state, action) {
+    return {
+        houseData: houseData(state.houseData, action),
+        filterData: filterData(state.filterData, action),
+        queryParamsData: queryParamsData(state.queryParamsData, action),
+        uiData: uiData(state.uiData, action),
+        communityData: communityData(state.communityData, action)
+    };
+}
+
+export default navigation(houseList, base, 'houseList');
