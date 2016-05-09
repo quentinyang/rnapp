@@ -32,6 +32,7 @@ var mobileAgent = (function() {
             osv: deviceInfo.systemVersion,//操作系统版本
             // dvid 设备ID(DeviceID)，安卓:用IMEI+Mac地址表示，e.g.:447769804451095+c5ab204dc58739c482f413d2a22de442；
             // IOS:用udid表示，举例:8A9B2903-B0D8-4137-A8BC-5C7F32CE9F04
+            dvinfo: deviceInfo.deviceInfo,
             dvid: deviceInfo.deviceId,
             // idfa optional, iOS 广告标志符，android 无此字段
             idfa: ''

@@ -6,6 +6,7 @@ var deviceInfo = {
     uniqueId: DeviceInfo.getUniqueID(),  // e.g. FCDBD8EF-62FC-4ECB-B2F5-92C9E79AC7F9
     manufacturer: DeviceInfo.getManufacturer(),  // e.g. Apple
     model: DeviceInfo.getModel(),  // e.g. iPhone 6
+    deviceInfo: DeviceInfo.getDeviceId(),  // e.g. iPhone7.2 / or the board on Android e.g. goldfish
     deviceId: DeviceId.getDeviceId(),
     systemName: DeviceInfo.getSystemName(),  // e.g. iPhone OS
     systemVersion: DeviceInfo.getSystemVersion(),  // e.g. 9.0
