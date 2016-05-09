@@ -50,6 +50,7 @@ let urls = {
     app: {
         config: HOST + 'update/push',
         deletePush: HOST + 'delete/push',
+        setConfig: HOST + 'configs'
     }
 }
 
