@@ -21,7 +21,7 @@ function appData(state = Immutable.fromJS(initialState), action) {
             return state.set('msg', action.msg);
             break;
         case types.APP_CONFIG:
-            return state.set('config', action.appConfig);
+            return state.set('config', Immutable.fromJS(action.appConfig));
             break;
         case types.CLOSE_UPDATE_MODAL:
             return state.setIn(['config', 'showUpdateModal'], action.visible);
