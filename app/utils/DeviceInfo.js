@@ -1,11 +1,12 @@
 var DeviceInfo = require('react-native-device-info');
+import { DeviceId } from 'nuke'
 
 var deviceInfo = {
     // * note this is IDFV on iOS so it will change if all apps from the current apps vendor have been previously uninstalled
     uniqueId: DeviceInfo.getUniqueID(),  // e.g. FCDBD8EF-62FC-4ECB-B2F5-92C9E79AC7F9
     manufacturer: DeviceInfo.getManufacturer(),  // e.g. Apple
     model: DeviceInfo.getModel(),  // e.g. iPhone 6
-    deviceId: DeviceInfo.getDeviceId(),  // e.g. iPhone7.2 / or the board on Android e.g. goldfish
+    deviceId: DeviceId.getDeviceId(),
     systemName: DeviceInfo.getSystemName(),  // e.g. iPhone OS
     systemVersion: DeviceInfo.getSystemVersion(),  // e.g. 9.0
     bundleId: DeviceInfo.getBundleId(),  // e.g. com.learnium.mobile

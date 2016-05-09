@@ -159,6 +159,7 @@ dependencies {
 
     // custom getui
     compile project(':getui')
+    compile project(':deviceid')
 
     compile project(":react-native-device-info")
     compile fileTree(dir: "node_modules/react-native-device-info/android/libs", include: ["*.jar"])

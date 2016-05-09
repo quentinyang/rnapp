@@ -27,6 +27,7 @@ import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.umeng.analytics.MobclickAgent;
 
 import com.xinyi.fy360.getui.GeTuiManager;
+import com.xinyi.fy365.deviceid.DeviceIDManager;
 
 public class MainActivity extends ReactActivity {
 
@@ -80,6 +81,7 @@ public class MainActivity extends ReactActivity {
                 new MainReactPackage(),
                 new ActionPackage(),
                 new GeTuiManager(),
+                new DeviceIDManager(),
                 this._codePush.getReactPackage()
         );
     }
