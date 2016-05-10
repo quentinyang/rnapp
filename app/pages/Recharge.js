@@ -9,6 +9,7 @@ import {
 var Alipay = require('react-native').NativeModules.Alipay;
 var { NativeAppEventEmitter } = require('react-native');
 import RechargeSuccessContainer from "../containers/RechargeSuccessContainer";
+import {tradeService} from '../service/payService';
 
 export default class Recharge extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ export default class Recharge extends Component {
                 automaticallyAdjustContentInsets={false}
             >
                 <View style={styles.choiceBox}>
-                    <Text>选择充值金额</Text>
+                    <Text>选择充值面额</Text>
                     <View style={styles.priceBox}>
                         <TouchableWithoutFeedback onPress={() => this.choosePrice(10)}>
                             <View style={[styles.priceItem, this.state.price == 10? styles.selectedBorder: null]}>
@@ -38,16 +39,22 @@ export default class Recharge extends Component {
                             </View>
                         </TouchableWithoutFeedback>
                         <TouchableWithoutFeedback onPress={() => this.choosePrice(50)}>
-                            <View style={[styles.priceItem, this.state.price == 50? styles.selectedBorder: null]}>
+                            <View style={[styles.priceItem, {marginRight: 0}, this.state.price == 50? styles.selectedBorder: null]}>
                                 <Text style={this.state.price == 50? styles.selectedFont: null}>50积分</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
-                <View><Text>支付宝支付</Text></View>
+                <View style={styles.payWay}>
+                    <View style={styles.payLeft}>
+                        <Image source={require('../images/alipaylogo.png')} style={styles.aliImage} />
+                        <Text>支付宝支付: <Text style={styles.colorRed}>{this.state.price}元</Text></Text>
+                    </View>
+                    <Image source={require('../images/paySelected.png')} style={styles.payWayImage} />
+                </View>
                 <TouchableHighlight style={styles.submitButton} onPress={this.submitPrice}>
                     <View style={styles.submitBox}>
-                        <Text style={styles.submitFont}>立即充值<Text>{this.state.price}元</Text></Text>
+                        <Text style={styles.submitFont}>立即充值</Text>
                     </View>
                 </TouchableHighlight>
 
@@ -83,7 +90,22 @@ export default class Recharge extends Component {
     }
 
     submitPrice = () => {
-        Alipay.addEvent('price', '10元');
+        let data = {
+            subject: '房源360积分充值',
+            body: '房源360'+this.state.price+'积分充值',
+            total_fee: this.state.price
+        };
+
+        Alipay.addEvent(data.total_fee);
+
+        tradeService({body:data})
+        .then((oData) => {
+            Alipay.addEvent(oData.data);
+        })
+        .catch((data) => {
+
+        })
+
     };
 }
 
@@ -99,11 +121,12 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         marginVertical: 20
     },
     priceItem: {
-        width: 100,
+        flex: 1,
+        marginRight: 8,
         height: 50,
         borderWidth: 1/PixelRatio.get(),
         borderColor: '#ccc',
@@ -117,6 +140,34 @@ const styles = StyleSheet.create({
     },
     selectedFont: {
         color: '#04c1ae'
+    },
+    payWay: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 15,
+        paddingVertical: 10,
+        backgroundColor: '#fff',
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: '#d9d9d9'
+    },
+    payLeft: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    colorRed: {
+        color: '#ff6d4b'
+    },
+    aliImage: {
+        marginRight: 8,
+        width: 27,
+        height: 27
+    },
+    payWayImage: {
+        width: 21,
+        height: 21
     },
     submitButton: {
         margin: 20

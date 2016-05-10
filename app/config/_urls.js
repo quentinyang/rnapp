@@ -51,6 +51,9 @@ let urls = {
         config: HOST + 'update/push',
         deletePush: HOST + 'delete/push',
         setConfig: HOST + 'configs'
+    },
+    pay: {
+        order: 'http://localhost:8081/app/fakedata/get-order.json'
     }
 }
 
