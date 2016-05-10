@@ -84,6 +84,7 @@ class App extends Component {
     render() {
         let {component} = this.state;
         let {appData, actionsApp} = this.props;
+        let isAndroid = (Platform.OS == "android");
 
         return (
             <View style={styles.flex}>
@@ -103,20 +104,13 @@ class App extends Component {
                         </View>
                     </View>
                 </Modal>
-
+                { isAndroid ?
                 <Modal visible={appData.get('config').get('showUpdateModal')} transparent={true}>
                     <View style={styles.bgWrap}>
                         <View style={styles.updateContentContainer}>
                             <View style={[styles.alignItems, styles.justifyContent]}>
                                 <Image style={styles.updateAppImage} source={require('../images/update_app.png')}/>
                                 <Text style={styles.updateModalHeader}>有新版本啦～</Text>
-                            </View>
-                            <View style={[styles.alignItems, styles.justifyContent]}>
-                                <View>
-                                    <Text style={[styles.updateModalText]}>1、新上房源、推送通知</Text>
-                                    <Text style={[styles.updateModalText]}>2、看房源更方便</Text>
-                                    <Text style={[styles.updateModalText]}>3、修复已有bug</Text>
-                                </View>
                             </View>
                             <View style={[styles.row, styles.updateWrap]}>
                                 <TouchableHighlight
@@ -140,7 +134,7 @@ class App extends Component {
                             </View>
                         </View>
                     </View>
-                </Modal>
+                </Modal> : null }
 
                 {
                     component ?
@@ -221,9 +215,11 @@ class App extends Component {
     componentDidMount() {
         let {actionsApp} = this.props;
 
-        InteractionManager.runAfterInteractions(() => {
-            actionsApp.setAppConfig();
-        });
+        if(Platform == "android") {
+            InteractionManager.runAfterInteractions(() => {
+                actionsApp.setAppConfig();
+            });
+        }
 
         GeTui.getClientId((cId) => {
             this._clientIdReceived(cId)
