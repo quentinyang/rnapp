@@ -80,9 +80,8 @@ export function fetchScoreModalStatus() {
         serviceAction(dispatch)({
             service: fetchScoreModalStatusService,
             success: function(oData) {
-                console.dir(oData);
                 dispatch(scoreModalStatusFetched({
-                    visible: Number(oData.is_notify) || false,
+                    visible: Number(oData.is_notify) ? true : false,
                     score: oData.point || 8
                 }))
             },
