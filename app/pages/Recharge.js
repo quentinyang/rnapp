@@ -65,8 +65,8 @@ export default class Recharge extends Component {
     componentWillMount() {
         this.results = NativeAppEventEmitter.addListener(
             'EventReminder',
-            (status) => {
-                if(status == 9000) {
+            (data) => {
+                if(data.status != 9000) {
                     Alert.alert('', '支付失败，请稍后重试', [{text: '确定'}]);
                 } else {
                     this.props.navigator.push({
@@ -93,10 +93,9 @@ export default class Recharge extends Component {
         let data = {
             subject: '房源360积分充值',
             body: '房源360'+this.state.price+'积分充值',
-            total_fee: this.state.price
+            total_fee: this.state.price,
+            pay_type: 1
         };
-
-        Alipay.addEvent(data.total_fee);
 
         tradeService({body:data})
         .then((oData) => {
