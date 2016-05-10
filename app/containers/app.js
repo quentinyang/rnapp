@@ -474,12 +474,6 @@ let styles = StyleSheet.create({
     updateWrap: {
         marginTop: 20
     },
-    updateModalText: {
-        color: '#8d8c92',
-        fontSize: 12,
-        paddingBottom: 1
-
-    },
     updateModalHeader: {
         color: '#3e3e3e',
         fontSize: 19,
