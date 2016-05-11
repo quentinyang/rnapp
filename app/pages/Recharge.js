@@ -93,7 +93,7 @@ export default class Recharge extends Component {
         let data = {
             subject: '房源360积分充值',
             body: '房源360'+this.state.price+'积分充值',
-            total_fee: this.state.price,
+            total_fee: 0.01,
             pay_type: 1
         };
 

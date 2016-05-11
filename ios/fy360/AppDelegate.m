@@ -9,13 +9,14 @@
 
 #import "AppDelegate.h"
 
-#import "RCTRootView.h"
 
 #import "CodePush.h"
 
 #import "MobClick.h"
 
 #import "GeTui.h"
+
+#import "Alipay.h"
 
 #import <AlipaySDK/AlipaySDK.h>
 
@@ -33,7 +34,8 @@ NSString * const UMengChannelId = @"";
 
 @interface AppDelegate ()
 
-@property (nonatomic, strong) RCTRootView *rootView;
+@property (nonatomic, strong) Alipay *alipay;
+
 
 @end
 
@@ -42,6 +44,7 @@ NSString * const UMengChannelId = @"";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
+
   
   NSLog(@"sdfsdfsdf");
   
@@ -97,13 +100,15 @@ NSString * const UMengChannelId = @"";
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
 
+
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = self.rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
-  
+  [[Alipay alipay] application:application didFinishLaunchingWithOptions:launchOptions];
+
   // [1]:使用APPID/APPKEY/APPSECRENT创建个推实例
   // 该方法需要在主线程中调用
   [self startSdkWith:kGtAppId appKey:kGtAppKey appSecret:kGtAppSecret];
@@ -275,26 +280,13 @@ NSString * const UMengChannelId = @"";
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation {
-  
-  if ([url.host isEqualToString:@"safepay"]) {
-    //跳转支付宝钱包进行支付，处理支付结果
-    [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-      NSLog(@"oldresult = %@",resultDic);
-    }];
-  }
+         annotation:(id)annotation{
+  [[Alipay alipay] application:application openURL:url sourceApplication:sourceApplication annotation:sourceApplication];
   return YES;
 }
 
-// NOTE: 9.0以后使用新API接口
-- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
-{
-  if ([url.host isEqualToString:@"safepay"]) {
-    //跳转支付宝钱包进行支付，处理支付结果
-    [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-      NSLog(@"newresult = %@",resultDic);
-    }];
-  }
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options{
+  [[Alipay alipay] application:app openURL:url options:options];
   return YES;
 }
 
