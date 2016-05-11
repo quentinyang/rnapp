@@ -2,7 +2,7 @@
 
 import {React, Component, View, Text, StyleSheet, Navigator, TouchableOpacity, Image} from 'nuke';
 import HomeContainer from '../containers/HomeContainer';
-import HouseInputContainer from '../containers/HouseInputContainer';
+import HouseInputEnterContainer from '../containers/HouseInputEnterContainer';
 import UserContainer from '../containers/UserContainer';
 
 let _navigator = null;
@@ -27,7 +27,7 @@ export default class TabView extends Component {
                 return <HomeContainer navigator={navigator} route={routeFromPage || route} rout='全部房源'/>;
                 break;
             case 1:
-                return <HouseInputContainer navigator={navigator} route={routeFromPage || route} rout='发房'/>;
+                return <HouseInputEnterContainer navigator={navigator} route={routeFromPage || route} rout='发房'/>;
                 break;
             case 2:
                 return <UserContainer navigator={navigator} route={routeFromPage || route} rout='我的'/>;
