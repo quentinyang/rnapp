@@ -31,6 +31,10 @@ class HouseInput extends Component {
         this.pageId = actionType.BA_SEND;
         ActionUtil.setActionWithExtend(actionType.BA_SEND_ONVIEW, {"bp": this.props.route.bp});
         this.height = Dimensions.get('window').height;
+
+        this.state = {
+            houseIcon: this.props.route.name == 'home'? true: false
+        };
     }
 
     render() {
@@ -39,6 +43,17 @@ class HouseInput extends Component {
             hideHeader = route && route.hideHeader;
 
         return (
+            this.state.houseIcon ?
+            <View style={[styles.container, styles.center]}>
+                <TouchableHighlight onPress={this.gotoInput}>
+                    <Image
+                        style={styles.houseIcon}
+                        source={require("../images/release_house_btn.png")}
+                    />
+                </TouchableHighlight>
+                <Text style={styles.houseAnnotation}>发房得<Text style={styles.houseScore}>7~15</Text>积分</Text>
+            </View>
+            :
             <View style={styles.container}>
             {controller.get('search') ?
                 <CommunitySearch
@@ -235,7 +250,14 @@ class HouseInput extends Component {
             }
             </View>
         );
+
+
     }
+
+    gotoInput = () => {
+        ActionUtil.setAction(actionType.BA_SEND_SENDBUTTON);
+        this.setState({'houseIcon': false});
+    };
 
     singleAction(action, value) {
         this.props.actions[action](value);
@@ -471,6 +493,19 @@ let styles = StyleSheet.create({
     center: {
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    houseIcon: {
+        width: 165,
+        height: 165,
+    },
+    houseAnnotation: {
+        marginVertical: 30,
+        fontSize: 16,
+        color: '#8d8c92'
+    },
+    houseScore: {
+        fontWeight: 'bold',
+        color: '#ff6d4b'
     }
 })
 
