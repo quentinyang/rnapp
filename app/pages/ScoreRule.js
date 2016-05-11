@@ -11,7 +11,7 @@ import {
 } from 'nuke';
 
 import HouseListContainer from '../containers/HouseListContainer';
-import HouseInputContainer from '../containers/HouseInputContainer';
+import HouseInputEnterContainer from '../containers/HouseInputEnterContainer';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -58,7 +58,7 @@ export default class ScoreRule extends Component {
     continueInput = () => {
         ActionUtil.setAction(actionType.BA_FIRSTOPEN_SEND);
         this.props.navigator.push({
-            component: HouseInputContainer,
+            component: HouseInputEnterContainer,
             name: 'HouseInput',
             title: '发布房源',
             hideHeader: true,

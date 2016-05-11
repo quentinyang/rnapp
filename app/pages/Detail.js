@@ -4,7 +4,7 @@ import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, I
 import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
 import DetailContainer from '../containers/DetailContainer';
-import HouseInputContainer from '../containers/HouseInputContainer'
+import HouseInputEnterContainer from '../containers/HouseInputEnterContainer'
 import UserContainer from '../containers/UserContainer'
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
@@ -72,7 +72,7 @@ export default class Detail extends Component {
                             <TouchableHighlight
                                 style={[styles.btn, styles.borderBtn]}
                                 underlayColor="#fff"
-                                onPress={this._goPage.bind(this, HouseInputContainer, actionType.BA_DETAIL_CASH)}
+                                onPress={this._goPage.bind(this, HouseInputEnterContainer, actionType.BA_DETAIL_CASH)}
                             >
                                 <View><Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text></View>
                             </TouchableHighlight>

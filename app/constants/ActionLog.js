@@ -112,6 +112,8 @@ export const BA_SEND_ADDHPHONE = "101-300014"
 export const BA_SEND_FINISH = "101-300015"
 export const BA_SEND_HOUSE_SUCCESS = "101-300016"
 export const BA_SEND_HOUSE_FAIL = "101-300017"
+export const BA_SEND_SENDBUTTON = "101-300018"
+
 
 //发房成功页
 export const BA_SEND_SUCCESS = "101-320000"

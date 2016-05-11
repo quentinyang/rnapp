@@ -50,12 +50,6 @@ class HouseInput extends Component {
                 />
                 :
                 <View style={styles.layout}>
-                    {
-                        hideHeader == true ? null :
-                        (<Header title='发布房源'>
-                            <Text style={styles.headerRight} onPress={this.linkFn}>积分规则</Text>
-                        </Header>)
-                    }
 
                     <FormContainer
                         ref="formContainer"
