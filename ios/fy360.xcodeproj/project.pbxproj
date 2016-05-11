@@ -22,7 +22,8 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		2DD7FB6A1CACCD2900FD56F7 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD7FB691CACCD2900FD56F7 /* libRNDeviceInfo.a */; };
 		3BC13C281CBF702600D795FC /* libActionUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC13C271CBF6B7D00D795FC /* libActionUtil.a */; };
-		3BF2FBDB1CE07AEC00910972 /* libUUID.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF2FBDA1CE07ADA00910972 /* libUUID.a */; };
+		3BE977CF1CE31A7E00988AAA /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE977CC1CE31A7E00988AAA /* Keychain.m */; };
+		3BE977D01CE31A7E00988AAA /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE977CE1CE31A7E00988AAA /* UUID.m */; };
 		543246E61CC11A4400E24300 /* libGeTui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547ED1781CC1181800245AC3 /* libGeTui.a */; };
 		54C9C5521C9BE52E00914E77 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 54C9C5511C9BE52E00914E77 /* bundle */; };
 		6620FB961CAA91AB00BB2A3F /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */; };
@@ -121,13 +122,6 @@
 			remoteGlobalIDString = 3BC13B511CBE30C600D795FC;
 			remoteInfo = ActionUtil;
 		};
-		3BF2FBD91CE07ADA00910972 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3BF2FBD51CE07AD900910972 /* UUID.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3BFF62FF1CDC85CC000E8AA0;
-			remoteInfo = UUID;
-		};
 		547ED1771CC1181800245AC3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 547ED1731CC1181800245AC3 /* GeTui.xcodeproj */;
@@ -181,7 +175,10 @@
 		2DD7FB631CACCC4000FD56F7 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		2DD7FB691CACCD2900FD56F7 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRNDeviceInfo.a; path = "../../../../code/reading/ios/build/Build/Products/Debug-iphonesimulator/libRNDeviceInfo.a"; sourceTree = "<group>"; };
 		3BC13C221CBF6B7C00D795FC /* ActionUtil.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ActionUtil.xcodeproj; path = "../node_modules/nuke/native-libs/ActionUtil/ActionUtil.xcodeproj"; sourceTree = "<group>"; };
-		3BF2FBD51CE07AD900910972 /* UUID.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UUID.xcodeproj; path = "../node_modules/nuke/native-libs/DeviceID/UUID/UUID.xcodeproj"; sourceTree = "<group>"; };
+		3BE977CB1CE31A7E00988AAA /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
+		3BE977CC1CE31A7E00988AAA /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
+		3BE977CD1CE31A7E00988AAA /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
+		3BE977CE1CE31A7E00988AAA /* UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUID.m; sourceTree = "<group>"; };
 		547ED1731CC1181800245AC3 /* GeTui.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GeTui.xcodeproj; path = "../node_modules/nuke/source-native/GeTui/GeTui/GeTui.xcodeproj"; sourceTree = "<group>"; };
 		54C9C5511C9BE52E00914E77 /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -217,7 +214,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BF2FBDB1CE07AEC00910972 /* libUUID.a in Frameworks */,
 				543246E61CC11A4400E24300 /* libGeTui.a in Frameworks */,
 				3BC13C281CBF702600D795FC /* libActionUtil.a in Frameworks */,
 				6620FB961CAA91AB00BB2A3F /* libsqlite3.tbd in Frameworks */,
@@ -326,6 +322,7 @@
 		13B07FAE1A68108700A75B9A /* fy360 */ = {
 			isa = PBXGroup;
 			children = (
+				3BE977CA1CE31A7E00988AAA /* UUID */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -361,12 +358,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		3BF2FBD61CE07AD900910972 /* Products */ = {
+		3BE977CA1CE31A7E00988AAA /* UUID */ = {
 			isa = PBXGroup;
 			children = (
-				3BF2FBDA1CE07ADA00910972 /* libUUID.a */,
+				3BE977CB1CE31A7E00988AAA /* Keychain.h */,
+				3BE977CC1CE31A7E00988AAA /* Keychain.m */,
+				3BE977CD1CE31A7E00988AAA /* UUID.h */,
+				3BE977CE1CE31A7E00988AAA /* UUID.m */,
 			);
-			name = Products;
+			path = UUID;
 			sourceTree = "<group>";
 		};
 		547ED1741CC1181800245AC3 /* Products */ = {
@@ -396,7 +396,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				3BF2FBD51CE07AD900910972 /* UUID.xcodeproj */,
 				547ED1731CC1181800245AC3 /* GeTui.xcodeproj */,
 				3BC13C221CBF6B7C00D795FC /* ActionUtil.xcodeproj */,
 				66C2DF541CAE6DC9003A7F7B /* libMobClickLibrary.a */,
@@ -593,10 +592,6 @@
 					ProductGroup = 2DD7FB641CACCC4000FD56F7 /* Products */;
 					ProjectRef = 2DD7FB631CACCC4000FD56F7 /* RNDeviceInfo.xcodeproj */;
 				},
-				{
-					ProductGroup = 3BF2FBD61CE07AD900910972 /* Products */;
-					ProjectRef = 3BF2FBD51CE07AD900910972 /* UUID.xcodeproj */;
-				},
 			);
 			projectRoot = "";
 			targets = (
@@ -675,13 +670,6 @@
 			fileType = archive.ar;
 			path = libActionUtil.a;
 			remoteRef = 3BC13C261CBF6B7D00D795FC /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		3BF2FBDA1CE07ADA00910972 /* libUUID.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libUUID.a;
-			remoteRef = 3BF2FBD91CE07ADA00910972 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		547ED1781CC1181800245AC3 /* libGeTui.a */ = {
@@ -765,6 +753,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BE977D01CE31A7E00988AAA /* UUID.m in Sources */,
+				3BE977CF1CE31A7E00988AAA /* Keychain.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
