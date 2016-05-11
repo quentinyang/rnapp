@@ -215,7 +215,7 @@ class App extends Component {
     componentDidMount() {
         let {actionsApp} = this.props;
 
-        if(Platform == "android") {
+        if(Platform.OS == "android") {
             InteractionManager.runAfterInteractions(() => {
                 actionsApp.setAppConfig();
             });
