@@ -1,6 +1,6 @@
 import {React, Component, Text, View, TouchableWithoutFeedback, StyleSheet, Image, PixelRatio} from 'nuke';
 import RechargeContainer from "../containers/RechargeContainer";
-import UserContainer from '../containers/UserContainer';
+import TabViewContainer from '../containers/TabViewContainer';
 import Header from '../components/Header';
 
 export default class RechargeSuccess extends Component {
@@ -27,7 +27,8 @@ export default class RechargeSuccess extends Component {
         let {navigator} = this.props;
 
         navigator.push({
-            component: UserContainer,
+            component: TabViewContainer,
+            from: 'reCharge',
             name: 'user',
             title: '我的',
             hideNavBar: true

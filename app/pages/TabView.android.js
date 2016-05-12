@@ -66,6 +66,13 @@ export default class TabView extends Component {
             />
         );
     }
+
+    componentWillMount() {
+        if(this.props.route.from == 'reCharge') {
+            this.setState({tabIndex: 2});
+            this.props.actionsUser.fetchUserProfile({});
+        }
+    }
 }
 
 class TabBar extends Component {
