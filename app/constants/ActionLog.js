@@ -166,3 +166,13 @@ export const BA_FIRSTOPEN_DELETE = "101-111003"
 export const BA_FIRSTOPEN_FIND = "101-111004"
 export const BA_FIRSTOPEN_SEND = "101-111005"
 export const BA_FIRSTOPEN_RETURN = "101-111006"
+
+//充值
+export const BA_DEPOSIT = "101-800000"
+export const BA_DEPOSIT_ONVIEW = "101-800001"
+export const BA_DEPOSIT_TEN = "101-800002"
+export const BA_DEPOSIT_TWENTY = "101-800003"
+export const BA_DEPOSIT_FIFTY = "101-800004"
+export const BA_DEPOSIT_GO = "101-800005"
+export const BA_DEPOSIT_WATCH = "101-800006"
+export const BA_DEPOSIT_KNOW = "101-800007"

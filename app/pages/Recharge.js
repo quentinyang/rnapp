@@ -11,12 +11,18 @@ var { NativeAppEventEmitter } = require('react-native');
 import RechargeSuccessContainer from "../containers/RechargeSuccessContainer";
 import {tradeService} from '../service/payService';
 
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog';
+
 export default class Recharge extends Component {
     constructor(props) {
         super(props);
         this.state = {
             price: 10
         };
+
+        this.pageId = actionType.BA_DEPOSIT;
+        ActionUtil.setActionWithExtend(actionType.BA_DEPOSIT_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -28,17 +34,17 @@ export default class Recharge extends Component {
                 <View style={styles.choiceBox}>
                     <Text>选择充值面额</Text>
                     <View style={styles.priceBox}>
-                        <TouchableWithoutFeedback onPress={() => this.choosePrice(10)}>
+                        <TouchableWithoutFeedback onPress={() => this.choosePrice(10, actionType.BA_DEPOSIT_TEN)}>
                             <View style={[styles.priceItem, this.state.price == 10? styles.selectedBorder: null]}>
                                 <Text style={this.state.price == 10? styles.selectedFont: null}>10积分</Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.choosePrice(20)}>
+                        <TouchableWithoutFeedback onPress={() => this.choosePrice(20, actionType.BA_DEPOSIT_TWENTY)}>
                             <View style={[styles.priceItem, this.state.price == 20? styles.selectedBorder: null]}>
                                 <Text style={this.state.price == 20? styles.selectedFont: null}>20积分</Text>
                             </View>
                         </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.choosePrice(50)}>
+                        <TouchableWithoutFeedback onPress={() => this.choosePrice(50, actionType.BA_DEPOSIT_FIFTY)}>
                             <View style={[styles.priceItem, {marginRight: 0}, this.state.price == 50? styles.selectedBorder: null]}>
                                 <Text style={this.state.price == 50? styles.selectedFont: null}>50积分</Text>
                             </View>
@@ -67,7 +73,13 @@ export default class Recharge extends Component {
             'EventReminder',
             (data) => {
                 if(data.status != 9000) {
-                    Alert.alert('', '支付失败，请稍后重试', [{text: '确定'}]);
+                    Alert.alert('', '支付失败，请稍后重试',
+                        [{
+                            text: '确定', onPress: () => {
+                                ActionUtil.setAction(actionType.BA_DEPOSIT_KNOW);
+                            }
+                        }]
+                    );
                 } else {
                     this.props.navigator.push({
                         component: RechargeSuccessContainer,
@@ -85,11 +97,13 @@ export default class Recharge extends Component {
         this.results.remove();
     }
 
-    choosePrice(score) {
+    choosePrice(score, log) {
         this.setState({price: score});
+        ActionUtil.setAction(log);
     }
 
     submitPrice = () => {
+        ActionUtil.setAction(actionType.BA_DEPOSIT_GO);
         let data = {
             subject: '房源360积分充值',
             body: '房源360'+this.state.price+'积分充值',

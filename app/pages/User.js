@@ -87,7 +87,6 @@ class CashArea extends Component{
             url: 'https://api.fangyuan360.cn/my/withdrawals/'
         });
   };
-
 }
 
 
