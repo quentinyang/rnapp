@@ -36,8 +36,6 @@ class App extends Component {
             showModal: false
         };
 
-        this.setGeTuiOpenActionFlag = false;
-
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
         AsyncStorageComponent.multiGet([common.USER_TOKEN_KEY, common.USER_ID])
         .then((value) => {
@@ -230,7 +228,9 @@ class App extends Component {
             });
 
             this.setGeTuiOpenAction =  NativeAppEventEmitter.addListener('setGeTuiOpenAction', () => {
-                this.setGeTuiOpenActionFlag = true;
+                ActionUtil.setActionWithExtend(actionType.BA_PUSH_OPEN, {
+                    bp: actionType.BA_PUSH_PAGE
+                });
             });
         } else {
             DeviceEventEmitter.addListener('geTuiDataReceived', (notifData) => {
@@ -285,12 +285,6 @@ class App extends Component {
         let newNotifData = JSON.parse(notifData);
         let {actionsHome} = this.props;
 
-        if (this.setGeTuiOpenActionFlag && newNotifData.type == 1) {
-            this.setGeTuiOpenActionFlag = false;
-            ActionUtil.setActionWithExtend(actionType.BA_PUSH_OPEN, {
-                bp: actionType.BA_PUSH_PAGE
-            });
-        }
         switch(Number(newNotifData.type)) {
             case 1: // 普通推送
                 ActionUtil.setAction(actionType.BA_PUSH_RECIVED);
