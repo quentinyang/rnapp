@@ -430,6 +430,13 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				2DDF0AD91CDC908F00D261BE /* CoreMotion.framework */,
+				2DDF0AD71CDC908100D261BE /* CFNetwork.framework */,
+				2DDF0AD51CDC907900D261BE /* Foundation.framework */,
+				2DDF0AD31CDC904900D261BE /* UIKit.framework */,
+				2DDF0AD11CDC903D00D261BE /* CoreGraphics.framework */,
+				2DDF0ACF1CDC903500D261BE /* CoreText.framework */,
+				2DDF0ACD1CDC8FE800D261BE /* QuartzCore.framework */,
 				2DDF0AB91CDC8F9E00D261BE /* AlipaySDK.bundle */,
 				2DDF0ABA1CDC8F9E00D261BE /* AlipaySDK.framework */,
 				547ED1731CC1181800245AC3 /* GeTui.xcodeproj */,
@@ -438,6 +445,7 @@
 				66C2DF551CAE6DC9003A7F7B /* MobClick.h */,
 				2DD7FB631CACCC4000FD56F7 /* RNDeviceInfo.xcodeproj */,
 				6630589D1CA0F91D00F15BB8 /* libz.tbd */,
+				2DDF0ACB1CDC8FAF00D261BE /* libc++.tbd */,
 				6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */,
 				6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */,
 				66559B641CA2744C001E7AD9 /* index.ios.jsbundle */,
@@ -476,14 +484,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				2DDF0AD91CDC908F00D261BE /* CoreMotion.framework */,
-				2DDF0AD71CDC908100D261BE /* CFNetwork.framework */,
-				2DDF0AD51CDC907900D261BE /* Foundation.framework */,
-				2DDF0AD31CDC904900D261BE /* UIKit.framework */,
-				2DDF0AD11CDC903D00D261BE /* CoreGraphics.framework */,
-				2DDF0ACF1CDC903500D261BE /* CoreText.framework */,
-				2DDF0ACD1CDC8FE800D261BE /* QuartzCore.framework */,
-				2DDF0ACB1CDC8FAF00D261BE /* libc++.tbd */,
 				2DD7FB691CACCD2900FD56F7 /* libRNDeviceInfo.a */,
 				13B07FAE1A68108700A75B9A /* fy360 */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
