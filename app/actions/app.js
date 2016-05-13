@@ -44,7 +44,8 @@ export function setAppConfig() {
             service: setConfigService,
             success: function(oData) {
                 dispatch(appConfig({
-                    showUpdateModal: Number(oData.update) ? true : false
+                    showUpdateModal: Number(oData.update) ? true : false,
+                    showRecharge: Number(oData.recharge_switch) ? true: false
                 }));
             },
             error: function(oData) {

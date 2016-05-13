@@ -6,7 +6,12 @@ module.exports=function(){
         return ajax.post(urls.pay.order, data);
     }
 
+    function resultService(data) {
+        return ajax.post(urls.pay.result, data);
+    }
+
     return {
-        tradeService: tradeService
+        tradeService: tradeService,
+        resultService: resultService
     };
 }();

@@ -54,7 +54,8 @@ let urls = {
         setConfig: HOST + 'configs'
     },
     pay: {
-        order: HOST + 'recharge'
+        order: HOST + 'recharge',
+        result: HOST + 'recharge/notify'
     }
 }
 

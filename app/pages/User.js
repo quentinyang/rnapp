@@ -64,15 +64,17 @@ class CashArea extends Component{
 
   _triggerCharge = () => {
       ActionUtil.setAction(actionType.BA_MINE_RECHANGE);
-      let {navigator} = this.props;
-
+      let {navigator, appConfig} = this.props;
+      if(appConfig.get('showRecharge')) {
         navigator.push({
             component: RechargeContainer,
             name: 'recharge',
             title: '充值',
             hideNavBar: false
         });
-    //Alert.alert('温馨提示', '充值功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
+      } else {
+        Alert.alert('温馨提示', '充值功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
+      }
   };
 
   _triggerWithdraw = () => {
@@ -116,7 +118,7 @@ export default class User extends Component {
 
                   <View>
                     <Profile {...profileData}/>
-                    <CashArea navigator={this.props.navigator}/>
+                    <CashArea navigator={this.props.navigator} appConfig={this.props.appConfig}/>
                   </View>
 
                   <ListView

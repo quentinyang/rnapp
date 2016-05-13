@@ -215,11 +215,9 @@ class App extends Component {
     componentDidMount() {
         let {actionsApp} = this.props;
 
-        if(Platform.OS == "android") {
-            InteractionManager.runAfterInteractions(() => {
-                actionsApp.setAppConfig();
-            });
-        }
+        InteractionManager.runAfterInteractions(() => {
+            actionsApp.setAppConfig();
+        });
 
         GeTui.getClientId((cId) => {
             this._clientIdReceived(cId)

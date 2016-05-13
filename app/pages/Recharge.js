@@ -9,7 +9,7 @@ import {
 var Alipay = require('react-native').NativeModules.Alipay;
 var { NativeAppEventEmitter } = require('react-native');
 import RechargeSuccessContainer from "../containers/RechargeSuccessContainer";
-import {tradeService} from '../service/payService';
+import {tradeService, resultService} from '../service/payService';
 
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
@@ -22,6 +22,7 @@ export default class Recharge extends Component {
         };
 
         this.pageId = actionType.BA_DEPOSIT;
+        this.tradeId = '';
         ActionUtil.setActionWithExtend(actionType.BA_DEPOSIT_ONVIEW, {"bp": this.props.route.bp});
     }
 
@@ -69,10 +70,13 @@ export default class Recharge extends Component {
     }
 
     componentWillMount() {
+        let self = this;
         this.results = NativeAppEventEmitter.addListener(
             'EventReminder',
             (data) => {
-                if(data.status != 9000) {
+                let notifyData = Object.assign({}, data.resultDic, {out_trade_no: self.tradeId});
+                resultService({body:notifyData});
+                if(data.resultDic.resultStatus != 9000) {
                     Alert.alert('', '支付失败，请稍后重试',
                         [{
                             text: '确定', onPress: () => {
@@ -103,6 +107,7 @@ export default class Recharge extends Component {
     }
 
     submitPrice = () => {
+        let self = this;
         ActionUtil.setAction(actionType.BA_DEPOSIT_GO);
         let data = {
             subject: '房源360积分充值',
@@ -113,6 +118,7 @@ export default class Recharge extends Component {
 
         tradeService({body:data})
         .then((oData) => {
+            self.tradeId = oData.out_trade_no;
             Alipay.addEvent(oData.data);
         })
         .catch((data) => {

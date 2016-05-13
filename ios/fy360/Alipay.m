@@ -29,10 +29,10 @@ RCT_EXPORT_METHOD(addEvent:(NSString *)order)
   
   
   [[AlipaySDK defaultService] payOrder:order fromScheme:appScheme callback:^(NSDictionary *resultDic) {
-    NSString *status = [resultDic objectForKey:@"resultStatus"];
+    //NSString *status = [resultDic objectForKey:@"resultStatus"];
 
     [self.bridge.eventDispatcher sendAppEventWithName:@"EventReminder"
-                                                 body:@{@"status": status}];
+                                                 body:@{@"resultDic": resultDic}];
   }];
 }
 
@@ -53,10 +53,10 @@ RCT_EXPORT_METHOD(addEvent:(NSString *)order)
   if ([url.host isEqualToString:@"safepay"]) {
     //跳转支付宝钱包进行支付，处理支付结果
     [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-      NSString *status = [resultDic objectForKey:@"resultStatus"];
+     // NSString *status = [resultDic objectForKey:@"resultStatus"];
       
       [self.bridge.eventDispatcher sendAppEventWithName:@"EventReminder"
-                                                   body:@{@"status": status}];
+                                                   body:@{@"resultDic": resultDic}];
     }];
   }
   return YES;
@@ -68,10 +68,10 @@ RCT_EXPORT_METHOD(addEvent:(NSString *)order)
   if ([url.host isEqualToString:@"safepay"]) {
     //跳转支付宝钱包进行支付，处理支付结果
     [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-      NSString *status = [resultDic objectForKey:@"resultStatus"];
+      //NSString *status = [resultDic objectForKey:@"resultStatus"];
       
       [self.bridge.eventDispatcher sendAppEventWithName:@"EventReminder"
-                                                   body:@{@"status": status}];
+                                                   body:@{@"resultDic": resultDic}];
     }];
   }
   return YES;
