@@ -35,6 +35,9 @@ let urls = {
     },
     community: {
         list: HOST + 'communityList.json'
+    },
+    pay: {
+        order: HOST + 'get-order.json'
     }
 }
 

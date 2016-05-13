@@ -19,9 +19,11 @@ class UserContainer extends Component {
 }
 
 function mapStateToProps(state) {
+    const {appConfig} = state.app;
     const {userProfile} = state.user;
     return {
-        userProfile
+        userProfile,
+        appConfig
     }
 }
 

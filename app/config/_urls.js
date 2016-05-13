@@ -2,6 +2,7 @@
 
 // let HOST = 'http://360.master.stage.angejia.com/service/';
 // let HOST = 'http://360.master.dev.angejia.com/service/';
+// let HOST = 'http://360.feature-bureau-pay.dev.angejia.com/service/';
 let HOST = 'https://api.fangyuan360.cn/service/';
 
 let urls = {
@@ -51,6 +52,10 @@ let urls = {
         config: HOST + 'update/push',
         deletePush: HOST + 'delete/push',
         setConfig: HOST + 'configs'
+    },
+    pay: {
+        order: HOST + 'recharge',
+        result: HOST + 'recharge/notify'
     }
 }
 

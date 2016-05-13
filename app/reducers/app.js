@@ -6,7 +6,8 @@ import Immutable from 'immutable';
 
 let initialState = {
     config: {
-        showUpdateModal: false
+        showUpdateModal: false,
+        showRecharge: true,
     },
     auth: true,
     msg: ''
@@ -31,6 +32,21 @@ function appData(state = Immutable.fromJS(initialState), action) {
     }
 }
 
+let initialConfig = {
+    showRecharge: true,
+};
+
+function appConfig(state = Immutable.fromJS(initialConfig), action) {
+    switch(action.type) {
+        case types.APP_CONFIG:
+            return Immutable.fromJS(action.appConfig);
+            break;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
-    appData
+    appData,
+    appConfig
 });

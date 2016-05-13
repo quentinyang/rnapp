@@ -9,13 +9,16 @@
 
 #import "AppDelegate.h"
 
-#import "RCTRootView.h"
 
 #import "CodePush.h"
 
 #import "MobClick.h"
 
 #import "GeTui.h"
+
+#import "Alipay.h"
+
+#import <AlipaySDK/AlipaySDK.h>
 
 NSString *const NotificationCategoryIdent = @"ACTIONABLE";
 //NSString *const NotificationActionOneIdent = @"ACTION_ONE";
@@ -31,7 +34,8 @@ NSString * const UMengChannelId = @"";
 
 @interface AppDelegate ()
 
-@property (nonatomic, strong) RCTRootView *rootView;
+@property (nonatomic, strong) Alipay *alipay;
+
 
 @end
 
@@ -40,6 +44,7 @@ NSString * const UMengChannelId = @"";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
+
   
   NSLog(@"sdfsdfsdf");
   
@@ -85,7 +90,7 @@ NSString * const UMengChannelId = @"";
 //   jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
 
   #ifdef DEBUG
-    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+    jsCodeLocation = [NSURL URLWithString:@"http://192.168.164.119:8081/index.ios.bundle?platform=ios&dev=true"];
   #else
     jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
   #endif
@@ -95,13 +100,15 @@ NSString * const UMengChannelId = @"";
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
 
+
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = self.rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
-  
+  [[Alipay alipay] application:application didFinishLaunchingWithOptions:launchOptions];
+
   // [1]:使用APPID/APPKEY/APPSECRENT创建个推实例
   // 该方法需要在主线程中调用
   [self startSdkWith:kGtAppId appKey:kGtAppKey appSecret:kGtAppSecret];
@@ -268,6 +275,19 @@ NSString * const UMengChannelId = @"";
   [formatter setDateFormat:@"HH:mm:ss"];
   NSString *dateTime = [formatter stringFromDate:date];
   return dateTime;
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation{
+  [[Alipay alipay] application:application openURL:url sourceApplication:sourceApplication annotation:sourceApplication];
+  return YES;
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options{
+  [[Alipay alipay] application:app openURL:url options:options];
+  return YES;
 }
 
 @end

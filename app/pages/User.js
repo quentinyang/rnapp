@@ -9,6 +9,7 @@ import TouchWebContainer from "../containers/TouchWebContainer";
 import ContactHouseContainer from '../containers/ContactHouseContainer'
 import InputHouseContainer from '../containers/InputHouseContainer'
 import LoginContainer from '../containers/LoginContainer'
+import RechargeContainer from '../containers/RechargeContainer'
 import SettingContainer from '../containers/SettingContainer'
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
@@ -63,7 +64,17 @@ class CashArea extends Component{
 
   _triggerCharge = () => {
       ActionUtil.setAction(actionType.BA_MINE_RECHANGE);
-    Alert.alert('温馨提示', '充值功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
+      let {navigator, appConfig} = this.props;
+      if(appConfig.get('showRecharge')) {
+        navigator.push({
+            component: RechargeContainer,
+            name: 'recharge',
+            title: '充值',
+            hideNavBar: false
+        });
+      } else {
+        Alert.alert('温馨提示', '充值功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
+      }
   };
 
   _triggerWithdraw = () => {
@@ -78,7 +89,6 @@ class CashArea extends Component{
             url: 'https://api.fangyuan360.cn/my/withdrawals/'
         });
   };
-
 }
 
 
@@ -108,7 +118,7 @@ export default class User extends Component {
 
                   <View>
                     <Profile {...profileData}/>
-                    <CashArea navigator={this.props.navigator}/>
+                    <CashArea navigator={this.props.navigator} appConfig={this.props.appConfig}/>
                   </View>
 
                   <ListView

@@ -8,7 +8,7 @@
  */
 
 #import <UIKit/UIKit.h>
-
+#import "RCTRootView.h"
 
 // [Start] 集成个推SDK
 #import "GeTuiSdk.h"     // GetuiSdk头文件，需要使用的地方需要添加此代码
@@ -37,6 +37,7 @@
 // [End] 集成个推SDK
 
 //@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@property (nonatomic, strong) RCTRootView *rootView;
 
 @property (nonatomic, strong) UIWindow *window;
 
