@@ -23,6 +23,7 @@ export default class Recharge extends Component {
 
         this.pageId = actionType.BA_DEPOSIT;
         this.tradeId = '';
+        this.submitStatus = true;
         ActionUtil.setActionWithExtend(actionType.BA_DEPOSIT_ONVIEW, {"bp": this.props.route.bp});
     }
 
@@ -59,7 +60,7 @@ export default class Recharge extends Component {
                     </View>
                     <Image source={require('../images/paySelected.png')} style={styles.payWayImage} />
                 </View>
-                <TouchableHighlight style={styles.submitButton} onPress={this.submitPrice}>
+                <TouchableHighlight underlayColor='transparent' style={styles.submitButton} onPress={this.submitPrice}>
                     <View style={styles.submitBox}>
                         <Text style={styles.submitFont}>立即充值</Text>
                     </View>
@@ -74,8 +75,9 @@ export default class Recharge extends Component {
         this.results = NativeAppEventEmitter.addListener(
             'EventReminder',
             (data) => {
+                self.submitStatus = true;
                 let notifyData = Object.assign({}, data.resultDic, {out_trade_no: self.tradeId});
-                resultService({body:notifyData});
+                resultService({body:notifyData}).then(() => {}).catch(() => {});
                 if(data.resultDic.resultStatus != 9000) {
                     Alert.alert('', '支付失败，请稍后重试',
                         [{
@@ -107,6 +109,8 @@ export default class Recharge extends Component {
     }
 
     submitPrice = () => {
+        if(!this.submitStatus) return;
+        this.submitStatus = false;
         let self = this;
         ActionUtil.setAction(actionType.BA_DEPOSIT_GO);
         let data = {
