@@ -87,6 +87,7 @@ export default class Recharge extends Component {
                         }]
                     );
                 } else {
+                    this.results && this.results.remove();
                     this.props.navigator.push({
                         component: RechargeSuccessContainer,
                         name: 'success',
@@ -100,7 +101,7 @@ export default class Recharge extends Component {
     }
 
     componentWillUnmount() {
-        this.results.remove();
+        this.results && this.results.remove();
     }
 
     choosePrice(score, log) {
