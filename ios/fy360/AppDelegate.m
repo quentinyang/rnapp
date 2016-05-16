@@ -44,9 +44,6 @@ NSString * const UMengChannelId = @"";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
-
-  
-  NSLog(@"sdfsdfsdf");
   
   // [UMeng] Start
   NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
