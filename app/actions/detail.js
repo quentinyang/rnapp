@@ -6,7 +6,7 @@ import * as homeTypes from '../constants/Home';
 import * as types from '../constants/DetailType';
 
 import { InteractionManager } from 'nuke'
-import { getBaseInfoService, getStatusService, callSellerPhone, postFeedback } from '../service/detailService';
+import { getBaseInfoService, getStatusService, callSellerPhone, postFeedback, getContactLogService } from '../service/detailService';
 import { fetchSimilarHouseListService } from '../service/houseListService';
 import {makeActionCreator, serviceAction} from './base';
 
@@ -20,6 +20,9 @@ export const setFeedbackVisible = makeActionCreator(types.FEEDBACK_VISIBLE_CHANG
 export const setSellerPhone = makeActionCreator(types.SET_SELLER_PHONE, 'phone');
 export const callSellerSuccess = makeActionCreator(types.CALL_SELLER_SUCCESS, 'logId');
 export const callSellerFailed = makeActionCreator(types.CALL_SELLER_FAILED, 'callError');
+export const houseContactLogFetched = makeActionCreator(types.HOSUE_CONTACT_LOG, 'contact');
+export const contactLogAppendFetched = makeActionCreator(types.APPEND_HOUSE_CONTACT_LOG, 'contact');
+export const changeCurrentContactLog = makeActionCreator(types.CHANGE_CURRENT_CONTACT_LOG);
 
 //home / list / detail same community
 export const setContactStatus = makeActionCreator(homeTypes.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
@@ -111,6 +114,36 @@ export function callFeedback(params) {
             success: function(oData) {
                 dispatch(setFeedbackVisible(false));
                 dispatch(setSellerPhone(oData.seller_phone));
+            },
+            error: function(oData) {
+
+            }
+        })
+    }
+}
+
+export function fetchContactLog(params) {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: getContactLogService,
+            data: params,
+            success: function(oData) {
+                dispatch(houseContactLogFetched(oData))
+            },
+            error: function(oData) {
+
+            }
+        })
+    }
+}
+
+export function fetchAppendContactLog(params) {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: getContactLogService,
+            data: params,
+            success: function(oData) {
+                dispatch(contactLogAppendFetched(oData))
             },
             error: function(oData) {
 

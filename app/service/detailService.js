@@ -26,3 +26,9 @@ export function postFeedback(params) {
         body: params
     });
 }
+
+export function getContactLogService(params) {
+    return ajax.get(urls.detail.contactLog, {
+        data: params
+    });
+}

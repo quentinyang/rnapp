@@ -12,7 +12,8 @@ let initialState = {
         'per_page': 10,
         'current_page': 0,
         'last_page': 2,
-    }
+    },
+    newCount: ""
 };
 
 function houseData(state = Immutable.fromJS(initialState), action) {
@@ -63,11 +64,13 @@ function houseData(state = Immutable.fromJS(initialState), action) {
                 return newArr;
             });
             break;
+        case types.HOUSE_NEW_COUNT:
+            return state.set('newCount', Immutable.fromJS(action.count));
+            break;
         default: 
             return state;
     }
 }
-
 
 let initialAttentionList = {
     district_block_select: [],

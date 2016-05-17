@@ -54,7 +54,14 @@ function houseData(state, action) {
 
 let initialBaseInfo = {
     baseInfo: {},
-    status: []
+    status: [],
+
+    curLogs: [],
+    contact: {
+        logs: [],
+        pager: {},
+        total: ""
+    }
 };
 
 function baseInfo(state, action) {
@@ -67,6 +74,31 @@ function baseInfo(state, action) {
             break;
         case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initialBaseInfo);
+            break;
+        case types.APPEND_HOUSE_CONTACT_LOG:
+            state = state.updateIn(['contact', 'logs'], (k) => {
+                return k.concat(Immutable.fromJS(action.contact.logs));
+            });
+            return state.setIn(['contact', 'pager'], Immutable.fromJS(action.contact.pager));
+            break;
+        case types.HOSUE_CONTACT_LOG:
+            let newState = state.set('contact', Immutable.fromJS(action.contact));
+            let curTemp = Immutable.List();
+            newState = newState.updateIn(['contact', 'logs'], (k) => {
+                curTemp = k.slice(0, 2);
+                return k.splice(0, 2);
+            });
+            return newState.set('curLogs', curTemp);
+            break;
+        case types.CHANGE_CURRENT_CONTACT_LOG:
+            let temp = Immutable.List();
+            state = state.updateIn(['contact', 'logs'], (k) => {
+                temp = k.slice(0, 5);
+                return k.splice(0, 5);
+            });
+            return state.updateIn(['curLogs'], (k) => {
+                return k.concat(temp);
+            });
             break;
         default:
             return state;

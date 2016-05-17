@@ -85,6 +85,10 @@ export default class Detail extends Component {
             actions.fetchHouseStatus({
                 property_id: propertyId
             });
+            actions.fetchContactLog({
+                property_id: propertyId,
+                page: 1
+            });
         });
     }
 
@@ -138,12 +142,21 @@ export default class Detail extends Component {
     };
 
     _renderHeader = () => {
-        let {baseInfo, sameCommunityList, route} = this.props;
+        let {baseInfo, sameCommunityList, route, actions} = this.props;
         let houseList = sameCommunityList.get('properties');
         return (
             <View>
-                <BaseInfo info={baseInfo} route={route} />
-                <ContactList />
+                <BaseInfo baseInfo={baseInfo.get('baseInfo')} route={route} />
+                {
+                    baseInfo.get('contact').get('total') > 0 ?
+                        <ContactList
+                            properyId={baseInfo.get('baseInfo').get('property_id')}
+                            actions={actions}
+                            curLogs={baseInfo.get('curLogs')}
+                            contact={baseInfo.get('contact')}
+                        /> : null
+                }
+
                 {
                     houseList.size > 0 ? <View style={styles.gap}></View> : null
                 }
@@ -374,9 +387,8 @@ class BaseInfo extends Component {
     }
 
     render() {
-        let {info, route} = this.props;
+        let {baseInfo, route} = this.props;
         let houseInfo = route.item;
-        let baseInfo = info.get('baseInfo');
 
         return (
             <View style={[styles.itemContainer, styles.baseBox]}>
@@ -422,33 +434,50 @@ class ContactList extends Component {
         super(props);
     }
     render() {
+        let {curLogs, contact, actions} = this.props;
+
+        let contactList = curLogs.map((item, index) => {
+            return (
+                <View key={index} style={[styles.row, styles.contactItem, styles.center]}>
+                    <Text style={[styles.grayColor, styles.date]}>{item.get('time')}</Text><Text style={[styles.baseColor, styles.itemSize]}>{item.get('phone')}联系了房东</Text>
+                </View>
+            );
+        });
         return (
             <View>
                 <View style={styles.gap}></View>
                 <View style={[styles.itemContainer, styles.row, styles.center, styles.padding, styles.titleBox]}>
                     <Text style={styles.bar}></Text>
-                    <Text style={[styles.baseSize, styles.baseColor]}>联系房东记录 (12次)</Text>
+                    <Text style={[styles.baseSize, styles.baseColor]}>联系房东记录 ({contact.get('total')}次)</Text>
                 </View>
                 <View style={[styles.contactBox]}>
-                    <View style={[styles.row, styles.contactItem, styles.center]}>
-                        <Text style={[styles.grayColor, styles.date]}>2015.09.14</Text><Text style={[styles.baseColor, styles.itemSize]}>13434753478联系了房东</Text>
-                    </View>
-
-                    <View style={[styles.row, styles.contactItem, styles.center]}>
-                        <Text style={[styles.grayColor, styles.date]}>2015.09.14</Text><Text style={[styles.baseColor, styles.itemSize]}>13434753478联系了房东</Text>
-                    </View>
+                    {contactList}
                 </View>
 
-                <TouchableWithoutFeedback style={{backgroundColor: "#333"}}>
-                    <View style={[styles.row, styles.justifyContent, styles.center, styles.moreBox]}>
-                        <Image
-                            style={styles.moreIcon}
-                            source={require('../images/dropDown.png')} />
-                        <Text style={[styles.grayColor, styles.more]}>更多</Text>
-                    </View>
-                </TouchableWithoutFeedback>
+                {curLogs.size == contact.get('total') ? null :
+                    <TouchableWithoutFeedback
+                        onPress={() => {actions.changeCurrentContactLog()}}
+                    >
+                        <View style={[styles.row, styles.justifyContent, styles.center, styles.moreBox]}>
+                            <Image
+                                style={styles.moreIcon}
+                                source={require('../images/dropDown.png')} />
+                            <Text style={[styles.grayColor, styles.more]}>更多</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                }
             </View>
         );
+    }
+    componentDidUpdate() {
+        let {propertyId, contact, actions} = this.props;
+        let pager = contact.get('pager');
+        if(contact.get('logs').size < 5 && pager.get('current_page') < pager.get('last_page')) {
+            actions.fetchAppendContactLog({
+                property_id: propertyId,
+                page: Number(pager.get('current_page')) + 1
+            })
+        }
     }
 }
 
