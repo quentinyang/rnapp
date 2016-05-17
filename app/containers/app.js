@@ -8,7 +8,7 @@ import {NaviGoBack} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 import * as common from '../constants/Common';
-
+import BackScore from '../pages/BackScore'
 var GeTui = require('react-native').NativeModules.GeTui;
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'

@@ -2,8 +2,9 @@
 
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
-
+import * as homeTypes from '../constants/Home';
 import * as types from '../constants/DetailType';
+
 import { InteractionManager } from 'nuke'
 import { getBaseInfoService, getStatusService, callSellerPhone, postFeedback } from '../service/detailService';
 import { fetchSimilarHouseListService } from '../service/houseListService';
@@ -19,6 +20,10 @@ export const setFeedbackVisible = makeActionCreator(types.FEEDBACK_VISIBLE_CHANG
 export const setSellerPhone = makeActionCreator(types.SET_SELLER_PHONE, 'phone');
 export const callSellerSuccess = makeActionCreator(types.CALL_SELLER_SUCCESS, 'logId');
 export const callSellerFailed = makeActionCreator(types.CALL_SELLER_FAILED, 'callError');
+
+//home / list / detail same community
+export const setContactStatus = makeActionCreator(homeTypes.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
+export const setLookStatus = makeActionCreator(homeTypes.SET_LOOK_STATUS, 'lookStatus');
 
 export function fetchBaseInfo(data) {
     return dispatch => {

@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/home';
 import * as actionsHouseList from '../actions/houseList';
+import * as actionsDetail from '../actions/detail';
 import Home from '../pages/Home';
 
 class HomeContainer extends Component {
@@ -31,7 +32,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(actions, dispatch),
-        actionsHouseList: bindActionCreators(actionsHouseList, dispatch)
+        actionsHouseList: bindActionCreators(actionsHouseList, dispatch),
+        actionsDetail: bindActionCreators(actionsDetail, dispatch)
     }
 }
 

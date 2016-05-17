@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators} from 'redux';
 import * as actions from '../actions/detail';
 import * as actionsHouseList from '../actions/houseList';
+import * as actionsHome from '../actions/home';
 import * as actionsNavigation from '../actions/navigation';
-import Detail from '../pages/Detail';
+import Detail from '../pages/Detail1';
 import Immutable from 'immutable';
 
 class DetailContainer extends Component {
@@ -33,6 +34,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(actions, dispatch),
+        actionsHome: bindActionCreators(actionsHome, dispatch),
         actionsHouseList: bindActionCreators(actionsHouseList, dispatch),
         actionsNavigation: bindActionCreators(actionsNavigation, dispatch)
     }

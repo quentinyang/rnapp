@@ -13,6 +13,7 @@ import attentionBlockSetOne from  './attentionBlockSetOne';
 import communitySearch from  './communitySearch';
 import user from './user';
 import settings from './settings';
+import backScore from './backScore';
 
 const rootReducer = combineReducers({
     test,
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
     attentionBlockSetOne,
     communitySearch,
     user,
-    settings
+    settings,
+    backScore
 });
 
 export default rootReducer;
