@@ -81,6 +81,7 @@ public class MainActivity extends ReactActivity {
                 new MainReactPackage(),
                 new ActionPackage(),
                 new GeTuiManager(),
+                new AliPackage(),
                 new DeviceIDManager(),
                 this._codePush.getReactPackage()
         );
