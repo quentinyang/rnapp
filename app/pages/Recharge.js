@@ -7,7 +7,7 @@ import {
 } from 'nuke';
 
 var Alipay = require('react-native').NativeModules.Alipay;
-var { NativeAppEventEmitter, DeviceEventEmitter } = require('react-native');
+var { NativeAppEventEmitter, DeviceEventEmitter,ToastAndroid } = require('react-native');
 
 import RechargeSuccessContainer from "../containers/RechargeSuccessContainer";
 import {tradeService, resultService} from '../service/payService';
@@ -142,7 +142,8 @@ export default class Recharge extends Component {
             Alipay.addEvent(oData.data);
         })
         .catch((data) => {
-
+            ToastAndroid.show('操作太频繁，请重试', ToastAndroid.LONG);
+            this.submitStatus = true;
         })
 
     };
