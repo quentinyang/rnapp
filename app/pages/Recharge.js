@@ -2,12 +2,13 @@ import {
     React, Component,
     Text, View, ScrollView, Image,
     TouchableWithoutFeedback, TouchableHighlight,
-    StyleSheet, PixelRatio,
+    StyleSheet, PixelRatio, Platform,
     Alert
 } from 'nuke';
 
 var Alipay = require('react-native').NativeModules.Alipay;
-var { NativeAppEventEmitter } = require('react-native');
+var { NativeAppEventEmitter, DeviceEventEmitter,ToastAndroid } = require('react-native');
+
 import RechargeSuccessContainer from "../containers/RechargeSuccessContainer";
 import {tradeService, resultService} from '../service/payService';
 
@@ -72,13 +73,27 @@ export default class Recharge extends Component {
 
     componentWillMount() {
         let self = this;
-        this.results = NativeAppEventEmitter.addListener(
+        let eventEmitter = Platform.OS === 'ios' ? NativeAppEventEmitter : DeviceEventEmitter;
+        this.results = eventEmitter.addListener(
             'EventReminder',
             (data) => {
+                let result = {};
                 self.submitStatus = true;
-                let notifyData = Object.assign({}, data.resultDic, {out_trade_no: self.tradeId});
+                if(Platform.OS != 'ios') {
+                    let splitResults = data.split(';');
+                    let resultsToJson = {};
+                    for(var i = 0; i < splitResults.length; i++) {
+                        let item = splitResults[i].split('=');
+                        resultsToJson[item[0]] = item[1].replace(/\{|\}/g, "");
+                    }
+                    result = resultsToJson;
+                } else {
+                    result = data.resultDic;
+                }
+                let notifyData = Object.assign({}, result, {out_trade_no: self.tradeId});
                 resultService({body:notifyData}).then(() => {}).catch(() => {});
-                if(data.resultDic.resultStatus != 9000) {
+
+                if(result.resultStatus != 9000) {
                     Alert.alert('', '支付失败，请稍后重试',
                         [{
                             text: '确定', onPress: () => {
@@ -127,7 +142,8 @@ export default class Recharge extends Component {
             Alipay.addEvent(oData.data);
         })
         .catch((data) => {
-
+            ToastAndroid.show('操作太频繁，请重试', ToastAndroid.LONG);
+            this.submitStatus = true;
         })
 
     };

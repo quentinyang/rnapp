@@ -13,15 +13,19 @@ export default class TabView extends Component {
 
         this._renderScene = this._renderScene.bind(this);
         this._onWillFocus = this._onWillFocus.bind(this);
-        this.state = {
-            tabIndex: 0
-        };
+        if(this.props.route.from == 'reCharge') {
+            this.state = {tabIndex: 2};
+            this.props.actionsUser.fetchUserProfile({});
+        } else {
+            this.state = {
+                tabIndex: 0
+            };
+        }
     }
 
     _renderScene(route, nav) {
         _navigator = nav;
         let {navigator, routeFromPage} = this.props;
-
         switch(route.key) {
             case 0:
                 return <HomeContainer navigator={navigator} route={routeFromPage || route} rout='全部房源'/>;
@@ -45,7 +49,7 @@ export default class TabView extends Component {
         return (
             <Navigator
                 style={styles.container}
-                initialRoute={tabArr[0]}
+                initialRoute={this.props.route.from == 'reCharge'? tabArr[2]:tabArr[0]}
                 renderScene={this._renderScene}
                 sceneStyle={styles.sceneStyle}
                 configureScene={(route) => {
@@ -68,10 +72,6 @@ export default class TabView extends Component {
     }
 
     componentWillMount() {
-        if(this.props.route.from == 'reCharge') {
-            this.setState({tabIndex: 2});
-            this.props.actionsUser.fetchUserProfile({});
-        }
     }
 }
 
@@ -84,7 +84,6 @@ class TabBar extends Component {
 
     render() {
         let {tabIndex, navigator, actionsUser} = this.props;
-
         return (
             <View style={styles.tabbar}>
             {
