@@ -9,7 +9,7 @@ let urls = {
     detail: {
         baseInfo: HOST + 'property/detail',
         status: HOST + 'property/log',
-        call: HOST + 'wash/callback',
+        call: HOST + 'wash/call',
         feedback: HOST + 'wash/status',
         contactLog: HOST + 'property/contact/log'
         //contactLog: 'http://localhost:8081/app/fakedata/contact_log.json'

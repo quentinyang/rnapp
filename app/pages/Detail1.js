@@ -8,7 +8,14 @@ import HouseInputContainer from '../containers/HouseInputContainer'
 import UserContainer from '../containers/UserContainer'
 import BackScoreContainer from '../containers/BackScoreContainer'
 let ActionUtil = require( '../utils/ActionLog');
+import {callUp} from '../utils/CommonUtils'
 import * as actionType from '../constants/ActionLog'
+import {ToastAndroid} from 'react-native'
+var {
+    NativeAppEventEmitter
+    } = React;
+
+var { DeviceEventEmitter } = require('react-native');
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -23,7 +30,6 @@ export default class Detail extends Component {
     }
 
     render() {
-        let self = this;
         let {baseInfo, sameCommunityList, callInfo, actions, navigator} = this.props;
         let houseList = sameCommunityList.get('properties');
         let info = baseInfo.get("baseInfo");
@@ -32,8 +38,8 @@ export default class Detail extends Component {
 
         return (
             <View style={styles.flex}>
-                <ErrorTipModal callInfo={callInfo} actions={actions} />
-                <CostScoreModal actions={actions} navigator={navigator}/>
+                <ErrorTipModal callInfo={callInfo} actions={actions} navigator={navigator} />
+                <CostScoreModal callInfo={callInfo} actions={actions} navigator={navigator} score={info.get('unlock_phone_cost')}/>
                 <ListView
                     dataSource={ds.cloneWithRows(houseList.toArray())}
                     renderRow={this._renderRow}
@@ -45,11 +51,19 @@ export default class Detail extends Component {
                 />
 
                 <View style={[styles.contactWrap, styles.row, styles.center]}>
-                    <Image
-                        style={styles.moneyIcon}
-                        source={require("../images/money.png")}
-                    />
-                    <Text style={[styles.greenColor, styles.baseSize]}>4积分</Text>
+                    {
+                        (status || !status && callInfo.get('sellerPhone')) ?
+                            null :
+                            <Image
+                                style={styles.moneyIcon}
+                                source={require("../images/money.png")}
+                            />
+                    }
+                    {
+                        (status || !status && callInfo.get('sellerPhone')) ?
+                            null :
+                            <Text style={[styles.greenColor, styles.baseSize]}>{info.get('unlock_phone_cost') || 0}积分</Text>
+                    }
 
                     <TouchableHighlight
                         style={[styles.flex, styles.contactButton]}
@@ -72,6 +86,7 @@ export default class Detail extends Component {
     }
 
     componentDidMount() {
+        let self = this;
         let {actions, route, baseInfo} = this.props;
         let propertyId = route.item.get('property_id');
 
@@ -82,16 +97,33 @@ export default class Detail extends Component {
             actions.fetchSimilarHouseList({
                 property_id: propertyId
             });
-            actions.fetchHouseStatus({
-                property_id: propertyId
-            });
             actions.fetchContactLog({
                 property_id: propertyId,
                 page: 1
             });
         });
-    }
 
+        if(Platform.OS === 'ios') {
+            this.callSubscription =  NativeAppEventEmitter.addListener('callIdle', () => {
+                self._showFeedbackModal();
+            });
+        } else {
+            DeviceEventEmitter.addListener('callIdle', () => {
+                ToastAndroid.show("callIdle", ToastAndroid.SHORT);
+                self._showFeedbackModal();
+            });
+        }
+    }
+    _showFeedbackModal() {
+        let {baseInfo, actions} = this.props;
+        let info = baseInfo.get("baseInfo");
+        let status = Number(info.get('phone_lock_status'));
+
+        if(status || !status && callInfo.get('sellerPhone')) {
+        } else {
+            actions.setFeedbackVisible(true);
+        }
+    }
     componentDidUpdate() {
         if(!this.props.callInfo.get('feedbackVisible') && this.flag) {
             this.flag = false;
@@ -106,32 +138,22 @@ export default class Detail extends Component {
         } else if(route.from == 'houseList') {
             actionsNavigation.listPopRoute();
         }
+
+        if(Platform.OS === 'ios') {
+            this.callSubscription.remove();
+        } else {
+            DeviceEventEmitter.removeAllListeners('callIdle');
+        }
     }
 
     _clickPhoneBtn(status, phone, hasPhone) {
-        let {navigator} = this.props;
-        navigator.push({
-            component: BackScoreContainer,
-            name: 'backScore',
-            title: '找回积分',
-            hideHeader: false,
-            hideNavBar: false,
-            bp: ''
-        });
-
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
-        if(status || hasPhone) { //1: 已解锁
-            let url = "tel:" + phone;
-
-            Linking.canOpenURL(url).then(supported => {
-                if (!supported) {
-                    Alert.alert('温馨提示', '您的设备不支持打电话功能', [{text: '确定'}]);
-                } else {
-                    return Linking.openURL(url);
-                }
-            }).catch(err => console.error('An error occurred', err));
+        if(status || hasPhone) { //1: 已解锁 或 已反馈在卖
+            callUp(phone);
         } else {   //0: 未解锁
-            //this.props.actions.setScoreTipVisible(true);
+            this.props.actions.callSeller({
+                property_id: this.props.route.item.get("property_id")
+            });
         }
     }
 
@@ -174,10 +196,9 @@ export default class Detail extends Component {
 
     _renderFooter = () => {
         let {sameCommunityList} = this.props;
-        let houseList = sameCommunityList.get('properties');
         return (
-            houseList.size > 0 ?
-                <View style={[styles.padding, styles.goMore]}>
+            sameCommunityList.get('total') > 5 ?
+                <View style={[styles.padding]}>
                     <TouchableHighlight
                         style={styles.moreButton}
                         underlayColor="#fff"
@@ -294,9 +315,9 @@ class ErrorTipModal extends Component {
 
     _goPage(component, actionLog) {
         ActionUtil.setAction(actionLog);
-        this.props.actions.setErrorTipVisible(false);
 
-        let {navigator} = this.props;
+        let {navigator, actions} = this.props;
+        actions.setErrorTipVisible(false);
         navigator.push({
             component: component,
             name: 'publishHouse',
@@ -313,16 +334,16 @@ class CostScoreModal extends Component {
         super(props);
     }
     render() {
-        let {actions} = this.props;
+        let {callInfo, actions, score} = this.props;
         return (
-            <Modal visible={false} transparent={true}
+            <Modal visible={callInfo.get('feedbackVisible')} transparent={true}
                    onModalVisibilityChanged={actions.setErrorTipVisible}>
                 <View style={[styles.flex, styles.center, styles.justifyContent, styles.bgWrap]}>
                     <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
                             underlayColor="#fff"
-                            onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);actions.setErrorTipVisible(false)}}
+                            onPress={this._handlerFeedback.bind(this, actionType.BA_DETAIL_CASHRECHACLOSE)}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -330,12 +351,12 @@ class CostScoreModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={[styles.msgTip, styles.baseColor]}>本次通话您消耗了4积分</Text>
+                        <Text style={[styles.msgTip, styles.baseColor]}>本次通话您消耗了{score}积分</Text>
 
                         <TouchableHighlight
                             style={[styles.btn, styles.sureBtn]}
                             underlayColor="#fff"
-                            onPress={this._goPage.bind(this, HouseInputContainer, actionType.BA_DETAIL_CASH)}
+                            onPress={this._handlerFeedback.bind(this, actionType.BA_DETAIL_CASH)}
                         >
                             <View>
                                 <Text style={[styles.baseSize, {color: "#fff", textAlign: "center"}]}>确认</Text>
@@ -352,31 +373,28 @@ class CostScoreModal extends Component {
             </Modal>
         );
     }
-    _goPage(component, actionLog) {
-        ActionUtil.setAction(actionLog);
-        this.props.actions.setErrorTipVisible(false);
 
-        let {navigator} = this.props;
-        navigator.push({
-            component: component,
-            name: 'publishHouse',
-            title: '发布房源',
-            hideHeader: false,
-            hideNavBar: false,
-            bp: this.pageId
+    _handlerFeedback(actionLog) {
+        let {callInfo, actions} = this.props;
+
+        ActionUtil.setAction(actionLog);
+        actions.callFeedback({
+            wash_id: callInfo.get('washId'),
+            status: 1 //在卖
         });
     }
-    _goBackScore() {
-        //this.props.actions.setErrorTipVisible(false);
 
-        let {navigator} = this.props;
+    _goBackScore() {
+        let {callInfo, navigator} = this.props;
+
         navigator.push({
-            component: BackScore,
+            component: BackScoreContainer,
             name: 'backScore',
             title: '找回积分',
             hideHeader: false,
             hideNavBar: false,
-            bp: ''
+            bp: '',
+            washId: callInfo.get('washId')
         });
     }
 }
@@ -510,6 +528,9 @@ var styles = StyleSheet.create({
         height: 10,
         backgroundColor: '#eee'
     },
+    listView: {
+        marginBottom: 70
+    },
     itemContainer: {
         borderStyle: 'solid',
         borderBottomWidth: 1/PixelRatio.get(),
@@ -539,7 +560,7 @@ var styles = StyleSheet.create({
         backgroundColor: '#ffa251',
         color: '#fff',
         fontSize: 12,
-        padding: (Platform.OS === 'ios') ? 2 : 0,
+        padding: (Platform.OS === 'ios') ? 2 : 2,
         fontWeight: '500',
         marginTop: 4,
         marginLeft: 5,
@@ -710,5 +731,10 @@ var styles = StyleSheet.create({
         fontSize: 12,
         color: '#04c1ae',
         marginBottom: 5
-    }
+    },
+    borderBtn: {
+        borderWidth: 1,
+        borderColor: "#d9d9d9",
+        marginBottom: 10
+    },
 });

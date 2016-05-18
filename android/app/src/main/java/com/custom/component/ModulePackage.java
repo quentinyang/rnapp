@@ -13,11 +13,14 @@ import java.util.List;
 /**
  * Created by angejia on 16/4/12.
  */
-public class ActionPackage implements ReactPackage {
+public class ModulePackage implements ReactPackage {
+    public static CallModule callModule;
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
+        callModule = new CallModule(reactContext);
         modules.add(new ActionUtil(reactContext));
+        modules.add(callModule);
         return modules;
     }
 

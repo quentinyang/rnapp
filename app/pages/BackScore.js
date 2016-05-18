@@ -9,13 +9,13 @@ export default class BackScore extends Component {
         this.state = {
             cur: -1
         };
+        this.submitFlag = false;
         this.reasons = [{select: false, val: "联系不上"}, {select: false, val: "虚假房源"}, {select: false, val: "房东不卖"}, {select: false, val: "房源已卖"}, {select: false, val: "按错了"}];
     }
 
     render() {
         let self = this;
         let {pageInfo, actions} = this.props;
-        debugger;
         let reasonsList = this.reasons.map((item, index) => {
             return (
                 <TouchableWithoutFeedback
@@ -62,7 +62,11 @@ export default class BackScore extends Component {
             </View>
         );
     }
-
+    componentDidUpdate() {
+        if(this.submitFlag) {
+            this.submitFlag = false;
+        }
+    }
     saveSelectReason(index) {
         let cur = this.state.cur;
         if(cur != index) {
@@ -74,10 +78,11 @@ export default class BackScore extends Component {
         }
     }
     submitReason() {
-        if(this.state.cur != -1) {
+        if(!this.submitFlag && this.state.cur != -1) {
+            this.submitFlag = true;
             this.props.actions.submitReason({
-                wash_id: '',
-                status: this.state.cur
+                wash_id: this.props.route.washId,
+                status: this.state.cur + 3
             });
         }
     }

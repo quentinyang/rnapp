@@ -54,7 +54,6 @@ function houseData(state, action) {
 
 let initialBaseInfo = {
     baseInfo: {},
-    status: [],
 
     curLogs: [],
     contact: {
@@ -68,9 +67,6 @@ function baseInfo(state, action) {
     switch(action.type) {
         case types.HOUSE_BASE_FETCHED:
             return state.set('baseInfo', Immutable.fromJS(action.houseBase));
-            break;
-        case types.HOUSE_STATUS_FETCHED:
-            return state.set('status', Immutable.fromJS(action.houseStatus));
             break;
         case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initialBaseInfo);
@@ -106,7 +102,6 @@ function baseInfo(state, action) {
 }
 
 let initParam = {
-    scoreTipVisible: false,
     callError: {
         msg: '拨打电话失败了,再试一下吧!'
     },
@@ -118,17 +113,11 @@ let initParam = {
 
 function callInfo(state, action) {
     switch(action.type) {
-        case types.SCORE_TIP_VISIBLE_CHANGED:
-            return state.set('scoreTipVisible', Immutable.fromJS(action.visible));
-            break;
         case types.ERROR_TIP_VISIBLE_CHANGED:
             return state.set('errorTipVisible', Immutable.fromJS(action.visible));
             break;
         case types.FEEDBACK_VISIBLE_CHANGED:
             return state.set('feedbackVisible', Immutable.fromJS(action.visible));
-            break;
-        case types.CALL_SELLER_SUCCESS:
-            return state.set('washId', Immutable.fromJS(action.logId));
             break;
         case types.SET_SELLER_PHONE:
             return state.set('sellerPhone', Immutable.fromJS(action.phone));
@@ -138,6 +127,9 @@ function callInfo(state, action) {
             break;
         case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initParam);
+            break;
+        case types.SET_WASH_ID:
+            return state.set('washId', Immutable.fromJS(action.washId));
             break;
         default:
             return state;

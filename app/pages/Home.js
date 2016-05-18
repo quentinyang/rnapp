@@ -239,7 +239,7 @@ export default class Home extends Component {
                             style={[styles.allHouseImage]}
                         />
                         <Text style={[styles.flex, styles.heiti_16_header]}>{this.props.rout}</Text>
-                        <Text style={styles.noData}>今日新增<Text style={[styles.fontMedium, styles.orange]}>{houseData.get('newCount')}</Text>套</Text>
+                        <Text style={styles.noData}>今日新增<Text style={[styles.fontMedium, styles.orange]}>89</Text>套</Text>
                         <Image
                             source={require('../images/next.png')}
                             style={styles.nextImage}
