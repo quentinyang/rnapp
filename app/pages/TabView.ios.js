@@ -2,7 +2,7 @@
 
 import {React, Component, View, StyleSheet, TabBar} from 'nuke';
 import HomeContainer from '../containers/HomeContainer';
-import PublishInventoryContainer from '../containers/PublishInventoryContainer';
+import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
 import UserContainer from '../containers/UserContainer';
 let ActionUtil = require( '../utils/ActionLog');
 
@@ -11,7 +11,7 @@ export default class TabView extends Component {
         super(props);
 
         this.state = {
-            tabIndex: 0
+            tabIndex: 1
         };
 
         this._renderScene = this._renderScene.bind(this);
@@ -62,7 +62,7 @@ export default class TabView extends Component {
                 return <HomeContainer navigator={navigator} route={route} rout='全部房源'/>;
                 break;
             case 1:
-                return <PublishInventoryContainer navigator={navigator} route={route} rout='发房'/>;
+                return <PublishFirstStepContainer navigator={navigator} route={route} rout='发房'/>;
                 break;
             case 2:
                 return <UserContainer navigator={navigator} route={route} rout='我的'/>;
