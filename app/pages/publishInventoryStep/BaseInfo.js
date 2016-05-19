@@ -7,7 +7,7 @@ import {
     TouchableHighlight, Alert, Dimensions
 } from 'nuke';
 
-import {inputHouseService} from '../../service/houseInputService';
+import {basicInventoryDuplicateService} from '../../service/houseInputService';
 import WithLabel from '../../components/LabelTextInput';
 import Attached from '../../components/Attached';
 import PublishTitle from '../../components/PublishTitle';
@@ -131,17 +131,16 @@ export default class BaseInfoPage extends Component {
     submitSuccess(params) {
         let {actions, navigator} = this.props;
 
-        inputHouseService({body:params})
+        basicInventoryDuplicateService({body:params})
         .then(() => {
             navigator.push({
                 component: PublishSecondStepContainer,
-                name: 'publishSecondStep',
+                name: 'publishInventory',
                 title: '更多房源信息',
                 hideNavBar: false,
                 backLog: actionType.BA_SEND_SUCCESS_RETURN,
                 bp: this.pageId
             });
-            actions.dataCleared();
         })
         .catch((error) => {
             ActionUtil.setActionWithExtend(actionType.BA_SEND_HOUSE_FAIL, {"error_type": error.status || ""});

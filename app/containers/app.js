@@ -356,7 +356,22 @@ class App extends Component {
     _leftButton = (route, navigator, index, navState) => {
         return (
             <TouchableOpacity
-                onPress={() => {ActionUtil.setAction(route.backLog);navigator.pop()}}
+                onPress={() => {
+                    ActionUtil.setAction(route.backLog);
+                    if(route.name === 'publishInventory') {
+                        Alert.alert('', '确定要离开此页面吗？', [
+                            {text: '取消'},
+                            {
+                                text: '确定',
+                                onPress: () => {
+                                    navigator.pop();
+                                }
+                            }
+                        ])
+                    } else {
+                        navigator.pop();
+                    }
+                }}
                 style={[styles.navBarLeftButton]}>
                 <View style={[styles.flex, styles.justifyContent, styles.alignItems, styles.navBarLeftButtonBox]}>
                     <Image

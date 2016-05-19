@@ -115,7 +115,7 @@ export default class MoreInfoPage extends Component {
 
         navigator.push({
             component: PublishThirdStepContainer,
-            name: 'publishThirdStep',
+            name: 'publishInventory',
             title: '房东信息',
             hideNavBar: false,
             bp: this.pageId

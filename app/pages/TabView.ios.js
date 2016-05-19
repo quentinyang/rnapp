@@ -11,14 +11,14 @@ export default class TabView extends Component {
         super(props);
 
         this.state = {
-            tabIndex: 1
+            tabIndex: 0
         };
 
         this._renderScene = this._renderScene.bind(this);
     }
 
     render() {
-        let {actionsUser, route} = this.props;
+        let {actionsUser, route, navigator} = this.props;
         return (
             <View style={styles.container}>
                 <TabBar
@@ -35,9 +35,18 @@ export default class TabView extends Component {
                                         icon={{uri: val.icon, scale: 2}}
                                         key={val.key}
                                         onPress={() => {
-                                            this.setState({
-                                                tabIndex: val.key
-                                            });
+                                            if(val.key == 1) {
+                                                navigator.push({
+                                                    component: PublishFirstStepContainer,
+                                                    name: 'publishInventory',
+                                                    title: '房源基本信息',
+                                                    hideNavBar: false
+                                                });
+                                            } else {
+                                                this.setState({
+                                                    tabIndex: val.key
+                                                });
+                                            }
                                             if (val.key == 2) {
                                                 actionsUser.fetchUserProfile({});
                                             }

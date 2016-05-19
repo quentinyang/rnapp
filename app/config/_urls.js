@@ -34,7 +34,7 @@ let urls = {
 
         input: HOST + 'house/input',
         newCount: HOST + 'property/new/count',
-        baseDup: HOST + 'house/duplicate'
+        baseDuplicate: HOST + 'house/duplicate'
     },
     blocks: {
         attention: HOST + 'get-attention-block',
