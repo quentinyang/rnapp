@@ -2,10 +2,13 @@ import {React, Component, Text, View, TouchableWithoutFeedback, StyleSheet, Imag
 import RechargeContainer from "../containers/RechargeContainer";
 import TabViewContainer from '../containers/TabViewContainer';
 import Header from '../components/Header';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog';
 
 export default class RechargeSuccess extends Component {
     constructor(props) {
         super(props);
+        ActionUtil.setAction(actionType.BA_DEPOSIT_SUCCESS);
     }
 
     render() {
@@ -25,11 +28,13 @@ export default class RechargeSuccess extends Component {
 
     sucPress = () => {
         let {navigator} = this.props;
+        ActionUtil.setAction(actionType.BA_DEPOSIT_WATCH);
 
         navigator.push({
             component: TabViewContainer,
             from: 'reCharge',
             name: 'user',
+            bp: actionType.BA_DEPOSIT,
             title: '我的',
             hideNavBar: true
         });
