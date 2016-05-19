@@ -115,7 +115,7 @@ export default class Detail extends Component {
         }
     }
     _showFeedbackModal() {
-        let {baseInfo, actions} = this.props;
+        let {baseInfo, callInfo, actions} = this.props;
         let info = baseInfo.get("baseInfo");
         let status = Number(info.get('phone_lock_status'));
 

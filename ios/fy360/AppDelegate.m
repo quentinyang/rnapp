@@ -8,7 +8,8 @@
  */
 
 #import "AppDelegate.h"
-
+#import <CoreTelephony/CTCallCenter.h>
+#import <CoreTelephony/CTCall.h>
 
 #import "CodePush.h"
 
@@ -17,8 +18,9 @@
 #import "GeTui.h"
 
 #import "Alipay.h"
-
 #import <AlipaySDK/AlipaySDK.h>
+
+#import "Utils.h"
 
 NSString *const NotificationCategoryIdent = @"ACTIONABLE";
 //NSString *const NotificationActionOneIdent = @"ACTION_ONE";
@@ -35,7 +37,7 @@ NSString * const UMengChannelId = @"";
 @interface AppDelegate ()
 
 @property (nonatomic, strong) Alipay *alipay;
-
+@property (nonatomic, strong) CTCallCenter *center;
 
 @end
 
@@ -87,7 +89,7 @@ NSString * const UMengChannelId = @"";
 //   jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
 
   #ifdef DEBUG
-    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
+    jsCodeLocation = [NSURL URLWithString:@"http://192.168.162.61:8081/index.ios.bundle?platform=ios&dev=true"];
   #else
     jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
   #endif
@@ -118,7 +120,10 @@ NSString * const UMengChannelId = @"";
   if (userInfo) {
     NSString *record = [NSString stringWithFormat:@"[APN]%@, %@", [NSDate date], userInfo];
     NSLog(@"\n>>>[GeTuiSdk DeviceToken Success]:%@\n\n", record);
-  }
+  } 
+  
+  // Call State
+  [self listenCallEvent:self.rootView];
   
   return YES;
 }
@@ -287,4 +292,33 @@ NSString * const UMengChannelId = @"";
   return YES;
 }
 
+// 监听系统电话状态变化
+- (void)listenCallEvent:(RCTRootView *) rootView
+{
+  _center = [[CTCallCenter alloc] init];
+  [_center setCallEventHandler:^(CTCall *call) {
+    if ([call.callState isEqualToString:CTCallStateConnected])
+    {
+      NSLog(@"Call has been connected!");
+    }
+    else if ([call.callState isEqualToString:CTCallStateDisconnected])
+    {
+      NSLog(@"Call has been disconnected!");
+      [Utils sendEvent:@"callIdle" withRoot:rootView];
+    }
+    else if ([call.callState isEqualToString:CTCallStateIncoming])
+    {
+      NSLog(@"Call is incoming!");
+    }
+    else if ([call.callState isEqualToString:CTCallStateDialing])
+    {
+      NSLog(@"Call is dialing!");
+    }
+    else
+    {
+      NSLog(@"None State!");
+    }
+  }];
+
+}
 @end

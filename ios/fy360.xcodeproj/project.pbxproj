@@ -32,6 +32,7 @@
 		2DDF0AD81CDC908100D261BE /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DDF0AD71CDC908100D261BE /* CFNetwork.framework */; };
 		2DDF0ADA1CDC908F00D261BE /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DDF0AD91CDC908F00D261BE /* CoreMotion.framework */; };
 		2DDF0ADC1CDC918F00D261BE /* Alipay.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DDF0ADB1CDC918F00D261BE /* Alipay.m */; };
+		3B0723AA1CEC8A7800989ECE /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B0723A91CEC8A7800989ECE /* Utils.m */; };
 		3BC13C281CBF702600D795FC /* libActionUtil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BC13C271CBF6B7D00D795FC /* libActionUtil.a */; };
 		3BE977CF1CE31A7E00988AAA /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE977CC1CE31A7E00988AAA /* Keychain.m */; };
 		3BE977D01CE31A7E00988AAA /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE977CE1CE31A7E00988AAA /* UUID.m */; };
@@ -197,6 +198,8 @@
 		2DDF0AD91CDC908F00D261BE /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		2DDF0ADB1CDC918F00D261BE /* Alipay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Alipay.m; path = fy360/Alipay.m; sourceTree = "<group>"; };
 		2DDF0ADD1CDC91A300D261BE /* Alipay.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Alipay.h; sourceTree = "<group>"; };
+		3B0723A81CEC8A6800989ECE /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		3B0723A91CEC8A7800989ECE /* Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = Common/Utils.m; sourceTree = SOURCE_ROOT; };
 		3BC13C221CBF6B7C00D795FC /* ActionUtil.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ActionUtil.xcodeproj; path = "../node_modules/nuke/native-libs/ActionUtil/ActionUtil.xcodeproj"; sourceTree = "<group>"; };
 		3BE977CB1CE31A7E00988AAA /* Keychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Keychain.h; sourceTree = "<group>"; };
 		3BE977CC1CE31A7E00988AAA /* Keychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Keychain.m; sourceTree = "<group>"; };
@@ -237,6 +240,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6620FB9E1CAA91E000BB2A3F /* CoreTelephony.framework in Frameworks */,
 				2DDF0ADA1CDC908F00D261BE /* CoreMotion.framework in Frameworks */,
 				2DDF0AD81CDC908100D261BE /* CFNetwork.framework in Frameworks */,
 				2DDF0AD61CDC907900D261BE /* Foundation.framework in Frameworks */,
@@ -256,7 +260,6 @@
 				2DDF0ABC1CDC8F9E00D261BE /* AlipaySDK.framework in Frameworks */,
 				6620FBA21CAA91F000BB2A3F /* JavaScriptCore.framework in Frameworks */,
 				6620FBA01CAA91E900BB2A3F /* AVFoundation.framework in Frameworks */,
-				6620FB9E1CAA91E000BB2A3F /* CoreTelephony.framework in Frameworks */,
 				6620FB9C1CAA91CD00BB2A3F /* SystemConfiguration.framework in Frameworks */,
 				6620FB9A1CAA91BF00BB2A3F /* MobileCoreServices.framework in Frameworks */,
 				6620FB981CAA91B500BB2A3F /* Security.framework in Frameworks */,
@@ -354,6 +357,7 @@
 		13B07FAE1A68108700A75B9A /* fy360 */ = {
 			isa = PBXGroup;
 			children = (
+				3B0723A71CEC89DF00989ECE /* Common */,
 				3BE977CA1CE31A7E00988AAA /* UUID */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -382,6 +386,16 @@
 				2DD7FB681CACCC4100FD56F7 /* libRNDeviceInfo.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		3B0723A71CEC89DF00989ECE /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				3B0723A81CEC8A6800989ECE /* Utils.h */,
+				3B0723A91CEC8A7800989ECE /* Utils.m */,
+			);
+			name = Common;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		3BC13C231CBF6B7C00D795FC /* Products */ = {
@@ -556,7 +570,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 82EMB5HWEQ;
+					        DevelopmentTeam = 82EMB5HWEQ;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -801,6 +815,7 @@
 				3BE977D01CE31A7E00988AAA /* UUID.m in Sources */,
 				3BE977CF1CE31A7E00988AAA /* Keychain.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				3B0723AA1CEC8A7800989ECE /* Utils.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				2DDF0ADC1CDC918F00D261BE /* Alipay.m in Sources */,
 			);
