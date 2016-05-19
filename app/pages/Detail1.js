@@ -5,18 +5,17 @@ import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
 import DetailContainer from '../containers/DetailContainer';
 import HouseInputContainer from '../containers/HouseInputContainer'
-import UserContainer from '../containers/UserContainer'
+import RechargeContainer from '../containers/RechargeContainer'
 import BackScoreContainer from '../containers/BackScoreContainer'
 let ActionUtil = require( '../utils/ActionLog');
 import {callUp} from '../utils/CommonUtils'
 import * as actionType from '../constants/ActionLog'
-import {ToastAndroid} from 'react-native'
+
 var {
     NativeAppEventEmitter
     } = React;
 
 var { DeviceEventEmitter } = require('react-native');
-let CallModule = require('react-native').NativeModules.CallModule;
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -31,7 +30,7 @@ export default class Detail extends Component {
     }
 
     render() {
-        let {baseInfo, sameCommunityList, callInfo, actions, navigator} = this.props;
+        let {baseInfo, sameCommunityList, callInfo, actions, navigator, route} = this.props;
         let houseList = sameCommunityList.get('properties');
         let info = baseInfo.get("baseInfo");
         let status = Number(info.get('phone_lock_status'));
@@ -40,7 +39,13 @@ export default class Detail extends Component {
         return (
             <View style={styles.flex}>
                 <ErrorTipModal callInfo={callInfo} actions={actions} navigator={navigator} />
-                <CostScoreModal callInfo={callInfo} actions={actions} navigator={navigator} score={info.get('unlock_phone_cost')}/>
+                <CostScoreModal
+                    propertyId={route.item.get('property_id')}
+                    callInfo={callInfo}
+                    actions={actions}
+                    navigator={navigator}
+                    score={info.get('unlock_phone_cost')}
+                />
                 <ListView
                     dataSource={ds.cloneWithRows(houseList.toArray())}
                     renderRow={this._renderRow}
@@ -110,7 +115,6 @@ export default class Detail extends Component {
             });
         } else {
             DeviceEventEmitter.addListener('callIdle', () => {
-                ToastAndroid.show("callIdle", ToastAndroid.SHORT);
                 self._showFeedbackModal();
             });
         }
@@ -122,6 +126,7 @@ export default class Detail extends Component {
 
         if(status || !status && callInfo.get('sellerPhone')) {
         } else {
+            ActionUtil.setAction(actionType.BA_DETAIL_SPEND);
             actions.setFeedbackVisible(true);
         }
     }
@@ -150,11 +155,7 @@ export default class Detail extends Component {
     _clickPhoneBtn(status, phone, hasPhone) {
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
         if(status || hasPhone) { //1: 已解锁 或 已反馈在卖
-            if(Platform.OS == "android") {
-                CallModule.callUp(phone);
-            } else {
-                callUp(phone);
-            }
+            callUp(phone);
         } else {   //0: 未解锁
             this.props.actions.callSeller({
                 property_id: this.props.route.item.get("property_id")
@@ -298,19 +299,18 @@ class ErrorTipModal extends Component {
                         <TouchableHighlight
                             style={[styles.btn, styles.borderBtn]}
                             underlayColor="#fff"
-                            onPress={this._goPage.bind(this, HouseInputContainer, actionType.BA_DETAIL_CASH)}
+                            onPress={this._goPage.bind(this, HouseInputContainer, '发布房源', actionType.BA_DETAIL_CASH)}
                         >
                             <View><Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text></View>
                         </TouchableHighlight>
-                        {/*
+
                          <TouchableHighlight
-                         style={[styles.btn, styles.borderBtn, styles.margin]}
-                         underlayColor="#fff"
-                         onPress={this._goPage.bind(this, UserContainer, actionType.BA_DETAIL_RECHANGE)}
+                             style={[styles.btn, styles.borderBtn, styles.margin]}
+                             underlayColor="#fff"
+                             onPress={this._goPage.bind(this, RechargeContainer, '充值', actionType.BA_DETAIL_RECHANGE)}
                          >
-                         <View><Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text></View>
+                            <View><Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text></View>
                          </TouchableHighlight>
-                         */}
 
                     </View>
                 </View>
@@ -318,15 +318,15 @@ class ErrorTipModal extends Component {
         );
     }
 
-    _goPage(component, actionLog) {
+    _goPage(component, title, actionLog) {
         ActionUtil.setAction(actionLog);
 
         let {navigator, actions} = this.props;
         actions.setErrorTipVisible(false);
         navigator.push({
             component: component,
-            name: 'publishHouse',
-            title: '发布房源',
+            name: '',
+            title: title,
             hideHeader: true,
             hideNavBar: false,
             bp: this.pageId
@@ -348,7 +348,7 @@ class CostScoreModal extends Component {
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
                             underlayColor="#fff"
-                            onPress={this._handlerFeedback.bind(this, actionType.BA_DETAIL_CASHRECHACLOSE)}
+                            onPress={this._handlerFeedback.bind(this, actionType.BA_DETAIL_SPENDCANCEL)}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -361,7 +361,7 @@ class CostScoreModal extends Component {
                         <TouchableHighlight
                             style={[styles.btn, styles.sureBtn]}
                             underlayColor="#fff"
-                            onPress={this._handlerFeedback.bind(this, actionType.BA_DETAIL_CASH)}
+                            onPress={this._handlerFeedback.bind(this, actionType.BA_DETAIL_SPENDENSURE)}
                         >
                             <View>
                                 <Text style={[styles.baseSize, {color: "#fff", textAlign: "center"}]}>确认</Text>
@@ -380,9 +380,9 @@ class CostScoreModal extends Component {
     }
 
     _handlerFeedback(actionLog) {
-        let {callInfo, actions} = this.props;
+        let {callInfo, actions, propertyId} = this.props;
 
-        ActionUtil.setAction(actionLog);
+        ActionUtil.setActionWithExtend(actionLog, {"vpid": propertyId});
         actions.callFeedback({
             wash_id: callInfo.get('washId'),
             status: 1 //在卖
@@ -390,16 +390,17 @@ class CostScoreModal extends Component {
     }
 
     _goBackScore() {
-        let {callInfo, navigator} = this.props;
-
+        let {callInfo, navigator, propertyId} = this.props;
+        ActionUtil.setActionWithExtend(actionType.BA_DETAIL_SPENDRECALL, {"vpid": propertyId});
         navigator.push({
             component: BackScoreContainer,
             name: 'backScore',
             title: '找回积分',
             hideHeader: false,
             hideNavBar: false,
-            bp: '',
-            washId: callInfo.get('washId')
+            bp: this.pageId,
+            washId: callInfo.get('washId'),
+            propertyId: propertyId
         });
     }
 }
@@ -479,7 +480,7 @@ class ContactList extends Component {
 
                 {curLogs.size == contact.get('total') ? null :
                     <TouchableWithoutFeedback
-                        onPress={() => {actions.changeCurrentContactLog()}}
+                        onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_MORECONTACT);actions.changeCurrentContactLog()}}
                     >
                         <View style={[styles.row, styles.justifyContent, styles.center, styles.moreBox]}>
                             <Image

@@ -1,5 +1,8 @@
 'use strict';
 
+import {Platform} from 'nuke'
+let CallModule = require('react-native').NativeModules.CallModule;
+
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import * as homeTypes from '../constants/Home';
@@ -34,6 +37,7 @@ export function fetchBaseInfo(data) {
             data: data,
             success: function(oData) {
                 if(!Number(oData.is_reply)) {
+                    ActionUtil.setAction(actionType.BA_DETAIL_SPEND_ONVIEW);
                     dispatch(setFeedbackVisible(true));
                     dispatch(setWashId(oData.log_id));
                 }
@@ -68,12 +72,13 @@ export function callSeller(params) {
             service: callSellerPhone,
             data: params,
             success: function(oData) {
-                ActionUtil.setActionWithExtend(actionType.BA_DETAIL_CALL_SUCCESS, {
-                    vpid: params.property_id
-                });
                 dispatch(setWashId(oData.log_id));
                 //oData 拿到短号, 直接拨出
-                callUp(oData.main_number + ",,," + oData.short_number);
+                if(Platform.OS == "android") {
+                    CallModule.callUp(oData.main_number + ",,," + oData.short_number);
+                }else {
+                    callUp(oData.main_number + "," + oData.short_number);
+                }
             },
             error: function(error) {
                 dispatch(setErrorTipVisible(true));

@@ -1,6 +1,8 @@
 'use strict';
 
 import {React, Component, Modal, Text, View, Image, StyleSheet, TouchableHighlight, TouchableWithoutFeedback, PixelRatio, Platform} from 'nuke';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog';
 
 export default class BackScore extends Component {
     constructor(props) {
@@ -11,6 +13,8 @@ export default class BackScore extends Component {
         };
         this.submitFlag = false;
         this.reasons = [{select: false, val: "联系不上"}, {select: false, val: "虚假房源"}, {select: false, val: "房东不卖"}, {select: false, val: "房源已卖"}, {select: false, val: "按错了"}];
+
+        ActionUtil.setActionWithExtend(actionType.BA_DETAIL_SPENDRECALLONSHOUW, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -68,6 +72,14 @@ export default class BackScore extends Component {
         }
     }
     saveSelectReason(index) {
+        let log = [actionType.BA_DETAIL_SPENDRECALL_OUTOFCON,
+            actionType.BA_DETAIL_SPENDRECALL_FAULT,
+            actionType.BA_DETAIL_SPENDRECALL_OUTOFSALE,
+            actionType.BA_DETAIL_SPENDRECALL_SALED,
+            actionType.BA_DETAIL_SPENDRECALL_FALSE
+        ];
+        ActionUtil.setActionWithExtend(log[index], {"vpid": this.props.route.propertyId});
+
         let cur = this.state.cur;
         if(cur != index) {
             this.reasons[index].select = true;
@@ -79,6 +91,8 @@ export default class BackScore extends Component {
     }
     submitReason() {
         if(!this.submitFlag && this.state.cur != -1) {
+            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_SPENDRECALL_ENSURE, {"vpid": this.props.route.propertyId, "status": this.state.cur+3});
+
             this.submitFlag = true;
             this.props.actions.submitReason({
                 wash_id: this.props.route.washId,
