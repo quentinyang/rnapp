@@ -1,4 +1,4 @@
-package com.xinyi.fy360.broadcast;
+package com.xinyi.fy360.receiver;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;

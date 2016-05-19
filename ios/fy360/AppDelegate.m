@@ -319,6 +319,5 @@ NSString * const UMengChannelId = @"";
       NSLog(@"None State!");
     }
   }];
-
 }
 @end

@@ -73,7 +73,7 @@ export function callSeller(params) {
                 });
                 dispatch(setWashId(oData.log_id));
                 //oData 拿到短号, 直接拨出
-                callUp(oData.main_number + "-" + oData.short_number);
+                callUp(oData.main_number + ",,," + oData.short_number);
             },
             error: function(error) {
                 dispatch(setErrorTipVisible(true));

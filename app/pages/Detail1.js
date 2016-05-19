@@ -16,6 +16,7 @@ var {
     } = React;
 
 var { DeviceEventEmitter } = require('react-native');
+let CallModule = require('react-native').NativeModules.CallModule;
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -149,7 +150,11 @@ export default class Detail extends Component {
     _clickPhoneBtn(status, phone, hasPhone) {
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
         if(status || hasPhone) { //1: 已解锁 或 已反馈在卖
-            callUp(phone);
+            if(Platform.OS == "android") {
+                CallModule.callUp(phone);
+            } else {
+                callUp(phone);
+            }
         } else {   //0: 未解锁
             this.props.actions.callSeller({
                 property_id: this.props.route.item.get("property_id")
