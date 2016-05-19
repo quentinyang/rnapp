@@ -108,6 +108,7 @@ export default class Recharge extends Component {
                         name: 'success',
                         price: this.state.price,
                         title: '充值成功',
+                        bp: this.pageId,
                         hideNavBar: true
                     });
                 }

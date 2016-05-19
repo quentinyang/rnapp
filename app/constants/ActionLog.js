@@ -176,3 +176,4 @@ export const BA_DEPOSIT_FIFTY = "101-800004"
 export const BA_DEPOSIT_GO = "101-800005"
 export const BA_DEPOSIT_WATCH = "101-800006"
 export const BA_DEPOSIT_KNOW = "101-800007"
+export const BA_DEPOSIT_SUCCESS = '101-800008'
