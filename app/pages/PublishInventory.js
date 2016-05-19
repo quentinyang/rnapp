@@ -86,7 +86,11 @@ class HouseInput extends Component {
 
         return (
             <View style={styles.container}>
-                {CurrentComponent}
+                <Text><Text>3</Text>步立即发布房源</Text>
+                <View style={styles.colorWhite}>
+                    {CurrentComponent}
+                </View>
+                <TouchableHighlight><View><Text>下一步</Text></View></TouchableHighlight>
             </View>
         );
     }
@@ -236,44 +240,17 @@ let errMsgs = {
     'wrongPhone': '联系电话有误'
 }
 
-class Attached extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-
-        return (
-                <TouchableHighlight
-                    style={styles.attachedTouch}
-                    underlayColor='#fff'
-                    onPress={this.props.toggleAttach}
-                >
-                    <View style={[styles.attached]}>
-                        {this.props.isSelected ?
-                            <Image
-                                source={require('../images/selected.png')}
-                                style={styles.selectedImage}
-                            /> :
-                            <Image
-                                source={require('../images/unSelected.png')}
-                                style={styles.selectedImage}
-                            />
-                        }
-                        <Text style={styles.attachedText}>{this.props.attachedText}</Text>
-                    </View>
-                </TouchableHighlight>
-        )
-    }
-}
-
 let styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#eee'
     },
     layout: {
         flex: 1,
         backgroundColor: '#eee'
+    },
+    colorWhite: {
+        backgroundColor: '#fff'
     },
     headerRight: {
         marginLeft: -80,

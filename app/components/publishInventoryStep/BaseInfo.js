@@ -40,21 +40,6 @@ export default class BaseInfoComponent extends Component {
                     />
                 </WithLabel>
                 <WithLabel
-                    label='单元'
-                    value={houseForm.get('unit_num')}
-                    placeholder={controller.get('no_unit')?'':'输入单元号'}
-                    editable={controller.get('no_unit')? false: true}
-                    underlineColorAndroid = 'transparent'
-                    onFocus={() => ActionUtil.setAction(actionType.BA_SEND_ADDUNIT)}
-                    onChangeText={(v) => {this.singleAction('unitChanged', v)}}
-                >
-                    <Attached
-                        isSelected={controller.get('no_unit')}
-                        attachedText='无'
-                        toggleAttach={() => this.toggleAttach(actionType.BA_SEND_CLICKNULL, 'noUnit', !controller.get('no_unit'), 'unitChanged')}
-                    />
-                </WithLabel>
-                <WithLabel
                     label='房号'
                     rightText='室'
                     rightStyle={controller.get('villa')? {color: '#fff'}: {}}
