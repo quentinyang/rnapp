@@ -59,7 +59,7 @@ export default class LandlordInfoPage extends Component {
                 <View style={styles.paddingHorizon}>
                     <TouchableSubmit
                         opacity={isOpacity ? 1: 0.3}
-                        onPress={this.handleFirstSubmit}
+                        onPress={this.handleThirdSubmit}
                         submitText='发布'
                     />
                 </View>
@@ -71,23 +71,22 @@ export default class LandlordInfoPage extends Component {
         this.props.actions[action](value);
     }
 
-    toggleAttach(actionLog, action, value, secAction, thirdAction) {
-        ActionUtil.setAction(actionLog);
-        if(value) {
-            this.singleAction(secAction, '');
-            if(thirdAction) {
-                this.singleAction(thirdAction, 1);
-            }
-        }
+    checkForm() {
+        let houseForm = this.props.houseInput.houseForm.toJS(),
+            regphone = /^1\d{10}$|^0\d{10,11}$|^\d{8}$/g;
 
-        this.singleAction(action, value);
+        if(!regphone.test(houseForm.seller_phone)) {
+            return 'wrongPhone';
+        }
+        return '';
     }
 
-    handleFirstSubmit = () => {
-        let houseForm = this.props.houseInput.houseForm.toJS();
+    handleThirdSubmit = () => {
+        let houseForm = this.props.houseInput.houseForm.toJS(),
+            msg = this.checkForm();
 
         ActionUtil.setAction(actionType.BA_SEND_FINISH);
-        this.submitSuccess(houseForm);
+        msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };
 
     submitSuccess(params) {
@@ -115,8 +114,11 @@ export default class LandlordInfoPage extends Component {
             actions.error(error.msg);
         })
     }
-
 }
+
+const errMsgs = {
+    'wrongPhone': '联系电话有误'
+};
 
 const styles = StyleSheet.create({
     container: {

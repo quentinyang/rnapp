@@ -91,7 +91,7 @@ export default class MoreInfoPage extends Component {
                 <View style={styles.submitBox}>
                     <TouchableSubmit
                         opacity={isOpacity ? 1: 0.3}
-                        onPress={this.handleFirstSubmit}
+                        onPress={this.handleSecondSubmit}
                         submitText='下一步'
                     />
                 </View>
@@ -103,16 +103,30 @@ export default class MoreInfoPage extends Component {
         this.props.actions[action](value);
     }
 
-    handleFirstSubmit = () => {
+    checkForm() {
         let houseForm = this.props.houseInput.houseForm.toJS();
 
+        if(!parseInt(houseForm.area) || houseForm.area >= 1000000) {
+            return 'wrongArea';
+        }
+        if(!parseInt(houseForm.price) || houseForm.price >= 1000000) {
+            return 'wrongPrice';
+        }
+        return '';
+    }
+
+
+    handleSecondSubmit = () => {
+        let houseForm = this.props.houseInput.houseForm.toJS(),
+            msg = this.checkForm();
+
         ActionUtil.setAction(actionType.BA_SEND_FINISH);
-        this.submitSuccess(houseForm);
+        msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };
 
     submitSuccess(params) {
         let {actions, navigator} = this.props;
-
+        actions.error('');
         navigator.push({
             component: PublishThirdStepContainer,
             name: 'publishInventory',
@@ -121,8 +135,13 @@ export default class MoreInfoPage extends Component {
             bp: this.pageId
         });
     }
-
 }
+
+const errMsgs = {
+    'wrongArea': '所填面积超过限制面积',
+    'wrongPrice': '价格过高'
+};
+
 
 const styles = StyleSheet.create({
     container: {

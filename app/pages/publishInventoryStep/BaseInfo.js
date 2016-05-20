@@ -121,11 +121,22 @@ export default class BaseInfoPage extends Component {
         this.singleAction(action, value);
     }
 
+    checkForm() {
+        let houseForm = this.props.houseInput.houseForm.toJS(),
+            regwords =  /楼|幢|栋|号|室/g;
+
+        if(regwords.test(houseForm.building_num)) {
+            return 'wrongBuilding';
+        }
+        return '';
+    }
+
     handleFirstSubmit = () => {
-        let houseForm = this.props.houseInput.houseForm.toJS();
+        let houseForm = this.props.houseInput.houseForm.toJS(),
+            msg = this.checkForm();
 
         ActionUtil.setAction(actionType.BA_SEND_FINISH);
-        this.submitSuccess(houseForm);
+        msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };
 
     submitSuccess(params) {
@@ -133,6 +144,7 @@ export default class BaseInfoPage extends Component {
 
         basicInventoryDuplicateService({body:params})
         .then(() => {
+            actions.error('');
             navigator.push({
                 component: PublishSecondStepContainer,
                 name: 'publishInventory',
