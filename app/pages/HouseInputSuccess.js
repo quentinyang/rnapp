@@ -49,16 +49,13 @@ export default class HouseInputSuccess extends Component {
     }
 
     continueInput = () => {
-        let {navigator} = this.props;
-        let routeStack = this.props.navigator.state.routeStack;
-        for (let i = routeStack.length - 1; i >= 0; i--) {
-            if(routeStack[i].title === "房源基本信息"){
-                let destinationRoute = navigator.getCurrentRoutes()[i]
-                navigator.popToRoute(destinationRoute);
-            }
-        }
         ActionUtil.setAction(actionType.BA_SEND_SUCCESS_CONTINIUE);
-        //this.props.navigator.pop();
+        this.props.navigator.replace({
+            component: PublishFirstStepContainer,
+            name: 'publishInventory',
+            title: '房源基本信息',
+            hideNavBar: false
+        });
     };
 
     lookHouse = () => {

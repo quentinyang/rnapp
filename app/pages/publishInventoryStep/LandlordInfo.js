@@ -96,6 +96,9 @@ export default class LandlordInfoPage extends Component {
         inputHouseService({body:params})
         .then((oData) => {
             ActionUtil.setActionWithExtend(actionType.BA_SEND_HOUSE_SUCCESS, {"vpid": oData.property_id});
+            let routeStack = this.props.navigator.state.routeStack;
+            let newStack = routeStack.slice(0, routeStack.length-3);
+            navigator.immediatelyResetRouteStack(newStack);
             navigator.push({
                 component: HouseInputSuccessContainer,
                 name: 'houseInputSuccess',
