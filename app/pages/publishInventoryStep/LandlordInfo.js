@@ -30,7 +30,7 @@ export default class LandlordInfoPage extends Component {
         return (
             <View style={styles.container}>
                 <PublishTitle>这<Text style={styles.colorFFDB}>1</Text>步即可发布</PublishTitle>
-                <Text style={[styles.baseInfo, styles.paddingHorizon]}>房源为“{houseForm.get('community_name')}{!controller.get('single')? houseForm.get('building_num')+'号':'独栋'}{!controller.get('villa')?houseForm.get('door_num')+'室':'别墅'}”</Text>
+                <View style={styles.paddingHorizon}><Text style={styles.baseInfo}>房源为“{houseForm.get('community_name')}{!controller.get('single')? houseForm.get('building_num')+'号':'独栋'}{!controller.get('villa')?houseForm.get('door_num')+'室':'别墅'}”</Text></View>
                 <View style={styles.colorWhite}>
                     <WithLabel
                         label='称呼'
