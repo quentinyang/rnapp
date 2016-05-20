@@ -4,7 +4,7 @@ import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, I
 import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
 import DetailContainer from '../containers/DetailContainer';
-import HouseInputContainer from '../containers/HouseInputContainer'
+import PublishFirstStepContainer from '../containers/PublishFirstStepContainer'
 import RechargeContainer from '../containers/RechargeContainer'
 import BackScoreContainer from '../containers/BackScoreContainer'
 let ActionUtil = require( '../utils/ActionLog');
@@ -305,7 +305,7 @@ class ErrorTipModal extends Component {
                         <TouchableHighlight
                             style={[styles.btn, styles.borderBtn]}
                             underlayColor="#fff"
-                            onPress={this._goPage.bind(this, HouseInputContainer, '发布房源', actionType.BA_DETAIL_CASH)}
+                            onPress={this._goPage.bind(this, PublishFirstStepContainer, '房源基本信息', actionType.BA_DETAIL_CASH)}
                         >
                             <View><Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text></View>
                         </TouchableHighlight>

@@ -20,8 +20,7 @@ export default class LandlordInfoPage extends Component {
     constructor(props) {
         super(props);
         this.pageId = actionType.BA_SEND;
-        ActionUtil.setActionWithExtend(actionType.BA_SEND_ONVIEW, {"bp": this.props.route.bp});
-        this.height = Dimensions.get('window').height;
+        ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_ONVIEW);
     }
 
     render() {
@@ -85,7 +84,6 @@ export default class LandlordInfoPage extends Component {
         let houseForm = this.props.houseInput.houseForm.toJS(),
             msg = this.checkForm();
 
-        ActionUtil.setAction(actionType.BA_SEND_FINISH);
         msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };
 
@@ -94,7 +92,7 @@ export default class LandlordInfoPage extends Component {
 
         inputHouseService({body:params})
         .then((oData) => {
-            ActionUtil.setActionWithExtend(actionType.BA_SEND_HOUSE_SUCCESS, {"vpid": oData.property_id});
+            ActionUtil.setActionWithExtend(actionType.BA_SENDTHREE_THREE_RELEASE, {"vpid": oData.property_id});
             let routeStack = this.props.navigator.state.routeStack;
             let newStack = routeStack.slice(0, routeStack.length-3);
             navigator.immediatelyResetRouteStack(newStack);
@@ -104,13 +102,12 @@ export default class LandlordInfoPage extends Component {
                 title: '发布成功',
                 data: oData,
                 hideNavBar: false,
-                backLog: actionType.BA_SEND_SUCCESS_RETURN,
                 bp: this.pageId
             });
             actions.dataCleared();
         })
         .catch((error) => {
-            ActionUtil.setActionWithExtend(actionType.BA_SEND_HOUSE_FAIL, {"error_type": error.status || ""});
+            ActionUtil.setActionWithExtend(actionType.BA_SENDTHREE_THREE_RELEASE, {"error_type": error.status || ""});
             actions.error(error.msg);
         })
     }

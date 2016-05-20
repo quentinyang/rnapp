@@ -19,9 +19,7 @@ import * as actionType from '../../constants/ActionLog'
 export default class MoreInfoPage extends Component {
     constructor(props) {
         super(props);
-        this.pageId = actionType.BA_SEND;
-        ActionUtil.setActionWithExtend(actionType.BA_SEND_ONVIEW, {"bp": this.props.route.bp});
-        this.height = Dimensions.get('window').height;
+        ActionUtil.setAction(actionType.BA_SENDTWO_THREE_ONVIEW);
     }
 
     render() {
@@ -120,7 +118,7 @@ export default class MoreInfoPage extends Component {
         let houseForm = this.props.houseInput.houseForm.toJS(),
             msg = this.checkForm();
 
-        ActionUtil.setAction(actionType.BA_SEND_FINISH);
+        ActionUtil.setAction(actionType.BA_SENDTWO_THREE_NEXT);
         msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };
 
@@ -130,9 +128,9 @@ export default class MoreInfoPage extends Component {
         navigator.push({
             component: PublishThirdStepContainer,
             name: 'publishInventory',
+            log: [actionType.BA_SENDTHREE_THREE_RETURN, actionType.BA_SENDTHREE_THREE_CANCEL, actionType.BA_SENDTHREE_THREE_ENSURE],
             title: '房东信息',
             hideNavBar: false,
-            bp: this.pageId
         });
     }
 }

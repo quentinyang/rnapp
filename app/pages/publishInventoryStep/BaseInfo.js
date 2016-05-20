@@ -21,9 +21,7 @@ import * as actionType from '../../constants/ActionLog'
 export default class BaseInfoPage extends Component {
     constructor(props) {
         super(props);
-        this.pageId = actionType.BA_SEND;
-        ActionUtil.setActionWithExtend(actionType.BA_SEND_ONVIEW, {"bp": this.props.route.bp});
-        this.height = Dimensions.get('window').height;
+        ActionUtil.setActionWithExtend(actionType.BA_SENDONE_THREE_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -68,7 +66,7 @@ export default class BaseInfoPage extends Component {
                             <Attached
                                 isSelected={controller.get('single')}
                                 attachedText='独栋'
-                                toggleAttach={() => this.toggleAttach(actionType.BA_SEND_SINGLEBUILDING, 'singleChanged', !controller.get('single'), 'buildingChanged', 'attachBuildingChanged')}
+                                toggleAttach={() => this.toggleAttach(actionType.BA_SENDONE_THREE_ONEBUILD, 'singleChanged', !controller.get('single'), 'buildingChanged', 'attachBuildingChanged')}
                             />
                         </WithLabel>
                         <WithLabel
@@ -84,7 +82,7 @@ export default class BaseInfoPage extends Component {
                             <Attached
                                 isSelected={controller.get('villa')}
                                 attachedText='别墅'
-                                toggleAttach={() => this.toggleAttach(actionType.BA_SEND_VILA, 'villaChanged', !controller.get('villa'), 'doorChanged', 'attachDoorChanged')}
+                                toggleAttach={() => this.toggleAttach(actionType.BA_SENDONE_THREE_VILLA, 'villaChanged', !controller.get('villa'), 'doorChanged', 'attachDoorChanged')}
                             />
                         </WithLabel>
                     </View>
@@ -135,27 +133,26 @@ export default class BaseInfoPage extends Component {
         let houseForm = this.props.houseInput.houseForm.toJS(),
             msg = this.checkForm();
 
-        ActionUtil.setAction(actionType.BA_SEND_FINISH);
+
         msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };
 
     submitSuccess(params) {
         let {actions, navigator} = this.props;
-
         basicInventoryDuplicateService({body:params})
         .then(() => {
             actions.error('');
             navigator.push({
                 component: PublishSecondStepContainer,
                 name: 'publishInventory',
+                log: [actionType.BA_SENDTWO_THREE_RETURN, actionType.BA_SENDTWO_THREE_CANCEL, actionType.BA_SENDTWO_THREE_ENSURE],
                 title: '更多房源信息',
                 hideNavBar: false,
-                backLog: actionType.BA_SEND_SUCCESS_RETURN,
-                bp: this.pageId
             });
+            ActionUtil.setAction(actionType.BA_SENDONE_THREE_NEXT);
         })
         .catch((error) => {
-            ActionUtil.setActionWithExtend(actionType.BA_SEND_HOUSE_FAIL, {"error_type": error.status || ""});
+            ActionUtil.setActionWithExtend(actionType.BA_SENDONE_THREE_NEXT, {"error_type": error.status || ""});
             actions.error(error.msg);
         })
     }

@@ -359,11 +359,18 @@ class App extends Component {
                 onPress={() => {
                     ActionUtil.setAction(route.backLog);
                     if(route.name === 'publishInventory') {
+                        ActionUtil.setAction(route.log[0]);
                         Alert.alert('', '确定要离开此页面吗？', [
-                            {text: '取消'},
+                            {
+                                text: '取消',
+                                onPress: () => {
+                                    ActionUtil.setAction(route.log[1]);
+                                }
+                            },
                             {
                                 text: '确定',
                                 onPress: () => {
+                                    ActionUtil.setAction(route.log[2]);
                                     navigator.pop();
                                 }
                             }

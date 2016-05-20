@@ -5,6 +5,7 @@ import HomeContainer from '../containers/HomeContainer';
 import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
 import UserContainer from '../containers/UserContainer';
 let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 export default class TabView extends Component {
     constructor(props) {
@@ -39,6 +40,7 @@ export default class TabView extends Component {
                                                 navigator.push({
                                                     component: PublishFirstStepContainer,
                                                     name: 'publishInventory',
+                                                    log: [actionType.BA_SENDONE_THREE_RETURN, actionType.BA_SENDONE_THREE_CANCEL, actionType.BA_SENDONE_THREE_ENSURE],
                                                     title: '房源基本信息',
                                                     hideNavBar: false
                                                 });
