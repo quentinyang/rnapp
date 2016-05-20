@@ -11,7 +11,7 @@ let initialState = {
 function pageData(state = Immutable.fromJS(initialState), action) {
     switch(action.type) {
         case types.SUCCESS_MODAL_VISIBLE_CHANGE:
-            return state.set('visible', action.visible);
+            return state.set('visible', Immutable.fromJS(action.visible));
             break;
         default:
             return state;

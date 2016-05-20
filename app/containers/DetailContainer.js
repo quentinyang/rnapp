@@ -7,7 +7,7 @@ import * as actions from '../actions/detail';
 import * as actionsHouseList from '../actions/houseList';
 import * as actionsHome from '../actions/home';
 import * as actionsNavigation from '../actions/navigation';
-import Detail from '../pages/Detail1';
+import Detail from '../pages/Detail';
 import Immutable from 'immutable';
 
 class DetailContainer extends Component {

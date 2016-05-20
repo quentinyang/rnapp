@@ -91,7 +91,7 @@ export default class BackScore extends Component {
     }
     submitReason() {
         if(!this.submitFlag && this.state.cur != -1) {
-            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_SPENDRECALL_ENSURE, {"vpid": this.props.route.propertyId, "status": this.state.cur+3});
+            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_SPENDRECALL_ENSURE, {"vpid": this.props.route.propertyId, "status": this.state.cur+3 + ""});
 
             this.submitFlag = true;
             this.props.actions.submitReason({

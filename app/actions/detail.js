@@ -36,13 +36,13 @@ export function fetchBaseInfo(data) {
             service: getBaseInfoService,
             data: data,
             success: function(oData) {
+                dispatch(houseBaseFetched(oData));
+
                 if(!Number(oData.is_reply)) {
                     ActionUtil.setAction(actionType.BA_DETAIL_SPEND_ONVIEW);
                     dispatch(setFeedbackVisible(true));
                     dispatch(setWashId(oData.log_id));
                 }
-
-                dispatch(houseBaseFetched(oData))
             },
             error: function(oData) {
 

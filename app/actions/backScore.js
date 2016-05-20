@@ -1,5 +1,5 @@
 'use strict';
-
+import {InteractionManager} from 'nuke'
 import * as types from '../constants/BackScore';
 import {makeActionCreator, serviceAction} from './base';
 import {postFeedback} from '../service/detailService';
@@ -19,7 +19,6 @@ export function submitReason(params) {
                         dispatch(changeSuccessModalVisible(false));
                     }, 2000);
                 });
-                dispatch(setFeedbackVisible(false));
             },
             error: function(oData) {
 
