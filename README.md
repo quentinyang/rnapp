@@ -50,7 +50,12 @@ fy360-native
 1. 开发时部署到真机前，生成本地JsBundle文件
 
  ```
+ # 生成ios&android bundle和资源
  ./bundle-generator.sh
+ # 生成ios的bundle和资源
+ ./bundle-generator-ios.sh
+ # 生成android的bundle和资源
+ ./bundle-generator-android.sh
  ```
 
 1. 关闭`Yellow Box`
@@ -62,19 +67,32 @@ fy360-native
 ## Codepush
 有需要时，使用codepush提交更新：
 
+*注意：区别于以前的版本（如：1.0.4），此后CodePush针对不同平台分别打包。*
+
  ```
- ./codepush-generator.sh
+ # 生成IOS的codepush bundle和资源
+ ./codepush-generator-ios.sh
+
+ # 生成Android的codepush bundle和资源
+ ./codepush-generator-android.sh
  ```
 
-推送到codepush云服务
+推送到CodePush云服务
 
-   - Debug: `code-push release FangYuan360 ./release 1.0.0`
-   - Release: `code-push release FangYuan360-Release ./release 1.0.0`
+Staging: 
+
+  - IOS: `code-push release FangYuan360-IOS ./release 1.0.x`
+  - Android: `code-push release FangYuan360-Android ./release 1.0.x`
+
+Production:
+
+  - IOS: `code-push release FangYuan360-IOS ./release 1.0.x -d Production`
+  - Android: `code-push release FangYuan360-Android ./release 1.0.x -d Production`
 
 常用命令: 
 
-   - 查看历史: `code-push deployment history FangYuan360 Staging` 
-   - 查看Key : `code-push deployment ls FangYuan360 -k` 
+   - 查看历史: `code-push deployment history FangYuan360-IOS Staging`
+   - 查看Key : `code-push deployment ls FangYuan360-IOS -k` 
  
 参考：[Code Push@Quentin github](https://github.com/quentinyang/sharing/blob/master/App/codepush.md)
 
