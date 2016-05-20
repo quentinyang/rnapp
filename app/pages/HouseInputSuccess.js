@@ -11,6 +11,7 @@ import {
 } from 'nuke';
 
 import InputHouseContainer from '../containers/InputHouseContainer';
+import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -48,8 +49,16 @@ export default class HouseInputSuccess extends Component {
     }
 
     continueInput = () => {
+        let {navigator} = this.props;
+        let routeStack = this.props.navigator.state.routeStack;
+        for (let i = routeStack.length - 1; i >= 0; i--) {
+            if(routeStack[i].title === "房源基本信息"){
+                let destinationRoute = navigator.getCurrentRoutes()[i]
+                navigator.popToRoute(destinationRoute);
+            }
+        }
         ActionUtil.setAction(actionType.BA_SEND_SUCCESS_CONTINIUE);
-        this.props.navigator.pop();
+        //this.props.navigator.pop();
     };
 
     lookHouse = () => {
