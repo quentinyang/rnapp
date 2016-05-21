@@ -12,8 +12,7 @@ let initialState = {
         'per_page': 10,
         'current_page': 0,
         'last_page': 2,
-    },
-    newCount: ""
+    }
 };
 
 function houseData(state = Immutable.fromJS(initialState), action) {
@@ -64,9 +63,6 @@ function houseData(state = Immutable.fromJS(initialState), action) {
                 return newArr;
             });
             break;
-        case types.HOUSE_NEW_COUNT:
-            return state.set('newCount', Immutable.fromJS(action.count));
-            break;
         default: 
             return state;
     }
@@ -100,18 +96,24 @@ function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
     }
 }
 
-let initialScoreInfo = {
-    visible: false,
-    score: 8
+let initialBaseInfo = {
+    scoreModal: {
+        visible: false,
+        score: 8
+    },
+    newCount: ""
 };
 
-function scoreModalInfo(state = Immutable.fromJS(initialScoreInfo), action) {
+function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
     switch (action.type) {
         case types.SCORE_MODAL_VISIBLE_CHANGED:
-            return state.set('visible', Immutable.fromJS(action.visible));
+            return state.setIn(['scoreModal','visible'], Immutable.fromJS(action.visible));
             break;
         case types.SCORE_MODAL_STATUS:
-            return Immutable.fromJS(action.status);
+            return state.set('scoreModal', Immutable.fromJS(action.status));
+            break;
+        case types.HOUSE_NEW_COUNT:
+            return state.set('newCount', Immutable.fromJS(action.count));
             break;
         default:
             return state;
@@ -121,5 +123,5 @@ function scoreModalInfo(state = Immutable.fromJS(initialScoreInfo), action) {
 export default combineReducers({
     houseData,
     attentionList,
-    scoreModalInfo
+    baseInfo
 });

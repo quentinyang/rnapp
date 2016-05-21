@@ -33,29 +33,12 @@ export default class Detail extends Component {
         let {baseInfo, sameCommunityList, callInfo, actions, navigator, route} = this.props;
         let houseList = sameCommunityList.get('properties');
         let info = baseInfo.get("baseInfo");
-        let status = Number(info.get('phone_lock_status'));
-        let phoneStr = "联系房东" + (status ? ("(" + info.get('seller_phone') + ")") : (callInfo.get('sellerPhone') ? ("(" + callInfo.get('sellerPhone') + ")") : ''));
+        let status = Number(route.item.get('phone_lock_status'));
+        let phoneStr = "联系房东" + (status ? ("(" + route.item.get('seller_phone') + ")") : (callInfo.get('sellerPhone') ? ("(" + callInfo.get('sellerPhone') + ")") : ''));
+
 
         return (
             <View style={styles.flex}>
-                <ErrorTipModal callInfo={callInfo} actions={actions} navigator={navigator} />
-                <CostScoreModal
-                    propertyId={route.item.get('property_id')}
-                    callInfo={callInfo}
-                    actions={actions}
-                    navigator={navigator}
-                    score={info.get('unlock_phone_cost') || 0}
-                />
-                <ListView
-                    dataSource={ds.cloneWithRows(houseList.toArray())}
-                    renderRow={this._renderRow}
-                    initialListSize={5}
-                    pageSize={5}
-                    renderFooter={this._renderFooter}
-                    renderHeader={this._renderHeader}
-                    style={styles.listView}
-                />
-
                 <View style={[styles.contactWrap, styles.row, styles.center]}>
                     {
                         (status || !status && callInfo.get('sellerPhone')) ?
@@ -68,7 +51,7 @@ export default class Detail extends Component {
                     {
                         (status || !status && callInfo.get('sellerPhone')) ?
                             null :
-                            <Text style={[styles.greenColor, styles.baseSize]}>{info.get('unlock_phone_cost') || 0}积分</Text>
+                            <Text style={[styles.greenColor, styles.baseSize]}>{route.item.get('unlock_phone_cost') || 0}积分</Text>
                     }
 
                     <TouchableHighlight
@@ -87,6 +70,23 @@ export default class Detail extends Component {
                         </View>
                     </TouchableHighlight>
                 </View>
+                <ErrorTipModal callInfo={callInfo} actions={actions} navigator={navigator} />
+                <CostScoreModal
+                    propertyId={route.item.get('property_id')}
+                    callInfo={callInfo}
+                    actions={actions}
+                    navigator={navigator}
+                    score={route.item.get('unlock_phone_cost') || 0}
+                />
+                <ListView
+                    dataSource={ds.cloneWithRows(houseList.toArray())}
+                    renderRow={this._renderRow}
+                    initialListSize={5}
+                    pageSize={5}
+                    renderFooter={this._renderFooter}
+                    renderHeader={this._renderHeader}
+                    style={styles.listView}
+                />
             </View>
         );
     }

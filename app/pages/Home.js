@@ -77,8 +77,9 @@ export default class Home extends Component {
     }
 
     render() {
-        let {houseData, scoreModalInfo, actions, navigator} = this.props;
+        let {houseData, baseInfo, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
+        let scoreModalInfo = baseInfo.get('scoreModal');
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
                 <ScoreModal modalInfo={scoreModalInfo} actions={actions} navigator={navigator} />
@@ -182,6 +183,7 @@ export default class Home extends Component {
         })
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionPrependHouseList({});
+            actions.fetchHouseNewCount();
         });
         this.setState({
             isRefreshing: false
@@ -228,7 +230,7 @@ export default class Home extends Component {
     };
 
     _renderHeader = () => {
-        let {attentionList, navigator, houseData} = this.props;
+        let {attentionList, navigator, baseInfo} = this.props;
 
         return (
             <View>
@@ -239,7 +241,7 @@ export default class Home extends Component {
                             style={[styles.allHouseImage]}
                         />
                         <Text style={[styles.flex, styles.heiti_16_header]}>{this.props.rout}</Text>
-                        <Text style={styles.noData}>今日新增<Text style={[styles.fontMedium, styles.orange]}>{houseData.get('newCount')}</Text>套</Text>
+                        <Text style={styles.noData}>今日新增<Text style={[styles.fontMedium, styles.orange]}>{baseInfo.get('newCount')}</Text>套</Text>
                         <Image
                             source={require('../images/next.png')}
                             style={styles.nextImage}
