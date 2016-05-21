@@ -2,9 +2,10 @@
 
 import {React, Component, View, StyleSheet, TabBar} from 'nuke';
 import HomeContainer from '../containers/HomeContainer';
-import HouseInputEnterContainer from '../containers/HouseInputEnterContainer';
+import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
 import UserContainer from '../containers/UserContainer';
 let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
 
 export default class TabView extends Component {
     constructor(props) {
@@ -18,7 +19,7 @@ export default class TabView extends Component {
     }
 
     render() {
-        let {actionsUser, route} = this.props;
+        let {actionsUser, route, navigator} = this.props;
         return (
             <View style={styles.container}>
                 <TabBar
@@ -35,9 +36,19 @@ export default class TabView extends Component {
                                         icon={{uri: val.icon, scale: 2}}
                                         key={val.key}
                                         onPress={() => {
-                                            this.setState({
-                                                tabIndex: val.key
-                                            });
+                                            if(val.key == 1) {
+                                                navigator.push({
+                                                    component: PublishFirstStepContainer,
+                                                    name: 'publishInventory',
+                                                    log: [actionType.BA_SENDONE_THREE_RETURN, actionType.BA_SENDONE_THREE_CANCEL, actionType.BA_SENDONE_THREE_ENSURE],
+                                                    title: '房源基本信息',
+                                                    hideNavBar: false
+                                                });
+                                            } else {
+                                                this.setState({
+                                                    tabIndex: val.key
+                                                });
+                                            }
                                             if (val.key == 2) {
                                                 actionsUser.fetchUserProfile({});
                                             }
@@ -62,7 +73,7 @@ export default class TabView extends Component {
                 return <HomeContainer navigator={navigator} route={route} rout='全部房源'/>;
                 break;
             case 1:
-                return <HouseInputEnterContainer navigator={navigator} route={route} rout='发房'/>;
+                return <PublishFirstStepContainer navigator={navigator} route={route} rout='发房'/>;
                 break;
             case 2:
                 return <UserContainer navigator={navigator} route={route} rout='我的'/>;

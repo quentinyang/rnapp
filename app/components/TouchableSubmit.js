@@ -15,17 +15,24 @@ export default class TouchableSubmit extends Component {
     }
 
     render() {
-        let {submitText, ...props} = this.props;
+        let {submitText, opacity, onPress, ...props} = this.props;
         return (
             <TouchableHighlight
-                style={styles.submitButton}
+                style={[styles.submitButton, {opacity:opacity}]}
                 underlayColor='#04c1ae'
+                onPress={this.handleSubmit}
                 {...props}
             >
                 <View><Text style={styles.submitText}>{submitText}</Text></View>
             </TouchableHighlight>
         )
     }
+
+    handleSubmit = () => {
+        if(this.props.opacity == 1) {
+            this.props.onPress();
+        }
+    };
 }
 
 const styles = StyleSheet.create({

@@ -11,6 +11,7 @@ import {
 } from 'nuke';
 
 import InputHouseContainer from '../containers/InputHouseContainer';
+import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -49,7 +50,13 @@ export default class HouseInputSuccess extends Component {
 
     continueInput = () => {
         ActionUtil.setAction(actionType.BA_SEND_SUCCESS_CONTINIUE);
-        this.props.navigator.pop();
+        this.props.navigator.replace({
+            component: PublishFirstStepContainer,
+            name: 'publishInventory',
+            log: [actionType.BA_SENDTWO_THREE_RETURN, actionType.BA_SENDTWO_THREE_CANCEL, actionType.BA_SENDTWO_THREE_ENSURE],
+            title: '房源基本信息',
+            hideNavBar: false
+        });
     };
 
     lookHouse = () => {

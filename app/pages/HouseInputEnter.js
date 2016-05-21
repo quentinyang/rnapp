@@ -14,7 +14,7 @@ import {
 } from 'nuke';
 
 import Header from '../components/Header';
-import HouseInputContainer from '../containers/HouseInputContainer';
+import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
 import TouchWebContainer from "../containers/TouchWebContainer";
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
@@ -51,9 +51,10 @@ class HouseInputEnter extends Component {
     gotoInput = () => {
         ActionUtil.setAction(actionType.BA_SEND_SENDBUTTON);
         this.props.navigator.push({
-            component: HouseInputContainer,
-            name: 'houseInput',
-            title: '发布房源',
+            component: PublishFirstStepContainer,
+            name: 'publishInventory',
+            log: [actionType.BA_SENDONE_THREE_RETURN, actionType.BA_SENDONE_THREE_CANCEL, actionType.BA_SENDONE_THREE_ENSURE],
+            title: '房源基本信息',
             hideNavBar: false
         });
     };

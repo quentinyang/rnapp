@@ -11,7 +11,7 @@ import {
 } from 'nuke';
 
 import HouseListContainer from '../containers/HouseListContainer';
-import HouseInputEnterContainer from '../containers/HouseInputEnterContainer';
+import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -58,10 +58,10 @@ export default class ScoreRule extends Component {
     continueInput = () => {
         ActionUtil.setAction(actionType.BA_FIRSTOPEN_SEND);
         this.props.navigator.push({
-            component: HouseInputEnterContainer,
-            name: 'HouseInput',
-            title: '发布房源',
-            hideHeader: true,
+            component: PublishFirstStepContainer,
+            name: 'publishInventory',
+            log: [actionType.BA_SENDTWO_THREE_RETURN, actionType.BA_SENDTWO_THREE_CANCEL, actionType.BA_SENDTWO_THREE_ENSURE],
+            title: '房源基本信息',
             hideNavBar: false,
             bp: this.pageId
         });
