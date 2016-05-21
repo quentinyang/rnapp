@@ -329,14 +329,25 @@ class ErrorTipModal extends Component {
 
         let {navigator, actions} = this.props;
         actions.setErrorTipVisible(false);
-        navigator.push({
-            component: component,
-            name: '',
-            title: title,
-            hideHeader: true,
-            hideNavBar: false,
-            bp: this.pageId
-        });
+        if(title == '房源基本信息') {
+            navigator.push({
+                component: component,
+                name: 'publishInventory',
+                log: [actionType.BA_SENDTWO_THREE_RETURN, actionType.BA_SENDTWO_THREE_CANCEL, actionType.BA_SENDTWO_THREE_ENSURE],
+                title: title,
+                hideNavBar: false,
+                bp: this.pageId
+            });
+        } else {
+            navigator.push({
+                component: component,
+                name: '',
+                title: title,
+                hideNavBar: false,
+                bp: this.pageId
+            });
+        }
+
     }
 }
 
