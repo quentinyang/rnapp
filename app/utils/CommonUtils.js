@@ -1,4 +1,5 @@
 'use strict';
+import {Linking, Alert} from 'nuke'
 
 export function NaviGoBack(navigator) {
     if (navigator && navigator.getCurrentRoutes().length > 1) {
@@ -24,4 +25,16 @@ export function formatDate(date) {
     return {
         year, month, day
     }
+}
+
+export function callUp(phone) {
+    let url = "tel:" + phone;
+
+    Linking.canOpenURL(url).then(supported => {
+        if (!supported) {
+            Alert.alert('温馨提示', '您的设备不支持打电话功能', [{text: '确定'}]);
+        } else {
+            return Linking.openURL(url);
+        }
+    }).catch(err => console.error('An error occurred', err));
 }

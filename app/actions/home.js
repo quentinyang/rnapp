@@ -1,7 +1,7 @@
 'use strict';
 
 import * as types from '../constants/Home';
-import {fetchAttentionHouseListService, fetchAttentionAppendHouseListService, fetchAttentionPrependHouseListService} from '../service/houseListService';
+import {fetchAttentionHouseListService, fetchAttentionAppendHouseListService, fetchAttentionPrependHouseListService, fetchHouseNewCountService} from '../service/houseListService';
 import {fetchAttentionBlockAndCommunityService} from '../service/blockService';
 import {fetchScoreModalStatusService} from '../service/userService'
 import {makeActionCreator, serviceAction} from './base';
@@ -12,8 +12,12 @@ export const houseAttentionPrependFetched = makeActionCreator(types.HOUSE_ATTENT
 export const clearHomePage = makeActionCreator(types.CLEAR_HOME_PAGE);
 export const setScoreModalVisible = makeActionCreator(types.SCORE_MODAL_VISIBLE_CHANGED, 'visible');
 export const scoreModalStatusFetched = makeActionCreator(types.SCORE_MODAL_STATUS, 'status');
-
 export const attentionBlockAndCommunityFetched = makeActionCreator(types.ATTENTION_BLOCK_COMMUNITY_FETCHED, 'attentionList');
+export const HouseNewCount = makeActionCreator(types.HOUSE_NEW_COUNT, 'count');
+
+//home / list / detail same community
+export const setContactStatus = makeActionCreator(types.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
+export const setLookStatus = makeActionCreator(types.SET_LOOK_STATUS, 'lookStatus');
 
 export function fetchAttentionHouseList(params) {
     return dispatch => {
@@ -84,6 +88,19 @@ export function fetchScoreModalStatus() {
                     visible: Number(oData.is_notify) ? true : false,
                     score: oData.point || 8
                 }))
+            },
+            error: function(oData) {
+            }
+        })
+    }
+}
+
+export function fetchHouseNewCount() {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: fetchHouseNewCountService,
+            success: function(oData) {
+                dispatch(HouseNewCount(oData.count))
             },
             error: function(oData) {
             }

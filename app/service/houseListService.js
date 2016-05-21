@@ -45,7 +45,9 @@ export function fetchHouseFilterService() {
     return ajax.get(urls.house.filters)
 }
 
-
+export function fetchHouseNewCountService() {
+    return ajax.get(urls.house.newCount)
+}
 
 
 

@@ -1,6 +1,7 @@
 'use strict';
 
 import * as types from '../constants/HouseList';
+import * as homeTypes from '../constants/Home';
 import {fetchHouseListService, fetchAppendHouseListService, fetchPrependHouseListService, fetchHouseFilterService} from '../service/houseListService';
 import {fetchCommunityListService} from '../service/communityService';
 import {makeActionCreator, serviceAction} from './base';
@@ -24,6 +25,9 @@ export const filterCommunityNameCleared = makeActionCreator(types.FILTER_COMMUNI
 
 export const houseListPageCleared = makeActionCreator(types.HOUSE_LIST_PAGE_CLEARED);
 
+//home / list / detail same community
+export const setContactStatus = makeActionCreator(homeTypes.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
+export const setLookStatus = makeActionCreator(homeTypes.SET_LOOK_STATUS, 'lookStatus');
 
 export function fetchHouseList(params) {
     return dispatch => {

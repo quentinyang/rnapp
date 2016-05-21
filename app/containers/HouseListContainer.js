@@ -4,6 +4,8 @@ import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/houseList';
+import * as actionsHome from '../actions/home';
+import * as actionsDetail from '../actions/detail';
 import HouseList from '../pages/HouseList';
 import * as actionsNavigation from '../actions/navigation';
 
@@ -29,6 +31,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(actions, dispatch),
+        actionsHome: bindActionCreators(actionsHome, dispatch),
+        actionsDetail: bindActionCreators(actionsDetail, dispatch),
         actionsNavigation: bindActionCreators(actionsNavigation, dispatch)
     }
 }

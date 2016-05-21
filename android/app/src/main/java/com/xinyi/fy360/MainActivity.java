@@ -8,7 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.angejia.android.commonutils.common.DevUtil;
-import com.custom.component.ActionPackage;
+import com.custom.component.ModulePackage;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -79,7 +79,7 @@ public class MainActivity extends ReactActivity {
         return Arrays.<ReactPackage>asList(
                 new RNDeviceInfo(),
                 new MainReactPackage(),
-                new ActionPackage(),
+                new ModulePackage(),
                 new GeTuiManager(),
                 new AliPackage(),
                 new DeviceIDManager(),

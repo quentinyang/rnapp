@@ -77,8 +77,9 @@ export default class Home extends Component {
     }
 
     render() {
-        let {houseData, scoreModalInfo, actions, navigator} = this.props;
+        let {houseData, baseInfo, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
+        let scoreModalInfo = baseInfo.get('scoreModal');
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
                 <ScoreModal modalInfo={scoreModalInfo} actions={actions} navigator={navigator} />
@@ -134,6 +135,7 @@ export default class Home extends Component {
             // actions.fetchAttentionHouseList({});
             actions.fetchAttentionBlockAndCommunity({});
             actions.fetchScoreModalStatus();
+            actions.fetchHouseNewCount();
         });
     }
 
@@ -149,7 +151,18 @@ export default class Home extends Component {
 
     _onItemPress = (item) => {
         ActionUtil.setAction(actionType.BA_HOME_PAGE_CLICKDETAIL);
-        let {navigator} = this.props;
+        let {navigator, actions, actionsHouseList, actionsDetail} = this.props;
+        if(!item.get('is_click')) {
+            actions.setLookStatus({
+                property_id: item.get('property_id')
+            });
+            actionsHouseList.setLookStatus({
+                property_id: item.get('property_id')
+            });
+            actionsDetail.setLookStatus({
+                property_id: item.get('property_id')
+            });
+        }
 
         navigator.push({
             component: DetailContainer,
@@ -170,6 +183,7 @@ export default class Home extends Component {
         })
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionPrependHouseList({});
+            actions.fetchHouseNewCount();
         });
         this.setState({
             isRefreshing: false
@@ -216,7 +230,7 @@ export default class Home extends Component {
     };
 
     _renderHeader = () => {
-        let {attentionList, navigator} = this.props;
+        let {attentionList, navigator, baseInfo} = this.props;
 
         return (
             <View>
@@ -227,6 +241,7 @@ export default class Home extends Component {
                             style={[styles.allHouseImage]}
                         />
                         <Text style={[styles.flex, styles.heiti_16_header]}>{this.props.rout}</Text>
+                        <Text style={styles.noData}>今日新增<Text style={[styles.fontMedium, styles.orange]}>{baseInfo.get('newCount')}</Text>套</Text>
                         <Image
                             source={require('../images/next.png')}
                             style={styles.nextImage}
@@ -295,7 +310,7 @@ export class Attention extends Component {
             <View style={styles.attention}>
                 <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
                     <Text style={styles.bar}></Text>
-                    <Text style={[styles.flex, styles.heiti_16_header]}>我关注的房源</Text>
+                    <Text style={[styles.flex, styles.heiti_16_header]}>我的关注</Text>
                 </View>
                 <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
                     <View style={[styles.row, styles.attentionMsg, styles.alignItems]}>
@@ -309,6 +324,10 @@ export class Attention extends Component {
                         />
                     </View>
                 </TouchableWithoutFeedback>
+                <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
+                    <Text style={styles.bar}></Text>
+                    <Text style={[styles.flex, styles.heiti_16_header]}>关注的房源</Text>
+                </View>
             </View>
         )
     }
@@ -399,7 +418,8 @@ const styles = StyleSheet.create({
     },
     nextImage: {
         width: 9,
-        height: 18
+        height: 18,
+        marginLeft: 10
     },
     headerMarginBottom: {
         marginBottom: 15
@@ -421,7 +441,11 @@ const styles = StyleSheet.create({
     attentionMsg: {
         padding: 15,
         backgroundColor: '#f8f8f8',
-        height: 70
+        height: 70,
+        borderWidth: 1/PixelRatio.get(),
+        borderColor: '#d9d9d9',
+        borderRadius: 3,
+        marginBottom: 15
     },
     bar: {
         width: 3,

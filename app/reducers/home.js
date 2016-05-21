@@ -34,11 +34,39 @@ function houseData(state = Immutable.fromJS(initialState), action) {
         case types.CLEAR_HOME_PAGE:
             return Immutable.fromJS(initialState);
             break;
+
+        case types.SET_CONTACT_STATUS:
+            return state.updateIn(['properties'], (k) => {
+                let newArr = Immutable.List();
+                k.forEach((val, key) => {
+                    if(val.get('property_id') == action.contactStatus.property_id) {
+                        let newVal = val.set('is_contact', Immutable.fromJS(true));
+                        newArr = newArr.push(newVal);
+                    } else {
+                        newArr = newArr.push(val);
+                    }
+                });
+                return newArr;
+            });
+            break;
+        case types.SET_LOOK_STATUS:
+            return state.updateIn(['properties'], (k) => {
+                let newArr = Immutable.List();
+                k.forEach((val, key) => {
+                    if(val.get('property_id') == action.lookStatus.property_id) {
+                        let newVal = val.set('is_click', Immutable.fromJS(true));
+                        newArr = newArr.push(newVal);
+                    } else {
+                        newArr = newArr.push(val);
+                    }
+                });
+                return newArr;
+            });
+            break;
         default: 
             return state;
     }
 }
-
 
 let initialAttentionList = {
     district_block_select: [],
@@ -68,18 +96,24 @@ function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
     }
 }
 
-let initialScoreInfo = {
-    visible: false,
-    score: 8
+let initialBaseInfo = {
+    scoreModal: {
+        visible: false,
+        score: 8
+    },
+    newCount: ""
 };
 
-function scoreModalInfo(state = Immutable.fromJS(initialScoreInfo), action) {
+function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
     switch (action.type) {
         case types.SCORE_MODAL_VISIBLE_CHANGED:
-            return state.set('visible', Immutable.fromJS(action.visible));
+            return state.setIn(['scoreModal','visible'], Immutable.fromJS(action.visible));
             break;
         case types.SCORE_MODAL_STATUS:
-            return Immutable.fromJS(action.status);
+            return state.set('scoreModal', Immutable.fromJS(action.status));
+            break;
+        case types.HOUSE_NEW_COUNT:
+            return state.set('newCount', Immutable.fromJS(action.count));
             break;
         default:
             return state;
@@ -89,5 +123,5 @@ function scoreModalInfo(state = Immutable.fromJS(initialScoreInfo), action) {
 export default combineReducers({
     houseData,
     attentionList,
-    scoreModalInfo
+    baseInfo
 });
