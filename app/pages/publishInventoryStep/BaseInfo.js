@@ -160,6 +160,10 @@ export default class BaseInfoPage extends Component {
         })
     }
 
+    componentWillUnmount() {
+        this.props.actions.baseCleared();
+    }
+
 }
 
 const styles = StyleSheet.create({

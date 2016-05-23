@@ -113,6 +113,10 @@ export default class LandlordInfoPage extends Component {
             actions.error(error.msg);
         })
     }
+
+    componentWillUnmount() {
+        this.props.actions.landlordCleared();
+    }
 }
 
 const errMsgs = {

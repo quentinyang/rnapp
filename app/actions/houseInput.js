@@ -27,6 +27,10 @@ export const error = makeActionCreator(types.ERR_MSG, 'err_msg');
 
 export const dataCleared = makeActionCreator(types.INPUT_DATA_CLEARED);
 
+export const baseCleared = makeActionCreator(types.INPUT_BASE_CLEARED);
+export const moreCleared = makeActionCreator(types.INPUT_MORE_CLEARED);
+export const landlordCleared = makeActionCreator(types.INPUT_LANDLORD_CLEARED);
+
 
 /*搜索小区*/
 export const hiSearchHouseFetched = makeActionCreator(types.HI_SEARCH_HOUSE_FETCHED, 'communityList');

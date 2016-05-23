@@ -138,6 +138,10 @@ export default class MoreInfoPage extends Component {
             hideNavBar: false,
         });
     }
+
+    componentWillUnmount() {
+        this.props.actions.moreCleared();
+    }
 }
 
 const errMsgs = {
