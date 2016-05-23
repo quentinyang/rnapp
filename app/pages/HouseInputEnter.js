@@ -54,7 +54,7 @@ class HouseInputEnter extends Component {
         allowToInputService()
         .then((data) => {
             if(data.is_can_input) {
-                navigator.push({
+                this.props.navigator.push({
                     component: PublishFirstStepContainer,
                     name: 'publishInventory',
                     log: {"cancel": actionType.BA_SENDONE_THREE_CANCEL, "ok": actionType.BA_SENDONE_THREE_ENSURE},
