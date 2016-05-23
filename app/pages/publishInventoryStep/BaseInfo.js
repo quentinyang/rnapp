@@ -145,8 +145,10 @@ export default class BaseInfoPage extends Component {
             navigator.push({
                 component: PublishSecondStepContainer,
                 name: 'publishInventory',
-                log: [actionType.BA_SENDTWO_THREE_RETURN, actionType.BA_SENDTWO_THREE_CANCEL, actionType.BA_SENDTWO_THREE_ENSURE],
+                log: {"cancel": actionType.BA_SENDTWO_THREE_CANCEL, "ok": actionType.BA_SENDTWO_THREE_ENSURE},
                 title: '更多房源信息',
+                backLog: actionType.BA_SENDTWO_THREE_RETURN,
+                confirm: true,
                 hideNavBar: false,
             });
             ActionUtil.setAction(actionType.BA_SENDONE_THREE_NEXT);

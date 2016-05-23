@@ -3,6 +3,7 @@
 import { combineReducers } from 'redux';
 import * as types from '../constants/DetailType';
 import * as homeTypes from '../constants/Home';
+import * as appTypes from '../constants/App';
 import Immutable from 'immutable';
 import navigation from './navigation';
 
@@ -130,6 +131,12 @@ function callInfo(state, action) {
             break;
         case types.SET_WASH_ID:
             return state.set('washId', Immutable.fromJS(action.washId));
+            break;
+        case appTypes.CLICK_BACK_PAGE:
+            if(action.pageName == "backScore") {
+                return state.set('feedbackVisible', Immutable.fromJS(true));
+            }
+            return state;
             break;
         default:
             return state;

@@ -60,8 +60,10 @@ export default class ScoreRule extends Component {
         this.props.navigator.push({
             component: PublishFirstStepContainer,
             name: 'publishInventory',
-            log: [actionType.BA_SENDTWO_THREE_RETURN, actionType.BA_SENDTWO_THREE_CANCEL, actionType.BA_SENDTWO_THREE_ENSURE],
+            log: {"cancel": actionType.BA_SENDTWO_THREE_CANCEL, "ok": actionType.BA_SENDTWO_THREE_ENSURE},
             title: '房源基本信息',
+            backLog: actionType.BA_SENDTWO_THREE_RETURN,
+            confirm: true,
             hideNavBar: false,
             bp: this.pageId
         });

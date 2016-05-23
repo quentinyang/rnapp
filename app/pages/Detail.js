@@ -153,6 +153,9 @@ export default class Detail extends Component {
     }
 
     _clickPhoneBtn(status, phone, hasPhone) {
+        //let {actions, actionsHome, actionsHouseList, route} = this.props;
+        //actionsHome.setContactStatus({"property_id": 11});
+
         let {actions, actionsHome, actionsHouseList, route} = this.props;
         let propertyId = route.item.get("property_id");
 
@@ -333,9 +336,11 @@ class ErrorTipModal extends Component {
             navigator.push({
                 component: component,
                 name: 'publishInventory',
-                log: [actionType.BA_SENDTWO_THREE_RETURN, actionType.BA_SENDTWO_THREE_CANCEL, actionType.BA_SENDTWO_THREE_ENSURE],
+                log: {"cancel": actionType.BA_SENDTWO_THREE_CANCEL, "ok": actionType.BA_SENDTWO_THREE_ENSURE},
                 title: title,
                 hideNavBar: false,
+                backLog: actionType.BA_SENDTWO_THREE_RETURN,
+                confirm: true,
                 bp: this.pageId
             });
         } else {

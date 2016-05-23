@@ -128,8 +128,10 @@ export default class MoreInfoPage extends Component {
         navigator.push({
             component: PublishThirdStepContainer,
             name: 'publishInventory',
-            log: [actionType.BA_SENDTHREE_THREE_RETURN, actionType.BA_SENDTHREE_THREE_CANCEL, actionType.BA_SENDTHREE_THREE_ENSURE],
+            log: {"cancel": actionType.BA_SENDTHREE_THREE_CANCEL, "ok": actionType.BA_SENDTHREE_THREE_ENSURE},
             title: '房东信息',
+            backLog: actionType.BA_SENDTHREE_THREE_RETURN,
+            confirm: true,
             hideNavBar: false,
         });
     }

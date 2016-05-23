@@ -9,6 +9,13 @@ export const webNetWorkError = makeActionCreator(types.WEB_NETWORK_ERROR, 'msg')
 export const webStartConfig = makeActionCreator(types.WEB_START_CONFIG, 'config');
 export const appConfig = makeActionCreator(types.APP_CONFIG, 'appConfig');
 export const closeUpdateModal = makeActionCreator(types.CLOSE_UPDATE_MODAL, 'visible');
+export const clickBackPage = makeActionCreator(types.CLICK_BACK_PAGE, 'pageName');
+
+export function clickBack(name) {
+    return dispatch => {
+        dispatch(clickBackPage(name));
+    }
+}
 
 export function setWebStartConfig(params) {
     return dispatch => {
