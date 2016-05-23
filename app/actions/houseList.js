@@ -25,10 +25,6 @@ export const filterCommunityNameCleared = makeActionCreator(types.FILTER_COMMUNI
 
 export const houseListPageCleared = makeActionCreator(types.HOUSE_LIST_PAGE_CLEARED);
 
-//home / list / detail same community
-export const setContactStatus = makeActionCreator(homeTypes.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
-export const setLookStatus = makeActionCreator(homeTypes.SET_LOOK_STATUS, 'lookStatus');
-
 export function fetchHouseList(params) {
     return dispatch => {
         serviceAction(dispatch)({

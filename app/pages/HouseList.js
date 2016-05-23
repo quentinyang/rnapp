@@ -232,17 +232,6 @@ export default class HouseList extends Component {
     _onItemPress = (item) => {
         ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_CLICKDETAIL);
         let {navigator, actionsNavigation, actions, actionsHome, actionsDetail} = this.props;
-        if(!item.get('is_click')) {
-            actions.setLookStatus({
-                property_id: item.get('property_id')
-            });
-            actionsHome.setLookStatus({
-                property_id: item.get('property_id')
-            });
-            actionsDetail.setLookStatus({
-                property_id: item.get('property_id')
-            });
-        }
         actionsNavigation.listPushRoute();
         navigator.push({
             component: DetailContainer,
@@ -254,6 +243,15 @@ export default class HouseList extends Component {
             bp: this.pageId,
             item
         });
+        if(!item.get('is_click')) {
+            actionsNavigation.setLookStatus({
+                property_id: item.get('property_id'),
+                is_click: "1"
+            });
+            actionsHome.setLookStatus({
+                property_id: item.get('property_id')
+            });
+        }
     };
 
     _filterItemPress = (type) => {

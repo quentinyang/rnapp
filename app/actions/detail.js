@@ -26,10 +26,6 @@ export const contactLogAppendFetched = makeActionCreator(types.APPEND_HOUSE_CONT
 export const changeCurrentContactLog = makeActionCreator(types.CHANGE_CURRENT_CONTACT_LOG);
 export const setWashId = makeActionCreator(types.SET_WASH_ID, 'washId');
 
-//home / list / detail same community
-export const setContactStatus = makeActionCreator(homeTypes.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
-export const setLookStatus = makeActionCreator(homeTypes.SET_LOOK_STATUS, 'lookStatus');
-
 export function fetchBaseInfo(data) {
     return dispatch => {
         serviceAction(dispatch)({

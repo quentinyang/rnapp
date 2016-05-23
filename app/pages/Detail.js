@@ -153,18 +153,15 @@ export default class Detail extends Component {
     }
 
     _clickPhoneBtn(status, phone, hasPhone) {
-        //let {actions, actionsHome, actionsHouseList, route} = this.props;
-        //actionsHome.setContactStatus({"property_id": 11});
-
-        let {actions, actionsHome, actionsHouseList, route} = this.props;
+        let {actions, actionsNavigation, actionsHome, route} = this.props;
         let propertyId = route.item.get("property_id");
 
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
         if(status || hasPhone) { //1: 已解锁 或 已反馈在卖
             callUp(phone);
         } else {   //0: 未解锁
-            //actionsHome.setContactStatus({"property_id": propertyId});
-            //actionsHouseList.setContactStatus({"property_id": propertyId});
+            actionsNavigation.setContactStatus({"property_id": propertyId, "is_contact": "1"});
+            actionsHome.setContactStatus({"property_id": propertyId, "is_contact": "1"});
 
             actions.callSeller({
                 property_id: propertyId
@@ -232,17 +229,7 @@ export default class Detail extends Component {
     _onItemPress = (item) => {
         ActionUtil.setAction(actionType.BA_DETAIL_SAMECOM_DETAIL);
         let {navigator, actionsNavigation, actions, actionsHouseList, actionsHome} = this.props;
-        if(!item.get('is_click')) {
-            actions.setLookStatus({
-                property_id: item.get('property_id')
-            });
-            actionsHouseList.setLookStatus({
-                property_id: item.get('property_id')
-            });
-            actionsHome.setLookStatus({
-                property_id: item.get('property_id')
-            });
-        }
+
         actionsNavigation.detailPushRoute();
         navigator.push({
             component: DetailContainer,
@@ -254,6 +241,15 @@ export default class Detail extends Component {
             bp: this.pageId,
             item
         });
+        if(!item.get('is_click')) {
+            actionsNavigation.setLookStatus({
+                property_id: item.get('property_id'),
+                is_click: "1"
+            });
+            actionsHome.setLookStatus({
+                property_id: item.get('property_id')
+            });
+        }
     };
 
     _handleMoreHouseList = () => {

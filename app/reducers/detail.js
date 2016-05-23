@@ -19,35 +19,6 @@ function houseData(state, action) {
         case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initialState);
             break;
-
-        case homeTypes.SET_CONTACT_STATUS:
-            return state.updateIn(['properties'], (k) => {
-                let newArr = Immutable.List();
-                k.forEach((val, key) => {
-                    if(val.get('property_id') == action.contactStatus.property_id) {
-                        let newVal = val.set('is_contact', Immutable.fromJS(true));
-                        newArr = newArr.push(newVal);
-                    } else {
-                        newArr = newArr.push(val);
-                    }
-                });
-                return newArr;
-            });
-            break;
-        case homeTypes.SET_LOOK_STATUS:
-            return state.updateIn(['properties'], (k) => {
-                let newArr = Immutable.List();
-                k.forEach((val, key) => {
-                    if(val.get('property_id') == action.lookStatus.property_id) {
-                        let newVal = val.set('is_click', Immutable.fromJS(true));
-                        newArr = newArr.push(newVal);
-                    } else {
-                        newArr = newArr.push(val);
-                    }
-                });
-                return newArr;
-            });
-            break;
         default:
             return state;
     }

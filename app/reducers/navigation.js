@@ -2,6 +2,7 @@
 
 import { combineReducers } from 'redux';
 import * as types from '../constants/Navigation';
+import Immutable from 'immutable';
 
 var stateStack = [];
 export default function navAwarable(reducer, states, name) {
@@ -29,8 +30,41 @@ export default function navAwarable(reducer, states, name) {
                     return reducer(originState, action);
                 }
                 return state;
+            case types.SET_CONTACT_STATUS:
+                updateStateStack(action.contactStatus, "is_contact");
+                return state;
+                break;
+            case types.SET_LOOK_STATUS:
+                updateStateStack(action.lookStatus, "is_click");
+                return state;
+                break;
             default:
                 return reducer(state, action);
+        }
+    }
+}
+
+function updateStateStack(newObj, name) {
+    let len = stateStack.length;
+    for(let i=0; i<len; i++) {
+        let tempObj = stateStack[i];
+        if(tempObj.hasOwnProperty("houseData")) {
+            let tempHouseData = tempObj.houseData;
+
+            tempHouseData = tempHouseData.updateIn(['properties'], (k) => {
+                let newArr = Immutable.List();
+                k.forEach((val, key) => {
+                    if(val.get('property_id') == newObj.property_id) {
+                        let newVal = val.set(name, Immutable.fromJS(newObj[name]));
+                        newArr = newArr.push(newVal);
+                    } else {
+                        newArr = newArr.push(val);
+                    }
+                });
+                return newArr;
+            });
+            tempObj.houseData = tempHouseData;
+            stateStack[i] = tempObj;
         }
     }
 }
