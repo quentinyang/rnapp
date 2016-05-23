@@ -388,7 +388,7 @@ class CostScoreModal extends Component {
                         <TouchableWithoutFeedback
                             onPress={this._goBackScore.bind(this)}
                         >
-                            <Text style={styles.backScore}>房源信息有误,找回积分</Text>
+                            <View><Text style={styles.backScore}>房源信息有误,找回积分</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
                 </View>

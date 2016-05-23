@@ -60,7 +60,7 @@ export default class BackScore extends Component {
                     underlayColor="#04c1ae"
                     onPress={this.submitReason.bind(this)}
                 >
-                    <Text style={styles.sureText}>提交</Text>
+                    <View><Text style={styles.sureText}>提交</Text></View>
                 </TouchableHighlight>
                 <Text style={[styles.baseColor, styles.tip]}>1个工作日内,审核通过立即返还本次积分</Text>
             </View>
