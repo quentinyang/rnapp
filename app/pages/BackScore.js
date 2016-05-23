@@ -90,6 +90,7 @@ export default class BackScore extends Component {
         }
     }
     submitReason() {
+        let {navigator} = this.props;
         if(!this.submitFlag && this.state.cur != -1) {
             ActionUtil.setActionWithExtend(actionType.BA_DETAIL_SPENDRECALL_ENSURE, {"vpid": this.props.route.propertyId, "status": this.state.cur+3 + ""});
 
@@ -97,7 +98,7 @@ export default class BackScore extends Component {
             this.props.actions.submitReason({
                 wash_id: this.props.route.washId,
                 status: this.state.cur + 3
-            });
+            }, navigator);
         }
     }
 }
