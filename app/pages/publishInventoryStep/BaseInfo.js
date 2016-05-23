@@ -50,7 +50,7 @@ export default class BaseInfoPage extends Component {
                             specialText1={houseForm.get('community_name')}
                             specialText2={houseForm.get('address')}
                             arrow={true}
-                            onClick={() => {ActionUtil.setAction(actionType.BA_SEND_ADDCOM); this.singleAction('searchChanged', true)}}
+                            onClick={() => {ActionUtil.setAction(actionType.BA_SENDONE_THREE_COM); this.singleAction('searchChanged', true)}}
                         />
                         <WithLabel
                             label='楼栋'
@@ -60,7 +60,7 @@ export default class BaseInfoPage extends Component {
                             placeholder={controller.get('single')?'':'输入楼/座号'}
                             editable={controller.get('single')? false: true}
                             underlineColorAndroid = 'transparent'
-                            onFocus={() => ActionUtil.setAction(actionType.BA_SEND_ADDBUILDINGNUM)}
+                            onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_BUILDING)}
                             onChangeText={(v) => {this.singleAction('buildingChanged', v)}}
                         >
                             <Attached
@@ -77,6 +77,7 @@ export default class BaseInfoPage extends Component {
                             placeholder={controller.get('villa')?'':'输入房号'}
                             underlineColorAndroid = 'transparent'
                             editable={controller.get('villa')? false: true}
+                            onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_ROOM)}
                             onChangeText={(v) => {this.singleAction('doorChanged', v)}}
                         >
                             <Attached

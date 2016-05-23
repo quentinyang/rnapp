@@ -30,6 +30,7 @@ export default class HouseInputSuccess extends Component {
                 <Image source={require('../images/success.png')} style={[styles.sucImg]}/>
                 <Text style={styles.promptTitle}>审核通过可获<Text style={styles.promptColor}>{data.money}</Text>积分</Text>
                 <Text style={!data.is_special?styles.subPromptTitle:[styles.subPromptTitle, styles.fontOrange]}>{data.msg}</Text>
+                {data.is_can_input ?
                 <TouchableHighlight
                     style={[styles.sucButton, styles.backgroundGreen]}
                     underlayColor='#04c1ae'
@@ -37,6 +38,8 @@ export default class HouseInputSuccess extends Component {
                 >
                     <View><Text style={[styles.sucButtonText, styles.fontWhite]}>继续发房</Text></View>
                 </TouchableHighlight>
+                :null
+                }
                 <TouchableHighlight
                     style={[styles.sucButton, styles.backgroundWhite]}
                     underlayColor='#04c1ae'

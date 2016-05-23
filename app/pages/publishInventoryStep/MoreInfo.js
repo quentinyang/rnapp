@@ -38,6 +38,7 @@ export default class MoreInfoPage extends Component {
                         keyboardType='numeric'
                         maxLength={2}
                         value={houseForm.get('bedrooms')}
+                        onBlur={() => ActionUtil.setAction(actionType.BA_SENDTWO_THREE_LAYOUT)}
                         onChangeText={(v) => {this.singleAction('bedroomsChanged', v)}}
                     >
                         <TextInput
@@ -68,6 +69,7 @@ export default class MoreInfoPage extends Component {
                         value={houseForm.get('area')}
                         placeholder='输入面积'
                         underlineColorAndroid = 'transparent'
+                        onBlur={() => ActionUtil.setAction(actionType.BA_SENDTWO_THREE_AREA)}
                         onChangeText={(v) => {this.singleAction('areaChanged', v)}}
                     />
                     <WithLabel
@@ -79,6 +81,7 @@ export default class MoreInfoPage extends Component {
                         keyboardType='numeric'
                         value={houseForm.get('price')}
                         placeholder='输入价格'
+                        onBlur={() => ActionUtil.setAction(actionType.BA_SENDTWO_THREE_PRICE)}
                         onChangeText={(v) => {this.singleAction('priceChanged', v)}}
                     />
                 </View>
