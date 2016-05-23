@@ -160,9 +160,6 @@ export default class Detail extends Component {
         if(status || hasPhone) { //1: 已解锁 或 已反馈在卖
             callUp(phone);
         } else {   //0: 未解锁
-            actionsNavigation.setContactStatus({"property_id": propertyId, "is_contact": "1"});
-            actionsHome.setContactStatus({"property_id": propertyId, "is_contact": "1"});
-
             actions.callSeller({
                 property_id: propertyId
             });

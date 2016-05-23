@@ -14,6 +14,9 @@ import { fetchSimilarHouseListService } from '../service/houseListService';
 import {makeActionCreator, serviceAction} from './base';
 import {callUp} from '../utils/CommonUtils'
 
+import {setHomeContactStatus} from './home'
+import {setContactStatus} from './navigation'
+
 export const houseSimilarFetched = makeActionCreator(types.HOUSE_SIMILAR_FETCHED, 'houseList');
 export const houseBaseFetched = makeActionCreator(types.HOUSE_BASE_FETCHED, 'houseBase');
 export const clearHouseDetailPage = makeActionCreator(types.CLEAR_HOUSE_DETAIL_PAGE);
@@ -69,6 +72,10 @@ export function callSeller(params) {
             data: params,
             success: function(oData) {
                 dispatch(setWashId(oData.log_id));
+
+                dispatch(setHomeContactStatus({"property_id": params.property_id, "is_contact": "1"}));
+                dispatch(setContactStatus({"property_id": params.property_id, "is_contact": "1"}));
+
                 //oData 拿到短号, 直接拨出
                 if(Platform.OS == "android") {
                     CallModule.callUp(oData.main_number + ",,," + oData.short_number);
