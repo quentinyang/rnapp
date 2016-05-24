@@ -16,6 +16,7 @@ import {
 import Header from '../components/Header';
 import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
 import TouchWebContainer from "../containers/TouchWebContainer";
+import {allowToInputService} from '../service/houseInputService';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -50,13 +51,29 @@ class HouseInputEnter extends Component {
 
     gotoInput = () => {
         ActionUtil.setAction(actionType.BA_SEND_SENDBUTTON);
-        this.props.navigator.push({
-            component: PublishFirstStepContainer,
-            name: 'publishInventory',
-            log: [actionType.BA_SENDONE_THREE_RETURN, actionType.BA_SENDONE_THREE_CANCEL, actionType.BA_SENDONE_THREE_ENSURE],
-            title: '房源基本信息',
-            hideNavBar: false
-        });
+        allowToInputService()
+        .then((data) => {
+            if(data.is_can_input) {
+                this.props.navigator.push({
+                    component: PublishFirstStepContainer,
+                    name: 'publishInventory',
+                    log: {"cancel": actionType.BA_SENDONE_THREE_CANCEL, "ok": actionType.BA_SENDONE_THREE_ENSURE},
+                    title: '房源基本信息',
+                    backLog: actionType.BA_SENDONE_THREE_RETURN,
+                    confirm: true,
+                    hideNavBar: false
+                });
+            } else {
+                Alert.alert('', '亲，您已经发了'+data.daily_max_input_house_count+'套房了\n明天再来吧~', [
+                {
+                    text: '好的',
+                    onPress: () => {}
+                }])
+            }
+        })
+        .catch((error) => {
+            Alert.alert('', error.msg);
+        })
     };
 
     linkFn = () => {

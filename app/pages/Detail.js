@@ -153,16 +153,13 @@ export default class Detail extends Component {
     }
 
     _clickPhoneBtn(status, phone, hasPhone) {
-        let {actions, actionsHome, actionsHouseList, route} = this.props;
+        let {actions, actionsNavigation, actionsHome, route} = this.props;
         let propertyId = route.item.get("property_id");
 
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
         if(status || hasPhone) { //1: 已解锁 或 已反馈在卖
             callUp(phone);
         } else {   //0: 未解锁
-            //actionsHome.setContactStatus({"property_id": propertyId});
-            //actionsHouseList.setContactStatus({"property_id": propertyId});
-
             actions.callSeller({
                 property_id: propertyId
             });
@@ -229,17 +226,7 @@ export default class Detail extends Component {
     _onItemPress = (item) => {
         ActionUtil.setAction(actionType.BA_DETAIL_SAMECOM_DETAIL);
         let {navigator, actionsNavigation, actions, actionsHouseList, actionsHome} = this.props;
-        if(!item.get('is_click')) {
-            actions.setLookStatus({
-                property_id: item.get('property_id')
-            });
-            actionsHouseList.setLookStatus({
-                property_id: item.get('property_id')
-            });
-            actionsHome.setLookStatus({
-                property_id: item.get('property_id')
-            });
-        }
+
         actionsNavigation.detailPushRoute();
         navigator.push({
             component: DetailContainer,
@@ -251,6 +238,15 @@ export default class Detail extends Component {
             bp: this.pageId,
             item
         });
+        if(!item.get('is_click')) {
+            actionsNavigation.setLookStatus({
+                property_id: item.get('property_id'),
+                is_click: "1"
+            });
+            actionsHome.setLookStatus({
+                property_id: item.get('property_id')
+            });
+        }
     };
 
     _handleMoreHouseList = () => {
@@ -333,9 +329,11 @@ class ErrorTipModal extends Component {
             navigator.push({
                 component: component,
                 name: 'publishInventory',
-                log: [actionType.BA_SENDTWO_THREE_RETURN, actionType.BA_SENDTWO_THREE_CANCEL, actionType.BA_SENDTWO_THREE_ENSURE],
+                log: {"cancel": actionType.BA_SENDTWO_THREE_CANCEL, "ok": actionType.BA_SENDTWO_THREE_ENSURE},
                 title: title,
                 hideNavBar: false,
+                backLog: actionType.BA_SENDTWO_THREE_RETURN,
+                confirm: true,
                 bp: this.pageId
             });
         } else {
@@ -388,7 +386,7 @@ class CostScoreModal extends Component {
                         <TouchableWithoutFeedback
                             onPress={this._goBackScore.bind(this)}
                         >
-                            <Text style={styles.backScore}>房源信息有误,找回积分</Text>
+                            <View><Text style={styles.backScore}>房源信息有误,找回积分</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
                 </View>

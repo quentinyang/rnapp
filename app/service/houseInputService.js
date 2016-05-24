@@ -10,8 +10,13 @@ module.exports=function(){
         return ajax.post(urls.house.input, data);
     }
 
+    function allowToInputService() {
+        return ajax.get(urls.house.allowToInput);
+    }
+
     return {
         basicInventoryDuplicateService: basicInventoryDuplicateService,
-        inputHouseService: inputHouseService
+        inputHouseService: inputHouseService,
+        allowToInputService: allowToInputService
     };
 }();

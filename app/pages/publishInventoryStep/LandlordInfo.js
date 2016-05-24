@@ -38,6 +38,7 @@ export default class LandlordInfoPage extends Component {
                         value={houseForm.get('seller_alias')}
                         placeholder='(选填)如张先生'
                         underlineColorAndroid = 'transparent'
+                        onBlur={() => ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_NAME)}
                         onChangeText={(v) => {this.singleAction('aliasChanged', v)}}
                     />
                     <WithLabel
@@ -48,6 +49,7 @@ export default class LandlordInfoPage extends Component {
                         placeholder='输入联系电话'
                         underlineColorAndroid = 'transparent'
                         maxLength={11}
+                        onBlur={() => ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_TEL)}
                         onChangeText={(v) => {this.singleAction('phoneChanged', v)}}
                     />
                 </View>
@@ -110,6 +112,10 @@ export default class LandlordInfoPage extends Component {
             ActionUtil.setActionWithExtend(actionType.BA_SENDTHREE_THREE_RELEASE, {"error_type": error.status || ""});
             actions.error(error.msg);
         })
+    }
+
+    componentWillUnmount() {
+        this.props.actions.landlordCleared();
     }
 }
 

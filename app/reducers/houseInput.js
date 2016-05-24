@@ -51,6 +51,12 @@ function houseForm(state = initInput, action) {
             return state.set('has_no_door_num', action.mark);
         case types.INPUT_DATA_CLEARED:
             return initInput;
+        case types.INPUT_BASE_CLEARED:
+            return state.set('community_id', '').set('community_name', '').set('building_num', '').set('door_num', '');
+        case types.INPUT_MORE_CLEARED:
+            return state.set('bedrooms', '').set('living_rooms', '').set('bathrooms', '').set('area', '').set('price', '');
+        case types.INPUT_LANDLORD_CLEARED:
+            return state.set('seller_alias', '').set('seller_phone', '');
         default:
             return state;
     }
@@ -78,6 +84,12 @@ export function controller(state = controlData, action) {
             return state.set('err_msg', action.err_msg);
         case types.INPUT_DATA_CLEARED:
             return controlData;
+        case types.INPUT_BASE_CLEARED:
+            return controlData;
+        case types.INPUT_MORE_CLEARED:
+            return state.set('err_msg', '');
+        case types.INPUT_LANDLORD_CLEARED:
+            return state.set('err_msg', '');
         default:
             return state;
     }

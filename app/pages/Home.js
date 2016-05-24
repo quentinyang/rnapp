@@ -151,15 +151,9 @@ export default class Home extends Component {
 
     _onItemPress = (item) => {
         ActionUtil.setAction(actionType.BA_HOME_PAGE_CLICKDETAIL);
-        let {navigator, actions, actionsHouseList, actionsDetail} = this.props;
+        let {navigator, actions} = this.props;
         if(!item.get('is_click')) {
             actions.setLookStatus({
-                property_id: item.get('property_id')
-            });
-            actionsHouseList.setLookStatus({
-                property_id: item.get('property_id')
-            });
-            actionsDetail.setLookStatus({
                 property_id: item.get('property_id')
             });
         }

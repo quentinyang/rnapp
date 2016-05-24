@@ -14,6 +14,9 @@ import { fetchSimilarHouseListService } from '../service/houseListService';
 import {makeActionCreator, serviceAction} from './base';
 import {callUp} from '../utils/CommonUtils'
 
+import {setHomeContactStatus} from './home'
+import {setContactStatus} from './navigation'
+
 export const houseSimilarFetched = makeActionCreator(types.HOUSE_SIMILAR_FETCHED, 'houseList');
 export const houseBaseFetched = makeActionCreator(types.HOUSE_BASE_FETCHED, 'houseBase');
 export const clearHouseDetailPage = makeActionCreator(types.CLEAR_HOUSE_DETAIL_PAGE);
@@ -25,10 +28,6 @@ export const houseContactLogFetched = makeActionCreator(types.HOSUE_CONTACT_LOG,
 export const contactLogAppendFetched = makeActionCreator(types.APPEND_HOUSE_CONTACT_LOG, 'contact');
 export const changeCurrentContactLog = makeActionCreator(types.CHANGE_CURRENT_CONTACT_LOG);
 export const setWashId = makeActionCreator(types.SET_WASH_ID, 'washId');
-
-//home / list / detail same community
-export const setContactStatus = makeActionCreator(homeTypes.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
-export const setLookStatus = makeActionCreator(homeTypes.SET_LOOK_STATUS, 'lookStatus');
 
 export function fetchBaseInfo(data) {
     return dispatch => {
@@ -73,6 +72,10 @@ export function callSeller(params) {
             data: params,
             success: function(oData) {
                 dispatch(setWashId(oData.log_id));
+
+                dispatch(setHomeContactStatus({"property_id": params.property_id, "is_contact": "1"}));
+                dispatch(setContactStatus({"property_id": params.property_id, "is_contact": "1"}));
+
                 //oData 拿到短号, 直接拨出
                 if(Platform.OS == "android") {
                     CallModule.callUp(oData.main_number + ",,," + oData.short_number);

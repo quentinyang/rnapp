@@ -6,7 +6,7 @@ import {postFeedback} from '../service/detailService';
 import {setFeedbackVisible} from './detail'
 export const changeSuccessModalVisible = makeActionCreator(types.SUCCESS_MODAL_VISIBLE_CHANGE, 'visible');
 
-export function submitReason(params) {
+export function submitReason(params, nav) {
     return dispatch => {
         serviceAction(dispatch)({
             service: postFeedback,
@@ -17,6 +17,7 @@ export function submitReason(params) {
                 InteractionManager.runAfterInteractions(() => {
                     setTimeout(() => {
                         dispatch(changeSuccessModalVisible(false));
+                        nav.pop();
                     }, 2000);
                 });
             },

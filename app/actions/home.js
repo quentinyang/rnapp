@@ -16,7 +16,7 @@ export const attentionBlockAndCommunityFetched = makeActionCreator(types.ATTENTI
 export const HouseNewCount = makeActionCreator(types.HOUSE_NEW_COUNT, 'count');
 
 //home / list / detail same community
-export const setContactStatus = makeActionCreator(types.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
+export const setHomeContactStatus = makeActionCreator(types.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
 export const setLookStatus = makeActionCreator(types.SET_LOOK_STATUS, 'lookStatus');
 
 export function fetchAttentionHouseList(params) {

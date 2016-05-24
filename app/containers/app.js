@@ -354,23 +354,25 @@ class App extends Component {
     };
 
     _leftButton = (route, navigator, index, navState) => {
+        let {actionsApp} = this.props;
         return (
             <TouchableOpacity
                 onPress={() => {
-                    ActionUtil.setAction(route.backLog);
-                    if(route.name === 'publishInventory') {
-                        ActionUtil.setAction(route.log[0]);
-                        Alert.alert('', '确定要离开此页面吗？', [
+                    route.backLog && ActionUtil.setAction(route.backLog);
+                    actionsApp.clickBack(route.name);
+
+                    if(route.confirm) {
+                        Alert.alert('', route.confirmMsg || '确定要离开此页面吗？', [
                             {
                                 text: '取消',
                                 onPress: () => {
-                                    ActionUtil.setAction(route.log[1]);
+                                    ActionUtil.setAction(route.log.cancel);
                                 }
                             },
                             {
                                 text: '确定',
                                 onPress: () => {
-                                    ActionUtil.setAction(route.log[2]);
+                                    ActionUtil.setAction(route.log.ok);
                                     navigator.pop();
                                 }
                             }

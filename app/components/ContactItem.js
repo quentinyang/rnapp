@@ -13,7 +13,7 @@ export default class ContactItem extends Component {
     render() {
         let {item} = this.props;
         let date = formatDate(item.get('reply_at'));
-        let statusStr = ['未反馈', '确认在卖', '反馈虚假', '联系不上'];
+        let statusStr = ['未反馈', '确认在卖', '反馈虚假', '联系不上', '反馈虚假', '确认不卖', '确认已卖', '按错了'];
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
