@@ -309,20 +309,29 @@ export class Attention extends Component {
                 </View>
                 <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
                     <View style={[styles.row, styles.attentionMsg, styles.alignItems]}>
-                        <View style={[styles.column, styles.flex]}>
-                            <Text style={[styles.heiti_15_content]} numberOfLines={1}>板块：{dbArr.join('、')}</Text>
-                            <Text style={[styles.heiti_15_content]} numberOfLines={1}>小区：{commArr.join('、')}</Text>
-                        </View>
+                        {communitySelect.size == 0 && districtBlockSelect.size == 0 ?
+                            <View style={[styles.column, styles.flex]}>
+                                <Text style={[styles.heiti_15_content]} numberOfLines={1}>设置关注的区域</Text>
+                            </View>
+                            :
+                            <View style={[styles.column, styles.flex]}>
+                                <Text style={[styles.heiti_15_content]} numberOfLines={1}>板块：{dbArr.join('、')}</Text>
+                                <Text style={[styles.heiti_15_content]} numberOfLines={1}>小区：{commArr.join('、')}</Text>
+                            </View>
+                        }
                         <Image
                             source={require('../images/next.png')}
                             style={styles.nextImage}
                         />
                     </View>
                 </TouchableWithoutFeedback>
-                <View style={[styles.row, styles.alignItems]}>
-                    <View style={styles.bar}></View>
-                    <Text style={[styles.flex, styles.heiti_16_header]}>关注的房源</Text>
-                </View>
+
+                {communitySelect.size == 0 && districtBlockSelect.size == 0 ? null :
+                    <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
+                        <View style={styles.bar}></View>
+                        <Text style={[styles.flex, styles.heiti_16_header]}>关注的房源</Text>
+                    </View>
+                }
             </View>
         )
     }
@@ -338,16 +347,20 @@ class NoData extends Component {
         let districtBlockSelect = attentionList.get('district_block_select');
         let communitySelect = attentionList.get('community_select');
         return (
-            <View style={styles.alignItems}>
+            <View style={[styles.alignItems]}>
                 <Image
                     source={require('../images/noAttention.png')}
                     style={styles.noAttention}
                 />
-                <Text style={[styles.noAttentionText]}>
-                    {
-                        districtBlockSelect.size == 0 && communitySelect.size == 0 ? '关注的房源会出现在这里' : '关注的板块和小区没有房源'
-                    }
-                </Text>
+                {
+                    districtBlockSelect.size == 0 && communitySelect.size == 0 ?
+                        <View style={[styles.alignItems]}>
+                            <Text style={[styles.noAttentionText]}>设置关注的区域得<Text style={[styles.orange, styles.fontMedium]}>8</Text>积分</Text>
+                            <Text style={[styles.noAttentionText]}>最多免费看<Text style={[styles.orange, styles.fontMedium]}>4</Text>套房源</Text>
+                        </View> :
+                        <Text style={[styles.noAttentionText]}>关注的板块和小区没有房源</Text>
+                }
+
                 {
                     districtBlockSelect.size == 0 && communitySelect.size == 0 ?
                     <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
@@ -438,7 +451,6 @@ const styles = StyleSheet.create({
     attentionMsg: {
         padding: 15,
         backgroundColor: '#f8f8f8',
-        height: 70,
         borderWidth: 1/PixelRatio.get(),
         borderColor: '#d9d9d9',
         borderRadius: 3,
@@ -473,30 +485,30 @@ const styles = StyleSheet.create({
     noDataBg: {
         backgroundColor: '#fff',
     },
-    contentContainerStyle: {
-    },
     noAttention: {
-        width: 97,
-        height: 116
+        width: 90,
+        height: 108,
+        marginBottom: 20
     },
     noAttentionText: {
-        paddingTop: 25,
-        paddingBottom: 20,
+        paddingBottom: 6,
         fontSize: 16,
-        color: '#8d8c92'
+        color: '#3e3e3e',
+        textAlign: 'center'
     },
     noAttentionBtn: {
-        width: 80,
-        height: 40,
+        marginTop: 12,
+        width: 150,
+        height: 30,
         borderStyle: 'solid',
         borderWidth: 1,
-        borderColor: '#ccc',
+        borderColor: '#04C1AE',
         borderRadius: 6,
         justifyContent: 'center'
     },
     noAttentionBtnText: {
         fontSize: 15,
-        color: '#8d8c92'
+        color: '#04C1AE'
     },
     searchText: {
         fontSize: 15,

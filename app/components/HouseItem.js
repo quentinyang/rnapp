@@ -9,8 +9,8 @@ export default class HouseItem extends Component {
     }
 
     render() {
-        let {item} = this.props;
-        let date = formatDate(item.get('updated_at'));
+        let {item, dateKey, operator} = this.props;
+        let date = formatDate(dateKey ? item.get(dateKey) : item.get('updated_at'));
 
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
@@ -44,7 +44,7 @@ export default class HouseItem extends Component {
                     </View>
                     <View style={[styles.row]}>
                         <Text numberOfLines={1} style={[styles.flex, styles.bottomMsg]}>{item.get('district_name') + '-' + item.get('block_name') + ' ' + item.get('community_address')}</Text>
-                        <Text style={[styles.bottomMsg, styles.updatedAt]}>{date.month + '月' + date.day + '日'}</Text>
+                        <Text style={[styles.bottomMsg, styles.updatedAt]}>{date.month + '月' + date.day + '日'}{operator}</Text>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
@@ -52,7 +52,7 @@ export default class HouseItem extends Component {
     }
 
     _onHandlePress = (item) => {
-        this.props.onItemPress(item);
+        this.props.onItemPress && this.props.onItemPress(item);
     };
 }
 
