@@ -30,7 +30,7 @@ export default class Autocomplete extends Component {
         });
 
         return (
-            <View style={[styles.flex, styles.column]}>
+            <View style={[styles.column]}>
                 <View style={[styles.border, styles.box]}>
                     <View style={[styles.flex, styles.row, styles.searchContainer]}>
                         <View style={styles.searchBox}>

@@ -11,6 +11,7 @@ import Area from '../components/Area';
 import SearchNavigator from '../components/SearchNavigator';
 import Autocomplete from '../components/Autocomplete'
 import AutocompleteItem from '../components/AutocompleteItem'
+import SearchHistory from '../components/SearchHistory';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -147,6 +148,7 @@ export default class HouseList extends Component {
                     visibleLog={this.state.homeSearch ? actionType.BA_LOOK_HOME_SEARCH_ONVIEW : actionType.BA_LOOK_LIST_SEARCH_ONVIEW}
                     bp={this.state.homeSearch ? actionType.BA_HOME_PAGE : actionType.BA_ALLHOUSE_LIST}
                 />
+                <SearchHistory />
             </View>
         )
     }
