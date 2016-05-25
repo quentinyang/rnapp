@@ -25,6 +25,7 @@ export default class Detail extends Component {
     constructor(props) {
         super(props);
         this.flag = false;
+        this.isCall = false;
         this.pageId = actionType.BA_DETAIL;
         ActionUtil.setActionWithExtend(actionType.BA_DETAIL_ONVIEW, {"vpid": this.props.route.item.get('property_id'), "bp": this.props.route.bp});
     }
@@ -126,8 +127,10 @@ export default class Detail extends Component {
 
         if(status || !status && callInfo.get('sellerPhone')) {
         } else {
-            ActionUtil.setAction(actionType.BA_DETAIL_SPEND);
-            actions.setFeedbackVisible(true);
+            if(this.isCall) {
+                ActionUtil.setAction(actionType.BA_DETAIL_SPEND);
+                actions.setFeedbackVisible(true);
+            }
         }
     }
     componentDidUpdate() {
@@ -156,10 +159,12 @@ export default class Detail extends Component {
         let {actions, actionsNavigation, actionsHome, route} = this.props;
         let propertyId = route.item.get("property_id");
 
+
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
         if(status || hasPhone) { //1: 已解锁 或 已反馈在卖
             callUp(phone);
         } else {   //0: 未解锁
+            this.isCall = true;
             actions.callSeller({
                 property_id: propertyId
             });
