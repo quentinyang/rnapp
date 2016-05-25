@@ -18,12 +18,12 @@ export default class LabelTextInput extends Component {
     }
 
     render() {
-        let {ref, label, special, specialText1, specialText2, onClick, inputStyle, arrow, rightText, rightStyle, placeholderTextColor, children, ...props} = this.props;
+        let {ref, label, style, special, specialText1, specialText2, onClick, inputStyle, arrow, rightText, rightStyle, placeholderTextColor, children, ...props} = this.props;
 
         return (
             <View
                 ref={ref}
-                style={styles.inputContainer}
+                style={[styles.inputContainer, style]}
             >
                 <Text style={styles.label}>{label}</Text>
                 {!special ?

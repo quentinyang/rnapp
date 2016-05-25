@@ -10,6 +10,7 @@ import ContactHouseContainer from '../containers/ContactHouseContainer'
 import InputHouseContainer from '../containers/InputHouseContainer'
 import LoginContainer from '../containers/LoginContainer'
 import RechargeContainer from '../containers/RechargeContainer'
+import WithdrawContainer from '../containers/WithdrawContainer'
 import SettingContainer from '../containers/SettingContainer'
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
@@ -79,15 +80,14 @@ class CashArea extends Component{
 
   _triggerWithdraw = () => {
       ActionUtil.setAction(actionType.BA_MINE_CASH);
-        let {navigator} = this.props;
+      let {navigator} = this.props;
 
-        navigator.push({
-            component: TouchWebContainer,
-            name: 'withdrawal',
-            title: '提现',
-            hideNavBar: false,
-            url: 'https://api.fangyuan360.cn/my/withdrawals/'
-        });
+      navigator.push({
+          component: WithdrawContainer,
+          name: 'withdraw',
+          title: '提现',
+          hideNavBar: false
+      });
   };
 }
 
