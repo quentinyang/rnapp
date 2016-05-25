@@ -22,7 +22,9 @@ public class CallReceiver extends BroadcastReceiver {
             case TelephonyManager.CALL_STATE_OFFHOOK: //接听电话
                 break;
             case TelephonyManager.CALL_STATE_IDLE: //挂断电话
-                ModulePackage.callModule.sendEvent("callIdle", "");
+                if(null != ModulePackage.callModule) {
+                    ModulePackage.callModule.sendEvent("callIdle", "");
+                }
                 break;
             default:
                 break;
