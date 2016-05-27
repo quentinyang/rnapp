@@ -131,8 +131,8 @@ export default class Recharge extends Component {
         let self = this;
         ActionUtil.setAction(actionType.BA_DEPOSIT_GO);
         let data = {
-            subject: '房源360积分充值',
-            body: '房源360'+this.state.price+'积分充值',
+            subject: '第一房源积分充值',
+            body: '第一房源'+this.state.price+'积分充值',
             total_fee: this.state.price,
             pay_type: 1
         };

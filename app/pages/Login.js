@@ -42,7 +42,10 @@ class Login extends React.Component {
                         source={require('../images/shape.png')}
                     />
                 </View>
-                <Text style={styles.fytitle}>房源360</Text>
+                <View style={[styles.alignItems, styles.logoWrapper]}>
+                    <Image style={[styles.nameLogo]} source={require("../images/name_logo.png")} />
+                </View>
+
                 <Text style={styles.fysubtitle}>房源信息共享平台</Text>
                 <View style={styles.layout}>
                     <View style={styles.phoneBox}>
@@ -267,6 +270,9 @@ let styles = StyleSheet.create({
     container: {
         flex: 1
     },
+    alignItems: {
+        alignItems: "center"
+    },
     content: {
         justifyContent: 'center',
     },
@@ -277,12 +283,13 @@ let styles = StyleSheet.create({
         width: 123,
         height: 215
     },
-    fytitle: {
-        marginTop: -80,
-        fontSize: 40,
-        textAlign: 'center',
-        color: '#04c1ae',
-        backgroundColor: 'transparent'
+    logoWrapper: {
+        marginTop: -40
+    },
+    nameLogo: {
+        width: 173,
+        height: 44,
+        marginBottom: 5
     },
     fysubtitle: {
         marginTop: 10,
