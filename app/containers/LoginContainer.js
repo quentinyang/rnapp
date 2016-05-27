@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react-native';
+import React from 'react';
 const {
     Component
 } = React;

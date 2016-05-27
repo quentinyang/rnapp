@@ -17,7 +17,7 @@ var {
   NativeAppEventEmitter
 } = React;
 
-var { DeviceEventEmitter } = require('react-native');
+var { DeviceEventEmitter } = require('react');
 
 let _navigator;
 global.gtoken = '';

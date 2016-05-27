@@ -1,4 +1,5 @@
-import React, {Text, View, Dimensions, InteractionManager, StyleSheet, Platform, PixelRatio} from 'react-native';
+import React from 'react';
+import {Text, View, Dimensions, InteractionManager, StyleSheet, Platform, PixelRatio} from 'react-native';
 import MainContainer from '../containers/MainContainer';
 
 let {height, width} = Dimensions.get('window');

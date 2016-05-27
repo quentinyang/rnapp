@@ -1,6 +1,7 @@
 'use strict';
 
-import React, {ToastAndroid} from 'react-native';
+import React from 'react';
+import {ToastAndroid} from 'react-native';
 
 export function ToastShort(content) {
     ToastAndroid.show(new String(content), ToastAndroid.SHORT);

@@ -1,6 +1,11 @@
 'use strict';
 
-import React from 'react-native';
+import React from 'react';
+import ReactNative from 'react-native';
+const {
+  PropTypes,
+} = React;
+
 const {
   StyleSheet,
   ListView,
@@ -8,15 +13,14 @@ const {
   ScrollView,
   Text,
   TouchableOpacity,
-  PropTypes,
   InteractionManager,
   ProgressBarAndroid,
   Image,
   DrawerLayoutAndroid,
   Dimensions,
   View,
-  Platform
-} = React;
+  Platform,
+} = ReactNative;
 
 import LoginContainer from '../containers/LoginContainer';
 

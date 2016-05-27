@@ -16,7 +16,7 @@ var {
     NativeAppEventEmitter
     } = React;
 
-var { DeviceEventEmitter } = require('react-native');
+var { DeviceEventEmitter } = require('react');
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
