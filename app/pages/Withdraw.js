@@ -1,7 +1,8 @@
-import {React, Component, View, Text, TextInput, TouchableHighlight, TouchableOpacity, PixelRatio, StyleSheet} from 'nuke';
+import {React, Component, View, Text, TextInput, TouchableHighlight, TouchableOpacity, Alert, PixelRatio, StyleSheet} from 'nuke';
 import WithLabel from '../components/LabelTextInput';
 import TouchableSubmit from '../components/TouchableSubmit';
 import TouchWebContainer from "../containers/TouchWebContainer";
+import TabViewContainer from '../containers/TabViewContainer';
 
 export default class Withdraw extends Component {
     constructor(props) {
@@ -59,8 +60,11 @@ export default class Withdraw extends Component {
                     />
                 </View>
             </View>
-
         );
+    }
+
+    componentWillUnmount() {
+        this.props.actions.priceCleared();
     }
 
     goBinding() {
@@ -83,9 +87,24 @@ export default class Withdraw extends Component {
         }
     }
 
-    handleSubmit() {
-        console.log('yyyy');
-    }
+    handleSubmit = () => {
+        let {navigator, actions} = this.props;
+        Alert.alert('', '申请提现成功\n1个工作日内到账',
+            [{
+                text: '确定',
+                onPress: () => {
+                    navigator.push({
+                        component: TabViewContainer,
+                        from: 'withdrawSuccess',
+                        name: 'user',
+                        title: '我的',
+                        hideNavBar: true
+                    });
+                    actions.priceCleared();
+                }
+            }]
+        );
+    };
 }
 
 const styles = StyleSheet.create({

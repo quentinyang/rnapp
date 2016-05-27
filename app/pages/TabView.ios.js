@@ -101,7 +101,8 @@ export default class TabView extends Component {
     }
 
     componentWillMount() {
-        if(this.props.route.from == 'reCharge') {
+        let origin = this.props.route.from;
+        if(origin == 'reCharge' || origin == 'withdrawSuccess') {
             this.setState({tabIndex: 2});
             this.props.actionsUser.fetchUserProfile({});
         }

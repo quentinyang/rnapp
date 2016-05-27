@@ -13,6 +13,8 @@ function withdrawInfo(state = Immutable.fromJS(initialState), action) {
         case types.PRICE_CHANGED:
             return state.set('price', action.price);
             break;
+        case types.PRICE_CLEARED:
+            return state.set('price', '');
         default:
             return state;
     }

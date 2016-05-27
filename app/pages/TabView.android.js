@@ -11,9 +11,10 @@ export default class TabView extends Component {
     constructor(props) {
         super(props);
 
+        let origin = this.props.route.from;
         this._renderScene = this._renderScene.bind(this);
         this._onWillFocus = this._onWillFocus.bind(this);
-        if(this.props.route.from == 'reCharge') {
+        if(origin == 'reCharge' || origin == 'withdrawSuccess') {
             this.state = {tabIndex: 2};
             this.props.actionsUser.fetchUserProfile({});
         } else {
