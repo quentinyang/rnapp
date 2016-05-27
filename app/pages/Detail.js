@@ -439,9 +439,9 @@ class BaseInfo extends Component {
         return (
             <View style={[styles.itemContainer, styles.baseBox]}>
                 <View style={[styles.center, styles.justifyContent, styles.nameBox]}>
-                    <Text style={[styles.name]}>{houseInfo.get('community_name') || ''}</Text>
+                    <Text style={[styles.name, styles.baseColor]}>{houseInfo.get('community_name') || ''}</Text>
                     <View style={[styles.row, styles.justifyContent]}>
-                        <Text style={[styles.subName, styles.flex]}>{houseInfo.get('building_num') || ''}{houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}</Text>
+                        <Text style={[styles.subName, styles.flex, styles.baseColor]}>{houseInfo.get('building_num') || ''}{houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}</Text>
                         {
                             houseInfo.get('is_new') ? <Text style={[styles.tagNew, styles.flex]}>新</Text> : null
                         }
@@ -453,18 +453,18 @@ class BaseInfo extends Component {
 
                 <View style={[styles.info, styles.row]}>
                     <View style={[styles.flex, styles.center, styles.justifyContent]}>
-                        <Text style={styles.attr}>总价</Text>
-                        <Text style={styles.attrVal}><Text style={styles.fontMedium}>{houseInfo.get('price') || ''}</Text>万</Text>
+                        <Text style={[styles.attr, styles.baseColor]}>总价</Text>
+                        <Text style={[styles.attrVal, styles.fontMedium]}>{houseInfo.get('price') || ''}万</Text>
                     </View>
                     <View style={styles.vline}></View>
                     <View style={[styles.flex, styles.center, styles.justifyContent]}>
-                        <Text style={styles.attr}>户型</Text>
-                        <Text style={styles.attrVal}><Text style={styles.fontMedium}>{houseInfo.get('bedrooms') || ''}</Text>室<Text style={styles.fontMedium}>{houseInfo.get('living_rooms') || ''}</Text>厅<Text style={styles.fontMedium}>{houseInfo.get('bathrooms') || ''}</Text>卫</Text>
+                        <Text style={[styles.attr, styles.baseColor]}>户型</Text>
+                        <Text style={[styles.attrVal, styles.fontMedium]}>{houseInfo.get('bedrooms') || ''}室{houseInfo.get('living_rooms') || ''}厅{houseInfo.get('bathrooms') || ''}卫</Text>
                     </View>
                     <View style={styles.vline}></View>
                     <View style={[styles.flex, styles.center, styles.justifyContent]}>
-                        <Text style={styles.attr}>面积</Text>
-                        <Text style={styles.attrVal}><Text style={styles.fontMedium}>{houseInfo.get('area') || ''}</Text>平米</Text>
+                        <Text style={[styles.attr, styles.baseColor]}>面积</Text>
+                        <Text style={[styles.attrVal, styles.fontMedium]}>{houseInfo.get('area') || ''}平米</Text>
                     </View>
                 </View>
                 <View style={[styles.justifyContent, styles.address]}>
