@@ -222,3 +222,8 @@ export const BA_DEPOSIT_GO = "101-800005"
 export const BA_DEPOSIT_WATCH = "101-800006"
 export const BA_DEPOSIT_KNOW = "101-800007"
 export const BA_DEPOSIT_SUCCESS = '101-800008'
+
+//发房规则
+export const BA_SENDRULE_ONVIEW = "3-300000-50"
+export const BA_SENDRULE_RETURN = "3-300000-51"
+export const BA_SENDRULE_JUSTNOW = "3-300000-52"

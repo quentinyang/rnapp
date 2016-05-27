@@ -20,6 +20,40 @@ export default class MoreInfoPage extends Component {
     constructor(props) {
         super(props);
         ActionUtil.setAction(actionType.BA_SENDTWO_THREE_ONVIEW);
+
+        let self = this;
+        let {navigator} = this.props;
+        this.props.route.callbackFun = () => {
+            if(!self.hasValue()) {
+                navigator.pop();
+            } else {
+                Alert.alert('', '确定要离开此页面吗？', [
+                    {
+                        text: '取消',
+                        onPress: () => {
+                            ActionUtil.setAction(actionType.BA_SENDTWO_THREE_CANCEL);
+                        }
+                    },
+                    {
+                        text: '确定',
+                        onPress: () => {
+                            ActionUtil.setAction(actionType.BA_SENDTWO_THREE_ENSURE);
+                            navigator.pop();
+                        }
+                    }
+                ])
+            }
+        };
+    }
+
+    hasValue() {
+        let {houseForm} = this.props.houseInput;
+        if(houseForm.get("bedrooms") || houseForm.get("living_rooms") || houseForm.get("bathrooms") ||
+            houseForm.get("area") || houseForm.get("price")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     render() {
@@ -131,10 +165,9 @@ export default class MoreInfoPage extends Component {
         navigator.push({
             component: PublishThirdStepContainer,
             name: 'publishInventory',
-            log: {"cancel": actionType.BA_SENDTHREE_THREE_CANCEL, "ok": actionType.BA_SENDTHREE_THREE_ENSURE},
             title: '房东信息',
             backLog: actionType.BA_SENDTHREE_THREE_RETURN,
-            confirm: true,
+            callbackFun: () => {},
             hideNavBar: false,
         });
     }

@@ -21,6 +21,39 @@ export default class LandlordInfoPage extends Component {
         super(props);
         this.pageId = actionType.BA_SEND;
         ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_ONVIEW);
+
+        let self = this;
+        let {navigator} = this.props;
+        this.props.route.callbackFun = () => {
+            if(!self.hasValue()) {
+                navigator.pop();
+            } else {
+                Alert.alert('', '确定要离开此页面吗？', [
+                    {
+                        text: '取消',
+                        onPress: () => {
+                            ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_CANCEL);
+                        }
+                    },
+                    {
+                        text: '确定',
+                        onPress: () => {
+                            ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_ENSURE);
+                            navigator.pop();
+                        }
+                    }
+                ])
+            }
+        };
+    }
+
+    hasValue() {
+        let {houseForm} = this.props.houseInput;
+        if(houseForm.get("seller_alias") || houseForm.get("seller_phone")) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     render() {

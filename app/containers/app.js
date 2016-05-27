@@ -361,22 +361,8 @@ class App extends Component {
                     route.backLog && ActionUtil.setAction(route.backLog);
                     actionsApp.clickBack(route.name);
 
-                    if(route.confirm) {
-                        Alert.alert('', route.confirmMsg || '确定要离开此页面吗？', [
-                            {
-                                text: '取消',
-                                onPress: () => {
-                                    ActionUtil.setAction(route.log.cancel);
-                                }
-                            },
-                            {
-                                text: '确定',
-                                onPress: () => {
-                                    ActionUtil.setAction(route.log.ok);
-                                    navigator.pop();
-                                }
-                            }
-                        ])
+                    if(route.callbackFun) {
+                        route.callbackFun();
                     } else {
                         navigator.pop();
                     }
@@ -393,7 +379,15 @@ class App extends Component {
     };
 
     _rightButton = (route, navigator, index, navState) => {
-        return null;
+        return (
+            route.right ?
+                    <TouchableWithoutFeedback
+                        onPress={() => {if(route.right.route) {navigator.push(route.right.route);}}}
+                    >
+                        <View style={[styles.navBarRightButton, styles.alignItems,styles.justifyContent]}><Text style={styles.modalBtn}>{route.right.msg || ""}</Text></View>
+                    </TouchableWithoutFeedback>
+                : null
+        );
     };
 
     _title = (route, navigator, index, navState) => {
@@ -446,6 +440,7 @@ let styles = StyleSheet.create({
         height: 45
     },
     navBarRightButton: {
+        height: 45,
         marginRight: 15
     },
     icon: {

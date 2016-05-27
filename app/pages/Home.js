@@ -303,7 +303,7 @@ export class Attention extends Component {
         return (
             <View style={styles.attention}>
                 <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
-                    <Text style={styles.bar}></Text>
+                    <View style={styles.bar}></View>
                     <Text style={[styles.flex, styles.heiti_16_header]}>我的关注</Text>
                 </View>
                 <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
@@ -318,8 +318,8 @@ export class Attention extends Component {
                         />
                     </View>
                 </TouchableWithoutFeedback>
-                <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
-                    <Text style={styles.bar}></Text>
+                <View style={[styles.row, styles.alignItems]}>
+                    <View style={styles.bar}></View>
                     <Text style={[styles.flex, styles.heiti_16_header]}>关注的房源</Text>
                 </View>
             </View>
@@ -393,21 +393,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        height: 60,
+        height: 70,
         paddingLeft: 15,
         paddingRight: 15,
         backgroundColor: '#fff',
-        borderColor: '#ddd',
+        borderColor: '#d9d9d9',
         // marginBottom: 10,
-        borderWidth: 1/PixelRatio.get()
+        borderBottomWidth: 1/PixelRatio.get()
     },
     headerLine: {
         height: 10,
         backgroundColor: '#eee'
     },
     allHouseImage: {
-        width: 30,
-        height: 30,
+        width: 40,
+        height: 40,
         marginRight: 10
     },
     nextImage: {
@@ -431,6 +431,8 @@ const styles = StyleSheet.create({
         padding: 15,
         paddingBottom: 0,
         backgroundColor: '#fff',
+        borderColor: '#d9d9d9',
+        borderTopWidth: 1/PixelRatio.get()
     },
     attentionMsg: {
         padding: 15,
@@ -457,13 +459,15 @@ const styles = StyleSheet.create({
     heiti_15_content: {
         fontFamily: 'Heiti SC',
         fontSize: 15,
-        color: '#3e3e3e'
+        color: '#3e3e3e',
+        marginTop: 4,
+        marginBottom: 3
     },
     heiti_16_header: {
         fontFamily: 'Heiti SC',
         fontSize: 16,
         color: '#3e3e3e',
-        fontWeight: 'bold'
+        fontWeight: '500'
     },
     noDataBg: {
         backgroundColor: '#fff',
@@ -554,4 +558,7 @@ const styles = StyleSheet.create({
     btnSize: {
         fontSize: 18
     },
+    fontMedium: {
+        fontWeight: '500'
+    }
 });
