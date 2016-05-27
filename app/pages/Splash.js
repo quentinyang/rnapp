@@ -1,10 +1,10 @@
-import React from 'react';
+import {React, Component} from 'nuke';
 import {Text, View, Dimensions, InteractionManager, StyleSheet, Platform, PixelRatio} from 'react-native';
 import MainContainer from '../containers/MainContainer';
 
 let {height, width} = Dimensions.get('window');
 
-class Splash extends React.Component {
+class Splash extends Component {
     constructor(props) {
         super(props);
     }

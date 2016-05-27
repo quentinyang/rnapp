@@ -7,7 +7,8 @@ import {
 } from 'nuke';
 
 var Alipay = require('react-native').NativeModules.Alipay;
-var { NativeAppEventEmitter, DeviceEventEmitter,ToastAndroid } = require('react');
+
+import { NativeAppEventEmitter, DeviceEventEmitter, ToastAndroid } from 'react-native';
 
 import RechargeSuccessContainer from "../containers/RechargeSuccessContainer";
 import {tradeService, resultService} from '../service/payService';

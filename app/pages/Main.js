@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import {React, Component} from 'nuke';
 import ReactNative from 'react-native';
 const {
   PropTypes,
@@ -26,7 +26,7 @@ import LoginContainer from '../containers/LoginContainer';
 
 var index = 0;
 
-class Main extends React.Component {
+class Main extends Component {
     constructor(props) {
         super(props);
     }

@@ -1,6 +1,6 @@
 'use strict';
 
-import React, {Component} from 'react';
+import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/login';

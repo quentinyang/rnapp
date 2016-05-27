@@ -13,11 +13,7 @@ var GeTui = require('react-native').NativeModules.GeTui;
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
-var {
-  NativeAppEventEmitter
-} = React;
-
-var { DeviceEventEmitter } = require('react');
+import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 
 let _navigator;
 global.gtoken = '';

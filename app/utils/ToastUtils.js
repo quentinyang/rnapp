@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import {React} from 'nuke';
 import {ToastAndroid} from 'react-native';
 
 export function ToastShort(content) {

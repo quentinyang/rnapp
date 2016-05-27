@@ -1,6 +1,7 @@
 'use strict';
 
 import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, TouchableWithoutFeedback, Alert, Modal, Button, Linking, Platform } from 'nuke'
+import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
 import DetailContainer from '../containers/DetailContainer';
@@ -9,14 +10,8 @@ import InputHouseRule from '../pages/InputHouseRule';
 import RechargeContainer from '../containers/RechargeContainer'
 import BackScoreContainer from '../containers/BackScoreContainer'
 let ActionUtil = require( '../utils/ActionLog');
-import {callUp} from '../utils/CommonUtils'
-import * as actionType from '../constants/ActionLog'
-
-var {
-    NativeAppEventEmitter
-    } = React;
-
-var { DeviceEventEmitter } = require('react');
+import {callUp} from '../utils/CommonUtils';
+import * as actionType from '../constants/ActionLog';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)

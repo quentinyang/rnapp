@@ -11,6 +11,7 @@ import {
     ScrollView
 } from 'nuke';
 
+import ReactNative from 'react-native';
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import Countdown from '../components/Countdown'
 import {loginService, sendCodeService} from '../service/userService';
@@ -24,7 +25,7 @@ import * as common from '../constants/Common';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
-class Login extends React.Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.pageId = actionType.BA_LOGIN;
@@ -109,7 +110,7 @@ class Login extends React.Component {
             let scrollResponder = this.refs.formContainer.refs.scrollView.getScrollResponder();
 
             scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-              React.findNodeHandle(this.refs[refName]),
+              ReactNative.findNodeHandle(this.refs[refName]),
               120, //additionalOffset
               true
             );

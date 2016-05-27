@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import {React} from 'nuke';
 import {AsyncStorage} from 'react-native';
 
 var deviceStorage = {
