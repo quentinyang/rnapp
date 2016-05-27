@@ -336,7 +336,7 @@ class ErrorTipModal extends Component {
                 component: component,
                 name: 'publishInventory',
                 title: title,
-                right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false}},
+                right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false, backLog: actionType.BA_SENDRULE_RETURN}},
                 hideNavBar: false,
                 backLog: actionType.BA_SENDTWO_THREE_RETURN,
                 callbackFun: () => {},
@@ -454,17 +454,17 @@ class BaseInfo extends Component {
                 <View style={[styles.info, styles.row]}>
                     <View style={[styles.flex, styles.center, styles.justifyContent]}>
                         <Text style={styles.attr}>总价</Text>
-                        <Text style={styles.attrVal}>{houseInfo.get('price') || ''}万</Text>
+                        <Text style={styles.attrVal}><Text style={styles.fontMedium}>{houseInfo.get('price') || ''}</Text>万</Text>
                     </View>
                     <View style={styles.vline}></View>
                     <View style={[styles.flex, styles.center, styles.justifyContent]}>
                         <Text style={styles.attr}>户型</Text>
-                        <Text style={styles.attrVal}>{houseInfo.get('bedrooms') || ''}室{houseInfo.get('living_rooms') || ''}厅{houseInfo.get('bathrooms') || ''}卫</Text>
+                        <Text style={styles.attrVal}><Text style={styles.fontMedium}>{houseInfo.get('bedrooms') || ''}</Text>室<Text style={styles.fontMedium}>{houseInfo.get('living_rooms') || ''}</Text>厅<Text style={styles.fontMedium}>{houseInfo.get('bathrooms') || ''}</Text>卫</Text>
                     </View>
                     <View style={styles.vline}></View>
                     <View style={[styles.flex, styles.center, styles.justifyContent]}>
                         <Text style={styles.attr}>面积</Text>
-                        <Text style={styles.attrVal}>{houseInfo.get('area') || ''}平米</Text>
+                        <Text style={styles.attrVal}><Text style={styles.fontMedium}>{houseInfo.get('area') || ''}</Text>平米</Text>
                     </View>
                 </View>
                 <View style={[styles.justifyContent, styles.address]}>
@@ -548,6 +548,9 @@ var styles = StyleSheet.create({
     },
     greenColor: {
         color: '#04C1AE'
+    },
+    fontMedium: {
+        fontWeight: '600'
     },
     padding: {
         padding: 15
@@ -642,7 +645,8 @@ var styles = StyleSheet.create({
     contactBox: {
         marginTop: 8,
         paddingLeft: 15,
-        paddingRight: 15
+        paddingRight: 15,
+        paddingBottom: 6
     },
     contactItem: {
         height: 30
@@ -658,8 +662,7 @@ var styles = StyleSheet.create({
         borderStyle: 'solid',
         borderBottomWidth: 1/PixelRatio.get(),
         borderBottomColor: '#d9d9d9',
-        paddingBottom: 17,
-        paddingTop: 5
+        paddingBottom: 8
     },
     moreIcon: {
         height: 8,
@@ -701,7 +704,8 @@ var styles = StyleSheet.create({
     },
     phoneIcon: {
         width: 20,
-        height: 20
+        height: 20,
+        marginRight: 7
     },
     bgWrap: {
         backgroundColor: "rgba(0, 0, 0, 0.5)"

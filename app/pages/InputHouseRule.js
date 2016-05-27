@@ -15,8 +15,7 @@ import * as actionType from '../constants/ActionLog'
 export default class InputHouseRule extends Component {
     constructor(props) {
         super(props);
-        this.pageId = actionType.BA_SEND_SUCCESS;
-        ActionUtil.setActionWithExtend(actionType.BA_SEND_SUCCESS_ONVIEW, {"bp": this.props.route.bp});
+        ActionUtil.setActionWithExtend(actionType.BA_SENDRULE_ONVIEW, {"bp": ""});
     }
 
     render() {
@@ -38,7 +37,7 @@ export default class InputHouseRule extends Component {
     }
 
     continueInput = () => {
-        ActionUtil.setAction(actionType.BA_SEND_SUCCESS_CONTINIUE);
+        ActionUtil.setAction(actionType.BA_SENDRULE_JUSTNOW);
         this.props.navigator.pop();
     };
 }

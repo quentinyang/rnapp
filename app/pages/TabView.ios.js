@@ -33,6 +33,7 @@ export default class TabView extends Component {
                             (val) => {
                                 return (
                                     <TabBar.Item
+                                        style={{backgroundColor: "#333"}}
                                         title={val.title}
                                         selected={this.state.tabIndex === val.key}
                                         icon={{uri: val.icon, scale: 2}}
@@ -46,7 +47,7 @@ export default class TabView extends Component {
                                                             component: PublishFirstStepContainer,
                                                             name: 'publishInventory',
                                                             title: '房源基本信息',
-                                                            right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false}},
+                                                            right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false, backLog: actionType.BA_SENDRULE_RETURN}},
                                                             backLog: actionType.BA_SENDONE_THREE_RETURN,
                                                             callbackFun: () => {},
                                                             hideNavBar: false
