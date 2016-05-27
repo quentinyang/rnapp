@@ -303,7 +303,7 @@ export class Attention extends Component {
         return (
             <View style={styles.attention}>
                 <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
-                    <Text style={styles.bar}></Text>
+                    <View style={styles.bar}></View>
                     <Text style={[styles.flex, styles.heiti_16_header]}>我的关注</Text>
                 </View>
                 <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
@@ -318,8 +318,8 @@ export class Attention extends Component {
                         />
                     </View>
                 </TouchableWithoutFeedback>
-                <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
-                    <Text style={styles.bar}></Text>
+                <View style={[styles.row, styles.alignItems]}>
+                    <View style={styles.bar}></View>
                     <Text style={[styles.flex, styles.heiti_16_header]}>关注的房源</Text>
                 </View>
             </View>
@@ -457,7 +457,9 @@ const styles = StyleSheet.create({
     heiti_15_content: {
         fontFamily: 'Heiti SC',
         fontSize: 15,
-        color: '#3e3e3e'
+        color: '#3e3e3e',
+        marginTop: 4,
+        marginBottom: 3
     },
     heiti_16_header: {
         fontFamily: 'Heiti SC',

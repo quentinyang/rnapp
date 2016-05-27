@@ -5,6 +5,7 @@ import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
 import DetailContainer from '../containers/DetailContainer';
 import PublishFirstStepContainer from '../containers/PublishFirstStepContainer'
+import InputHouseRule from '../pages/InputHouseRule';
 import RechargeContainer from '../containers/RechargeContainer'
 import BackScoreContainer from '../containers/BackScoreContainer'
 let ActionUtil = require( '../utils/ActionLog');
@@ -199,7 +200,7 @@ export default class Detail extends Component {
                 {
                     houseList.size > 0 ?
                         <View style={[styles.itemContainer, styles.row, styles.center, styles.padding, styles.titleBox]}>
-                            <Text style={styles.bar}></Text>
+                            <View style={styles.bar}></View>
                             <Text style={[styles.baseSize, styles.baseColor]}>同小区房源</Text>
                         </View>
                         : null
@@ -334,11 +335,11 @@ class ErrorTipModal extends Component {
             navigator.push({
                 component: component,
                 name: 'publishInventory',
-                log: {"cancel": actionType.BA_SENDTWO_THREE_CANCEL, "ok": actionType.BA_SENDTWO_THREE_ENSURE},
                 title: title,
+                right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false}},
                 hideNavBar: false,
                 backLog: actionType.BA_SENDTWO_THREE_RETURN,
-                confirm: true,
+                callbackFun: () => {},
                 bp: this.pageId
             });
         } else {
@@ -391,7 +392,7 @@ class CostScoreModal extends Component {
                         <TouchableWithoutFeedback
                             onPress={this._goBackScore.bind(this)}
                         >
-                            <View><Text style={styles.backScore}>房源信息有误,找回积分</Text></View>
+                            <View><Text style={styles.backScore}>找回积分</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
@@ -720,11 +721,11 @@ var styles = StyleSheet.create({
     },
     closeIcon: {
         width: 15,
-        height: 11
+        height: 13
     },
     msgTip: {
-        marginTop: 16,
-        marginBottom: 20,
+        marginTop: 14,
+        marginBottom: 22,
         textAlign: "center",
         fontSize: 16
     },
@@ -735,8 +736,10 @@ var styles = StyleSheet.create({
         borderRadius: 5
     },
     sureBtn: {
+        height: 35,
+        width: 195,
         backgroundColor: '#04c1ae',
-        marginBottom: 10
+        marginBottom: 20
     },
     moreButton: {
         justifyContent: 'center',
@@ -755,9 +758,9 @@ var styles = StyleSheet.create({
         marginBottom: 60
     },
     backScore: {
-        fontSize: 12,
+        fontSize: 15,
         color: '#04c1ae',
-        marginBottom: 5
+        marginBottom: 10
     },
     borderBtn: {
         borderWidth: 1,

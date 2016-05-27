@@ -12,6 +12,7 @@ import {
 
 import HouseListContainer from '../containers/HouseListContainer';
 import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
+import InputHouseRule from '../pages/InputHouseRule';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -60,10 +61,10 @@ export default class ScoreRule extends Component {
         this.props.navigator.push({
             component: PublishFirstStepContainer,
             name: 'publishInventory',
-            log: {"cancel": actionType.BA_SENDTWO_THREE_CANCEL, "ok": actionType.BA_SENDTWO_THREE_ENSURE},
             title: '房源基本信息',
+            right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false}},
             backLog: actionType.BA_SENDTWO_THREE_RETURN,
-            confirm: true,
+            callbackFun: () => {},
             hideNavBar: false,
             bp: this.pageId
         });

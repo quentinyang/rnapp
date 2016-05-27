@@ -15,6 +15,7 @@ import {
 
 import Header from '../components/Header';
 import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
+import InputHouseRule from '../pages/InputHouseRule';
 import TouchWebContainer from "../containers/TouchWebContainer";
 import {allowToInputService} from '../service/houseInputService';
 let ActionUtil = require( '../utils/ActionLog');
@@ -57,10 +58,10 @@ class HouseInputEnter extends Component {
                 this.props.navigator.push({
                     component: PublishFirstStepContainer,
                     name: 'publishInventory',
-                    log: {"cancel": actionType.BA_SENDONE_THREE_CANCEL, "ok": actionType.BA_SENDONE_THREE_ENSURE},
                     title: '房源基本信息',
+                    right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false}},
                     backLog: actionType.BA_SENDONE_THREE_RETURN,
-                    confirm: true,
+                    callbackFun: () => {},
                     hideNavBar: false
                 });
             } else {
