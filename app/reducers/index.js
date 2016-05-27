@@ -13,6 +13,7 @@ import attentionBlockSetOne from  './attentionBlockSetOne';
 import communitySearch from  './communitySearch';
 import user from './user';
 import settings from './settings';
+import withdraw from './withdraw';
 import backScore from './backScore';
 
 const rootReducer = combineReducers({
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
     communitySearch,
     user,
     settings,
+    withdraw,
     backScore
 });
 

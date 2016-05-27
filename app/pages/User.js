@@ -80,14 +80,18 @@ class CashArea extends Component{
 
   _triggerWithdraw = () => {
       ActionUtil.setAction(actionType.BA_MINE_CASH);
-      let {navigator} = this.props;
-
-      navigator.push({
-          component: WithdrawContainer,
-          name: 'withdraw',
-          title: '提现',
-          hideNavBar: false
-      });
+      let {navigator, score} = this.props;
+      if(score < 50) {
+        Alert.alert('', '余额超过50元才能提现哦', [{text: '知道了'}]);
+      } else {
+        navigator.push({
+            component: WithdrawContainer,
+            name: 'withdraw',
+            data: {'score': score},
+            title: '提现',
+            hideNavBar: false
+        });
+      }
   };
 }
 
@@ -118,7 +122,7 @@ export default class User extends Component {
 
                   <View>
                     <Profile {...profileData}/>
-                    <CashArea navigator={this.props.navigator} appConfig={this.props.appConfig}/>
+                    <CashArea navigator={this.props.navigator} score={profileData.score} appConfig={this.props.appConfig}/>
                   </View>
 
                   <ListView

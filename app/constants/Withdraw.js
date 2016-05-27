@@ -1,0 +1,1 @@
+export const PRICE_CHANGED = 'PRICE_CHANGED';
