@@ -72,6 +72,7 @@ export default class HouseList extends Component {
                         minPulldownDistance={30}
                         onEndReachedThreshold={50}
                         onEndReached={this._onEndReached}
+                        enableEmptySections={true}
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}

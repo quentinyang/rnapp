@@ -83,6 +83,7 @@ export default class Detail extends Component {
                     renderFooter={this._renderFooter}
                     renderHeader={this._renderHeader}
                     style={styles.listView}
+                    enableEmptySections={true}
                 />
             </View>
         );

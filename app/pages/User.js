@@ -126,14 +126,16 @@ export default class User extends Component {
                     dataSource={featureSource}
                     renderRow={this._renderRow.bind(this)}
                     scrollEnabled={false}
-                    automaticallyAdjustContentInsets={false} />
+                    automaticallyAdjustContentInsets={false} 
+                    enableEmptySections={true} />
 
                   <ListView
                     style={[styles.listContainer, styles.settingContainer]}
                     dataSource={settingSource}
                     renderRow={this._renderRow.bind(this)}
                     scrollEnabled={false}
-                    automaticallyAdjustContentInsets={false} />
+                    automaticallyAdjustContentInsets={false}
+                    enableEmptySections={true} />
               </ScrollView>
             </View>
         )

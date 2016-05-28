@@ -113,6 +113,7 @@ export default class Home extends Component {
                     onEndReached={this._onEndReached}
                     renderFooter={this._renderFooter}
                     renderHeader={this._renderHeader}
+                    enableEmptySections={true}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
