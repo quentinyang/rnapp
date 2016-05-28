@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">房源360</string>
+    <string name="app_name">第一房源</string>
     <string name="catalyst_debugjs">catalyst_debugjs</string>
     <string name="catalyst_element_inspector">catalyst_element_inspector</string>
     <string name="catalyst_jsload_error">catalyst_jsload_error</string>
