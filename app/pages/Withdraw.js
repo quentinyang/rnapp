@@ -13,24 +13,24 @@ export default class Withdraw extends Component {
     }
 
     render() {
-        const minPrice = 2;
         let {withdrawInfo, route} = this.props;
-        let price = parseInt(withdrawInfo.get('price'));
-        let isOpacity = price >= minPrice && price <= parseInt(route.data.score) ? 1 : 0.3;
-
+        let price = parseInt(withdrawInfo.get('price')),
+            minPrice = parseInt(route.data.min_price),
+            score = parseInt(route.data.score);
+        let isOpacity = (price >= minPrice && price <= score) && withdrawInfo.get('account') ? 1 : 0.3;
         return (
             <View style={styles.container}>
                 <WithLabel
                     label='支付宝'
-                    value=''
                     style={styles.bindBox}
-                    placeholder='暂未绑定'
+                    placeholder={withdrawInfo.get('account') || '暂未绑定'}
                     editable={false}
                     underlineColorAndroid = 'transparent'
                 >
+                    { !withdrawInfo.get('account') ?
                     <TouchableOpacity onPress={() => this.goBinding()}>
                         <View><Text style={{color: '#04c1ae'}}>去绑定></Text></View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> : null }
                 </WithLabel>
                 <View style={styles.withdrawBox}>
                     <Text style={{marginBottom: 15}}>提现金额</Text>
@@ -48,7 +48,7 @@ export default class Withdraw extends Component {
                     { this.state.errMsg ?
                         <Text style={[styles.mark, styles.colorFFDB]}>{this.state.errMsg}</Text>
                         :
-                        <Text style={styles.mark}>可提金额：{this.props.route.data.score}元</Text>
+                        <Text style={styles.mark}>可提金额：{score}元</Text>
                     }
 
                 </View>
@@ -61,6 +61,10 @@ export default class Withdraw extends Component {
                 </View>
             </View>
         );
+    }
+
+    componentDidMount() {
+        this.props.actions.getAlipayAccount();
     }
 
     componentWillUnmount() {

@@ -5,7 +5,8 @@ import * as types from '../constants/Withdraw';
 import Immutable from 'immutable';
 
 let initialState = {
-    price: ''
+    price: '',
+    account: ''
 };
 
 function withdrawInfo(state = Immutable.fromJS(initialState), action) {
@@ -15,6 +16,10 @@ function withdrawInfo(state = Immutable.fromJS(initialState), action) {
             break;
         case types.PRICE_CLEARED:
             return state.set('price', '');
+            break;
+        case types.ALIPAY_FETCHED:
+            return state.set('account', action.account);
+            break;
         default:
             return state;
     }

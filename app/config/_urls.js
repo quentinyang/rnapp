@@ -2,8 +2,8 @@
 
 // let HOST = 'http://360.master.stage.angejia.com/service/';
 // let HOST = 'http://360.master.dev.angejia.com/service/';
-//let HOST = 'https://api.fangyuan360.cn/service/';
-let HOST = 'http://360.feature-bureau-20160531.dev.angejia.com/service/';
+let HOST = 'https://api.fangyuan360.cn/service/';
+//let HOST = 'http://360.feature-bureau-alipay.dev.angejia.com/service/';
 
 let urls = {
     detail: {
@@ -18,6 +18,7 @@ let urls = {
         login: HOST + 'passport/login',
         profile: HOST + 'user/profile',
         isFirst: HOST + 'point/notify',
+        alipay: HOST + 'user/alipay/account'
     },
     house: {
         list: HOST + 'property-list',

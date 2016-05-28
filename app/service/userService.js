@@ -17,6 +17,10 @@ module.exports=function(){
         return ajax.get(urls.user.profile, data);
     }
 
+    function getUserAlipayAccount() {
+        return ajax.get(urls.user.alipay);
+    }
+
 
     function fetchScoreModalStatusService() {
         return ajax.get(urls.user.isFirst)
@@ -26,6 +30,7 @@ module.exports=function(){
         sendCodeService: sendCodeService,
         loginService: loginService,
         profileService: getUserProfile,
+        getUserAlipayAccount: getUserAlipayAccount,
         fetchScoreModalStatusService: fetchScoreModalStatusService,
     };
 }();

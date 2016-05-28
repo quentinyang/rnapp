@@ -28,7 +28,7 @@ class Profile extends Component{
           <Image style={[styles.profileImage]} source={portrait}/>
           <Text style={[styles.profileText]}>{mobileNum}</Text>
           <Text style={[styles.profileText]}>
-            <Text>积分：</Text>
+            <Text>账户余额：</Text>
             <Text>{this.props.score || 0}</Text>
           </Text>
         </View>
@@ -80,14 +80,14 @@ class CashArea extends Component{
 
   _triggerWithdraw = () => {
       ActionUtil.setAction(actionType.BA_MINE_CASH);
-      let {navigator, score} = this.props;
-      if(score < 50) {
-        Alert.alert('', '余额超过50元才能提现哦', [{text: '知道了'}]);
+      let {navigator, score, minPrice} = this.props;
+      if(score < minPrice) {
+        Alert.alert('', '余额超过' + minPrice + '元才能提现哦', [{text: '知道了'}]);
       } else {
         navigator.push({
             component: WithdrawContainer,
             name: 'withdraw',
-            data: {'score': score},
+            data: {'score': score, 'min_price': minPrice},
             title: '提现',
             hideNavBar: false
         });
@@ -122,7 +122,7 @@ export default class User extends Component {
 
                   <View>
                     <Profile {...profileData}/>
-                    <CashArea navigator={this.props.navigator} score={profileData.score} appConfig={this.props.appConfig}/>
+                    <CashArea navigator={this.props.navigator} score={profileData.score} minPrice={profileData.min_withdrawals_money} appConfig={this.props.appConfig}/>
                   </View>
 
                   <ListView
