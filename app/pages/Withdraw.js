@@ -3,13 +3,11 @@ import WithLabel from '../components/LabelTextInput';
 import TouchableSubmit from '../components/TouchableSubmit';
 import TouchWebContainer from "../containers/TouchWebContainer";
 import TabViewContainer from '../containers/TabViewContainer';
+import {withdrawService} from '../service/userService';
 
 export default class Withdraw extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            errMsg: ''
-        };
     }
 
     render() {
@@ -37,7 +35,7 @@ export default class Withdraw extends Component {
                     <WithLabel
                         label='¥'
                         labelStyle={styles.labelWidth}
-                        value={this.props.withdrawInfo.get('price')}
+                        value={withdrawInfo.get('price')}
                         inputStyle={styles.inputFont}
                         maxLength={6}
                         style={styles.cancelLabelPadding}
@@ -45,8 +43,8 @@ export default class Withdraw extends Component {
                         onFocus={() => {}}
                         onChangeText={(v) => {this.changePrice(v)}}
                     />
-                    { this.state.errMsg ?
-                        <Text style={[styles.mark, styles.colorFFDB]}>{this.state.errMsg}</Text>
+                    { withdrawInfo.get('err_msg') ?
+                        <Text style={[styles.mark, styles.colorFFDB]}>{withdrawInfo.get('err_msg')}</Text>
                         :
                         <Text style={styles.mark}>可提金额：{score}元</Text>
                     }
@@ -82,32 +80,42 @@ export default class Withdraw extends Component {
     }
 
     changePrice(value) {
-        let {route, actions} = this.props;
+        let {route, actions, withdrawInfo} = this.props;
         actions.priceChanged(value);
         if(parseInt(value) > parseInt(route.data.score)) {
-            this.setState({errMsg: '输入金额超过可提额度'});
+            actions.errMsg('输入金额超过可提额度');
         } else {
-            this.state.errMsg && this.setState({errMsg: ''});
+            withdrawInfo.get('err_msg') && actions.errMsg('');
         }
     }
 
     handleSubmit = () => {
-        let {navigator, actions} = this.props;
-        Alert.alert('', '申请提现成功\n1个工作日内到账',
-            [{
-                text: '确定',
-                onPress: () => {
-                    navigator.push({
-                        component: TabViewContainer,
-                        from: 'withdrawSuccess',
-                        name: 'user',
-                        title: '我的',
-                        hideNavBar: true
-                    });
-                    actions.priceCleared();
-                }
-            }]
-        );
+        let {navigator, actions, withdrawInfo} = this.props;
+        let data = {
+            money: withdrawInfo.get('price')
+        };
+
+        withdrawService({body: data})
+        .then((oData) => {
+            Alert.alert('', '申请提现成功\n1个工作日内到账',
+                [{
+                    text: '确定',
+                    onPress: () => {
+                        navigator.push({
+                            component: TabViewContainer,
+                            from: 'withdrawSuccess',
+                            name: 'user',
+                            title: '我的',
+                            hideNavBar: true
+                        });
+                        actions.priceCleared();
+                    }
+                }]
+            );
+        })
+        .catch((error) => {
+            actions.errMsg(error.msg);
+        })
     };
 }
 

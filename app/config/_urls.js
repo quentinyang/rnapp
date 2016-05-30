@@ -18,7 +18,8 @@ let urls = {
         login: HOST + 'passport/login',
         profile: HOST + 'user/profile',
         isFirst: HOST + 'point/notify',
-        alipay: HOST + 'user/alipay/account'
+        alipay: HOST + 'user/alipay/account',
+        withdraw: HOST + 'withdrawals'
     },
     house: {
         list: HOST + 'property-list',

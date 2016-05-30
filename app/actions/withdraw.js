@@ -7,6 +7,7 @@ import { getUserAlipayAccount } from '../service/userService';
 export const priceChanged = makeActionCreator(types.PRICE_CHANGED, 'price');
 export const alipayAccountFetched = makeActionCreator(types.ALIPAY_FETCHED, 'account');
 export const priceCleared = makeActionCreator(types.PRICE_CLEARED);
+export const errMsg = makeActionCreator(types.WITHDRAW_ERR_MSG);
 
 export function getAlipayAccount() {
     return dispatch => {

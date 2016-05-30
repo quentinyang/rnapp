@@ -6,7 +6,8 @@ import Immutable from 'immutable';
 
 let initialState = {
     price: '',
-    account: ''
+    account: '',
+    err_msg: ''
 };
 
 function withdrawInfo(state = Immutable.fromJS(initialState), action) {
@@ -20,6 +21,8 @@ function withdrawInfo(state = Immutable.fromJS(initialState), action) {
         case types.ALIPAY_FETCHED:
             return state.set('account', action.account);
             break;
+        case types.WITHDRAW_ERR_MSG:
+            return state.set('err_msg', action.err_msg);
         default:
             return state;
     }
