@@ -23,6 +23,32 @@ function userProfile(state = Immutable.fromJS(initialState), action) {
     }
 }
 
+let initialScores = {
+    total: '...',
+    properties: [],
+    pager: {
+        'total': 1,
+        'per_page': 10,
+        'current_page': 0,
+        'last_page': 2,
+    }
+}
+
+function scoreData(state = Immutable.fromJS(initialScores), action) {
+    switch(action.type) {
+        case types.SCORE_FETCHED:
+            let currentScores = Immutable.fromJS(action.scores);
+            let newScores = state.updateIn('properties', (k) => {
+                return k.concat(currentScores.get('flows'));
+            });
+            return newScores.set('total', Immutable.fromJS(action.scores['total'])).set('pager', Immutable.fromJS(action.scores['pager']));
+            break;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
-    userProfile
+    userProfile,
+    scoreData
 });

@@ -12,6 +12,7 @@ import LoginContainer from '../containers/LoginContainer'
 import RechargeContainer from '../containers/RechargeContainer'
 import WithdrawContainer from '../containers/WithdrawContainer'
 import SettingContainer from '../containers/SettingContainer'
+import ScoreListContainer from '../containers/ScoreListContainer'
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -29,11 +30,21 @@ class Profile extends Component{
           <Text style={[styles.profileText]}>{mobileNum}</Text>
           <Text style={[styles.profileText]}>
             <Text>账户余额：</Text>
-            <Text>{this.props.score || 0}</Text>
+            <Text>¥{this.props.score || 0}</Text>
+            <Text style={styles.viewScore} onPress={this.goScoreList}> 查看</Text>
           </Text>
         </View>
     );
   }
+
+  goScoreList = () => {
+    this.props.navigator.push({
+      component: ScoreListContainer,
+      name: 'scoreList',
+      title: '积分明细',
+      hideNavBar: false
+    })
+  };
 
   _formatMobileNumber(number) {
     return number.slice(0, 3) + '****' + number.slice(-4);
@@ -121,7 +132,7 @@ export default class User extends Component {
               <ScrollView automaticallyAdjustContentInsets={false}>
 
                   <View>
-                    <Profile {...profileData}/>
+                    <Profile {...profileData} navigator={this.props.navigator} />
                     <CashArea navigator={this.props.navigator} score={profileData.score} minPrice={profileData.min_withdrawals_money} appConfig={this.props.appConfig}/>
                   </View>
 
@@ -214,6 +225,9 @@ const styles = StyleSheet.create({
       fontSize: 16,
       lineHeight: 24,
       color: '#3E3E3E',
+    },
+    viewScore: {
+      color: '#04c1ae'
     },
     // cash area
     cashContainer: {

@@ -29,12 +29,17 @@ module.exports=function(){
         return ajax.post(urls.user.withdraw, data);
     }
 
+    function scoreListService() {
+        return ajax.get(urls.user.scoreList);
+    }
+
     return {
         sendCodeService: sendCodeService,
         loginService: loginService,
         profileService: getUserProfile,
         getUserAlipayAccount: getUserAlipayAccount,
         fetchScoreModalStatusService: fetchScoreModalStatusService,
-        withdrawService: withdrawService
+        withdrawService: withdrawService,
+        scoreListService: scoreListService
     };
 }();

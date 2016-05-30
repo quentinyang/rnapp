@@ -19,7 +19,8 @@ let urls = {
         profile: HOST + 'user/profile',
         isFirst: HOST + 'point/notify',
         alipay: HOST + 'user/alipay/account',
-        withdraw: HOST + 'withdrawals'
+        withdraw: HOST + 'withdrawals',
+        scoreList: HOST + 'my/account/flow'
     },
     house: {
         list: HOST + 'property-list',
