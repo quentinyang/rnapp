@@ -23,6 +23,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         var self = this;
+        let {actionsApp} = this.props;
         this.state = {
             component: null,
             name: '',
@@ -42,6 +43,7 @@ class App extends Component {
                         gtoken = value[i][1];
                         break;
                     case common.USER_ID:
+                        actionsApp.setSearchHistory(value[i][1] || "0");
                         ActionUtil.setUid(value[i][1]);
                         break;
                 }

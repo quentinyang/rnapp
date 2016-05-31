@@ -234,6 +234,9 @@ class Login extends Component {
                 AsyncStorageComponent.save(common.USER_PHONE, data.phone);
                 AsyncStorageComponent.save(common.USER_ID, oData.user_id || "");
                 ActionUtil.setUid(oData.user_id || "");
+
+                actionsApp.setSearchHistory(oData.user_id || "0");
+
                 gtoken = oData.token;
                 if(oData.is_enter_attention_page) {
                     navigator.resetTo({

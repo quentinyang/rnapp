@@ -11,7 +11,7 @@ import Area from '../components/Area';
 import SearchNavigator from '../components/SearchNavigator';
 import Autocomplete from '../components/Autocomplete'
 import AutocompleteItem from '../components/AutocompleteItem'
-import SearchHistory from '../components/SearchHistory';
+import {SearchHistory, SearchHistoryItem} from '../components/SearchHistory';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -30,13 +30,14 @@ export default class HouseList extends Component {
         this.state = {
             isRefreshing: false,
             loaded: false,
-            homeSearch: fromHomeSearch
+            homeSearch: fromHomeSearch,
+            isShowSearchHistory: true
         };
         this.keyword = "";
     }
 
     render() {
-        let {houseData, filterData, uiData, queryParamsData, navigator, communityData} = this.props;
+        let {houseData, filterData, uiData, queryParamsData, navigator, communityData, listSearchHistory} = this.props;
         let houseList = houseData.get('properties');
         let pager = houseData.get('pager');
         let tabType = uiData.get('tabType');
@@ -148,7 +149,16 @@ export default class HouseList extends Component {
                     visibleLog={this.state.homeSearch ? actionType.BA_LOOK_HOME_SEARCH_ONVIEW : actionType.BA_LOOK_LIST_SEARCH_ONVIEW}
                     bp={this.state.homeSearch ? actionType.BA_HOME_PAGE : actionType.BA_ALLHOUSE_LIST}
                 />
-                <SearchHistory />
+                {
+                    this.state.isShowSearchHistory && listSearchHistory.size ?
+                        <SearchHistory
+                            history={listSearchHistory}
+                            renderRow={this._renderSearchHistoryRow.bind(this)}
+                            clearHistory={this._clearSearchHistory.bind(this)}
+                        />
+                        : null
+                }
+
             </View>
         )
     }
@@ -340,7 +350,11 @@ export default class HouseList extends Component {
         ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_SEARCH);
         let {actions, queryParamsData} = this.props;
         let communityName = queryParamsData.get('community_name');
-
+        if(communityName) {
+            this.setState({
+                isShowSearchHistory: false
+            });
+        }
         actions.autocompleteViewShowed(true)
         actions.fetchHouseListCommunityList({keyword: communityName});
     };
@@ -359,6 +373,16 @@ export default class HouseList extends Component {
         let {actions} = this.props;
         this.keyword = value;
         actions.fetchHouseListCommunityList({keyword: value});
+
+        if(!value && !this.state.isShowSearchHistory) {
+            this.setState({
+                isShowSearchHistory: true
+            });
+        } else if(this.state.isShowSearchHistory) {
+            this.setState({
+                isShowSearchHistory: false
+            });
+        }
     };
 
     _renderAutocompleteRow = (item, index) => {
@@ -371,7 +395,7 @@ export default class HouseList extends Component {
         } else {
             ActionUtil.setActionWithExtend(actionType.BA_LOOK_LIST_SEARCH_ASSOCIATION, {"keyword": this.keyword, "comm_id": item.get("id"), "comm_name": item.get("name")});
         }
-        let {actions} = this.props;
+        let {actions, actionsApp} = this.props;
         if(this.state.homeSearch) {
             this.setState({
                 homeSearch: false
@@ -383,12 +407,38 @@ export default class HouseList extends Component {
             community_name: item.get('name')
         });
         actions.filterCommunityNameChanged(item.get('id'), item.get('name'));
+        actionsApp.addListSearchHistory({"id": item.get('id').toString(), "name": item.get('name'), "count": item.get('selling_house_count')});
     };
 
     _onClearKeyword = () => {
         let {actions} = this.props;
         actions.fetchHouseList({page: 1});
         actions.filterCommunityNameCleared()
+    };
+
+    _renderSearchHistoryRow = (item, index) => {
+        return <SearchHistoryItem key={index} item={item} onPress={this._searchHistoryRowPress.bind(this)} />
+    };
+
+    _searchHistoryRowPress = (item) => {
+        debugger;
+        let {actions} = this.props;
+
+        actions.fetchHouseList({
+            page: 1,
+            community_id: item.get('id'),
+            community_name: item.get('name')
+        });
+        actions.filterCommunityNameChanged(item.get('id'), item.get('name'));
+        actions.autocompleteViewShowed(false);
+    };
+    _clearSearchHistory = () => {
+        let {actionsApp} = this.props;
+
+        this.setState({
+            isShowSearchHistory: false
+        });
+        actionsApp.clearListSearchHistory();
     };
 }
 
