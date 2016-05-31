@@ -92,10 +92,9 @@ export default class CommunitySearch extends Component {
     }
 
     onPress(community) {
-        let {actionsInput, actionsApp} = this.props;
+        let {communityData, actionsInput, actionsApp} = this.props;
+        ActionUtil.setActionWithExtend(actionType.BA_LOOK_COM_SEARCH_ASSOCIATION, {"keyword": communityData.get('keyword'), "comm_id": community.get("id"), "comm_name": community.get("name")});
 
-        //???
-        ActionUtil.setActionWithExtend(actionType.BA_LOOK_COM_SEARCH_ASSOCIATION, {"keyword": this.props.keyword, "comm_id": community.get("id"), "comm_name": community.get("name")});
         actionsInput.communityChanged(community.toJS());
         let res = [];
         res.push(community.toJS());

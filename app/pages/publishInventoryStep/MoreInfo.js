@@ -115,7 +115,7 @@ export default class MoreInfoPage extends Component {
                         keyboardType='numeric'
                         value={houseForm.get('price')}
                         placeholder='输入价格'
-                        onBlur={() => {debugger;ActionUtil.setAction(actionType.BA_SENDTWO_THREE_PRICE)}}
+                        onBlur={() => ActionUtil.setAction(actionType.BA_SENDTWO_THREE_PRICE)}
                         onChangeText={(v) => {this.singleAction('priceChanged', v)}}
                     />
                 </View>

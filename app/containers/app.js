@@ -43,8 +43,10 @@ class App extends Component {
                         gtoken = value[i][1];
                         break;
                     case common.USER_ID:
-                        actionsApp.setSearchHistory(value[i][1] || "0");
-                        ActionUtil.setUid(value[i][1]);
+                        if(value[i][1]) {
+                            actionsApp.setSearchHistory(value[i][1] || "0");
+                            ActionUtil.setUid(value[i][1]);
+                        }
                         break;
                 }
             }
