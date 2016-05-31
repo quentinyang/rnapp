@@ -413,7 +413,10 @@ export default class HouseList extends Component {
     _onClearKeyword = () => {
         let {actions} = this.props;
         actions.fetchHouseList({page: 1});
-        actions.filterCommunityNameCleared()
+        actions.filterCommunityNameCleared();
+        this.setState({
+            isShowSearchHistory: true
+        });
     };
 
     _renderSearchHistoryRow = (item, index) => {

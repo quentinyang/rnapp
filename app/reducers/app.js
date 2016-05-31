@@ -40,7 +40,19 @@ function appData(state = Immutable.fromJS(initialState), action) {
             return state.set('inputSearchHistory', Immutable.fromJS(action.searchHistoryValue.input));
             break;
         case types.ADD_LIST_SEARCH_HISTORY:
+            let tempListSearchHistory = state.get('listSearchHistory'), newListId = action.addItem.id, hasList = false;
+            tempListSearchHistory.forEach((val) => {
+                if(val.get('id') == newListId) {
+                    hasList = true;
+                }
+            });
+            if(hasList) {
+                return state;
+            }
             state = state.updateIn(['listSearchHistory'], (k) => {
+                if(k.size == 10) {
+                    k = k.pop();
+                }
                 return k.unshift(Immutable.fromJS(action.addItem));
             });
             AsyncStorageComponent.save(listKey, JSON.stringify(state.get('listSearchHistory')));
@@ -48,7 +60,20 @@ function appData(state = Immutable.fromJS(initialState), action) {
             return state;
             break;
         case types.ADD_INPUT_SEARCH_HISTORY:
+            let tempInputSearchHistory = state.get('inputSearchHistory'), newInputId = action.addItem.id, hasInput = false;
+            tempListSearchHistory.forEach((val) => {
+                if(val.get('id') == newInputId) {
+                    hasInput = true;
+                }
+            });
+            if(hasInput) {
+                return state;
+            }
+
             state = state.updateIn(['inputSearchHistory'], (k) => {
+                if(k.size == 10) {
+                    k = k.pop();
+                }
                 return k.unshift(Immutable.fromJS(action.addItem));
             });
             AsyncStorageComponent.save(inputKey, JSON.stringify(state.get('inputSearchHistory')));

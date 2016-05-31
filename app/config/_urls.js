@@ -12,7 +12,6 @@ let urls = {
         call: HOST + 'wash/call',
         feedback: HOST + 'wash/status',
         contactLog: HOST + 'property/contact/log'
-        //contactLog: 'http://localhost:8081/app/fakedata/contact_log.json'
     },
     user: {
         sendCode: HOST + 'passport/login/sms',
