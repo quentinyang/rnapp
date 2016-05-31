@@ -82,7 +82,7 @@ export default class LandlordInfoPage extends Component {
                         placeholder='输入联系电话'
                         underlineColorAndroid = 'transparent'
                         maxLength={11}
-                        onBlur={() => ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_TEL)}
+                        onBlur={() => {debugger;ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_TEL)}}
                         onChangeText={(v) => {this.singleAction('phoneChanged', v)}}
                     />
                 </View>

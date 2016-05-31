@@ -48,11 +48,12 @@ function appData(state = Immutable.fromJS(initialState), action) {
             return state;
             break;
         case types.ADD_INPUT_SEARCH_HISTORY:
-            AsyncStorageComponent.mergeItem(state.get('inputSearchHistoryKey'), JSON.stringify(action.addItem));
-
-            return state.updateIn(['inputSearchHistory'], (k) => {
+            state = state.updateIn([inputKey], (k) => {
                 return k.unshift(Immutable.fromJS(action.addItem));
             });
+            AsyncStorageComponent.save(inputKey, JSON.stringify(state.get(inputKey)));
+
+            return state;
             break;
         case types.CLEAR_LIST_SEARCH_HISTORY:
             AsyncStorageComponent.remove(listKey);
@@ -60,9 +61,9 @@ function appData(state = Immutable.fromJS(initialState), action) {
             return state.set(listKey, Immutable.fromJS([]));
             break;
         case types.CLEAR_INPUT_SEARCH_HISTORY:
-            AsyncStorageComponent.remove(state.get('inputSearchHistoryKey'));
+            AsyncStorageComponent.remove(inputKey);
 
-            return state.set('inputSearchHistory', Immutable.fromJS([]));
+            return state.set(inputKey, Immutable.fromJS([]));
             break;
         default:
             return state;

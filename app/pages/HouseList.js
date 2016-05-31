@@ -355,7 +355,7 @@ export default class HouseList extends Component {
                 isShowSearchHistory: false
             });
         }
-        actions.autocompleteViewShowed(true)
+        actions.autocompleteViewShowed(true);
         actions.fetchHouseListCommunityList({keyword: communityName});
     };
 

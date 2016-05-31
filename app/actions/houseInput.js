@@ -19,7 +19,6 @@ export const phoneChanged = makeActionCreator(types.PHONE_CHANGED, 'seller_phone
 export const attachBuildingChanged = makeActionCreator(types.ATTACH_BUILDING_CHANGED, 'mark');
 export const attachDoorChanged = makeActionCreator(types.ATTACH_DOOR_CHANGED, 'mark');
 
-export const searchChanged = makeActionCreator(types.SEARCH_CHANGED, 'search');
 export const singleChanged = makeActionCreator(types.SINGLE_CHANGED, 'single');
 export const noUnit = makeActionCreator(types.NO_UNIT_CHANGED, 'no_unit');
 export const villaChanged = makeActionCreator(types.VILLA_CHANGED, 'villa');
