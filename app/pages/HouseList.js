@@ -421,7 +421,6 @@ export default class HouseList extends Component {
     };
 
     _searchHistoryRowPress = (item) => {
-        debugger;
         let {actions} = this.props;
 
         actions.fetchHouseList({

@@ -36,34 +36,34 @@ function appData(state = Immutable.fromJS(initialState), action) {
             return state.set('inputSearchHistoryKey', Immutable.fromJS("input_search_history_" + action.searchHistoryKey));
             break;
         case types.GET_SEARCH_HISTORY:
-            state = state.set(listKey, Immutable.fromJS(action.searchHistoryValue.list));
-            return state.set(inputKey, Immutable.fromJS(action.searchHistoryValue.input));
+            state = state.set('listSearchHistory', Immutable.fromJS(action.searchHistoryValue.list));
+            return state.set('inputSearchHistory', Immutable.fromJS(action.searchHistoryValue.input));
             break;
         case types.ADD_LIST_SEARCH_HISTORY:
-            state = state.updateIn([listKey], (k) => {
+            state = state.updateIn(['listSearchHistory'], (k) => {
                 return k.unshift(Immutable.fromJS(action.addItem));
             });
-            AsyncStorageComponent.save(listKey, JSON.stringify(state.get(listKey)));
+            AsyncStorageComponent.save(listKey, JSON.stringify(state.get('listSearchHistory')));
 
             return state;
             break;
         case types.ADD_INPUT_SEARCH_HISTORY:
-            state = state.updateIn([inputKey], (k) => {
+            state = state.updateIn(['inputSearchHistory'], (k) => {
                 return k.unshift(Immutable.fromJS(action.addItem));
             });
-            AsyncStorageComponent.save(inputKey, JSON.stringify(state.get(inputKey)));
+            AsyncStorageComponent.save(inputKey, JSON.stringify(state.get('inputSearchHistory')));
 
             return state;
             break;
         case types.CLEAR_LIST_SEARCH_HISTORY:
             AsyncStorageComponent.remove(listKey);
 
-            return state.set(listKey, Immutable.fromJS([]));
+            return state.set('listSearchHistory', Immutable.fromJS([]));
             break;
         case types.CLEAR_INPUT_SEARCH_HISTORY:
             AsyncStorageComponent.remove(inputKey);
 
-            return state.set(inputKey, Immutable.fromJS([]));
+            return state.set('inputSearchHistory', Immutable.fromJS([]));
             break;
         default:
             return state;
