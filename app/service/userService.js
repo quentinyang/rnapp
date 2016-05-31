@@ -29,8 +29,10 @@ module.exports=function(){
         return ajax.post(urls.user.withdraw, data);
     }
 
-    function scoreListService() {
-        return ajax.get(urls.user.scoreList);
+    function scoreListService(params) {
+        return ajax.get(urls.user.scoreList, {
+            data: params
+        });
     }
 
     return {

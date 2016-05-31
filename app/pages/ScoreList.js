@@ -24,51 +24,93 @@ export default class ScoreList extends Component {
     }
 
     render() {
-        let { scores } = this.props;
+        let { flows } = this.props;
         return (
             <View style={styles.container}>
                 <ListView
-                    dataSource={ds.cloneWithRows(scores.get('properties').toArray())}
+                    dataSource={ds.cloneWithRows(flows.toArray())}
                     initialListSize={10}
-                    onChangeVisibleRows={(visibleRows, changedRows) => {}}
+                    onEndReached={() => this.onEndReached()}
                     onEndReachedThreshold= {20}
                     pageSize={10}
                     renderHeader={() => this.renderHeader()}
                     renderRow={this.renderRow}
-                    renderFooter={() => <Text style={styles.noMore}>没有更多了...</Text>}
+                    renderFooter={() => this.renderFooter()}
                 />
             </View>
         )
     }
 
     componentDidMount() {
+        let {pager, actions} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            this.props.actions.fetchScoreList();
+            actions.fetchScoreList({
+                page: Number(pager.get('current_page')) + 1
+            });
         });
     }
+
+    componentWillUnmount() {
+        let {actions} = this.props;
+        actions.scoreCleared();
+    }
+
+    onEndReached() {
+        let {actions, pager} = this.props;
+
+        if (Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
+            InteractionManager.runAfterInteractions(() => {
+                actions.fetchScoreList({
+                    page: Number(pager.get('current_page')) + 1
+                });
+            });
+        }
+    };
+
 
     renderHeader() {
         return (
             <View style={styles.totalBox}>
                 <Text style={styles.totalTitle}>账户余额：</Text>
-                <Text style={styles.totalPrice}>¥{this.props.scores.get('total')}</Text>
+                <Text style={styles.totalPrice}>¥{this.props.money}</Text>
             </View>
         );
     }
 
     renderRow = (rowData: any, sectionID: number, rowID: number) => {
         return (
+            <ScoreItem item={rowData} />
+        );
+    };
+
+    renderFooter() {
+        let {pager} = this.props;
+        return (
+            <Text style={styles.noMore}>
+                {Number(pager.get('current_page')) != Number(pager.get('last_page'))?
+                    '加载中...':
+                    '没有更多了...'
+                }
+            </Text>
+        );
+    }
+}
+
+class ScoreItem extends Component {
+    render() {
+        let {item} = this.props;
+        return (
             <View style={styles.scoreListBox}>
                 <View style={styles.scoreLeft}>
-                    <Text style={styles.scoreDesc}>联系房东</Text>
-                    <Text style={styles.scoreTime}>05-05 10:45</Text>
+                    <Text style={styles.scoreDesc}>{item.get('method')}</Text>
+                    <Text style={styles.scoreTime}>{item.get('time')}</Text>
                 </View>
                 <View style={styles.scoreRight}>
-                    <Text style={styles.scorePrice}>-¥2</Text>
+                    <Text style={styles.scorePrice}>{item.get('money_change')}{item.get('money')}</Text>
                 </View>
             </View>
-        )
-    };
+        );
+    }
 }
 
 const styles = StyleSheet.create({

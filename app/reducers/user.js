@@ -24,8 +24,8 @@ function userProfile(state = Immutable.fromJS(initialState), action) {
 }
 
 let initialScores = {
-    total: '...',
-    properties: [],
+    money: '',
+    flows: [],
     pager: {
         'total': 1,
         'per_page': 10,
@@ -36,12 +36,15 @@ let initialScores = {
 
 function scoreData(state = Immutable.fromJS(initialScores), action) {
     switch(action.type) {
-        case types.SCORE_FETCHED:
+        case types.SCORE_LIST:
             let currentScores = Immutable.fromJS(action.scores);
-            let newScores = state.updateIn('properties', (k) => {
+            let newScores = state.updateIn(['flows'], (k) => {
                 return k.concat(currentScores.get('flows'));
             });
-            return newScores.set('total', Immutable.fromJS(action.scores['total'])).set('pager', Immutable.fromJS(action.scores['pager']));
+            return newScores.set('money', Immutable.fromJS(action.scores['money'])).set('pager', Immutable.fromJS(action.scores['pager']));
+            break;
+        case types.SCORE_CLEARED:
+            return Immutable.fromJS(initialScores);
             break;
         default:
             return state;

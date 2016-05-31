@@ -20,15 +20,21 @@ class ScoreListContainer extends Component {
 
 function mapStateToProps(state) {
     let scores = state.user.scoreData;
+    let money = scores.get('money'),
+        flows = scores.get('flows'),
+        pager = scores.get('pager');
+
     return {
-        scores: scores
-    }
+        money: money,
+        flows: flows,
+        pager: pager
+    };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(actions, dispatch)
-    }
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScoreListContainer);
