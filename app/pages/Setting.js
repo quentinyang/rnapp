@@ -34,7 +34,7 @@ export default class Setting extends Component {
                         navigator={this.props.navigator}
                         data={{
                             url:'http://www.fangyuan360.cn/agreement/',
-                            title: '房源360用户协议',
+                            title: '第一房源用户协议',
                             name: 'user rule',
                             component: TouchWebContainer
                         }}
@@ -44,7 +44,7 @@ export default class Setting extends Component {
                     <LinkBox
                         onPress={this.goAppStore}
                         navigator={this.props.navigator}
-                        title='喜欢房源360吗？鼓励一下吧'
+                        title='喜欢第一房源吗？鼓励一下吧'
                     />
                 </View>
                 <TouchableWithoutFeedback onPress={this.loginOut}>
