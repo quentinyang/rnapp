@@ -222,7 +222,7 @@ class Login extends Component {
     handleSubmit = (e) => {
         ActionUtil.setAction(actionType.BA_LOGIN_ENSURE);
         let msg = this.checkForm(),
-            {actions, navigator, login} = this.props,
+            {actions, actionsApp, navigator, login} = this.props,
             data = Object.assign({}, login.formInfo.toJS(), {device_id: DeviceInfo.getUniqueID()});
 
         if(msg) {

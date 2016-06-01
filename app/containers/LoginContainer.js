@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Login from '../pages/Login';
 import * as actions from '../actions/login';
+import * as actionsApp from '../actions/app';
 
 class LoginContainer extends Component {
     render() {
@@ -23,7 +24,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        actions: bindActionCreators(actions, dispatch),
+        actionsApp: bindActionCreators(actionsApp, dispatch)
     }
 }
 
