@@ -21,6 +21,7 @@ export class SearchHistory extends Component {
                 keyboardShouldPersistTaps={true}
                 renderFooter={this._renderFooter.bind(this)}
                 renderHeader={this._renderHeader}
+                enableEmptySections={true}
             />
         );
     }

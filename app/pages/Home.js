@@ -327,7 +327,7 @@ export class Attention extends Component {
                 </TouchableWithoutFeedback>
 
                 {communitySelect.size == 0 && districtBlockSelect.size == 0 ? null :
-                    <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
+                    <View style={[styles.row, styles.alignItems]}>
                         <View style={styles.bar}></View>
                         <Text style={[styles.flex, styles.heiti_16_header]}>关注的房源</Text>
                     </View>
