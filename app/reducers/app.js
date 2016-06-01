@@ -10,7 +10,12 @@ let initialState = {
         showRecharge: true,
     },
     auth: true,
-    msg: ''
+    msg: '',
+
+    listSearchHistoryKey: '',
+    inputSearchHistoryKey: '',
+    listSearchHistory: [],
+    inputSearchHistory: []
 };
 
 function appData(state = Immutable.fromJS(initialState), action) {
