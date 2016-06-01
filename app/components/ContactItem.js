@@ -15,7 +15,7 @@ export default class ContactItem extends Component {
         let statusStr = ['未反馈', '确认在卖', '反馈虚假', '联系不上', '反馈虚假', '确认不卖', '确认已卖', '按错了'];
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
-                <View>
+                <View style={styles.item}>
                     <HouseItem
                         item={item}
                         dateKey="reply_at"
@@ -25,7 +25,7 @@ export default class ContactItem extends Component {
 
 
                     {item.get('reply_status') == 1 ?
-                        <View style={[styles.item, styles.row, styles.center]}>
+                        <View style={[styles.status, styles.row, styles.center]}>
                             <Text style={styles.bottomMsg}>电话:</Text>
 
                             <TouchableHighlight
@@ -39,7 +39,8 @@ export default class ContactItem extends Component {
 
                             <Text style={styles.bottomMsg}>{'(' + item.get('seller_name') + ')'}</Text>
                         </View>
-                            : null
+                            :
+                        <View style={styles.whiteLine}></View>
                     }
                 </View>
             </TouchableWithoutFeedback>
@@ -72,9 +73,11 @@ const styles = StyleSheet.create({
         flex: 1
     },
     item: {
+        marginBottom: 5
+    },
+    status: {
         padding: 15,
         backgroundColor: '#fff',
-        marginBottom: 5
     },
     bottomMsg: {
         fontSize: 15,
@@ -87,5 +90,10 @@ const styles = StyleSheet.create({
         color: "#04C1AE",
         fontSize: 16,
         marginRight: 10
+    },
+    whiteLine: {
+        height: 1,
+        backgroundColor: '#fff',
+        marginTop: -1
     }
 });

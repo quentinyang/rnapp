@@ -18,6 +18,7 @@ export class SearchHistory extends Component {
                 renderRow={renderRow}
                 initialListSize={10}
                 pageSize={10}
+                keyboardShouldPersistTaps={true}
                 renderFooter={this._renderFooter.bind(this)}
                 renderHeader={this._renderHeader}
             />
@@ -57,7 +58,7 @@ export class SearchHistoryItem extends Component {
                 key={key}
                 onPress={onPress.bind(null, item)}
             >
-                <View style={[styles.item, styles.row, styles.justifyBetween]}>
+                <View style={[styles.item, styles.row, styles.justifyBetween, styles.center]}>
                     <Text style={styles.baseColor}>{item.get('name')}</Text>
                     <Text style={[styles.grayColor, styles.smallFont]}>约{item.get('count')}套在售</Text>
                 </View>
@@ -95,7 +96,8 @@ let styles = StyleSheet.create({
     },
     item: {
         height: 44,
-        padding: 15,
+        paddingLeft: 15,
+        paddingRight: 15,
         borderStyle: 'solid',
         borderBottomWidth: 1/PixelRatio.get(),
         borderBottomColor: '#d9d9d9'

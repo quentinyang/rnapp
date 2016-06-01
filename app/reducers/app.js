@@ -61,7 +61,7 @@ function appData(state = Immutable.fromJS(initialState), action) {
             break;
         case types.ADD_INPUT_SEARCH_HISTORY:
             let tempInputSearchHistory = state.get('inputSearchHistory'), newInputId = action.addItem.id, hasInput = false;
-            tempListSearchHistory.forEach((val) => {
+            tempInputSearchHistory.forEach((val) => {
                 if(val.get('id') == newInputId) {
                     hasInput = true;
                 }
