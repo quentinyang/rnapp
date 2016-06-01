@@ -29,7 +29,7 @@ function withdrawInfo(state = Immutable.fromJS(initialState), action) {
             return state.set('price', '');
             break;
         case types.ALIPAY_FETCHED:
-            if(action.aliInfo.is_binding_alipay == 0 && !action.aliInfo.msg) {
+            if(action.aliInfo.is_binding_alipay == 0 && action.aliInfo.msg) {
                 return state.set('bound_failed', action.aliInfo.msg).set('has_bound', action.aliInfo.is_binding_alipay);
             }
             return state.set('has_bound', action.aliInfo.is_binding_alipay);
