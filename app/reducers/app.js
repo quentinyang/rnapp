@@ -3,6 +3,7 @@
 import { combineReducers } from 'redux';
 import * as types from '../constants/App';
 import Immutable from 'immutable';
+import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 
 let initialState = {
     config: {
