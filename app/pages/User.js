@@ -91,14 +91,14 @@ class CashArea extends Component{
 
   _triggerWithdraw = () => {
       ActionUtil.setAction(actionType.BA_MINE_CASH);
-      let {navigator, score, minPrice} = this.props;
+      let {navigator, score, minPrice, alipayAccount, hasBound} = this.props;
       if(score < minPrice) {
         Alert.alert('', '余额超过' + minPrice + '元才能提现哦', [{text: '知道了'}]);
       } else {
         navigator.push({
             component: WithdrawContainer,
             name: 'withdraw',
-            data: {'score': score, 'min_price': minPrice},
+            data: {'score': score, 'min_price': minPrice, 'alipay_account': alipayAccount, 'is_binding_alipay': hasBound},
             title: '提现',
             hideNavBar: false
         });
@@ -133,7 +133,14 @@ export default class User extends Component {
 
                   <View>
                     <Profile {...profileData} navigator={this.props.navigator} />
-                    <CashArea navigator={this.props.navigator} score={profileData.score} minPrice={profileData.min_withdrawals_money} appConfig={this.props.appConfig}/>
+                    <CashArea
+                      navigator={this.props.navigator}
+                      score={profileData.score}
+                      minPrice={profileData.min_withdrawals_money}
+                      alipayAccount={profileData.alipay_account}
+                      hasBound={profileData.is_binding_alipay}
+                      appConfig={this.props.appConfig}
+                    />
                   </View>
 
                   <ListView
@@ -141,7 +148,7 @@ export default class User extends Component {
                     dataSource={featureSource}
                     renderRow={this._renderRow.bind(this)}
                     scrollEnabled={false}
-                    automaticallyAdjustContentInsets={false} 
+                    automaticallyAdjustContentInsets={false}
                     enableEmptySections={true} />
 
                   <ListView
