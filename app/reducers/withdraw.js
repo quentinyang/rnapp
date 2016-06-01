@@ -6,7 +6,9 @@ import Immutable from 'immutable';
 
 let initialState = {
     price: '',
+    account: '',
     alipay_account: '',
+    name: '',
     has_bound: '',
     bound_failed: '',
     err_msg: ''
@@ -14,6 +16,12 @@ let initialState = {
 
 function withdrawInfo(state = Immutable.fromJS(initialState), action) {
     switch(action.type) {
+        case types.ALIPAY_ACCOUNT_CHANGED:
+            return state.set('alipay_account', action.alipay_account);
+            break;
+        case types.NAME_CHANGED:
+            return state.set('name', action.name);
+            break;
         case types.PRICE_CHANGED:
             return state.set('price', action.price);
             break;
@@ -27,7 +35,7 @@ function withdrawInfo(state = Immutable.fromJS(initialState), action) {
             return state.set('has_bound', action.aliInfo.is_binding_alipay);
             break;
         case types.FROM_USER_FETCHED:
-            return state.set('alipay_account', action.account).set('has_bound', action.has_bound);
+            return state.set('account', action.account).set('has_bound', action.has_bound);
             break;
         case types.MODAL_HIDDEN:
             return state.set('bound_failed', '');

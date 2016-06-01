@@ -92,7 +92,8 @@ class CashArea extends Component{
   _triggerWithdraw = () => {
       ActionUtil.setAction(actionType.BA_MINE_CASH);
       let {navigator, score, minPrice, alipayAccount, hasBound} = this.props;
-      if(score < minPrice) {
+
+      if(parseInt(score) < parseInt(minPrice)) {
         Alert.alert('', '余额超过' + minPrice + '元才能提现哦', [{text: '知道了'}]);
       } else {
         navigator.push({

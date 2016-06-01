@@ -16,18 +16,18 @@ export default class Withdraw extends Component {
             minPrice = parseInt(route.data.min_price),
             score = parseInt(route.data.score);
 
-        let isOpacity = (price >= minPrice && price <= score) && withdrawInfo.get('alipay_account') ? 1 : 0.3;
+        let isOpacity = (price >= minPrice && price <= score) && (withdrawInfo.get('account') || withdrawInfo.get('alipay_account') && withdrawInfo.get('name')) ? 1 : 0.3;
         return (
             <View style={styles.container}>
-                {(withdrawInfo.get('alipay_account') || withdrawInfo.get('has_bound') == 0)?
+                {(withdrawInfo.get('account') || withdrawInfo.get('has_bound') == 0)?
                 <WithLabel
                     label='支付宝'
                     style={styles.bindBox}
-                    placeholder={withdrawInfo.get('alipay_account') || '暂未绑定'}
+                    placeholder={withdrawInfo.get('account') || '暂未绑定'}
                     editable={false}
                     underlineColorAndroid = 'transparent'
                 >
-                    { !withdrawInfo.get('alipay_account') ?
+                    { !withdrawInfo.get('account') ?
                     <TouchableOpacity onPress={() => this.goBinding()}>
                         <View><Text style={{color: '#04c1ae'}}>去绑定></Text></View>
                     </TouchableOpacity> : null }
@@ -40,6 +40,7 @@ export default class Withdraw extends Component {
                         value={withdrawInfo.get('alipay_account')}
                         placeholder='邮箱/手机号'
                         underlineColorAndroid = 'transparent'
+                        onChangeText={(v) => {this.changeAccount(v)}}
                     />
                     <WithLabel
                         label='真实姓名'
@@ -47,6 +48,7 @@ export default class Withdraw extends Component {
                         value={withdrawInfo.get('name')}
                         placeholder='该账号对应的真实姓名'
                         underlineColorAndroid = 'transparent'
+                        onChangeText={(v) => {this.changeName(v)}}
                     />
                 </View>
                 }
@@ -104,7 +106,8 @@ export default class Withdraw extends Component {
                 title: '支付宝快捷收银台',
                 hideNavBar: false,
                 callbackFun: this.callbackFn,
-                url: oData.url
+                url: oData.url,
+                noToken: true
             });
         })
         .catch(() => {
@@ -118,6 +121,16 @@ export default class Withdraw extends Component {
         navigator.pop();
     };
 
+    changeAccount(value) {
+        let {route, actions, withdrawInfo} = this.props;
+        actions.aliAccountChanged(value);
+    }
+
+    changeName(value) {
+        let {route, actions, withdrawInfo} = this.props;
+        actions.nameChanged(value);
+    }
+
     changePrice(value) {
         let {route, actions, withdrawInfo} = this.props;
         actions.priceChanged(value);
@@ -129,19 +142,19 @@ export default class Withdraw extends Component {
     }
 
     handleSubmit = () => {
-        let {navigator, actions, withdrawInfo} = this.props;
-        if(!withdrawInfo.get('alipay_account') && withdrawInfo.get('is_binding_alipay')) {
-            let data = {
+        let {navigator, actions, withdrawInfo} = this.props,
+            data = {};
+        if(!withdrawInfo.get('account') && withdrawInfo.get('has_bound')) {
+            data = {
                 money: withdrawInfo.get('price'),
                 alipay_account: withdrawInfo.get('alipay_account'),
                 name: withdrawInfo.get('name')
             };
         } else {
-            let data = {
+            data = {
                 money: withdrawInfo.get('price')
             };
         }
-
         withdrawService({body: data})
         .then((oData) => {
             Alert.alert('', '申请提现成功\n1个工作日内到账',
