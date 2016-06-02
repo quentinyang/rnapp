@@ -322,7 +322,7 @@ export class Attention extends Component {
                 </TouchableWithoutFeedback>
                 <View style={[styles.row, styles.alignItems]}>
                     {hasAttention ? <View style={styles.bar}></View> : null}
-                    <Text style={[styles.flex, styles.heiti_16_header]}>{hasAttention ? 关注的房源: ''}</Text>
+                    <Text style={[styles.flex, styles.heiti_16_header]}>{hasAttention ? '关注的房源': ''}</Text>
                 </View>
             </View>
         )

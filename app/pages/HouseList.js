@@ -387,7 +387,7 @@ export default class HouseList extends Component {
     };
 
     _renderAutocompleteRow = (item, index) => {
-        return <AutocompleteItem key={index} item={item} onPress={this._autocompleteRowPress.bind(this)}/>;
+        return <AutocompleteItem index={index} item={item} onPress={this._autocompleteRowPress.bind(this)}/>;
     };
 
     _autocompleteRowPress = (item) => {

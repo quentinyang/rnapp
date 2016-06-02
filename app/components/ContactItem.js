@@ -24,7 +24,7 @@ export default class ContactItem extends Component {
                     />
 
 
-                    {item.get('reply_status') == 1 && 0 ?
+                    {item.get('reply_status') == 1 ?
                         <View style={[styles.status, styles.row, styles.center]}>
                             <Text style={styles.bottomMsg}>电话:</Text>
 
