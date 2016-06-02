@@ -152,7 +152,7 @@ export default class Withdraw extends Component {
 
     handleSubmit = () => {
         ActionUtil.setAction(actionType.BA_MINE_CASH_SURE);
-        let {navigator, actions, withdrawInfo} = this.props,
+        let {navigator, actions, actionsUser, withdrawInfo} = this.props,
             data = {};
         if(!withdrawInfo.get('account') && withdrawInfo.get('has_bound')) {
             data = {
@@ -172,14 +172,8 @@ export default class Withdraw extends Component {
                 [{
                     text: '确定',
                     onPress: () => {
-                        navigator.push({
-                            component: TabViewContainer,
-                            from: 'withdrawSuccess',
-                            name: 'user',
-                            title: '我的',
-                            bg: this.pageId,
-                            hideNavBar: true
-                        });
+                        navigator.pop();
+                        actionsUser.fetchUserProfile({});
                         actions.priceCleared();
                     }
                 }]

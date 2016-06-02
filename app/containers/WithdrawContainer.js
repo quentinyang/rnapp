@@ -4,6 +4,7 @@ import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/withdraw';
+import * as actionsUser from '../actions/user';
 import Withdraw from '../pages/Withdraw';
 
 class WithdrawContainer extends Component {
@@ -27,6 +28,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        actionsUser: bindActionCreators(actionsUser, dispatch),
         actions: bindActionCreators(actions, dispatch)
     }
 }
