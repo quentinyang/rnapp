@@ -225,7 +225,8 @@ export default class Home extends Component {
     };
 
     _renderHeader = () => {
-        let {attentionList, navigator, baseInfo} = this.props;
+        let {attentionList, navigator, baseInfo, houseData} = this.props;
+        let houseList = houseData.get('properties');
 
         return (
             <View>
@@ -244,7 +245,7 @@ export default class Home extends Component {
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={[styles.headerLine]}></View>
-                <Attention attentionList={attentionList} navigator={navigator} onAttentionBlockSet={this._onAttentionBlockSet}/>
+                <Attention attentionList={attentionList} hasHouse={houseList.size} navigator={navigator} onAttentionBlockSet={this._onAttentionBlockSet}/>
             </View>
         )
     };
@@ -290,7 +291,7 @@ export class Attention extends Component {
     }
 
     render() {
-        let {attentionList} = this.props;
+        let {attentionList, hasHouse} = this.props;
         let districtBlockSelect = attentionList.get('district_block_select');
         let communitySelect = attentionList.get('community_select');
         let dbArr = districtBlockSelect.size > 0 && (districtBlockSelect.map((v) => {
@@ -301,7 +302,6 @@ export class Attention extends Component {
             return c.get('name')
         })).toJS() || ['去设置小区'];
 
-        let hasAttention = districtBlockSelect.size && communitySelect.size;
         return (
             <View style={styles.attention}>
                 <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
@@ -321,8 +321,8 @@ export class Attention extends Component {
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={[styles.row, styles.alignItems]}>
-                    {hasAttention ? <View style={styles.bar}></View> : null}
-                    <Text style={[styles.flex, styles.heiti_16_header]}>{hasAttention ? '关注的房源': ''}</Text>
+                    {hasHouse ? <View style={styles.bar}></View> : null}
+                    <Text style={[styles.flex, styles.heiti_16_header]}>{hasHouse ? '关注的房源': ''}</Text>
                 </View>
             </View>
         )
