@@ -170,10 +170,10 @@ export default class HouseList extends Component {
         let pager = houseData.get('pager');
         if (!loaded) {
             InteractionManager.runAfterInteractions(() => {
-                // actions.fetchHouseList({
-                //     page: Number(pager.get('current_page')) + 1,
-                //     ...queryParamsData.toJS()
-                // });
+                actions.fetchHouseList({
+                    page: Number(pager.get('current_page')) + 1,
+                    ...queryParamsData.toJS()
+                });
                 actions.fetchHouseFilter();
             });
         }
@@ -199,7 +199,7 @@ export default class HouseList extends Component {
         let {actions, houseData, queryParamsData} = this.props;
         let pager = houseData.get('pager');
 
-        if (Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
+        if (Number(pager.get('current_page')) != 0 && Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
             ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_SLIDEUP);
             InteractionManager.runAfterInteractions(() => {
                 actions.fetchAppendHouseList({
