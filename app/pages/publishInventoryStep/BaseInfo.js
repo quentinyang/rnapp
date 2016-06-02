@@ -24,7 +24,7 @@ export default class BaseInfoPage extends Component {
         ActionUtil.setActionWithExtend(actionType.BA_SENDONE_THREE_ONVIEW, {"bp": this.props.route.bp});
 
         let self = this;
-        let {navigator} = this.props;
+        let {actions, navigator} = this.props;
         this.props.route.callbackFun = () => {
             if(!self.hasValue()) {
                 navigator.pop();
@@ -40,6 +40,7 @@ export default class BaseInfoPage extends Component {
                         text: '确定',
                         onPress: () => {
                             ActionUtil.setAction(actionType.BA_SENDONE_THREE_ENSURE);
+                            actions.hiSearchCleared();
                             navigator.pop();
                         }
                     }

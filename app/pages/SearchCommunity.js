@@ -47,8 +47,6 @@ export default class CommunitySearch extends Component {
                     : null
                 }
             </View>
-
-
         );
     }
 
