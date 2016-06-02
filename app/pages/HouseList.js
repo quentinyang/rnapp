@@ -425,7 +425,7 @@ export default class HouseList extends Component {
 
     _searchHistoryRowPress = (item) => {
         let {actions} = this.props;
-
+        ActionUtil.setAction(actionType.BA_LOOK_HOME_SEARCH_CLICKHISTORY);
         actions.fetchHouseList({
             page: 1,
             community_id: item.get('id'),
@@ -436,7 +436,7 @@ export default class HouseList extends Component {
     };
     _clearSearchHistory = () => {
         let {actionsApp} = this.props;
-
+        ActionUtil.setAction(actionType.BA_LOOK_HOME_SEARCH_EMPTYHISTORY);
         this.setState({
             isShowSearchHistory: false
         });

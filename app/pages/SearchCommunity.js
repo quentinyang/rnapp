@@ -57,14 +57,14 @@ export default class CommunitySearch extends Component {
 
     _searchHistoryRowPress = (community) => {
         let {actionsInput} = this.props;
-
+        ActionUtil.setAction(actionType.BA_LOOK_COM_SEARCH_CLICKHISTORY);
         actionsInput.communityChanged(community.toJS());
         actionsInput.hiSearchCleared();
         this.goBack();
     };
     _clearSearchHistory = () => {
         let {actionsApp} = this.props;
-
+        ActionUtil.setAction(actionType.BA_LOOK_COM_SEARCH_EMPTYHISTORY);
         this.setState({
             isShowSearchHistory: false
         });

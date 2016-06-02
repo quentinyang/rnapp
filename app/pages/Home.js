@@ -268,8 +268,8 @@ export default class Home extends Component {
         return footerView;
     };
 
-    _onAttentionBlockSet = (attentionList) => {
-        ActionUtil.setAction(actionType.BA_HOME_PAGE_SETFOCUS);
+    _onAttentionBlockSet = (attentionList, log) => {
+        ActionUtil.setAction(log);
         let {navigator} = this.props;
 
         navigator.push({
@@ -307,7 +307,7 @@ export class Attention extends Component {
                     <View style={styles.bar}></View>
                     <Text style={[styles.flex, styles.heiti_16_header]}>我的关注</Text>
                 </View>
-                <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
+                <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList, actionType.BA_HOME_PAGE_SETFOCUS)}>
                     <View style={[styles.row, styles.attentionMsg, styles.alignItems]}>
                         {communitySelect.size == 0 && districtBlockSelect.size == 0 ?
                             <View style={[styles.column, styles.flex]}>
@@ -363,7 +363,7 @@ class NoData extends Component {
 
                 {
                     districtBlockSelect.size == 0 && communitySelect.size == 0 ?
-                    <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList)}>
+                    <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList, actionType.onAttentionBlockSet)}>
                         <View style={[styles.noAttentionBtn, styles.alignItems]}>
                             <Text style={styles.noAttentionBtnText}>去设置</Text>
                         </View>
