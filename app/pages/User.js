@@ -42,6 +42,8 @@ class Profile extends Component{
       component: ScoreListContainer,
       name: 'scoreList',
       title: '积分明细',
+      bp: actionType.BA_MINE,
+      backLog: actionType.BA_MINE_POINTS_RETURN,
       hideNavBar: false
     })
   };
@@ -82,6 +84,7 @@ class CashArea extends Component{
             component: RechargeContainer,
             name: 'recharge',
             title: '充值',
+            bp: actionType.BA_MINE,
             hideNavBar: false
         });
       } else {
@@ -101,6 +104,8 @@ class CashArea extends Component{
             name: 'withdraw',
             data: {'score': score, 'min_price': minPrice, 'alipay_account': alipayAccount, 'is_binding_alipay': hasBound},
             title: '提现',
+            bp: actionType.BA_MINE,
+            backLog: actionType.BA_MINE_CASH_RETURN,
             hideNavBar: false
         });
       }

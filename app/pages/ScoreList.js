@@ -21,6 +21,8 @@ let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r
 export default class ScoreList extends Component {
     constructor(props) {
         super(props);
+        this.pageId = actionType.BA_MINE_POINTS;
+        ActionUtil.setActionWithExtend(actionType.BA_MINE_POINTS_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {

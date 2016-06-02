@@ -5,9 +5,14 @@ import TouchWebContainer from "../containers/TouchWebContainer";
 import TabViewContainer from '../containers/TabViewContainer';
 import {withdrawService, alipayLoginService} from '../service/userService';
 
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog'
+
 export default class Withdraw extends Component {
     constructor(props) {
         super(props);
+        this.pageId = actionType.BA_MINE_WITHDRAE;
+        ActionUtil.setActionWithExtend(actionType.BA_MINE_CASH_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -40,6 +45,7 @@ export default class Withdraw extends Component {
                         value={withdrawInfo.get('alipay_account')}
                         placeholder='邮箱/手机号'
                         underlineColorAndroid = 'transparent'
+                        onFocus={() => ActionUtil.setAction(actionType.BA_MINE_CASH_ACCOUNTS)}
                         onChangeText={(v) => {this.changeAccount(v)}}
                     />
                     <WithLabel
@@ -48,6 +54,7 @@ export default class Withdraw extends Component {
                         value={withdrawInfo.get('name')}
                         placeholder='该账号对应的真实姓名'
                         underlineColorAndroid = 'transparent'
+                        onFocus={() => ActionUtil.setAction(actionType.BA_MINE_CASH_NAME)}
                         onChangeText={(v) => {this.changeName(v)}}
                     />
                 </View>
@@ -63,7 +70,7 @@ export default class Withdraw extends Component {
                         keyboardType='numeric'
                         style={styles.cancelLabelPadding}
                         underlineColorAndroid = 'transparent'
-                        onFocus={() => {}}
+                        onFocus={() => ActionUtil.setAction(actionType.BA_MINE_CASH_MONEY)}
                         onChangeText={(v) => {this.changePrice(v)}}
                     />
                     { withdrawInfo.get('err_msg') ?
@@ -98,6 +105,7 @@ export default class Withdraw extends Component {
     }
 
     goBinding() {
+        ActionUtil.setAction(actionType.BA_MINE_CASH_BIND);
         alipayLoginService()
         .then((oData) => {
             this.props.navigator.push({
@@ -107,6 +115,7 @@ export default class Withdraw extends Component {
                 hideNavBar: false,
                 callbackFun: this.callbackFn,
                 url: oData.url,
+                bg: this.pageId,
                 noToken: true
             });
         })
@@ -142,6 +151,7 @@ export default class Withdraw extends Component {
     }
 
     handleSubmit = () => {
+        ActionUtil.setAction(actionType.BA_MINE_CASH_SURE);
         let {navigator, actions, withdrawInfo} = this.props,
             data = {};
         if(!withdrawInfo.get('account') && withdrawInfo.get('has_bound')) {
@@ -157,6 +167,7 @@ export default class Withdraw extends Component {
         }
         withdrawService({body: data})
         .then((oData) => {
+            ActionUtil.setAction(actionType.BA_MINE_CASH_SUCCESS);
             Alert.alert('', '申请提现成功\n1个工作日内到账',
                 [{
                     text: '确定',
@@ -166,6 +177,7 @@ export default class Withdraw extends Component {
                             from: 'withdrawSuccess',
                             name: 'user',
                             title: '我的',
+                            bg: this.pageId,
                             hideNavBar: true
                         });
                         actions.priceCleared();
