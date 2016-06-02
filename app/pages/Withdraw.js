@@ -69,7 +69,7 @@ export default class Withdraw extends Component {
                     { withdrawInfo.get('err_msg') ?
                         <Text style={[styles.mark, styles.colorFFDB]}>{withdrawInfo.get('err_msg')}</Text>
                         :
-                        <Text style={styles.mark}>可提金额：{score}元</Text>
+                        <Text style={styles.mark}>可提金额：{score == minPrice ? score : minPrice + '-' + score}元</Text>
                     }
                 </View>
                 <View style={styles.submitBox}>
