@@ -33,6 +33,7 @@ export default class CommunitySearch extends Component {
                     renderRow={this.renderRow}
                     onChangeText={this.onChangeText}
                     onCancelSearch={this.cancelSearch}
+                    isFocus={false}
                     visibleLog={actionType.BA_LOOK_COM_SEARCH_ONVIEW}
                     bp={actionType.BA_SETFOCUS}
                 />

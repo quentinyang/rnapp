@@ -146,6 +146,7 @@ export default class HouseList extends Component {
                     renderRow={this._renderAutocompleteRow}
                     onChangeText={this._onChangeText}
                     onCancelSearch={this._cancelSearch}
+                    isFocus={false}
                     visibleLog={this.state.homeSearch ? actionType.BA_LOOK_HOME_SEARCH_ONVIEW : actionType.BA_LOOK_LIST_SEARCH_ONVIEW}
                     bp={this.state.homeSearch ? actionType.BA_HOME_PAGE : actionType.BA_ALLHOUSE_LIST}
                 />

@@ -24,7 +24,7 @@ export default class Autocomplete extends Component {
     }
 
     render() {
-        let {results, renderRow} = this.props;
+        let {results, renderRow, isFocus} = this.props;
         let items = results.valueSeq().map((item, index) => {
             return renderRow(item, index);
         });
@@ -43,7 +43,7 @@ export default class Autocomplete extends Component {
                                 placeholder={this.props.placeholder}
                                 placeholderTextColor='#8d8c92'
                                 defaultValue={this.props.keyword}
-                                autoFocus={true}
+                                autoFocus={isFocus == undefined ? true : isFocus}
                                 onChangeText={this.props.onChangeText}
                                 underlineColorAndroid="transparent"
                             />

@@ -24,7 +24,7 @@ export default class ContactItem extends Component {
                     />
 
 
-                    {item.get('reply_status') == 1 ?
+                    {item.get('reply_status') == 1 && 0 ?
                         <View style={[styles.status, styles.row, styles.center]}>
                             <Text style={styles.bottomMsg}>电话:</Text>
 
@@ -40,7 +40,9 @@ export default class ContactItem extends Component {
                             <Text style={styles.bottomMsg}>{'(' + item.get('seller_name') + ')'}</Text>
                         </View>
                             :
-                        <View style={styles.whiteLine}></View>
+                        <View style={[styles.status, styles.row, styles.center]}>
+                            <Text style={styles.bottomMsg}>{item.get('unlock_phone_cost')}积分已返还</Text>
+                        </View>
                     }
                 </View>
             </TouchableWithoutFeedback>
@@ -90,10 +92,5 @@ const styles = StyleSheet.create({
         color: "#04C1AE",
         fontSize: 16,
         marginRight: 10
-    },
-    whiteLine: {
-        height: 1,
-        backgroundColor: '#fff',
-        marginTop: -1
     }
 });

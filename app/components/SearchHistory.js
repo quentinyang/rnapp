@@ -61,7 +61,7 @@ export class SearchHistoryItem extends Component {
             >
                 <View style={[styles.item, styles.row, styles.justifyBetween, styles.center]}>
                     <Text style={styles.baseColor}>{item.get('name')}</Text>
-                    <Text style={[styles.grayColor, styles.smallFont]}>约{item.get('count')}套在售</Text>
+                    {/*<Text style={[styles.grayColor, styles.smallFont]}>约{item.get('count')}套在售</Text>*/}
                 </View>
             </TouchableWithoutFeedback>
         );
