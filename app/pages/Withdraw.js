@@ -60,6 +60,7 @@ export default class Withdraw extends Component {
                         value={withdrawInfo.get('price')}
                         inputStyle={styles.inputFont}
                         maxLength={6}
+                        keyboardType='numeric'
                         style={styles.cancelLabelPadding}
                         underlineColorAndroid = 'transparent'
                         onFocus={() => {}}
@@ -78,7 +79,6 @@ export default class Withdraw extends Component {
                         submitText='提现'
                     />
                 </View>
-                <BindFailedModal msg={withdrawInfo.get('bound_failed')} actions={this.props.actions} />
             </View>
         );
     }
@@ -103,7 +103,7 @@ export default class Withdraw extends Component {
             this.props.navigator.push({
                 component: TouchWebContainer,
                 name: 'shouquan',
-                title: '支付宝快捷收银台',
+                title: '支付宝快捷登录',
                 hideNavBar: false,
                 callbackFun: this.callbackFn,
                 url: oData.url,
@@ -235,13 +235,13 @@ const styles = StyleSheet.create({
         width: 100
     },
     inputFont: {
-        fontSize: 35,
-        height: 35,
-        marginVertical: 5
+        justifyContent: 'center',
+        fontSize: 26
     },
     mark: {
+        justifyContent: 'center',
         marginTop: 10,
-        height: 16,
+        height: 20,
         fontSize: 15,
         color: '#8d8c92'
     },
@@ -250,27 +250,5 @@ const styles = StyleSheet.create({
     },
     submitBox: {
         padding: 20
-    },
-    bindFailedBg: {
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: "center",
-        backgroundColor: "rgba(0, 0, 0, 0.5)"
-    },
-    bindFailedBox: {
-        alignItems: 'center',
-        justifyContent: "center",
-        width: 250,
-        height: 160,
-        backgroundColor: '#fff',
-        borderRadius: 10
-    },
-    sureButton: {
-        justifyContent: "center",
-        width: 190,
-        height: 30,
-        backgroundColor: '#04c1ae',
-        borderRadius: 5
     }
 });
