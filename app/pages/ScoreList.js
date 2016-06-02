@@ -71,8 +71,8 @@ export default class ScoreList extends Component {
     renderHeader() {
         return (
             <View style={styles.totalBox}>
-                <Text style={styles.totalTitle}>账户余额：</Text>
-                <Text style={styles.totalPrice}>¥{this.props.money}</Text>
+                <Text style={styles.totalTitle}>积分：</Text>
+                <Text style={styles.totalPrice}>{this.props.money}<Text style={{fontSize: 16}}> (个)</Text></Text>
             </View>
         );
     }
@@ -89,7 +89,7 @@ export default class ScoreList extends Component {
             <Text style={styles.noMore}>
                 {Number(pager.get('current_page')) != Number(pager.get('last_page'))?
                     '加载中...':
-                    '没有更多了...'
+                    ''
                 }
             </Text>
         );
@@ -106,7 +106,7 @@ class ScoreItem extends Component {
                     <Text style={styles.scoreTime}>{item.get('time')}</Text>
                 </View>
                 <View style={styles.scoreRight}>
-                    <Text style={styles.scorePrice}>{item.get('money_change')}{item.get('money')}</Text>
+                    <Text style={styles.scorePrice}>{item.get('money_change')}{parseInt(item.get('money'))}</Text>
                 </View>
             </View>
         );

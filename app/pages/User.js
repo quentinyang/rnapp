@@ -29,8 +29,8 @@ class Profile extends Component{
           <Image style={[styles.profileImage]} source={portrait}/>
           <Text style={[styles.profileText]}>{mobileNum}</Text>
           <Text style={[styles.profileText]}>
-            <Text>账户余额：</Text>
-            <Text>¥{this.props.score || 0}</Text>
+            <Text>积分：</Text>
+            <Text>{this.props.score || 0}</Text>
             <Text style={styles.viewScore} onPress={this.goScoreList}> 查看</Text>
           </Text>
         </View>
