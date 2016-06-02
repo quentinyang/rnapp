@@ -301,6 +301,7 @@ export class Attention extends Component {
             return c.get('name')
         })).toJS() || ['去设置小区'];
 
+        let hasAttention = districtBlockSelect.size && communitySelect.size;
         return (
             <View style={styles.attention}>
                 <View style={[styles.row, styles.alignItems, styles.headerMarginBottom]}>
@@ -309,29 +310,20 @@ export class Attention extends Component {
                 </View>
                 <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList, actionType.BA_HOME_PAGE_SETFOCUS)}>
                     <View style={[styles.row, styles.attentionMsg, styles.alignItems]}>
-                        {communitySelect.size == 0 && districtBlockSelect.size == 0 ?
-                            <View style={[styles.column, styles.flex]}>
-                                <Text style={[styles.heiti_15_content]} numberOfLines={1}>设置关注的区域</Text>
-                            </View>
-                            :
-                            <View style={[styles.column, styles.flex]}>
-                                <Text style={[styles.heiti_15_content]} numberOfLines={1}>板块：{dbArr.join('、')}</Text>
-                                <Text style={[styles.heiti_15_content]} numberOfLines={1}>小区：{commArr.join('、')}</Text>
-                            </View>
-                        }
+                        <View style={[styles.column, styles.flex]}>
+                            <Text style={[styles.heiti_15_content]} numberOfLines={1}>板块：{dbArr.join('、')}</Text>
+                            <Text style={[styles.heiti_15_content]} numberOfLines={1}>小区：{commArr.join('、')}</Text>
+                        </View>
                         <Image
                             source={require('../images/next.png')}
                             style={styles.nextImage}
                         />
                     </View>
                 </TouchableWithoutFeedback>
-
-                {communitySelect.size == 0 && districtBlockSelect.size == 0 ? null :
-                    <View style={[styles.row, styles.alignItems]}>
-                        <View style={styles.bar}></View>
-                        <Text style={[styles.flex, styles.heiti_16_header]}>关注的房源</Text>
-                    </View>
-                }
+                <View style={[styles.row, styles.alignItems]}>
+                    {hasAttention ? <View style={styles.bar}></View> : null}
+                    <Text style={[styles.flex, styles.heiti_16_header]}>{hasAttention ? 关注的房源: ''}</Text>
+                </View>
             </View>
         )
     }
@@ -449,7 +441,9 @@ const styles = StyleSheet.create({
         borderTopWidth: 1/PixelRatio.get()
     },
     attentionMsg: {
-        padding: 15,
+        height: 70,
+        paddingLeft: 15,
+        paddingRight: 15,
         backgroundColor: '#f8f8f8',
         borderWidth: 1/PixelRatio.get(),
         borderColor: '#d9d9d9',
