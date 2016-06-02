@@ -30,8 +30,8 @@ export default class Detail extends Component {
         let {baseInfo, sameCommunityList, callInfo, actions, navigator, route} = this.props;
         let houseList = sameCommunityList.get('properties');
         let info = baseInfo.get("baseInfo");
-        let status = Number(route.item.get('phone_lock_status'));
-        let phoneStr = "联系房东" + (status ? ("(" + route.item.get('seller_phone') + ")") : (callInfo.get('sellerPhone') ? ("(" + callInfo.get('sellerPhone') + ")") : ''));
+        let status = Number(info.get('phone_lock_status'));
+        let phoneStr = "联系房东" + (status ? ("(" + info.get('seller_phone') + ")") : (callInfo.get('sellerPhone') ? ("(" + callInfo.get('sellerPhone') + ")") : ''));
 
 
         return (
