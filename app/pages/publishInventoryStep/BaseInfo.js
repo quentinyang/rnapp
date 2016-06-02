@@ -4,6 +4,7 @@ import {
     React, Component,
     View, Text, Image, StyleSheet,
     PixelRatio,
+    InteractionManager,
     TouchableHighlight, Alert, Dimensions
 } from 'nuke';
 
@@ -21,11 +22,11 @@ import * as actionType from '../../constants/ActionLog'
 export default class BaseInfoPage extends Component {
     constructor(props) {
         super(props);
-        ActionUtil.setActionWithExtend(actionType.BA_SENDONE_THREE_ONVIEW, {"bp": this.props.route.bp});
+        let {route, actions, navigator} = this.props;
+        ActionUtil.setActionWithExtend(actionType.BA_SENDONE_THREE_ONVIEW, {"bp": route.bp});
 
         let self = this;
-        let {actions, navigator} = this.props;
-        this.props.route.callbackFun = () => {
+        route.callbackFun = () => {
             if(!self.hasValue()) {
                 navigator.pop();
             } else {
@@ -135,6 +136,16 @@ export default class BaseInfoPage extends Component {
                 </View>
             </View>
         );
+    }
+
+    componentDidMount() {
+        let {route, actionsApp} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            if(route.clearForbidden) {
+                actionsApp.clickTabChanged(true);
+            }
+        });
+
     }
 
     singleAction(action, value) {

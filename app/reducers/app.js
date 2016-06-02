@@ -101,6 +101,20 @@ function appData(state = Immutable.fromJS(initialState), action) {
     }
 }
 
+let initialClickStatus = {
+    chouldTapClick: true
+};
+
+function clickStatus(state = Immutable.fromJS(initialClickStatus), action) {
+    switch(action.type) {
+        case types.FORBIDDEN_TAB_CHANGED:
+            return state.set('chouldTapClick', action.status);
+            break;
+        default:
+            return state;
+    }
+}
+
 let initialConfig = {
     showRecharge: true,
 };
@@ -117,5 +131,6 @@ function appConfig(state = Immutable.fromJS(initialConfig), action) {
 
 export default combineReducers({
     appData,
-    appConfig
+    appConfig,
+    clickStatus
 });

@@ -19,6 +19,8 @@ export const addInputSearchHistory = makeActionCreator(types.ADD_INPUT_SEARCH_HI
 export const clearListSearchHistory = makeActionCreator(types.CLEAR_LIST_SEARCH_HISTORY);
 export const clearInputSearchHistory = makeActionCreator(types.CLEAR_INPUT_SEARCH_HISTORY);
 
+export const clickTabChanged = makeActionCreator(types.FORBIDDEN_TAB_CHANGED, 'status');
+
 export function clickBack(name) {
     return dispatch => {
         dispatch(clickBackPage(name));

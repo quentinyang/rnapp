@@ -12,16 +12,14 @@ import * as actionType from '../constants/ActionLog'
 export default class TabView extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             tabIndex: 0
         };
-
         this._renderScene = this._renderScene.bind(this);
     }
 
     render() {
-        let {actionsUser, route, navigator} = this.props;
+        let {actionsUser, actionsApp, route, navigator, clickStatus} = this.props;
         return (
             <View style={styles.container}>
                 <TabBar
@@ -40,6 +38,8 @@ export default class TabView extends Component {
                                         key={val.key}
                                         onPress={() => {
                                             if(val.key == 1) {
+                                                if(!clickStatus.get('chouldTapClick')) return;
+                                                actionsApp.clickTabChanged(false);
                                                 allowToInputService()
                                                 .then((data) => {
                                                     if(data.is_can_input) {
@@ -50,6 +50,7 @@ export default class TabView extends Component {
                                                             right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false, backLog: actionType.BA_SENDRULE_RETURN}},
                                                             backLog: actionType.BA_SENDONE_THREE_RETURN,
                                                             callbackFun: () => {},
+                                                            clearForbidden: true,
                                                             hideNavBar: false
                                                         });
                                                     } else {
