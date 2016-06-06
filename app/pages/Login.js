@@ -11,6 +11,7 @@ import {
     ScrollView
 } from 'nuke';
 
+import ReactNative from 'react-native';
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import Countdown from '../components/Countdown'
 import {loginService, sendCodeService} from '../service/userService';
@@ -24,7 +25,7 @@ import * as common from '../constants/Common';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
-class Login extends React.Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.pageId = actionType.BA_LOGIN;
@@ -109,7 +110,7 @@ class Login extends React.Component {
             let scrollResponder = this.refs.formContainer.refs.scrollView.getScrollResponder();
 
             scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-              React.findNodeHandle(this.refs[refName]),
+              ReactNative.findNodeHandle(this.refs[refName]),
               120, //additionalOffset
               true
             );
@@ -221,7 +222,7 @@ class Login extends React.Component {
     handleSubmit = (e) => {
         ActionUtil.setAction(actionType.BA_LOGIN_ENSURE);
         let msg = this.checkForm(),
-            {actions, navigator, login} = this.props,
+            {actions, actionsApp, navigator, login} = this.props,
             data = Object.assign({}, login.formInfo.toJS(), {device_id: DeviceInfo.getUniqueID()});
 
         if(msg) {
@@ -233,6 +234,9 @@ class Login extends React.Component {
                 AsyncStorageComponent.save(common.USER_PHONE, data.phone);
                 AsyncStorageComponent.save(common.USER_ID, oData.user_id || "");
                 ActionUtil.setUid(oData.user_id || "");
+
+                actionsApp.setSearchHistory(oData.user_id || "0");
+
                 gtoken = oData.token;
                 if(oData.is_enter_attention_page) {
                     navigator.resetTo({

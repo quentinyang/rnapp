@@ -3,7 +3,7 @@
 // let HOST = 'http://360.master.stage.angejia.com/service/';
 // let HOST = 'http://360.master.dev.angejia.com/service/';
 let HOST = 'https://api.fangyuan360.cn/service/';
-//let HOST = 'http://360.feature-bureau-20160520.test.angejia.com/service/';
+//let HOST = 'http://360.feature-bureau-alipay.dev.angejia.com/service/';
 
 let urls = {
     detail: {
@@ -12,13 +12,16 @@ let urls = {
         call: HOST + 'wash/call',
         feedback: HOST + 'wash/status',
         contactLog: HOST + 'property/contact/log'
-        //contactLog: 'http://localhost:8081/app/fakedata/contact_log.json'
     },
     user: {
         sendCode: HOST + 'passport/login/sms',
         login: HOST + 'passport/login',
         profile: HOST + 'user/profile',
         isFirst: HOST + 'point/notify',
+        alipayStatus: HOST + 'user/binding/alipay/status',
+        withdraw: HOST + 'withdrawals',
+        scoreList: HOST + 'my/account/flow',
+        alipayLogin: HOST + 'alipay/quick/login/url'
     },
     house: {
         list: HOST + 'property-list',

@@ -1,6 +1,7 @@
 'use strict';
 
-import React, {AsyncStorage} from 'react-native';
+import {React} from 'nuke';
+import {AsyncStorage} from 'react-native';
 
 var deviceStorage = {
     get: function(key) {

@@ -4,6 +4,7 @@ import {
     React, Component,
     View, Text, Image, StyleSheet,
     PixelRatio,
+    InteractionManager,
     TouchableHighlight, Alert, Dimensions
 } from 'nuke';
 
@@ -13,19 +14,19 @@ import Attached from '../../components/Attached';
 import PublishTitle from '../../components/PublishTitle';
 import ErrorMsg from '../../components/ErrorMsg';
 import TouchableSubmit from '../../components/TouchableSubmit';
-import CommunitySearch from '../../components/SearchComponent';
 import PublishSecondStepContainer from '../../containers/PublishSecondStepContainer';
+import SearchCommunityContainer from '../../containers/SearchCommunityContainer';
 let ActionUtil = require( '../../utils/ActionLog');
 import * as actionType from '../../constants/ActionLog'
 
 export default class BaseInfoPage extends Component {
     constructor(props) {
         super(props);
-        ActionUtil.setActionWithExtend(actionType.BA_SENDONE_THREE_ONVIEW, {"bp": this.props.route.bp});
+        let {route, actions, navigator} = this.props;
+        ActionUtil.setActionWithExtend(actionType.BA_SENDONE_THREE_ONVIEW, {"bp": route.bp});
 
         let self = this;
-        let {navigator} = this.props;
-        this.props.route.callbackFun = () => {
+        route.callbackFun = () => {
             if(!self.hasValue()) {
                 navigator.pop();
             } else {
@@ -40,6 +41,7 @@ export default class BaseInfoPage extends Component {
                         text: '确定',
                         onPress: () => {
                             ActionUtil.setAction(actionType.BA_SENDONE_THREE_ENSURE);
+                            actions.hiSearchCleared();
                             navigator.pop();
                         }
                     }
@@ -58,22 +60,12 @@ export default class BaseInfoPage extends Component {
     }
 
     render() {
-        let {houseForm, controller, communityData} = this.props.houseInput;
+        let {navigator} = this.props;
+        let {houseForm, controller} = this.props.houseInput;
         let isOpacity = !!(houseForm.get('community_name') && (controller.get('single')? true: houseForm.get('building_num')) && (controller.get('villa')?true:houseForm.get('door_num')));
 
         return (
             <View style={styles.container}>
-            {controller.get('search') ?
-                <View style={styles.colorWhite}>
-                <CommunitySearch
-                    placeholder='请输入小区名'
-                    keyword={communityData.get('keyword')}
-                    results = {communityData.get('results')}
-                    actions = {this.props.actions}
-                    onPress = {this.singleAction.bind(this)}
-                />
-                </View>
-                :
                 <View>
                     <PublishTitle><Text style={styles.colorFFDB}>3</Text>步立即发布房源</PublishTitle>
                     <View style={styles.colorWhite}>
@@ -83,7 +75,17 @@ export default class BaseInfoPage extends Component {
                             specialText1={houseForm.get('community_name')}
                             specialText2={houseForm.get('address')}
                             arrow={true}
-                            onClick={() => {ActionUtil.setAction(actionType.BA_SENDONE_THREE_COM); this.singleAction('searchChanged', true)}}
+                            onClick={() => {
+                                ActionUtil.setAction(actionType.BA_SENDONE_THREE_COM);
+                                navigator.push({
+                                    component: SearchCommunityContainer,
+                                    name: 'SearchCommunity',
+                                    title: '',
+                                    hideNavBar: true,
+                                    backLog: '',
+                                    bp: ''
+                                });
+                            }}
                         />
                         <WithLabel
                             label='楼栋'
@@ -132,9 +134,18 @@ export default class BaseInfoPage extends Component {
                         />
                     </View>
                 </View>
-            }
             </View>
         );
+    }
+
+    componentDidMount() {
+        let {route, actionsApp} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            if(route.clearForbidden) {
+                actionsApp.clickTabChanged(true);
+            }
+        });
+
     }
 
     singleAction(action, value) {

@@ -10,7 +10,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 /**
- * Created by angejia on 16/5/18.
+ * Created at 16/5/18.
  */
 public class CallModule extends ReactContextBaseJavaModule{
     ReactApplicationContext reactContext;

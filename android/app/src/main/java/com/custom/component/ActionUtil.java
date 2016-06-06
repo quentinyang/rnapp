@@ -16,7 +16,7 @@ import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import java.util.Iterator;
 
 /**
- * Created by angejia on 16/4/12.
+ * Created at 16/4/12.
  */
 public class ActionUtil extends ReactContextBaseJavaModule {
     static Usage usageObj = new Usage();

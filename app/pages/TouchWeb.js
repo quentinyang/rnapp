@@ -5,13 +5,14 @@ import {React, Component, View, StyleSheet, WebView} from 'nuke';
 export default class TouchWeb extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {};
     }
     render() {
-      var WEBVIEW_REF = 'webview';
+      var WEBVIEW_REF = 'webview',
+          route = this.props.route;
 
-      var url =  this.props.route.url + '?token=' + encodeURIComponent(gtoken)
+      var url =  route.noToken ? route.url : route.url + '?token=' + encodeURIComponent(gtoken)
       console.log('[WebView]', url);
       return (
             <View style={styles.layout}>

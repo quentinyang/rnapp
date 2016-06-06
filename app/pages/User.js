@@ -10,7 +10,9 @@ import ContactHouseContainer from '../containers/ContactHouseContainer'
 import InputHouseContainer from '../containers/InputHouseContainer'
 import LoginContainer from '../containers/LoginContainer'
 import RechargeContainer from '../containers/RechargeContainer'
+import WithdrawContainer from '../containers/WithdrawContainer'
 import SettingContainer from '../containers/SettingContainer'
+import ScoreListContainer from '../containers/ScoreListContainer'
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -29,10 +31,22 @@ class Profile extends Component{
           <Text style={[styles.profileText]}>
             <Text>积分：</Text>
             <Text>{this.props.score || 0}</Text>
+            <Text style={styles.viewScore} onPress={this.goScoreList}> 查看</Text>
           </Text>
         </View>
     );
   }
+
+  goScoreList = () => {
+    this.props.navigator.push({
+      component: ScoreListContainer,
+      name: 'scoreList',
+      title: '积分明细',
+      bp: actionType.BA_MINE,
+      backLog: actionType.BA_MINE_POINTS_RETURN,
+      hideNavBar: false
+    })
+  };
 
   _formatMobileNumber(number) {
     return number.slice(0, 3) + '****' + number.slice(-4);
@@ -70,6 +84,7 @@ class CashArea extends Component{
             component: RechargeContainer,
             name: 'recharge',
             title: '充值',
+            bp: actionType.BA_MINE,
             hideNavBar: false
         });
       } else {
@@ -79,15 +94,21 @@ class CashArea extends Component{
 
   _triggerWithdraw = () => {
       ActionUtil.setAction(actionType.BA_MINE_CASH);
-        let {navigator} = this.props;
+      let {navigator, score, minPrice, alipayAccount, hasBound} = this.props;
 
+      if(parseInt(score) < parseInt(minPrice)) {
+        Alert.alert('', '余额超过' + minPrice + '元才能提现哦', [{text: '知道了'}]);
+      } else {
         navigator.push({
-            component: TouchWebContainer,
-            name: 'withdrawal',
+            component: WithdrawContainer,
+            name: 'withdraw',
+            data: {'score': score, 'min_price': minPrice, 'alipay_account': alipayAccount, 'is_binding_alipay': hasBound},
             title: '提现',
-            hideNavBar: false,
-            url: 'https://api.fangyuan360.cn/my/withdrawals/'
+            bp: actionType.BA_MINE,
+            backLog: actionType.BA_MINE_CASH_RETURN,
+            hideNavBar: false
         });
+      }
   };
 }
 
@@ -117,8 +138,15 @@ export default class User extends Component {
               <ScrollView automaticallyAdjustContentInsets={false}>
 
                   <View>
-                    <Profile {...profileData}/>
-                    <CashArea navigator={this.props.navigator} appConfig={this.props.appConfig}/>
+                    <Profile {...profileData} navigator={this.props.navigator} />
+                    <CashArea
+                      navigator={this.props.navigator}
+                      score={profileData.score}
+                      minPrice={profileData.min_withdrawals_money}
+                      alipayAccount={profileData.alipay_account}
+                      hasBound={profileData.is_binding_alipay}
+                      appConfig={this.props.appConfig}
+                    />
                   </View>
 
                   <ListView
@@ -126,14 +154,16 @@ export default class User extends Component {
                     dataSource={featureSource}
                     renderRow={this._renderRow.bind(this)}
                     scrollEnabled={false}
-                    automaticallyAdjustContentInsets={false} />
+                    automaticallyAdjustContentInsets={false}
+                    enableEmptySections={true} />
 
                   <ListView
                     style={[styles.listContainer, styles.settingContainer]}
                     dataSource={settingSource}
                     renderRow={this._renderRow.bind(this)}
                     scrollEnabled={false}
-                    automaticallyAdjustContentInsets={false} />
+                    automaticallyAdjustContentInsets={false}
+                    enableEmptySections={true} />
               </ScrollView>
             </View>
         )
@@ -208,6 +238,9 @@ const styles = StyleSheet.create({
       fontSize: 16,
       lineHeight: 24,
       color: '#3E3E3E',
+    },
+    viewScore: {
+      color: '#04c1ae'
     },
     // cash area
     cashContainer: {

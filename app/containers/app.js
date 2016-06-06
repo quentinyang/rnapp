@@ -13,11 +13,7 @@ var GeTui = require('react-native').NativeModules.GeTui;
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
-var {
-  NativeAppEventEmitter
-} = React;
-
-var { DeviceEventEmitter } = require('react-native');
+import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 
 let _navigator;
 global.gtoken = '';
@@ -27,6 +23,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         var self = this;
+        let {actionsApp} = this.props;
         this.state = {
             component: null,
             name: '',
@@ -46,7 +43,10 @@ class App extends Component {
                         gtoken = value[i][1];
                         break;
                     case common.USER_ID:
-                        ActionUtil.setUid(value[i][1]);
+                        if(value[i][1]) {
+                            actionsApp.setSearchHistory(value[i][1] || "0");
+                            ActionUtil.setUid(value[i][1]);
+                        }
                         break;
                 }
             }

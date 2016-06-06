@@ -63,7 +63,6 @@ function houseForm(state = initInput, action) {
 }
 
 let controlData = Immutable.fromJS({
-    'search': false,
     'single': false, // 独栋
     'no_unit': true, //单元
     'villa': false, // 别墅
@@ -72,8 +71,6 @@ let controlData = Immutable.fromJS({
 
 export function controller(state = controlData, action) {
     switch(action.type) {
-        case types.SEARCH_CHANGED:
-            return state.set('search', action.search);
         case types.SINGLE_CHANGED:
             return state.set('single', action.single).set('villa', false);
         case types.NO_UNIT_CHANGED:

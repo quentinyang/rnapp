@@ -70,7 +70,7 @@ export default class MoreInfoPage extends Component {
                         inputStyle={styles.alignCenter}
                         underlineColorAndroid = 'transparent'
                         keyboardType='numeric'
-                        maxLength={2}
+                        maxLength={1}
                         value={houseForm.get('bedrooms')}
                         onBlur={() => ActionUtil.setAction(actionType.BA_SENDTWO_THREE_LAYOUT)}
                         onChangeText={(v) => {this.singleAction('bedroomsChanged', v)}}
