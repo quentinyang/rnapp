@@ -261,7 +261,7 @@ export default class Home extends Component {
                     </View>
         } else if(Number(pager.get('current_page')) != Number(pager.get('last_page')) && Number(pager.get('total')) != 0) {
             footerView = <View style={styles.listFooter}>
-                        <ActivityIndicator color={'#d43d3d'} styleAttr="Small"/>
+                        <ActivityIndicator color={'#ccc'} styleAttr="Small"/>
                     </View>
         } else {
             footerView = <NoData attentionList={attentionList} navigator={navigator} onAttentionBlockSet={this._onAttentionBlockSet}/>

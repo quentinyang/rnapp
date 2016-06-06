@@ -47,10 +47,10 @@ export default class ContactHouse extends Component {
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}
                                 onRefresh={this._onRefresh}
-                                tintColor='#04c1ae'
+                                tintColor='#ccc'
                                 title='松开刷新'
                                 colors={['#fff']}
-                                progressBackgroundColor='#04c1ae'
+                                progressBackgroundColor='#ccc'
                             />
                         }
                         />
