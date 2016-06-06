@@ -92,13 +92,11 @@ const styles = StyleSheet.create({
     headerText: {
         fontSize: 16,
         color: '#3e3e3e',
-        fontWeight: 'bold',
-        fontFamily: 'Heiti SC'
+        fontWeight: 'bold'
     },
     contentText: {
         fontSize: 15,
-        color: '#3e3e3e',
-        fontFamily: 'Heiti SC'
+        color: '#3e3e3e'
     },
     deleteImage: {
         width: 20,

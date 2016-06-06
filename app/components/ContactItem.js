@@ -82,8 +82,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     bottomMsg: {
-        fontSize: 15,
-        fontFamily: 'Helvetica Neue'
+        fontSize: 15
     },
     center: {
         alignItems: 'center',

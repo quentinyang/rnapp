@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
     },
     commonText: {
         fontSize: 15,
-        fontFamily: 'Heiti SC',
         color: '#8d8c92'
     },
     paddingRight: {

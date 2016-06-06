@@ -127,12 +127,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     topHeader: {
-        fontFamily: 'Heiti SC',
         fontSize: 23,
         color: '#3e3e3e'
     },
     topSubHeader: {
-        fontFamily: 'Heiti SC',
         fontSize: 15,
         color: '#8d8c92'
     },

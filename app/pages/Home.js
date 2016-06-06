@@ -118,10 +118,10 @@ export default class Home extends Component {
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
                             onRefresh={this._onRefresh}
-                            tintColor='#04c1ae'
+                            tintColor='#ccc'
                             title='松开刷新'
                             colors={['#fff']}
-                            progressBackgroundColor='#04c1ae'
+                            progressBackgroundColor='#ccc'
                         />
                     }
                 />
@@ -464,14 +464,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     heiti_15_content: {
-        fontFamily: 'Heiti SC',
         fontSize: 15,
         color: '#3e3e3e',
         marginTop: 4,
         marginBottom: 3
     },
     heiti_16_header: {
-        fontFamily: 'Heiti SC',
         fontSize: 16,
         color: '#3e3e3e',
         fontWeight: '500'

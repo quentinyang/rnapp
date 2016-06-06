@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
     noHouseListMsg: {
         fontSize: 15,
         color: '#8d8c92',
-        fontFamily: 'Heiti SC',
         paddingTop: 50
     },
     center: {

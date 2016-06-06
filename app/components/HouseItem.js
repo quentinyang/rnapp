@@ -84,7 +84,6 @@ const styles = StyleSheet.create({
         color: '#3e3e3e',
         fontSize: 16,
         fontWeight: '500',
-        fontFamily: 'Heiti SC',
         backgroundColor: 'transparent'
     },
     headerPadding: {
@@ -113,8 +112,7 @@ const styles = StyleSheet.create({
     },
     bedrooms: {
         fontSize: 15,
-        color: '#3e3e3e',
-        fontFamily: 'Helvetica Neue'
+        color: '#3e3e3e'
     },
     bedroomsPadding: {
         paddingRight: 10
@@ -129,8 +127,7 @@ const styles = StyleSheet.create({
     },
     bottomMsg: {
         fontSize: 12,
-        color: '#9f9ea3',
-        fontFamily: 'Helvetica Neue'
+        color: '#9f9ea3'
     },
     center: {
         alignItems: 'center',
