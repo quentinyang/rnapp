@@ -212,7 +212,8 @@ const styles = StyleSheet.create({
         height: 21
     },
     submitButton: {
-        margin: 20
+        margin: 20,
+        marginTop: 45
     },
     submitBox: {
         alignItems: 'center',

@@ -255,6 +255,7 @@ const styles = StyleSheet.create({
         color: '#ff6d4b'
     },
     submitBox: {
+        marginTop: 15,
         padding: 20
     }
 });

@@ -11,7 +11,6 @@ export default class HouseItem extends Component {
     render() {
         let {item, dateKey, operator} = this.props;
         let date = formatDate(dateKey ? item.get(dateKey) : item.get('updated_at'));
-
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
@@ -27,7 +26,7 @@ export default class HouseItem extends Component {
                     <View style={[styles.row, styles.center]}>
                         <View style={[styles.row, styles.flex, styles.center]}>
 
-                            <Text style={[styles.headerMsg, styles.headerPadding, styles.flex, item.get('is_click') ? styles.gray : {}]} numberOfLines={1}>{item.get('community_name')}  {item.get('building_num') + item.get('building_unit') + item.get('door_num')}</Text>
+                            <Text style={[styles.headerMsg, styles.headerPadding, styles.flex, item.get('is_click') ? styles.gray : {}]} numberOfLines={1}>{item.get('community_name')}  {item.get('building_num') + (item.get('building_num') && item.get('building_unit')) + item.get('door_num') + (item.get('door_num') && '室')}</Text>
 
                             {
                                 item.get('is_new') ? <Text style={[styles.tagNew]}>新</Text> : null
