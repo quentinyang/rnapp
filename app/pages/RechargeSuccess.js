@@ -59,14 +59,15 @@ const styles = StyleSheet.create({
     },
     promptTitle: {
         marginTop: 30,
-        marginBottom: 55,
+        marginBottom: 50,
         fontSize: 19
     },
     redColor: {
-        color: '#ff6d4b'
+        color: '#ff6d4b',
+        fontSize: 19
     },
     continueButton: {
-        marginBottom: 15,
+        marginBottom: 120,
         width: 250,
         height: 40,
         backgroundColor: '#04c1ae',
