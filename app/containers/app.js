@@ -85,7 +85,7 @@ class App extends Component {
         let isAndroid = (Platform.OS == "android");
 
         return (
-            <View style={[styles.flex, styles.font]}>
+            <View style={styles.flex}>
                 <Modal visible={this.state.showModal} transparent={true}>
                     <View style={styles.bgWrap}>
                         <View style={styles.contentContainer}>
@@ -408,10 +408,6 @@ class App extends Component {
 let styles = StyleSheet.create({
     flex: {
         flex: 1
-    },
-    font: {
-        fontFamily: 'Helvetica, STHeiti, Droid Sans Fallback, Noto Sans Han, Roboto',
-        fontSize: 16
     },
     row: {
         flexDirection: 'row'
