@@ -18,42 +18,32 @@ export default class Filter extends Component {
                 <View style={[styles.row, styles.listFilter, styles.alignItems]}>
                     <View style={[styles.flex, styles.justifyContent, styles.borderRight]}>
                         <TouchableWithoutFeedback onPress={this._onPress.bind(null, 1)}>
-                            {areaName ?
-                                <View><Text style={[styles.flex, styles.textAlign, styles.commonText]}>
-                                    {areaName}
-                                </Text></View>
-                                :
-                                <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
-                                    <Text style={styles.commonText}>{'区域' + ' '}</Text><ImageItem dropUp={tabType == 1}/>
-                                </View>
-                            }
-
+                            <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
+                                <Text style={styles.commonText}>
+                                    {areaName ? areaName : '区域 '}
+                                </Text>
+                                <ImageItem dropUp={tabType == 1}/>
+                            </View>
                         </TouchableWithoutFeedback>
                     </View>
                     <View style={[styles.flex, styles.justifyContent, styles.borderRight]}>
                         <TouchableWithoutFeedback onPress={this._onPress.bind(null, 2)}>
-                            {priceName ?
-                                <View><Text style={[styles.flex, styles.textAlign, styles.commonText]}>
-                                    {priceName}
-                                </Text></View>
-                                :
-                                <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
-                                    <Text style={styles.commonText}>{'价格' + ' '}</Text><ImageItem dropUp={tabType == 2}/>
-                                </View>
-                            }
+                            <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
+                                <Text style={styles.commonText}>
+                                    {priceName ? priceName : '价格 '}
+                                </Text>
+                                <ImageItem dropUp={tabType == 2}/>
+                            </View>
                         </TouchableWithoutFeedback>
                     </View>
                     <View style={[styles.flex, styles.justifyContent, styles.borderRight]}>
                         <TouchableWithoutFeedback onPress={this._onPress.bind(null, 3)}>
-                            {bedroomsName ?
-                                <View><Text style={[styles.flex, styles.textAlign, styles.commonText]}>
-                                    {bedroomsName}
-                                </Text></View>
-                                :
-                                <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
-                                    <Text style={styles.commonText}>{'户型' + ' '}</Text><ImageItem dropUp={tabType == 3}/>
-                                </View>
-                            }
+                            <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
+                                <Text style={styles.commonText}>
+                                    {bedroomsName ? bedroomsName : '价格 '}
+                                </Text>
+                                <ImageItem dropUp={tabType == 3}/>
+                            </View>
                         </TouchableWithoutFeedback>
                     </View>
                     <View style={[styles.flex, styles.justifyContent]}>
@@ -89,9 +79,12 @@ class ImageItem extends Component {
 
     render() {
         let {dropUp} = this.props;
-
-        return dropUp ? <Image source={require('../images/dropUp.png')} style={[styles.dropDown, styles.paddingLeft]}/>
-                : <Image source={require('../images/dropDown.png')} style={[styles.dropDown, styles.paddingLeft]}/>
+        return (
+            <Image
+                source={require('../images/dropDown.png')}
+                style={[styles.dropDown, styles.paddingLeft, dropUp ? styles.dropFlip: styles.dropFlipBack]}
+            />
+        );
     }
 
 }
@@ -124,6 +117,12 @@ const styles = StyleSheet.create({
     dropDown: {
         width: 9,
         height: 6
+    },
+    dropFlip: {
+        transform:[{scaleY: -1}]
+    },
+    dropFlipBack: {
+        transform: [{scaleY: 1}]
     },
     checkbox: {
         width: 12,
