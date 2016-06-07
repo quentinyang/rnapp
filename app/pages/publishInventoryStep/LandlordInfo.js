@@ -58,7 +58,7 @@ export default class LandlordInfoPage extends Component {
 
     render() {
         let {houseForm, controller, communityData} = this.props.houseInput;
-        let isOpacity = !!houseForm.get('seller_phone');
+        let isOpacity = !!(houseForm.get('seller_phone') && houseForm.get('seller_phone').length >= 8) ;
 
         return (
             <View style={styles.container}>
