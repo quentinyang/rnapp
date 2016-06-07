@@ -102,7 +102,10 @@ export default class LandlordInfoPage extends Component {
     }
 
     singleAction(action, value) {
-        this.props.actions[action](value);
+        let {houseInput, actions} = this.props;
+
+        houseInput.controller.get('err_msg') && actions.error('');
+        actions[action](value);
     }
 
     checkForm() {
