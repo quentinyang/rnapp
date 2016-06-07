@@ -12,7 +12,7 @@ import BackScore from '../pages/BackScore'
 var GeTui = require('react-native').NativeModules.GeTui;
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
-
+import {routes} from '../config/route'
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 
 let _navigator;
@@ -52,18 +52,24 @@ class App extends Component {
                         break;
                 }
             }
-            if(gtoken) {
-                self.setState({
-                    component: TabViewContainer,
-                    name: 'home',
-                    title: '我的主页'
-                });
-            } else {
+
+            if(!gtoken) {
                 self.setState({
                     component: LoginContainer,
                     name: 'login',
                     title: '登录',
                 })
+            } else {
+                if(gpage) {
+                    //routeStack 中加入Home 返回问题
+                    self.setState(routes["HouseList"]);
+                } else {
+                    self.setState({
+                        component: TabViewContainer,
+                        name: 'home',
+                        title: '我的主页'
+                    });
+                }
             }
         })
         .catch((error) => {
@@ -74,18 +80,22 @@ class App extends Component {
             this.unlistenNotification =  NativeAppEventEmitter.addListener('clientIdReceived', (cId) => {
                 self._clientIdReceived(cId);
             });
+            this.unlistenPage =  NativeAppEventEmitter.addListener('goPage', (page) => {
+                _navigator.resetTo(routes["HouseList"]);
+            });
         } else {
             DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
                 self._clientIdReceived(cId);
             });
         }
+
     }
 
     render() {
         let {component} = this.state;
         let {appData, actionsApp} = this.props;
         let isAndroid = (Platform.OS == "android");
-
+        
         return (
             <View style={styles.flex}>
                 <Modal visible={this.state.showModal} transparent={true}>
@@ -258,6 +268,7 @@ class App extends Component {
             this.unlistenNotification.remove();
             this.geTuiDataReceived.remove();
             this.setGeTuiOpenAction.remove();
+            this.unlistenPage.remove();
         } else {
             DeviceEventEmitter.removeAllListeners('clientIdReceived');
             DeviceEventEmitter.removeAllListeners('geTuiDataReceived');
