@@ -60,7 +60,7 @@ export default class Withdraw extends Component {
                 </View>
                 }
                 <View style={styles.withdrawBox}>
-                    <Text style={{marginBottom: 15}}>提现金额</Text>
+                    <Text style={{marginBottom: 10}}>提现金额</Text>
                     <WithLabel
                         label='¥'
                         labelStyle={styles.labelWidth}
@@ -241,8 +241,8 @@ const styles = StyleSheet.create({
         width: 100
     },
     inputFont: {
-        justifyContent: 'center',
-        fontSize: 26
+        fontSize: 30,
+        lineHeight: 45
     },
     mark: {
         justifyContent: 'center',

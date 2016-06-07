@@ -123,7 +123,8 @@ const styles = StyleSheet.create({
         color: '#FF6D4B'
     },
     fontMedium: {
-        fontWeight: "500"
+        fontWeight: "500",
+        color: '#ff6d4b'
     },
     bottomMsg: {
         fontSize: 12,
