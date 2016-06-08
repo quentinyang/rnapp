@@ -104,6 +104,20 @@ Production:
 - Organization: `XinYi`
 - City or Locality: `Shanghai`
 
+## Android打包
+
+```
+cd android && ./gradlew aR
+
+adb devices
+
+# List of devices attached
+# 25ca2691  device
+
+adb -s 25ca2691 install app/build/outputs/apk/app-release.apk 
+
+```
+
 ## Device Info
 - 参考：[Device Info@Github](https://github.com/rebeccahughes/react-native-device-info)
 
