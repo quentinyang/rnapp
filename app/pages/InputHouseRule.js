@@ -57,8 +57,7 @@ const styles = StyleSheet.create({
         marginLeft: 3,
         marginTop: 20,
         fontSize: 19,
-        fontWeight: '300',
-        fontFamily: 'Heiti SC'
+        fontWeight: '300'
     },
     fontBold: {
         fontWeight: '700'
@@ -75,7 +74,6 @@ const styles = StyleSheet.create({
     },
     btnText: {
         fontSize: 18,
-        color: '#fff',
-        fontFamily: 'Heiti SC'
+        color: '#fff'
     }
 });

@@ -52,8 +52,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 15,
-        color: '#3e3e3e',
-        fontFamily: 'Heiti SC'
+        color: '#3e3e3e'
     },
     text_1: {
         fontSize: 12

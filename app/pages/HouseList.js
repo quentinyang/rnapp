@@ -79,10 +79,10 @@ export default class HouseList extends Component {
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}
                                 onRefresh={this._onRefresh}
-                                tintColor='#04c1ae'
+                                tintColor='#ccc'
                                 title='松开刷新'
                                 colors={['#fff']}
-                                progressBackgroundColor='#04c1ae'
+                                progressBackgroundColor='#ccc'
                             />
                         }
                     />
@@ -222,7 +222,7 @@ export default class HouseList extends Component {
                     </View>
                      :
                     <View style={styles.listFooter}>
-                        <ActivityIndicator color={'#d43d3d'} styleAttr="Small"/>
+                        <ActivityIndicator color={'#ccc'} styleAttr="Small"/>
                     </View>
         );
     };
@@ -465,7 +465,6 @@ const styles = StyleSheet.create({
     noHouseListMsg: {
         fontSize: 15,
         color: '#8d8c92',
-        fontFamily: 'Heiti SC',
         paddingTop: 50
     },
     center: {

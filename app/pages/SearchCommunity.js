@@ -59,6 +59,9 @@ export default class CommunitySearch extends Component {
         ActionUtil.setAction(actionType.BA_LOOK_COM_SEARCH_CLICKHISTORY);
         actionsInput.communityChanged(community.toJS());
         actionsInput.hiSearchCleared();
+        actionsInput.buildingChanged('');
+        actionsInput.doorChanged('');
+        actionsInput.singleChanged('');
         this.goBack();
     };
     _clearSearchHistory = () => {
@@ -78,7 +81,9 @@ export default class CommunitySearch extends Component {
         let {actionsInput} = this.props;
         actionsInput.fetchCommunityList({keyword: value});
         actionsInput.hiSearchKeywordChanged(value);
-
+        actionsInput.buildingChanged('');
+        actionsInput.doorChanged('');
+        actionsInput.singleChanged('');
         if(!value && !this.state.isShowSearchHistory) {
             this.setState({
                 isShowSearchHistory: true

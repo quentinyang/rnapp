@@ -47,10 +47,10 @@ export default class InputHouse extends Component {
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}
                                 onRefresh={this._onRefresh}
-                                tintColor='#04c1ae'
+                                tintColor='#ccc'
                                 title='松开刷新'
                                 colors={['#fff']}
-                                progressBackgroundColor='#04c1ae'
+                                progressBackgroundColor='#ccc'
                             />
                         }
                         />
@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
     noHouseListMsg: {
         fontSize: 15,
         color: '#8d8c92',
-        fontFamily: 'Heiti SC',
         paddingTop: 50
     },
     center: {

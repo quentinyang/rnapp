@@ -11,7 +11,6 @@ export default class HouseItem extends Component {
     render() {
         let {item, dateKey, operator} = this.props;
         let date = formatDate(dateKey ? item.get(dateKey) : item.get('updated_at'));
-
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
@@ -27,7 +26,7 @@ export default class HouseItem extends Component {
                     <View style={[styles.row, styles.center]}>
                         <View style={[styles.row, styles.flex, styles.center]}>
 
-                            <Text style={[styles.headerMsg, styles.headerPadding, styles.flex, item.get('is_click') ? styles.gray : {}]} numberOfLines={1}>{item.get('community_name')}  {item.get('building_num') + item.get('building_unit') + item.get('door_num')}</Text>
+                            <Text style={[styles.headerMsg, styles.headerPadding, styles.flex, item.get('is_click') ? styles.gray : {}]} numberOfLines={1}>{item.get('community_name')}  {item.get('building_num') + (item.get('building_num') && item.get('building_unit')) + item.get('door_num') + (item.get('door_num') && '室')}</Text>
 
                             {
                                 item.get('is_new') ? <Text style={[styles.tagNew]}>新</Text> : null
@@ -84,7 +83,6 @@ const styles = StyleSheet.create({
         color: '#3e3e3e',
         fontSize: 16,
         fontWeight: '500',
-        fontFamily: 'Heiti SC',
         backgroundColor: 'transparent'
     },
     headerPadding: {
@@ -113,8 +111,7 @@ const styles = StyleSheet.create({
     },
     bedrooms: {
         fontSize: 15,
-        color: '#3e3e3e',
-        fontFamily: 'Helvetica Neue'
+        color: '#3e3e3e'
     },
     bedroomsPadding: {
         paddingRight: 10
@@ -125,12 +122,12 @@ const styles = StyleSheet.create({
         color: '#FF6D4B'
     },
     fontMedium: {
-        fontWeight: "500"
+        fontWeight: "500",
+        color: '#ff6d4b'
     },
     bottomMsg: {
         fontSize: 12,
-        color: '#9f9ea3',
-        fontFamily: 'Helvetica Neue'
+        color: '#9f9ea3'
     },
     center: {
         alignItems: 'center',

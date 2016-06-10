@@ -118,10 +118,10 @@ export default class Home extends Component {
                         <RefreshControl
                             refreshing={this.state.isRefreshing}
                             onRefresh={this._onRefresh}
-                            tintColor='#04c1ae'
+                            tintColor='#ccc'
                             title='松开刷新'
                             colors={['#fff']}
-                            progressBackgroundColor='#04c1ae'
+                            progressBackgroundColor='#ccc'
                         />
                     }
                 />
@@ -261,7 +261,7 @@ export default class Home extends Component {
                     </View>
         } else if(Number(pager.get('current_page')) != Number(pager.get('last_page')) && Number(pager.get('total')) != 0) {
             footerView = <View style={styles.listFooter}>
-                        <ActivityIndicator color={'#d43d3d'} styleAttr="Small"/>
+                        <ActivityIndicator color={'#ccc'} styleAttr="Small"/>
                     </View>
         } else {
             footerView = <NoData attentionList={attentionList} navigator={navigator} onAttentionBlockSet={this._onAttentionBlockSet}/>
@@ -464,14 +464,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     heiti_15_content: {
-        fontFamily: 'Heiti SC',
         fontSize: 15,
         color: '#3e3e3e',
         marginTop: 4,
         marginBottom: 3
     },
     heiti_16_header: {
-        fontFamily: 'Heiti SC',
         fontSize: 16,
         color: '#3e3e3e',
         fontWeight: '500'

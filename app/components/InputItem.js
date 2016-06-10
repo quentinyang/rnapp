@@ -56,8 +56,7 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     bottomMsg: {
-        fontSize: 15,
-        color: '#9f9ea3'
+        fontSize: 15
     },
     center: {
         alignItems: 'center',
