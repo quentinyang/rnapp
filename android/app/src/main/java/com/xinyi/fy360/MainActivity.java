@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.angejia.android.commonutils.common.DevUtil;
 import com.custom.component.ModulePackage;
+import com.custom.component.Utils;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -21,6 +23,8 @@ import com.microsoft.codepush.react.CodePush;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 // Import react native device info
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -29,10 +33,15 @@ import com.umeng.analytics.MobclickAgent;
 import com.xinyi.fy360.getui.GeTuiManager;
 import com.xinyi.fy365.deviceid.DeviceIDManager;
 
+import javax.annotation.Nullable;
+
 public class MainActivity extends ReactActivity {
 
     // 2. Define a private field to hold the CodePush runtime instance
     private CodePush _codePush;
+
+    private final Timer timer = new Timer();
+    private TimerTask task;
 
     // 3. Override the getJSBundleFile method in order to let
     // the CodePush runtime determine where to get the JS
@@ -77,9 +86,9 @@ public class MainActivity extends ReactActivity {
 
         // 5. Add the CodePush package to the list of existing packages
         return Arrays.<ReactPackage>asList(
+                new ModulePackage(),
                 new RNDeviceInfo(),
                 new MainReactPackage(),
-                new ModulePackage(),
                 new GeTuiManager(),
                 new AliPackage(),
                 new DeviceIDManager(),
@@ -89,7 +98,6 @@ public class MainActivity extends ReactActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d("onCreate", "initializing sdk...");
         super.onCreate(savedInstanceState);
         if (!PushManager.getInstance().isPushTurnedOn(this.getApplicationContext())) {
             PushManager.getInstance().initialize(this.getApplicationContext());
@@ -97,8 +105,20 @@ public class MainActivity extends ReactActivity {
         //checkHash();
         // Important::please do not change this code, unless change it in the `switch.js`
         DevUtil.setDebug(true);
-        setPushAction(getIntent());
+        Intent intent = getIntent();
+        setPushAction(intent);
         //Log.d("umengKey", "UmengKey:" + BuildConfig.umengKey);
+
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                if (null != ModulePackage.utils) {
+                    android.util.Log.i("life" , "send event if");
+                    ModulePackage.utils.sendEvent("goPage", "HouseList");
+                }
+
+            }
+        };
     }
 
     //检查hash
@@ -133,5 +153,30 @@ public class MainActivity extends ReactActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+
+        Intent intent = getIntent();
+        if (intent != null){
+            Uri uri = intent.getData();
+            android.util.Log.i("life", "intent if");
+
+            if (uri != null){
+                android.util.Log.i("life", "uri if");
+                String dataString = intent.getDataString();
+                String scheme = uri.getScheme();
+                String host = uri.getHost();
+                String query = uri.getQuery();
+
+                Log.d("url", "dataString = " + dataString + " | scheme = " + scheme + " | host = " + host + " | query = " + query);
+                android.util.Log.i("life query", query);
+
+                timer.schedule(task, 4000);
+            }
+        }
+        android.util.Log.i("life", "onResume");
+    }
+
+    @Override
+    protected @Nullable Bundle getLaunchOptions() {
+        return null;
     }
 }

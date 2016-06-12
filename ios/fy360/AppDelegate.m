@@ -306,7 +306,7 @@ NSString * const UMengChannelId = @"";
   NSLog(@"urlString in sourceApplication: %@", urlString);
   NSLog(@"hostString in sourceApplication: %@", hostString);
   NSLog(@"queryString in sourceApplication: %@", queryString);
-  [Utils sendEvent:@"goPage" withRoot:self.rootView];
+  [Utils sendEventWithParam:@"goPage" withParam:@{@"page": queryString} withRoot:self.rootView];
   [[Alipay alipay] application:application openURL:url sourceApplication:sourceApplication annotation:sourceApplication];
   
   
@@ -323,7 +323,7 @@ NSString * const UMengChannelId = @"";
   NSLog(@"urlString in options: %@", urlString);
   NSLog(@"queryString in options: %@", queryString);
   
-  [Utils sendEvent:@"goPage" withRoot:self.rootView];
+  [Utils sendEventWithParam:@"goPage" withParam:@{@"page": queryString} withRoot:self.rootView];
   [[Alipay alipay] application:app openURL:url options:options];
   return YES;
 }

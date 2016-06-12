@@ -24,4 +24,11 @@ RCT_EXPORT_MODULE();
   [utils.bridge.eventDispatcher sendAppEventWithName:eventName body:nil];
 }
 
++(void)sendEventWithParam:(NSString *)eventName withParam:(NSDictionary *)param withRoot:(RCTRootView *)rootView
+{
+  Utils *utils = [rootView.bridge moduleForClass:[Utils class]];
+  
+  [utils.bridge.eventDispatcher sendAppEventWithName:eventName body:param];
+}
+
 @end

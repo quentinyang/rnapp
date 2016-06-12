@@ -60,9 +60,9 @@ class App extends Component {
                     title: '登录',
                 })
             } else {
-                if(gpage) {
+                if(Platform.OS == "ios" && gpage) {
                     //routeStack 中加入Home 返回问题
-                    self.setState(routes["HouseList"]);
+                    self.setState(routes[gpage]);
                 } else {
                     self.setState({
                         component: TabViewContainer,
@@ -80,12 +80,16 @@ class App extends Component {
             this.unlistenNotification =  NativeAppEventEmitter.addListener('clientIdReceived', (cId) => {
                 self._clientIdReceived(cId);
             });
-            this.unlistenPage =  NativeAppEventEmitter.addListener('goPage', (page) => {
-                _navigator.resetTo(routes["HouseList"]);
+            this.unlistenPage =  NativeAppEventEmitter.addListener('goPage', (obj) => {
+                _navigator.push(routes[obj.page]);
             });
         } else {
             DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
                 self._clientIdReceived(cId);
+            });
+
+            DeviceEventEmitter.addListener('goPage', (page) => {
+                _navigator.push(routes[page]);
             });
         }
 
@@ -95,10 +99,10 @@ class App extends Component {
         let {component} = this.state;
         let {appData, actionsApp} = this.props;
         let isAndroid = (Platform.OS == "android");
-        
+
         return (
             <View style={styles.flex}>
-                <Modal visible={this.state.showModal} transparent={true}>
+                <Modal visible={this.state.showModal} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.contentContainer}>
                             <Text style={[styles.modalTitle, styles.baseColor]}>提示</Text>
@@ -115,7 +119,7 @@ class App extends Component {
                     </View>
                 </Modal>
                 { isAndroid ?
-                <Modal visible={appData.get('config').get('showUpdateModal')} transparent={true}>
+                <Modal visible={appData.get('config').get('showUpdateModal')} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.updateContentContainer}>
                             <View style={[styles.alignItems, styles.justifyContent]}>
@@ -273,6 +277,7 @@ class App extends Component {
             DeviceEventEmitter.removeAllListeners('clientIdReceived');
             DeviceEventEmitter.removeAllListeners('geTuiDataReceived');
             DeviceEventEmitter.removeAllListeners('setGeTuiOpenAction');
+            DeviceEventEmitter.removeAllListeners('goPage');
         }
     }
 
