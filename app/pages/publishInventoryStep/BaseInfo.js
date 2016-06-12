@@ -8,7 +8,8 @@ import {
     TouchableHighlight, Alert, Dimensions
 } from 'nuke';
 
-import {basicInventoryDuplicateService} from '../../service/houseInputService';
+import {basicInventoryDuplicateService, allowToInputService} from '../../service/houseInputService';
+import Header from '../../components/Header';
 import WithLabel from '../../components/LabelTextInput';
 import Attached from '../../components/Attached';
 import PublishTitle from '../../components/PublishTitle';
@@ -24,39 +25,6 @@ export default class BaseInfoPage extends Component {
         super(props);
         let {route, actions, navigator} = this.props;
         ActionUtil.setActionWithExtend(actionType.BA_SENDONE_THREE_ONVIEW, {"bp": route.bp});
-
-        let self = this;
-        route.callbackFun = () => {
-            if(!self.hasValue()) {
-                navigator.pop();
-            } else {
-                Alert.alert('', '确定要离开此页面吗？', [
-                    {
-                        text: '取消',
-                        onPress: () => {
-                            ActionUtil.setAction(actionType.BA_SENDONE_THREE_CANCEL);
-                        }
-                    },
-                    {
-                        text: '确定',
-                        onPress: () => {
-                            ActionUtil.setAction(actionType.BA_SENDONE_THREE_ENSURE);
-                            actions.hiSearchCleared();
-                            navigator.pop();
-                        }
-                    }
-                ])
-            }
-        };
-    }
-
-    hasValue() {
-        let {houseForm} = this.props.houseInput;
-        if(houseForm.get("community_id") || houseForm.get("building_num") || houseForm.get("door_num")) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     render() {
@@ -67,7 +35,8 @@ export default class BaseInfoPage extends Component {
         return (
             <View style={styles.container}>
                 <View>
-                    <PublishTitle><Text style={styles.colorFFDB}>3</Text>步立即发布房源</PublishTitle>
+                    <Header title='发房' style={styles.bgHeader} />
+                    <PublishTitle></PublishTitle>
                     <View style={styles.colorWhite}>
                         <WithLabel
                             label='小区'
@@ -141,9 +110,19 @@ export default class BaseInfoPage extends Component {
     componentDidMount() {
         let {route, actionsApp} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            if(route.clearForbidden) {
-                actionsApp.clickTabChanged(true);
-            }
+            allowToInputService()
+            .then((data) => {
+                if(!data.is_can_input) {
+                    Alert.alert('', '亲，您已经发了'+data.daily_max_input_house_count+'套房了\n明天再来吧~', [
+                    {
+                        text: '好的',
+                        onPress: () => {}
+                    }])
+                }
+            })
+            .catch((error) => {
+                Alert.alert('', error.msg || '');
+            })
         });
 
     }
@@ -195,7 +174,6 @@ export default class BaseInfoPage extends Component {
                 name: 'publishInventory',
                 title: '更多房源信息',
                 backLog: actionType.BA_SENDTWO_THREE_RETURN,
-                callbackFun: () => {},
                 hideNavBar: false,
             });
             ActionUtil.setAction(actionType.BA_SENDONE_THREE_NEXT);
@@ -216,6 +194,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#eee'
+    },
+    bgHeader: {
+      backgroundColor: '#f8f8f8'
     },
     colorWhite: {
         backgroundColor: '#fff'

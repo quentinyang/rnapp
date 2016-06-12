@@ -17,9 +17,9 @@ export default class PublishTitle extends Component {
 
     render() {
         return (
-                <View style={[styles.headerPrompt, styles.verticalCenter]}>
-                    <Text style={styles.titleFont}>{this.props.children}</Text>
-                </View>
+            <View style={[styles.headerPrompt, styles.verticalCenter]}>
+                <Text style={styles.titleFont}>{this.props.children}</Text>
+            </View>
         )
     }
 }
