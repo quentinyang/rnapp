@@ -58,7 +58,7 @@ export default class Withdraw extends Component {
                         onFocus={() => ActionUtil.setAction(actionType.BA_MINE_CASH_NAME)}
                         onChangeText={(v) => {this.changeName(v)}}
                     />
-                    <View style={styles.warnBox}><Text style={styles.warnFont}>姓名和账号将决定您的提现能否成功，提交后将不可更改，请谨慎填写！</Text></View>
+                    <View style={styles.warnBox}><Text style={styles.warnFont}>姓名和账号决定您的提现能否成功，提交后将不可更改，请谨慎填写！</Text></View>
                 </View>
                 }
                 <View style={styles.withdrawBox}>
