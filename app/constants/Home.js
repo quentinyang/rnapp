@@ -11,5 +11,6 @@ export const HOUSE_NEW_COUNT = 'HOUSE_NEW_COUNT';
 
 export const SET_CONTACT_STATUS = 'SET_HOME_CONTACT_STATUS';
 export const SET_LOOK_STATUS = 'SET_HOME_LOOK_STATUS';
+export const GIFT_INFO = 'GIFT_INFO';
 
 

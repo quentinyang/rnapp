@@ -39,6 +39,10 @@ module.exports=function(){
         });
     }
 
+    function getGiftInfo() {
+        return ajax.get(urls.user.giftInfo)
+    }
+
     return {
         sendCodeService: sendCodeService,
         loginService: loginService,
@@ -47,6 +51,7 @@ module.exports=function(){
         fetchScoreModalStatusService: fetchScoreModalStatusService,
         withdrawService: withdrawService,
         alipayLoginService: alipayLoginService,
-        scoreListService: scoreListService
+        scoreListService: scoreListService,
+        getGiftInfo: getGiftInfo
     };
 }();

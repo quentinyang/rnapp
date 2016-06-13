@@ -18,6 +18,7 @@ import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 let _navigator;
 global.gtoken = '';
 global.gcid = '';
+global.guid = '';
 
 class App extends Component {
     constructor(props) {
@@ -44,6 +45,7 @@ class App extends Component {
                         break;
                     case common.USER_ID:
                         if(value[i][1]) {
+                            guid = value[i][1];
                             actionsApp.setSearchHistory(value[i][1] || "0");
                             ActionUtil.setUid(value[i][1]);
                         }
@@ -412,6 +414,15 @@ let styles = StyleSheet.create({
     row: {
         flexDirection: 'row'
     },
+    alignItems: {
+        alignItems: 'center'
+    },
+    justifyContent: {
+        justifyContent: 'center'
+    },
+    baseColor: {
+        color: "#3e3e3e"
+    },
     sceneStyle: {
         backgroundColor: '#fff'
     },
@@ -446,12 +457,6 @@ let styles = StyleSheet.create({
     icon: {
         width: 9.5,
         height: 20.5
-    },
-    alignItems: {
-        alignItems: 'center'
-    },
-    justifyContent: {
-        justifyContent: 'center'
     },
     bgWrap: {
         flex: 1,
@@ -524,10 +529,7 @@ let styles = StyleSheet.create({
         borderRadius: 5,
         padding: 20,
         backgroundColor: "#fff",
-    },
-    baseColor: {
-        color: "#3e3e3e"
-    },
+    }
 });
 
 export default App;

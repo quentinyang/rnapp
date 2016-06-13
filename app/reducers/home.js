@@ -101,7 +101,12 @@ let initialBaseInfo = {
         visible: false,
         score: 8
     },
-    newCount: ""
+    newCount: "",
+    giftModal: {
+        day: '1',
+        score: '0',
+        experience: '0'
+    }
 };
 
 function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
@@ -114,6 +119,9 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
             break;
         case types.HOUSE_NEW_COUNT:
             return state.set('newCount', Immutable.fromJS(action.count));
+            break;
+        case types.GIFT_INFO:
+            return state.set('giftModal', Immutable.fromJS(action.info));
             break;
         default:
             return state;

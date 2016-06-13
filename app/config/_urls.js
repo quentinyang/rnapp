@@ -21,7 +21,8 @@ let urls = {
         alipayStatus: HOST + 'user/binding/alipay/status',
         withdraw: HOST + 'withdrawals',
         scoreList: HOST + 'my/account/flow',
-        alipayLogin: HOST + 'alipay/quick/login/url'
+        alipayLogin: HOST + 'alipay/quick/login/url',
+        giftInfo: HOST + 'gift/info'
     },
     house: {
         list: HOST + 'property-list',
