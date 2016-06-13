@@ -335,7 +335,6 @@ class ErrorTipModal extends Component {
                 right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false, backLog: actionType.BA_SENDRULE_RETURN}},
                 hideNavBar: false,
                 backLog: actionType.BA_SENDTWO_THREE_RETURN,
-                callbackFun: () => {},
                 bp: this.pageId
             });
         } else {

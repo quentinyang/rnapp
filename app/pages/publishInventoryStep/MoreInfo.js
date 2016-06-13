@@ -9,7 +9,7 @@ import {
 
 import {inputHouseService} from '../../service/houseInputService';
 import WithLabel from '../../components/LabelTextInput';
-import PublishTitle from '../../components/PublishTitle';
+import PublishStepBlock from '../../components/PublishStepBlock';
 import ErrorMsg from '../../components/ErrorMsg';
 import TouchableSubmit from '../../components/TouchableSubmit';
 import PublishThirdStepContainer from '../../containers/PublishThirdStepContainer';
@@ -28,7 +28,7 @@ export default class MoreInfoPage extends Component {
 
         return (
             <View style={styles.container}>
-                <PublishTitle>还有<Text style={styles.colorFFDB}>2</Text>步即可发布</PublishTitle>
+                <PublishStepBlock step={2} />
                 <View style={styles.colorWhite}>
                     <WithLabel
                         label='户型'

@@ -9,7 +9,7 @@ import {
 
 import {inputHouseService} from '../../service/houseInputService';
 import WithLabel from '../../components/LabelTextInput';
-import PublishTitle from '../../components/PublishTitle';
+import PublishStepBlock from '../../components/PublishStepBlock';
 import ErrorMsg from '../../components/ErrorMsg';
 import TouchableSubmit from '../../components/TouchableSubmit';
 import HouseInputSuccessContainer from '../../containers/HouseInputSuccessContainer';
@@ -29,7 +29,7 @@ export default class LandlordInfoPage extends Component {
 
         return (
             <View style={styles.container}>
-                <PublishTitle>这<Text style={styles.colorFFDB}>1</Text>步即可发布</PublishTitle>
+                <PublishStepBlock step={3} />
                 <View style={styles.paddingHorizon}><Text style={styles.baseInfo}>房源为“{houseForm.get('community_name')}{!controller.get('single')? houseForm.get('building_num')+'号':'独栋'}{!controller.get('villa')?houseForm.get('door_num')+'室':'别墅'}”</Text></View>
                 <View style={styles.colorWhite}>
                     <WithLabel
@@ -99,7 +99,7 @@ export default class LandlordInfoPage extends Component {
         .then((oData) => {
             ActionUtil.setActionWithExtend(actionType.BA_SENDTHREE_THREE_RELEASE, {"vpid": oData.property_id});
             let routeStack = this.props.navigator.state.routeStack;
-            let newStack = routeStack.slice(0, routeStack.length-3);
+            let newStack = routeStack.slice(0, routeStack.length-2);
             navigator.immediatelyResetRouteStack(newStack);
             navigator.push({
                 component: HouseInputSuccessContainer,
@@ -133,9 +133,6 @@ const styles = StyleSheet.create({
     },
     colorWhite: {
         backgroundColor: '#fff'
-    },
-    colorFFDB: {
-        color: '#ff6d4b'
     },
     baseInfo: {
         marginBottom: 15,

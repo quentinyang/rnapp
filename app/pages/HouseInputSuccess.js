@@ -54,15 +54,7 @@ export default class HouseInputSuccess extends Component {
 
     continueInput = () => {
         ActionUtil.setAction(actionType.BA_SEND_SUCCESS_CONTINIUE);
-        this.props.navigator.replace({
-            component: PublishFirstStepContainer,
-            name: 'publishInventory',
-            title: '房源基本信息',
-            right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false, backLog: actionType.BA_SENDRULE_RETURN}},
-            backLog: actionType.BA_SENDTWO_THREE_RETURN,
-            callbackFun: () => {},
-            hideNavBar: false
-        });
+        this.props.navigator.pop();
     };
 
     lookHouse = () => {

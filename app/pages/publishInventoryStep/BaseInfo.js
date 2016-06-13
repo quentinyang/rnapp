@@ -12,7 +12,7 @@ import {basicInventoryDuplicateService, allowToInputService} from '../../service
 import Header from '../../components/Header';
 import WithLabel from '../../components/LabelTextInput';
 import Attached from '../../components/Attached';
-import PublishTitle from '../../components/PublishTitle';
+import PublishStepBlock from '../../components/PublishStepBlock';
 import ErrorMsg from '../../components/ErrorMsg';
 import TouchableSubmit from '../../components/TouchableSubmit';
 import PublishSecondStepContainer from '../../containers/PublishSecondStepContainer';
@@ -28,15 +28,15 @@ export default class BaseInfoPage extends Component {
     }
 
     render() {
-        let {navigator} = this.props;
+        let {navigator, route} = this.props;
         let {houseForm, controller} = this.props.houseInput;
         let isOpacity = !!(houseForm.get('community_name') && (controller.get('single')? true: houseForm.get('building_num')) && (controller.get('villa')?true:houseForm.get('door_num')));
 
         return (
             <View style={styles.container}>
                 <View>
-                    <Header title='发房' style={styles.bgHeader} />
-                    <PublishTitle></PublishTitle>
+                    {route.hideNavBar?<Header title='发房' style={styles.bgHeader} />:null}
+                    <PublishStepBlock step={1} />
                     <View style={styles.colorWhite}>
                         <WithLabel
                             label='小区'
