@@ -13,7 +13,7 @@ export default class InputItem extends Component {
         let {item} = this.props;
         let date = formatDate(item.get('created_at'));
         let statusStr = ['待审核', '已通过', '未通过'],
-            statusInfoStr = ['客服将在24小时内审核房源', '获得' + Number(item.get('money')) + '积分', item.get('reason')];
+            statusInfoStr = [item.get('reason'), '获得' + Number(item.get('money')) + '积分', item.get('reason')];
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View>
