@@ -16,11 +16,11 @@ export default class ErrorMsg extends Component {
     }
 
     render() {
-        let {title, style, children} = this.props;
+        let {title, style, fontStyle, children} = this.props;
         return (
             <View style= {[styles.header, styles.center, style]}>
                 <View style={[styles.title, styles.center]}>
-                    <Text style={styles.titleFont}>{title}</Text>
+                    <Text style={[styles.titleFont, fontStyle]}>{title}</Text>
                 </View>
                 {children}
             </View>
