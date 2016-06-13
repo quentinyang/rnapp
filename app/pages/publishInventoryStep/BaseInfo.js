@@ -59,9 +59,8 @@ export default class BaseInfoPage extends Component {
                         <WithLabel
                             label='楼栋'
                             rightText='号/座'
-                            rightStyle={controller.get('single')? {color: '#fff'}: {}}
                             value={houseForm.get('building_num')}
-                            placeholder={controller.get('single')?'':'输入楼/座号'}
+                            placeholder={controller.get('single')?'无':'输入楼/座号'}
                             editable={controller.get('single')? false: true}
                             underlineColorAndroid = 'transparent'
                             onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_BUILDING)}
@@ -69,16 +68,15 @@ export default class BaseInfoPage extends Component {
                         >
                             <Attached
                                 isSelected={controller.get('single')}
-                                attachedText='独栋'
+                                attachedText='无'
                                 toggleAttach={() => this.toggleAttach(actionType.BA_SENDONE_THREE_ONEBUILD, 'singleChanged', !controller.get('single'), 'buildingChanged', 'attachBuildingChanged')}
                             />
                         </WithLabel>
                         <WithLabel
                             label='房号'
                             rightText='室'
-                            rightStyle={controller.get('villa')? {color: '#fff'}: {}}
                             value={houseForm.get('door_num')}
-                            placeholder={controller.get('villa')?'':'输入房号'}
+                            placeholder={controller.get('villa')?'无':'输入房号'}
                             underlineColorAndroid = 'transparent'
                             editable={controller.get('villa')? false: true}
                             onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_ROOM)}
@@ -86,7 +84,7 @@ export default class BaseInfoPage extends Component {
                         >
                             <Attached
                                 isSelected={controller.get('villa')}
-                                attachedText='别墅'
+                                attachedText='无'
                                 toggleAttach={() => this.toggleAttach(actionType.BA_SENDONE_THREE_VILLA, 'villaChanged', !controller.get('villa'), 'doorChanged', 'attachDoorChanged')}
                             />
                         </WithLabel>

@@ -118,7 +118,7 @@ export default class LandlordInfoPage extends Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.landlordCleared();
+        //this.props.actions.landlordCleared();
     }
 }
 

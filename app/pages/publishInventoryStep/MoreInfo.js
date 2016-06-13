@@ -141,7 +141,7 @@ export default class MoreInfoPage extends Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.moreCleared();
+        //this.props.actions.moreCleared();
     }
 }
 
