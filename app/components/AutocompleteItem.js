@@ -9,7 +9,6 @@ export default class AutocompleteItem extends Component {
 
     render() {
         let {item, index} = this.props;
-
         return (
             <TouchableHighlight
                 key={index}

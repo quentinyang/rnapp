@@ -18,11 +18,13 @@ export default class LabelTextInput extends Component {
     }
 
     render() {
-        let {ref, label, style, special, specialText1, specialText2, onClick, labelStyle, inputStyle, arrow, rightText, rightStyle, placeholderTextColor, children, ...props} = this.props;
+        //Most props on a JSX element are passed on to the component, however, there are two special props (ref and key) which are used by React, and are thus not forwarded to the component.
+        //For instance, attempting to access this.props.key from a component (eg. the render function) is not defined. If you need to access the same value within the child component, you should pass it as a different prop (ex: <ListItemWrapper key={result.id} id={result.id} />).
+        let {refBox, label, style, special, specialText1, specialText2, onClick, labelStyle, inputStyle, arrow, rightText, rightStyle, placeholderTextColor, children, ...props} = this.props;
 
         return (
             <View
-                ref={ref}
+                ref={refBox}
                 style={[styles.inputContainer, style]}
             >
                 <Text style={[styles.label, labelStyle]}>{label}</Text>

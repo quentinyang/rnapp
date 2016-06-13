@@ -387,7 +387,7 @@ export default class HouseList extends Component {
     };
 
     _renderAutocompleteRow = (item, index) => {
-        return <AutocompleteItem index={index} item={item} onPress={this._autocompleteRowPress.bind(this)}/>;
+        return <AutocompleteItem key={item.get('id')} index={item.get('id')} item={item} onPress={this._autocompleteRowPress.bind(this)}/>;
     };
 
     _autocompleteRowPress = (item) => {
@@ -421,7 +421,7 @@ export default class HouseList extends Component {
     };
 
     _renderSearchHistoryRow = (item, index) => {
-        return <SearchHistoryItem key={index} item={item} onPress={this._searchHistoryRowPress.bind(this)} />
+        return <SearchHistoryItem index={index} item={item} onPress={this._searchHistoryRowPress.bind(this)} />
     };
 
     _searchHistoryRowPress = (item) => {

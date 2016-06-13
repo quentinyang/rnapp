@@ -52,11 +52,11 @@ export class SearchHistoryItem extends Component {
     }
 
     render() {
-        let {item, key, onPress} = this.props;
+        let {item, index, onPress} = this.props;
 
         return (
             <TouchableWithoutFeedback
-                key={key}
+                key={index}
                 onPress={onPress.bind(null, item)}
             >
                 <View style={[styles.item, styles.row, styles.justifyBetween, styles.center]}>
