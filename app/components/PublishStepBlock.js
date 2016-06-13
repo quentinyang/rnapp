@@ -42,22 +42,5 @@ const styles = StyleSheet.create({
     },
     stepSelected: {
         backgroundColor: '#04c1ae'
-    },
-    alignCenter: {
-        alignItems: 'center'
-    },
-    verticalCenter: {
-        justifyContent: 'center'
-    },
-    headerPrompt: {
-        height: 30,
-        paddingHorizontal: 20
-    },
-    titleFont: {
-        fontSize: 12,
-        color: '#8d8c92'
-    },
-    colorFFDB: {
-        color: '#ff6d4b'
-    },
+    }
 });
