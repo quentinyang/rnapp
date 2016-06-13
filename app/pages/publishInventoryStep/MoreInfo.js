@@ -113,7 +113,7 @@ export default class MoreInfoPage extends Component {
         if(!parseInt(houseForm.area) || houseForm.area >= 1000000) {
             return 'wrongArea';
         }
-        if(!parseInt(houseForm.price) || houseForm.price >= 1000000) {
+        if(!parseInt(houseForm.price) || houseForm.price >= 429497) {
             return 'wrongPrice';
         }
         return '';
