@@ -6,7 +6,6 @@ import {
     Text,
     View,
     ScrollView,
-    ListView,
     Image,
     TouchableWithoutFeedback,
     Alert,
@@ -17,6 +16,7 @@ import {
 import Header from '../components/Header';
 import LinkSection from '../components/LinkSection';
 import SignInContainer from '../containers/SignInContainer';
+import AboutEXPContainer from '../containers/AboutEXPContainer';
 import ContactHouseContainer from '../containers/ContactHouseContainer';
 import InputHouseContainer from '../containers/InputHouseContainer';
 import RechargeContainer from '../containers/RechargeContainer';
@@ -43,7 +43,7 @@ export default class User extends Component {
                 <ScrollView
                     automaticallyAdjustContentInsets={false}
                 >
-                    <BasicInfo userProfile={userProfile} />
+                    <BasicInfo userProfile={userProfile}  navigatorPush={this.navigatorPush} />
 
                     <LinkSection
                         linkStyle={{height: 70, marginBottom: 15}}
@@ -136,7 +136,7 @@ class BasicInfo extends Component {
                 <View style={styles.flex}>
                     <Text style={[styles.mobileText, styles.whiteText]}>{showMobile}</Text>
                 </View>
-                <TouchableWithoutFeedback>
+                <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: AboutEXPContainer, name: 'exp', title: '我的等级'})}>
                     <View style={[styles.level, styles.center]}><Text style={styles.whiteText}>V1会员</Text></View>
                 </TouchableWithoutFeedback>
             </View>
