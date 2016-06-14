@@ -5,6 +5,7 @@ import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, P
 
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
+import SignInContainer from '../containers/SignInContainer';
 import Immutable, {List} from 'immutable';
 import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
@@ -44,16 +45,16 @@ class GiftModal extends Component {
                     </TouchableHighlight>
 
 
-                    <Text style={[styles.baseFont, styles.h5, styles.giftDay]}>连续签到<Text style={styles.numFont}>{modalInfo.get('day')}</Text>天</Text>
+                    <Text style={[styles.h5, styles.giftDay]}>连续签到<Text>{modalInfo.get('day')}</Text>天</Text>
                     <View style={[styles.row]}>
-                        <Text style={styles.baseFont}>
+                        <Text>
                             <Text style={[styles.h2, styles.addNum]}>+</Text>
-                            <Text style={[styles.h1, styles.numFont, styles.normalFont, styles.scoreNum]}>{modalInfo.get('experience')}</Text>
+                            <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('experience')}</Text>
                             经验</Text>
                         { modalInfo.get('score') == '0' ? null :
-                            <Text style={[styles.baseFont, styles.scoreAdd]}>
+                            <Text style={styles.scoreAdd}>
                                 <Text style={[styles.h2, styles.addNum]}>+</Text>
-                                <Text style={[styles.h1, styles.numFont, styles.normalFont, styles.scoreNum]}>{modalInfo.get('score')}</Text>
+                                <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('score')}</Text>
                                 积分</Text>
                         }
                     </View>
@@ -76,7 +77,10 @@ class GiftModal extends Component {
         let {navigator} = this.props;
 
         navigator.push({
-            component: ''
+            component: SignInContainer,
+            name: 'signIn',
+            title: '签到送积分',
+            hideNavBar: false
         });
     }
 }
@@ -489,20 +493,6 @@ const styles = StyleSheet.create({
     },
     column: {
         flexDirection: 'column'
-    },
-    baseFont: {
-        fontFamily: 'Heiti SC',
-        color: "#3e3e3e",
-        fontWeight: '300'
-    },
-    numFont: {
-        fontFamily: 'Helvetica Neue'
-    },
-    lightFont: {
-        fontWeight: '300'
-    },
-    normalFont: {
-        fontWeight: '400'
     },
     mediumFont: {
         fontWeight: '500'

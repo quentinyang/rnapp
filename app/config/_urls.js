@@ -65,6 +65,9 @@ let urls = {
     pay: {
         order: HOST + 'recharge',
         result: HOST + 'recharge/notify'
+    },
+    signIn: {
+        info: HOST + ''
     }
 }
 
