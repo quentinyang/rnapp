@@ -7,6 +7,7 @@ import {
     Text,
     Image,
     StyleSheet,
+    TouchableWithoutFeedback
 } from 'nuke';
 
 export default class LinkSection extends Component {
@@ -15,21 +16,23 @@ export default class LinkSection extends Component {
     }
 
     render() {
-        let {linkStyle, iconBoxStyle, icon, children} = this.props;
+        let {linkStyle, iconBoxStyle, icon, children, onPress} = this.props;
         return (
-            <View style={[styles.linkSection, styles.row, linkStyle]}>
-                <View style={[styles.linkIconBox, styles.center, iconBoxStyle, {backgroundColor: icon.bgColor}]}>
+            <TouchableWithoutFeedback onPress={onPress}>
+                <View style={[styles.linkSection, styles.row, linkStyle]}>
+                    <View style={[styles.linkIconBox, styles.center, iconBoxStyle, {backgroundColor: icon.bgColor}]}>
+                        <Image
+                            style={icon.style}
+                            source={icon.url}
+                        />
+                    </View>
+                    <View style={[styles.flex, styles.row]}>{children}</View>
                     <Image
-                        style={icon.style}
-                        source={icon.url}
+                        source={require('../images/next.png')}
+                        style={styles.arrow}
                     />
                 </View>
-                <View style={[styles.flex, styles.row]}>{children}</View>
-                <Image
-                    source={require('../images/next.png')}
-                    style={styles.arrow}
-                />
-            </View>
+            </TouchableWithoutFeedback>
         );
     }
 }

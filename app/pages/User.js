@@ -16,14 +16,15 @@ import {
 
 import Header from '../components/Header';
 import LinkSection from '../components/LinkSection';
-import ContactHouseContainer from '../containers/ContactHouseContainer'
-import InputHouseContainer from '../containers/InputHouseContainer'
-import RechargeContainer from '../containers/RechargeContainer'
-import WithdrawContainer from '../containers/WithdrawContainer'
-import SettingContainer from '../containers/SettingContainer'
-import ScoreListContainer from '../containers/ScoreListContainer'
+import SignInContainer from '../containers/SignInContainer';
+import ContactHouseContainer from '../containers/ContactHouseContainer';
+import InputHouseContainer from '../containers/InputHouseContainer';
+import RechargeContainer from '../containers/RechargeContainer';
+import WithdrawContainer from '../containers/WithdrawContainer';
+import SettingContainer from '../containers/SettingContainer';
+import ScoreListContainer from '../containers/ScoreListContainer';
 let ActionUtil = require( '../utils/ActionLog');
-import * as actionType from '../constants/ActionLog'
+import * as actionType from '../constants/ActionLog';
 
 export default class User extends Component {
     constructor(props) {
@@ -52,6 +53,7 @@ export default class User extends Component {
                             style: {width: 12, height: 12},
                             bgColor: '#d883aa'
                         }}
+                        onPress={() => this.navigatorPush({component: SignInContainer, name: 'signin', title: '签到送积分'})}
                     >
                         <View style={{flexDirection: 'column'}}>
                             <Text style={{marginTop: 2}}>连续签到：5天</Text>
@@ -59,7 +61,7 @@ export default class User extends Component {
                         </View>
                     </LinkSection>
 
-                    <UserAccount />
+                    <UserAccount navigatorPush={this.navigatorPush} {...this.props} />
 
                     <LinkSection
                         linkStyle={{borderBottomWidth: 1/PixelRatio.get(), borderColor: '#d9d9d9'}}
@@ -68,6 +70,7 @@ export default class User extends Component {
                             style: {width: 11.5, height: 11.5},
                             bgColor: '#54d89f'
                         }}
+                        onPress={() => this.navigatorPush({component: ContactHouseContainer, name: 'contactHouse', title: '联系过的房源', actionLog: actionType.BA_MINE_CONNECT, backLog: actionType.BA_MINE_CONTACT_RETURN})}
                     >
                         <Text style={styles.flex}>联系的房源</Text>
                         <Text>{userProfile.get('contacted')}</Text>
@@ -80,6 +83,7 @@ export default class User extends Component {
                             style: {width: 13, height: 12.5},
                             bgColor: '#54d89f'
                         }}
+                        onPress={() => this.navigatorPush({component: InputHouseContainer, name: 'inputHouse', title: '发布的房源', actionLog: actionType.BA_MINE_RELEASED, backLog: actionType.BA_MINE_RELEASE_RETURN})}
                     >
                         <Text style={styles.flex}>发布的房源</Text>
                         <Text>{userProfile.get('published')}</Text>
@@ -92,6 +96,7 @@ export default class User extends Component {
                             style: {width: 12, height: 12},
                             bgColor: '#66a1e7'
                         }}
+                        onPress={() => this.navigatorPush({component: SettingContainer, name: 'settings', title: '设置', actionLog: actionType.BA_MINE_SET})}
                     >
                         <Text>设置</Text>
                     </LinkSection>
@@ -99,6 +104,14 @@ export default class User extends Component {
                 </ScrollView>
             </View>
         );
+    }
+
+    navigatorPush = (ops) => {
+        this.props.navigator.push({
+            bp: actionType.BA_MINE,
+            hideNavBar: false,
+            ...ops
+        })
     }
 }
 
@@ -137,6 +150,14 @@ class UserAccount extends Component {
     }
 
     render() {
+        let {userProfile} = this.props,
+            withdrawData = {
+            score: userProfile.get('score'),
+            min_price: userProfile.get('minPrice'),
+            alipay_account: userProfile.get('alipayAccount'),
+            is_binding_alipay: userProfile.get('hasBound')
+        };
+
         return (
             <View style={styles.accountSection}>
                 <View style={styles.row}>
@@ -147,13 +168,19 @@ class UserAccount extends Component {
                         />
                     </View>
                     <View style={[styles.flex, styles.row]}>
-                        <Text style={{marginRight: 10}}>积分账户：234分</Text>
-                        <TouchableWithoutFeedback><View><Text style={{color: '#04c1ae'}}>查看</Text></View></TouchableWithoutFeedback>
+                        <Text style={{marginRight: 10}}>积分账户：{userProfile.get('score')}分</Text>
+                        <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: ScoreListContainer, name: 'scoreList', title: '积分明细', backLog: actionType.BA_MINE_POINTS_RETURN})}>
+                            <View><Text style={{color: '#04c1ae'}}>查看</Text></View>
+                        </TouchableWithoutFeedback>
                     </View>
                 </View>
                 <View style={[styles.row, {marginTop: 15}]}>
-                    <TouchableWithoutFeedback><View style={[styles.flex, styles.center, styles.btnColor, {marginRight: 15}]}><Text style={{color: '#ff6d4b'}}>充值</Text></View></TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback><View style={[styles.flex, styles.center, styles.btnColor]}><Text style={{color: '#ff6d4b'}}>提现</Text></View></TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: RechargeContainer, name: 'recharge', title: '充值'})}>
+                        <View style={[styles.flex, styles.center, styles.btnColor, {marginRight: 15}]}><Text style={{color: '#ff6d4b'}}>充值</Text></View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: WithdrawContainer, name: 'withdraw', data: withdrawData, title: '提现', backLog: actionType.BA_MINE_CASH_RETURN})}>
+                        <View style={[styles.flex, styles.center, styles.btnColor]}><Text style={{color: '#ff6d4b'}}>提现</Text></View>
+                    </TouchableWithoutFeedback>
                 </View>
             </View>
         );
