@@ -1,6 +1,7 @@
 'use strict';
 
 import {Platform} from 'nuke'
+import Toast from 'react-native-root-toast';
 let CallModule = require('react-native').NativeModules.CallModule;
 
 let ActionUtil = require( '../utils/ActionLog');
@@ -99,6 +100,11 @@ export function callFeedback(params) {
             success: function(oData) {
                 dispatch(setFeedbackVisible(false));
                 dispatch(setSellerPhone(oData.seller_phone || ''));
+
+                Toast.show('看房获得5个经验', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER
+                })
             },
             error: function(oData) {
 
