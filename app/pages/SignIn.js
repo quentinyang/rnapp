@@ -1,4 +1,4 @@
-import {React, Component, Text, View, ScrollView, TouchableWithoutFeedback, StyleSheet, Image, PixelRatio, Alert, Linking, Platform, InteractionManager} from 'nuke';
+import {React, Component, Text, View, ScrollView, StyleSheet, Image, PixelRatio, InteractionManager} from 'nuke';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
 
