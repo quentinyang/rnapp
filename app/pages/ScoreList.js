@@ -43,6 +43,7 @@ export default class ScoreList extends Component {
                     renderHeader={() => this.renderHeader()}
                     renderRow={this.renderRow}
                     renderFooter={() => this.renderFooter()}
+                    enableEmptySections={true}
                 />
             </View>
         )
@@ -77,13 +78,8 @@ export default class ScoreList extends Component {
 
     renderHeader() {
         let {navigator, appConfig, route, money} = this.props;
-        let profileData = route.profileData;
+        let accountData = route.accountData;
 
-        profileData = {
-            min_withdrawals_money: 50,
-            alipay_account: '123',
-            is_binding_alipay: 1
-        };
         return (
             <View>
                 <View style={[styles.totalBox]}>
@@ -92,10 +88,10 @@ export default class ScoreList extends Component {
                     </View>
                     <CashArea
                         navigator={navigator}
-                        score={money}
-                        minPrice={profileData.min_withdrawals_money}
-                        alipayAccount={profileData.alipay_account}
-                        hasBound={profileData.is_binding_alipay}
+                        score={accountData.score}
+                        minPrice={accountData.min_withdrawals_money}
+                        alipayAccount={accountData.alipay_account}
+                        hasBound={accountData.is_binding_alipay}
                         appConfig={appConfig}
                     />
                 </View>

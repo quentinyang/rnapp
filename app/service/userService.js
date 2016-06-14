@@ -40,7 +40,11 @@ module.exports=function(){
     }
 
     function getGiftInfo() {
-        return ajax.get(urls.user.giftInfo)
+        return ajax.get(urls.user.signIn)
+    }
+
+    function signInStatusService() {
+        return ajax.get(urls.user.signInStatus);
     }
 
     return {
@@ -52,6 +56,7 @@ module.exports=function(){
         withdrawService: withdrawService,
         alipayLoginService: alipayLoginService,
         scoreListService: scoreListService,
-        getGiftInfo: getGiftInfo
+        getGiftInfo: getGiftInfo,
+        signInStatusService: signInStatusService
     };
 }();

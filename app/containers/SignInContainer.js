@@ -21,7 +21,7 @@ class SignInContainer extends Component {
 function mapStateToProps(state) {
     const {signIn} = state.signIn;
     return {
-
+        signIn: signIn
     }
 }
 

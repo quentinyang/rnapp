@@ -9,6 +9,36 @@ export default class SignIn extends Component {
     }
 
     render() {
+        let {signIn, route} = this.props;
+        let signInfo = route.signInfo, unsignArr = signIn.get('have_not_get_points'), signArr = signIn.get('have_been_get_points');
+
+        let unsignList = unsignArr.map((item, index) => {
+            return (
+                <View key={index} style={[styles.row, styles.alignItems, styles.unsignItem, index ? {} : styles.unsignFirst]}>
+                    <View>
+                        <Image source={require('../images/s_calendar_panel.png')} style={styles.sPanel} />
+                        <Text style={styles.totalDays}>{item.get('sign_in_days')}</Text>
+                    </View>
+                    <Text style={styles.unsignTip}>连续签到{item.get('sign_in_days')}天</Text>
+                    <Text>积分<Text style={styles.orange}> + </Text><Text style={[styles.h2, styles.orange]}>{item.get('points')}</Text></Text>
+                    <View style={styles.vline}></View>
+                    <Text style={styles.grey}>未达成</Text>
+                </View>
+            );
+        });
+
+        let signList = signArr.map((item, index) => {
+            return (
+                <View key={index} style={[styles.row, styles.alignItems, styles.signItem, index ? {} : styles.signFirst]}>
+                    <View>
+                        <Text>{item.get('method')}</Text>
+                        <Text style={[styles.grey, styles.h6]}>{item.get('time')}</Text>
+                    </View>
+                    <Text style={styles.h3}>{item.get('money_change')} {item.get('money')}</Text>
+                </View>
+            );
+        });
+
         return (
             <ScrollView
                 style={styles.container}
@@ -18,9 +48,9 @@ export default class SignIn extends Component {
                     <Text style={[styles.topTip]}>已连续签到</Text>
                     <View>
                         <Image source={require("../images/calendar_panel.png")} style={styles.panel} />
-                        <Text style={[styles.h5, styles.days]}><Text style={styles.h1}>5</Text>天</Text>
+                        <Text style={[styles.h5, styles.days]}><Text style={styles.h1}>{signInfo.get('sign_in_days')}</Text>天</Text>
                     </View>
-                    <Text style={[styles.bottomTip]}>每天签到 经验<Text style={[styles.mediumFont, styles.green, styles.add]}> + </Text><Text style={styles.green}>3</Text></Text>
+                    <Text style={[styles.bottomTip]}>每天签到 经验<Text style={[styles.mediumFont, styles.green, styles.add]}> + </Text><Text style={styles.green}>{signInfo.get('experience')}</Text></Text>
                 </View>
 
                 <View style={[styles.row, styles.alignItems, styles.titleBox]}>
@@ -29,31 +59,18 @@ export default class SignIn extends Component {
                 </View>
 
                 <View style={styles.unsignList}>
-                    <View style={[styles.row, styles.alignItems, styles.unsignItem, styles.unsignFirst]}>
-                        <View>
-                            <Image source={require('../images/s_calendar_panel.png')} style={styles.sPanel} />
-                            <Text style={styles.totalDays}>15</Text>
-                        </View>
-                        <Text style={styles.unsignTip}>连续签到15天</Text>
-                        <Text>积分<Text style={styles.orange}> + </Text><Text style={[styles.h2, styles.orange]}>6</Text></Text>
-                        <View style={styles.vline}></View>
-                        <Text style={styles.grey}>未达成</Text>
-                    </View>
+                    {unsignList}
                 </View>
 
-                <View style={[styles.row, styles.alignItems, styles.titleBox]}>
-                    <View style={styles.bar}></View>
-                    <Text style={[styles.mediumFont]}>已领取积分</Text>
-                </View>
+                {signArr.length ?
+                    <View style={[styles.row, styles.alignItems, styles.titleBox]}>
+                        <View style={styles.bar}></View>
+                        <Text style={[styles.mediumFont]}>已领取积分</Text>
+                    </View>
+                : null }
 
                 <View>
-                    <View style={[styles.row, styles.alignItems, styles.signItem, styles.signFirst]}>
-                        <View>
-                            <Text>连续签到7天</Text>
-                            <Text style={[styles.grey, styles.h6]}>05-05 10:45</Text>
-                        </View>
-                        <Text style={styles.h3}>+ 3</Text>
-                    </View>
+                    {signList}
                 </View>
             </ScrollView>
         )
@@ -169,8 +186,10 @@ const styles = StyleSheet.create({
     totalDays: {
         position: 'absolute',
         bottom: 3,
-        left: 3,
+        left: 0,
+        right: 0,
         fontSize: 13,
+        textAlign: "center",
         backgroundColor: 'transparent'
     },
     vline: {
@@ -182,7 +201,7 @@ const styles = StyleSheet.create({
     },
     unsignTip: {
         marginLeft: 8,
-        marginRight: 40
+        width: 135
     },
     signItem: {
         justifyContent: 'space-between',

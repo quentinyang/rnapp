@@ -45,17 +45,18 @@ class GiftModal extends Component {
                     </TouchableHighlight>
 
 
-                    <Text style={[styles.h5, styles.giftDay]}>连续签到<Text>{modalInfo.get('day')}</Text>天</Text>
+                    <Text style={[styles.h5, styles.giftDay]}>连续签到<Text>{modalInfo.get('sign_in_days')}</Text>天</Text>
                     <View style={[styles.row]}>
                         <Text>
                             <Text style={[styles.h2, styles.addNum]}>+</Text>
                             <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('experience')}</Text>
                             经验</Text>
-                        { modalInfo.get('score') == '0' ? null :
+                        { modalInfo.get('points') ?
                             <Text style={styles.scoreAdd}>
                                 <Text style={[styles.h2, styles.addNum]}>+</Text>
                                 <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('score')}</Text>
                                 积分</Text>
+                            : null
                         }
                     </View>
 
@@ -74,13 +75,15 @@ class GiftModal extends Component {
     }
 
     _goScore() {
-        let {navigator} = this.props;
+        let {navigator, closeGiftModal, modalInfo} = this.props;
 
+        closeGiftModal(false);
         navigator.push({
             component: SignInContainer,
             name: 'signIn',
             title: '签到送积分',
-            hideNavBar: false
+            hideNavBar: false,
+            signInfo: modalInfo
         });
     }
 }
@@ -151,7 +154,7 @@ export default class Home extends Component {
             .then((value) => {
                 let today = new Date().getDate().toString();
 
-                if(value && value == today) { //不为空且 == today, 不显示
+                if(0 && value && value == today) { //不为空且 == today, 不显示
                 } else { //为空 或 != today, 则显示并更新
                     self._setGiftModalVisible(true);
                     AsyncStorageComponent.save(key, today);

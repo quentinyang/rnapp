@@ -114,11 +114,7 @@ export function fetchGiftInfo() {
         serviceAction(dispatch)({
             service: getGiftInfo,
             success: function(oData) {
-                dispatch(giftInfo(oData || {
-                        day: '1',
-                        score: '3',
-                        experience: '3'
-                    }));
+                dispatch(giftInfo(oData));
             },
             error: function() {}
         })

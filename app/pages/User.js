@@ -169,7 +169,7 @@ class UserAccount extends Component {
                     </View>
                     <View style={[styles.flex, styles.row]}>
                         <Text style={{marginRight: 10}}>积分账户：{userProfile.get('score')}分</Text>
-                        <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: ScoreListContainer, name: 'scoreList', title: '积分明细', backLog: actionType.BA_MINE_POINTS_RETURN})}>
+                        <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: ScoreListContainer, name: 'scoreList', title: '积分明细', backLog: actionType.BA_MINE_POINTS_RETURN, accountData: withdrawData})}>
                             <View><Text style={{color: '#04c1ae'}}>查看</Text></View>
                         </TouchableWithoutFeedback>
                     </View>

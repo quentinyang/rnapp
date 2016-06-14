@@ -102,11 +102,7 @@ let initialBaseInfo = {
         score: 8
     },
     newCount: "",
-    giftModal: {
-        day: '1',
-        score: '0',
-        experience: '0'
-    }
+    giftModal: {}
 };
 
 function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
