@@ -19,6 +19,7 @@ export default class AboutEXP extends Component {
     }
 
     render() {
+        let {route} = this.props;
         return (
             <ScrollView automaticallyAdjustContentInsets={false}>
                 <View style={[styles.myExp, styles.center]}>
@@ -30,10 +31,10 @@ export default class AboutEXP extends Component {
                             />
                         </View>
                         <View style={[styles.center, styles.vip]}>
-                            <Text style={{fontSize: 12, color: '#fff'}}>V1</Text>
+                            <Text style={{fontSize: 12, color: '#fff'}}>V{route.data.level}</Text>
                         </View>
                     </View>
-                    <Text style={{fontSize: 12, color: '#8d8c92'}}><Text>115 </Text>经验</Text>
+                    <Text style={{fontSize: 12, color: '#8d8c92'}}><Text>{route.data.exp} </Text>经验</Text>
                 </View>
                 <View style={[styles.row, styles.titleBox]}>
                     <View style={styles.titleIcon}></View>

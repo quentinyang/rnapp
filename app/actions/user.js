@@ -6,7 +6,7 @@ import {makeActionCreator, serviceAction} from './base';
 
 export const userProfileFetched = makeActionCreator(types.USER_PROFILE, 'profile');
 export const scoreFetched = makeActionCreator(types.SCORE_LIST, 'scores');
-export const scoreCleared = makeActionCreator(types.SCORE_CLEARED, 'scores');
+export const scoreCleared = makeActionCreator(types.SCORE_CLEARED);
 
 export function fetchUserProfile(params) {
     return dispatch => {

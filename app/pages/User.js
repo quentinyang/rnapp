@@ -56,8 +56,8 @@ export default class User extends Component {
                         onPress={() => this.navigatorPush({component: SignInContainer, name: 'signin', title: '签到送积分'})}
                     >
                         <View style={{flexDirection: 'column'}}>
-                            <Text style={{marginTop: 2}}>连续签到：5天</Text>
-                            <Text style={styles.signInPrompt}>连续签到2天 赚3积分</Text>
+                            <Text style={{marginTop: 2}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
+                            <Text style={styles.signInPrompt}>连续签到{userProfile.get('go_on_sign_in_day')}天 赚{userProfile.get('get_points')}积分</Text>
                         </View>
                     </LinkSection>
 
@@ -136,8 +136,8 @@ class BasicInfo extends Component {
                 <View style={styles.flex}>
                     <Text style={[styles.mobileText, styles.whiteText]}>{showMobile}</Text>
                 </View>
-                <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: AboutEXPContainer, name: 'exp', title: '我的等级'})}>
-                    <View style={[styles.level, styles.center]}><Text style={styles.whiteText}>V1会员</Text></View>
+                <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: AboutEXPContainer, data: {level: userProfile.get('level'), exp: userProfile.get('user_experience')}, name: 'exp', title: '我的等级'})}>
+                    <View style={[styles.level, styles.center]}><Text style={styles.whiteText}>V{userProfile.get('level')}会员</Text></View>
                 </TouchableWithoutFeedback>
             </View>
         );
@@ -152,11 +152,11 @@ class UserAccount extends Component {
     render() {
         let {userProfile} = this.props,
             withdrawData = {
-            score: userProfile.get('score'),
-            min_price: userProfile.get('minPrice'),
-            alipay_account: userProfile.get('alipayAccount'),
-            is_binding_alipay: userProfile.get('hasBound')
-        };
+                score: userProfile.get('score'),
+                min_price: userProfile.get('min_withdrawals_money'),
+                alipay_account: userProfile.get('alipay_account'),
+                is_binding_alipay: userProfile.get('is_binding_alipay')
+            };
 
         return (
             <View style={styles.accountSection}>
