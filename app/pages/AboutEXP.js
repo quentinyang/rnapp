@@ -7,7 +7,8 @@ import {
     Image,
     PixelRatio,
     Dimensions,
-    StyleSheet
+    StyleSheet,
+    InteractionManager
 } from 'nuke';
 
 let ActionUtil = require( '../utils/ActionLog');
@@ -19,7 +20,10 @@ export default class AboutEXP extends Component {
     }
 
     render() {
-        let {route} = this.props;
+        let {route, expLevel} = this.props;
+        let expListData = expLevel.get('get_experience_way') || null,
+            levelListData = expLevel.get('level_rule') || null;
+
         return (
             <ScrollView automaticallyAdjustContentInsets={false}>
                 <View style={[styles.myExp, styles.center]}>
@@ -36,36 +40,126 @@ export default class AboutEXP extends Component {
                     </View>
                     <Text style={{fontSize: 12, color: '#8d8c92'}}><Text>{route.data.exp} </Text>经验</Text>
                 </View>
+
                 <View style={[styles.row, styles.titleBox]}>
                     <View style={styles.titleIcon}></View>
                     <Text>如何获得经验</Text>
                 </View>
-                <View style={styles.getExpList}>
-                    <View style={[styles.getExpItem, styles.row]}>
-                        <View style={[styles.expIconBox, styles.center, {backgroundColor: '#f47e87'}]}>
-                            <Image style={{width: 15, height: 15}} source={require('../images/icon/calendar.png')} />
-                        </View>
-                        <Text style={styles.flex}>每日签到</Text>
-                        <Text style={styles.expItemValue}>经验<Text style={{color: '#ff6d4b'}}> + <Text style={{color: '#ff6d4b', fontSize: 23}}>3</Text></Text></Text>
-                    </View>
-                    <View style={[styles.getExpItem, styles.row]}><Image /><Text>看房成功</Text><Text>经验<Text>+5</Text></Text></View>
-                    <View style={[styles.getExpItem, styles.row, {borderBottomWidth: 0}]}><Image /><Text>发房成功</Text><Text>经验<Text>+5</Text></Text></View>
-                </View>
+                <ExpSection expListData={expListData} />
+
                 <View style={[styles.row, styles.titleBox]}>
                     <View style={styles.titleIcon}></View>
                     <Text>会员俱乐部</Text>
                 </View>
-                <View style={styles.clubDesc}><Text style={styles.font15}>会员等级一共包括7级，会员等级由经验决定。经验越高，会员等级越高。</Text></View>
-                <View style={styles.clubList}>
-                    <View style={[styles.row, styles.clubItem]}>
-                        <View style={[styles.vipItem, styles.center, {backgroundColor: '#faae6c'}]}><Text style={styles.vipItemText}>V1</Text></View>
-                        <View style={[styles.flex, {flexDirection: 'column'}]}>
-                            <View style={[styles.progress, {backgroundColor: '#faae6c'}]}></View>
-                            <View style={styles.progressDetail}><Text style={styles.font15}>1</Text><Text style={styles.font15}>100</Text></View>
+                <View style={styles.clubDesc}>
+                    <Text style={styles.font15}>会员等级一共包括7级，会员等级由经验决定。经验越高，会员等级越高。</Text>
+                </View>
+                <LevelSection levelListData={levelListData} />
+
+            </ScrollView>
+        );
+    }
+
+    componentWillMount() {
+        let {actions} = this.props;
+        InteractionManager.runAfterInteractions(() => {
+            actions.fetchExpLevel();
+        });
+    }
+}
+
+class ExpSection extends Component {
+    expConfig = {
+        'daily_sign_in': {
+            name: '每日签到',
+            url: require('../images/icon/calendar.png'),
+            style: {
+                width: 15,
+                height: 15
+            },
+            bgColor: {backgroundColor: '#f47e87'}
+        },
+        'see_house': {
+            name: '看房成功',
+            url: require('../images/icon/house.png'),
+            style: {
+                width: 16,
+                height: 14.5
+            },
+            bgColor: {backgroundColor: '#65dda9'}
+        },
+        'input_house': {
+            last: true,
+            name: '发房成功',
+            url: require('../images/icon/money.png'),
+            style: {
+                width: 16,
+                height: 15.5
+            },
+            bgColor: {backgroundColor: '#faae6c'}
+        }
+    };
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {expListData} = this.props;
+        let expList = expListData && expListData.map((item, index) => {
+            let expItem = this.expConfig[item.get('action')];
+            return (
+                <View style={[styles.getExpItem, styles.row, expItem.last?{borderBottomWidth: 0}:null]} key={index}>
+                    <View style={[styles.expIconBox, styles.center, expItem.bgColor]}>
+                        <Image style={expItem.style} source={expItem.url} />
+                    </View>
+                    <Text style={styles.flex}>{expItem.name}</Text>
+                    <Text style={styles.expItemValue}>经验<Text style={{color: '#ff6d4b'}}> + <Text style={{color: '#ff6d4b', fontSize: 23}}>{item.get('experience')}</Text></Text></Text>
+                </View>
+            );
+        });
+
+        return (
+            <View style={styles.getExpList}>
+                {expList}
+            </View>
+        );
+    }
+}
+
+class LevelSection extends Component {
+    levelConfig = ['#faae6c','#e78734','#fb5727', '#ff184f', '#ff2b98', '#ba2bff', '#6b2bff'];
+
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {levelListData} = this.props;
+        let size = levelListData && levelListData.size;
+        let levelList = levelListData && levelListData.map((item, index) => {
+            let progressWidth = (Dimensions.get('window').width - 100)/size*(index+1),
+                progressDetailWidth = (index != size-1) ? (progressWidth + 18) : progressWidth;
+
+            return (
+                <View style={[styles.row, styles.clubItem]} key={index}>
+                    <View style={[styles.vipItem, styles.center, {backgroundColor: this.levelConfig[index]}]}>
+                        <Text style={styles.vipItemText}>V{item.get('level')}</Text>
+                    </View>
+                    <View style={[styles.flex, {flexDirection: 'column'}]}>
+                        <View style={[styles.progress, {width: progressWidth}, {backgroundColor: this.levelConfig[index]}]}></View>
+                        <View style={[styles.progressDetail, {width: progressDetailWidth}]}>
+                            <Text style={styles.font15}>{item.get('min')}</Text><Text style={styles.font15}>{item.get('max')}</Text>
                         </View>
                     </View>
                 </View>
-            </ScrollView>
+            );
+        });
+
+        return (
+            <View style={styles.clubList}>
+                {levelList}
+            </View>
         );
     }
 }
@@ -167,15 +261,13 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     progress: {
+        marginTop: 7,
         marginBottom: 10,
-        width: (Dimensions.get('window').width - 70)/7,
         height: 12,
-        borderRadius: 12,
+        borderRadius: 12
     },
     progressDetail: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: (Dimensions.get('window').width - 70)/7 + 18,
+        justifyContent: 'space-between'
     }
-
 });

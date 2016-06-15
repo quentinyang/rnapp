@@ -3,7 +3,7 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actionsApp from '../actions/app';
+import * as actions from '../actions/user';
 import AboutEXP from '../pages/AboutEXP';
 
 class AboutEXPContainer extends Component {
@@ -20,13 +20,13 @@ class AboutEXPContainer extends Component {
 
 function mapStateToProps(state) {
     return {
-
+        expLevel: state.user.expLevel
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actionsApp: bindActionCreators(actionsApp, dispatch)
+        actions: bindActionCreators(actions, dispatch)
     }
 }
 

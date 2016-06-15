@@ -24,7 +24,9 @@ let urls = {
         alipayLogin: HOST + 'alipay/quick/login/url',
 
         signIn: HOST + 'user/sign-in',
-        signInStatus: HOST + 'user/sign-in/status'
+        signInStatus: HOST + 'user/sign-in/status',
+
+        expRule: HOST + 'user/level/rule'
     },
     house: {
         list: HOST + 'property-list',

@@ -47,6 +47,10 @@ module.exports=function(){
         return ajax.get(urls.user.signInStatus);
     }
 
+    function expRuleService() {
+        return ajax.get(urls.user.expRule);
+    }
+
     return {
         sendCodeService: sendCodeService,
         loginService: loginService,
@@ -57,6 +61,7 @@ module.exports=function(){
         alipayLoginService: alipayLoginService,
         scoreListService: scoreListService,
         getGiftInfo: getGiftInfo,
-        signInStatusService: signInStatusService
+        signInStatusService: signInStatusService,
+        expRuleService: expRuleService
     };
 }();
