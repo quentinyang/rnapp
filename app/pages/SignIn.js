@@ -14,15 +14,15 @@ export default class SignIn extends Component {
 
         let unsignList = unsignArr.map((item, index) => {
             return (
-                <View key={index} style={[styles.row, styles.alignItems, styles.unsignItem, index ? {} : styles.unsignFirst]}>
+                <View key={index} style={[styles.row, styles.alignItems, styles.unsignItem, index ? {} : styles.unsignFirst]} elevation={1}>
                     <View>
                         <Image source={require('../images/s_calendar_panel.png')} style={styles.sPanel} />
                         <Text style={styles.totalDays}>{item.get('sign_in_days')}</Text>
                     </View>
-                    <Text style={styles.unsignTip}>连续签到{item.get('sign_in_days')}天</Text>
+                    <Text style={[styles.flex, styles.unsignTip]}>连续签到{item.get('sign_in_days')}天</Text>
                     <Text>积分<Text style={styles.orange}> + </Text><Text style={[styles.h2, styles.orange]}>{item.get('points')}</Text></Text>
                     <View style={styles.vline}></View>
-                    <Text style={styles.grey}>未达成</Text>
+                    <Text style={[styles.grey, styles.undone]}>未达成</Text>
                 </View>
             );
         });
@@ -85,6 +85,9 @@ export default class SignIn extends Component {
 }
 
 const styles = StyleSheet.create({
+    flex: {
+        flex: 1
+    },
     row: {
         flexDirection: 'row'
     },
@@ -170,10 +173,12 @@ const styles = StyleSheet.create({
     unsignItem: {
         height: 70,
         backgroundColor: '#F8F8F8',
-        paddingHorizontal: 15,
+        paddingLeft: 15,
+        marginBottom: 1,
         paddingVertical: 16,
         shadowColor: "#000",
-        shadowRadius: 4,
+        shadowOpacity: 0.25,
+        shadowRadius: 1,
         shadowOffset: {
             height: 1,
             width: 0
@@ -192,16 +197,18 @@ const styles = StyleSheet.create({
         textAlign: "center",
         backgroundColor: 'transparent'
     },
+    unsignTip: {
+        marginLeft: 8
+    },
     vline: {
         width: 1,
         height: 37,
         backgroundColor: '#D9D9D9',
-        marginLeft: 15,
-        marginRight: 20
+        marginLeft: 15
     },
-    unsignTip: {
-        marginLeft: 8,
-        width: 135
+    undone: {
+        width: 84,
+        textAlign: "center"
     },
     signItem: {
         justifyContent: 'space-between',

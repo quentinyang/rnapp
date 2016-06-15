@@ -28,46 +28,48 @@ class GiftModal extends Component {
         return (
         <Modal visible={isVisible} transparent={true} onRequestClose={() => {closeGiftModal(false)}}>
             <View style={styles.bgWrap}>
-                <View style={styles.contentContainer}>
+                <View>
+                    <View style={[styles.contentContainer, {marginTop: 32}]}>
+                        <TouchableHighlight
+                            style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
+                            underlayColor="#fff"
+                            onPress={() => {closeGiftModal(false)}}
+                        >
+                            <Image
+                                style={styles.closeIcon}
+                                source={require("../images/close.png")}
+                            />
+                        </TouchableHighlight>
+
+                        <Text style={[styles.h5, styles.giftDay]}>连续签到<Text>{modalInfo.get('sign_in_days')}</Text>天</Text>
+                        <View style={[styles.row]}>
+                            <Text>
+                                <Text style={[styles.h2, styles.addNum]}>+</Text>
+                                <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('experience')}</Text>
+                                经验</Text>
+                            { modalInfo.get('points') ?
+                                <Text style={styles.scoreAdd}>
+                                    <Text style={[styles.h2, styles.addNum]}>+</Text>
+                                    <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('score')}</Text>
+                                    积分</Text>
+                                : null
+                            }
+                        </View>
+
+                        <TouchableHighlight
+                            underlayColor='#fff'
+                            onPress={this._goScore.bind(this)}
+                        >
+                            <View style={styles.flex}>
+                                <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
+                            </View>
+                        </TouchableHighlight>
+
+                    </View>
+
                     <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
                         <Image style={styles.gift} source={require("../images/gift.png")} />
                     </View>
-
-                    <TouchableHighlight
-                        style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
-                        underlayColor="#fff"
-                        onPress={() => {closeGiftModal(false)}}
-                    >
-                        <Image
-                            style={styles.closeIcon}
-                            source={require("../images/close.png")}
-                        />
-                    </TouchableHighlight>
-
-
-                    <Text style={[styles.h5, styles.giftDay]}>连续签到<Text>{modalInfo.get('sign_in_days')}</Text>天</Text>
-                    <View style={[styles.row]}>
-                        <Text>
-                            <Text style={[styles.h2, styles.addNum]}>+</Text>
-                            <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('experience')}</Text>
-                            经验</Text>
-                        { modalInfo.get('points') ?
-                            <Text style={styles.scoreAdd}>
-                                <Text style={[styles.h2, styles.addNum]}>+</Text>
-                                <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('score')}</Text>
-                                积分</Text>
-                            : null
-                        }
-                    </View>
-
-                    <TouchableHighlight
-                        underlayColor='#fff'
-                        onPress={this._goScore.bind(this)}
-                    >
-                        <View style={styles.flex}>
-                            <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
-                        </View>
-                    </TouchableHighlight>
                 </View>
             </View>
         </Modal>
@@ -443,7 +445,7 @@ class NoData extends Component {
         return (
             <View style={[styles.alignItems]}>
                 <Image
-                    source={require('../images/noAttention.png')}
+                    source={require('../images/no_house_list.png')}
                     style={styles.noAttention}
                 />
                 {
@@ -679,8 +681,8 @@ const styles = StyleSheet.create({
     },
     giftBg: {
         position: 'absolute',
-        top: -32,
-        left: 104,
+        top: 0,
+        left: 100,
         width: 76,
         height: 76,
         borderRadius: 38,

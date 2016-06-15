@@ -18,6 +18,7 @@ export default class Setting extends Component {
         return (
             <ScrollView
                 style={styles.container}
+                contentContainerStyle={{flex: 1}}
                 automaticallyAdjustContentInsets={false}
             >
                 <View style={styles.box}>
@@ -53,9 +54,29 @@ export default class Setting extends Component {
                     </View>
                 </TouchableWithoutFeedback>
                 <Text style={styles.version}>{Platform.OS === 'ios' ? 'V' + deviceInfo.buildNum : 'V' + deviceInfo.readableVersion}</Text>
+
+                <View style={styles.bottomInfo}>
+                    <View style={[styles.row, styles.center]}>
+                        <Text style={styles.callInfo}>客服电话:</Text>
+                        <TouchableWithoutFeedback onPress={this.callCenter}>
+                            <View><Text style={[styles.callInfo, styles.callNum]}>13222740214</Text></View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </View>
             </ScrollView>
         )
     }
+
+    callCenter = () => {
+        let url = "tel:13222740214";
+        Linking.canOpenURL(url).then(supported => {
+            if (supported) {
+                Linking.openURL(url);
+            } else {
+                console.log('Don\'t know how to open URI: ' + url);
+            }
+        });
+    };
 
     goAppStore = () => {
         let url = '';
@@ -121,6 +142,9 @@ class LinkBox extends Component {
 }
 
 const styles = StyleSheet.create({
+    row: {
+        flexDirection: 'row'
+    },
     container: {
       flex: 1,
       backgroundColor: '#eee'
@@ -132,7 +156,6 @@ const styles = StyleSheet.create({
         borderTopColor: '#ccc'
     },
     linkBox: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         height: 45,
@@ -156,5 +179,19 @@ const styles = StyleSheet.create({
         marginTop: 10,
         color: '#888',
         textAlign: 'center'
+    },
+    bottomInfo: {
+        position: 'absolute',
+        bottom: 10,
+        left: 0,
+        right: 0
+    },
+    callInfo: {
+        fontSize: 12,
+        color: '#8d8c92'
+    },
+    callNum: {
+        marginLeft: 3,
+        textDecorationLine: 'underline'
     }
 });
