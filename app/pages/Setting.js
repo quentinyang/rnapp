@@ -53,7 +53,7 @@ export default class Setting extends Component {
                         <Text style={{fontSize: 16, color: '#3e3e3e'}}>退出</Text>
                     </View>
                 </TouchableWithoutFeedback>
-                <Text style={styles.version}>{Platform.OS === 'ios' ? 'V' + deviceInfo.buildNum : 'V' + deviceInfo.readableVersion}</Text>
+                <Text style={styles.version}>{'V' + deviceInfo.version}</Text>
 
                 <View style={styles.bottomInfo}>
                     <View style={[styles.row, styles.center]}>
