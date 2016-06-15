@@ -6,6 +6,7 @@ import {
     ScrollView,
     Image,
     PixelRatio,
+    Dimensions,
     StyleSheet
 } from 'nuke';
 
@@ -39,7 +40,13 @@ export default class AboutEXP extends Component {
                     <Text>如何获得经验</Text>
                 </View>
                 <View style={styles.getExpList}>
-                    <View style={[styles.getExpItem, styles.row]}><Image /><Text>每日签到</Text><Text>经验<Text>+3</Text></Text></View>
+                    <View style={[styles.getExpItem, styles.row]}>
+                        <View style={[styles.expIconBox, styles.center, {backgroundColor: '#f47e87'}]}>
+                            <Image style={{width: 15, height: 15}} source={require('../images/icon/calendar.png')} />
+                        </View>
+                        <Text style={styles.flex}>每日签到</Text>
+                        <Text style={styles.expItemValue}>经验<Text style={{color: '#ff6d4b'}}> + <Text style={{color: '#ff6d4b', fontSize: 23}}>3</Text></Text></Text>
+                    </View>
                     <View style={[styles.getExpItem, styles.row]}><Image /><Text>看房成功</Text><Text>经验<Text>+5</Text></Text></View>
                     <View style={[styles.getExpItem, styles.row, {borderBottomWidth: 0}]}><Image /><Text>发房成功</Text><Text>经验<Text>+5</Text></Text></View>
                 </View>
@@ -47,8 +54,16 @@ export default class AboutEXP extends Component {
                     <View style={styles.titleIcon}></View>
                     <Text>会员俱乐部</Text>
                 </View>
-                <View style={styles.clubDesc}><Text style={{fontSize: 15}}>会员等级一共包括7级，会员等级由经验决定。经验越高，会员等级越高。</Text></View>
-                <View></View>
+                <View style={styles.clubDesc}><Text style={styles.font15}>会员等级一共包括7级，会员等级由经验决定。经验越高，会员等级越高。</Text></View>
+                <View style={styles.clubList}>
+                    <View style={[styles.row, styles.clubItem]}>
+                        <View style={[styles.vipItem, styles.center, {backgroundColor: '#faae6c'}]}><Text style={styles.vipItemText}>V1</Text></View>
+                        <View style={[styles.flex, {flexDirection: 'column'}]}>
+                            <View style={[styles.progress, {backgroundColor: '#faae6c'}]}></View>
+                            <View style={styles.progressDetail}><Text style={styles.font15}>1</Text><Text style={styles.font15}>100</Text></View>
+                        </View>
+                    </View>
+                </View>
             </ScrollView>
         );
     }
@@ -69,6 +84,9 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    font15: {
+        fontSize: 15,
     },
     myExp: {
         height: 115,
@@ -118,8 +136,45 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderColor: '#d9d9d9'
     },
+    expIconBox: {
+        marginRight: 8,
+        width: 27,
+        height: 27,
+        borderRadius: 13.5
+    },
+    expItemValue: {
+        width: 65
+    },
     clubDesc: {
         padding: 15,
         backgroundColor: '#f8f8f8'
+    },
+    clubList: {
+        padding: 15
+    },
+    clubItem: {
+        marginBottom: 20
+    },
+    vipItem: {
+        marginRight: 25,
+        width: 45,
+        height: 45,
+        borderRadius: 22.5
+    },
+    vipItemText: {
+        fontSize: 25,
+        color: '#fff'
+    },
+    progress: {
+        marginBottom: 10,
+        width: (Dimensions.get('window').width - 70)/7,
+        height: 12,
+        borderRadius: 12,
+    },
+    progressDetail: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: (Dimensions.get('window').width - 70)/7 + 18,
     }
+
 });
