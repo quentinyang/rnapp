@@ -41,6 +41,7 @@ export default class User extends Component {
             <View style={styles.container}>
                 <Header title='我的' style={styles.bgHeader} fontStyle={styles.whiteText} />
                 <ScrollView
+                    style={{marginBottom: 60}}
                     automaticallyAdjustContentInsets={false}
                 >
                     <BasicInfo userProfile={userProfile}  navigatorPush={this.navigatorPush} />
@@ -204,7 +205,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     bgHeader: {
-        backgroundColor: '#04c1ae'
+        backgroundColor: '#04c1ae',
+        borderBottomWidth: 0
     },
     whiteText: {
         color: '#fff'
