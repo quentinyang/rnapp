@@ -23,6 +23,7 @@ import RechargeContainer from '../containers/RechargeContainer';
 import WithdrawContainer from '../containers/WithdrawContainer';
 import SettingContainer from '../containers/SettingContainer';
 import ScoreListContainer from '../containers/ScoreListContainer';
+import Immutable from 'immutable';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
 
@@ -54,7 +55,7 @@ export default class User extends Component {
                             style: {width: 12, height: 12},
                             bgColor: '#d883aa'
                         }}
-                        onPress={() => this.navigatorPush({component: SignInContainer, name: 'signin', title: '签到送积分'})}
+                        onPress={() => this.navigatorPush({component: SignInContainer, signInfo: Immutable.fromJS({sign_in_days: userProfile.get('sign_in_days'), experience: userProfile.get('sign_in_experience')}), name: 'signin', title: '签到送积分'})}
                     >
                         <View style={{flexDirection: 'column'}}>
                             <Text style={{marginTop: 2}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
