@@ -184,15 +184,50 @@ class UserAccount extends Component {
                     </View>
                 </View>
                 <View style={[styles.row, {marginTop: 15}]}>
-                    <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: RechargeContainer, name: 'recharge', title: '充值'})}>
+                    <TouchableWithoutFeedback onPress={() => this.goCharge()}>
                         <View style={[styles.flex, styles.center, styles.btnColor, {marginRight: 15}]}><Text style={{color: '#ff6d4b'}}>充值</Text></View>
                     </TouchableWithoutFeedback>
-                    <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: WithdrawContainer, name: 'withdraw', data: withdrawData, title: '提现', backLog: actionType.BA_MINE_CASH_RETURN})}>
+                    <TouchableWithoutFeedback onPress={() => this.goWithdraw(withdrawData)}>
                         <View style={[styles.flex, styles.center, styles.btnColor]}><Text style={{color: '#ff6d4b'}}>提现</Text></View>
                     </TouchableWithoutFeedback>
                 </View>
             </View>
         );
+    }
+
+    goCharge() {
+        ActionUtil.setAction(actionType.BA_MINE_RECHANGE);
+        let {navigator, appConfig} = this.props;
+        if(appConfig.get('showRecharge')) {
+            navigator.push({
+                component: RechargeContainer,
+                name: 'recharge',
+                title: '充值',
+                bp: actionType.BA_MINE,
+                hideNavBar: false
+            });
+        } else {
+            Alert.alert('温馨提示', '充值功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
+        }
+    }
+
+    goWithdraw(value) {
+        ActionUtil.setAction(actionType.BA_MINE_CASH);
+        let {navigator} = this.props;
+
+        if(parseInt(value.score) < parseInt(value.min_price)) {
+            Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);
+        } else {
+            navigator.push({
+                component: WithdrawContainer,
+                name: 'withdraw',
+                data: value,
+                title: '提现',
+                bp: actionType.BA_MINE,
+                backLog: actionType.BA_MINE_CASH_RETURN,
+                hideNavBar: false
+            });
+        }
     }
 }
 

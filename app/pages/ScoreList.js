@@ -75,7 +75,6 @@ export default class ScoreList extends Component {
         }
     };
 
-
     renderHeader() {
         let {navigator, appConfig, route, money} = this.props;
         let accountData = route.accountData;
@@ -88,10 +87,7 @@ export default class ScoreList extends Component {
                     </View>
                     <CashArea
                         navigator={navigator}
-                        score={accountData.score}
-                        minPrice={accountData.min_withdrawals_money}
-                        alipayAccount={accountData.alipay_account}
-                        hasBound={accountData.is_binding_alipay}
+                        accountData = {accountData}
                         appConfig={appConfig}
                     />
                 </View>
@@ -180,15 +176,15 @@ class CashArea extends Component {
 
     _triggerWithdraw = () => {
         ActionUtil.setAction(actionType.BA_MINE_POINTS_CASH);
-        let {navigator, score, minPrice, alipayAccount, hasBound} = this.props;
+        let {navigator, accountData} = this.props;
 
-        if(parseInt(score) < parseInt(minPrice)) {
-            Alert.alert('', '余额超过' + minPrice + '元才能提现哦', [{text: '知道了'}]);
+        if(parseInt(accountData.score) < parseInt(accountData.min_price)) {
+            Alert.alert('', '余额超过' + accountData.min_price + '元才能提现哦', [{text: '知道了'}]);
         } else {
             navigator.push({
                 component: WithdrawContainer,
                 name: 'withdraw',
-                data: {'score': score, 'min_price': minPrice, 'alipay_account': alipayAccount, 'is_binding_alipay': hasBound},
+                data: accountData,
                 title: '提现',
                 bp: actionType.BA_MINE,
                 backLog: actionType.BA_MINE_CASH_RETURN,
