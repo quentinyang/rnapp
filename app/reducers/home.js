@@ -63,7 +63,7 @@ function houseData(state = Immutable.fromJS(initialState), action) {
                 return newArr;
             });
             break;
-        default: 
+        default:
             return state;
     }
 }
@@ -91,7 +91,7 @@ function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
         case types.CLEAR_HOME_PAGE:
             return Immutable.fromJS(initialAttentionList);
             break;
-        default: 
+        default:
             return state;
     }
 }
@@ -104,8 +104,7 @@ let initialBaseInfo = {
     newCount: "",
     giftModal: {
         "sign_in_days": "1",
-        "experience": "0",
-        "points": "0"
+        "experience": "0"
     }
 };
 

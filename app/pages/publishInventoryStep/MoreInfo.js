@@ -24,7 +24,7 @@ export default class MoreInfoPage extends Component {
 
     render() {
         let {houseForm, controller, communityData} = this.props.houseInput;
-        let isOpacity = houseForm.get('bedrooms') && houseForm.get('living_rooms') && houseForm.get('bathrooms') && houseForm.get('area') && houseForm.get('price');
+        let isOpacity = houseForm.get('bedrooms') && houseForm.get('living_rooms') && houseForm.get('bathrooms') && houseForm.get('area') && houseForm.get('price') && !controller.get('err_msg');
 
         return (
             <View style={styles.container}>
@@ -104,7 +104,7 @@ export default class MoreInfoPage extends Component {
         let {houseInput, actions} = this.props;
 
         houseInput.controller.get('err_msg') && actions.error('');
-        actions[action](value);
+        actions[action](value.trim());
     }
 
     checkForm() {
@@ -141,6 +141,7 @@ export default class MoreInfoPage extends Component {
     }
 
     componentWillUnmount() {
+        this.props.actions.error('');
         //this.props.actions.moreCleared();
     }
 }

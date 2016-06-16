@@ -30,7 +30,7 @@ export default class BaseInfoPage extends Component {
     render() {
         let {navigator, route} = this.props;
         let {houseForm, controller} = this.props.houseInput;
-        let isOpacity = !!(houseForm.get('community_name') && (controller.get('single')? true: houseForm.get('building_num')) && (controller.get('villa')?true:houseForm.get('door_num')));
+        let isOpacity = !!(houseForm.get('community_name') && !controller.get('err_msg') && (controller.get('single')? true: houseForm.get('building_num')) && (controller.get('villa')?true:houseForm.get('door_num')));
 
         return (
             <View style={styles.container}>
@@ -64,7 +64,7 @@ export default class BaseInfoPage extends Component {
                             editable={controller.get('single')? false: true}
                             underlineColorAndroid = 'transparent'
                             onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_BUILDING)}
-                            onChangeText={(v) => {this.singleAction('buildingChanged', v)}}
+                            onChangeText={(v) => {this.singleAction('buildingChanged', v.trim())}}
                         >
                             <Attached
                                 isSelected={controller.get('single')}
@@ -80,7 +80,7 @@ export default class BaseInfoPage extends Component {
                             underlineColorAndroid = 'transparent'
                             editable={controller.get('villa')? false: true}
                             onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_ROOM)}
-                            onChangeText={(v) => {this.singleAction('doorChanged', v)}}
+                            onChangeText={(v) => {this.singleAction('doorChanged', v.trim())}}
                         >
                             <Attached
                                 isSelected={controller.get('villa')}
