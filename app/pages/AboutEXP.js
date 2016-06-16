@@ -17,6 +17,8 @@ import * as actionType from '../constants/ActionLog';
 export default class AboutEXP extends Component {
     constructor(props) {
         super(props);
+        this.pageId = actionType.BA_MINE_GRADE;
+        ActionUtil.setActionWithExtend(actionType.BA_MINE_GRADE_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {

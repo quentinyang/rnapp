@@ -37,6 +37,10 @@ export default class User extends Component {
 
     render() {
         let {userProfile} = this.props;
+        let signInData = Immutable.fromJS({
+            sign_in_days: userProfile.get('sign_in_days'),
+            experience: userProfile.get('sign_in_experience')
+        });
 
         return (
             <View style={styles.container}>
@@ -55,7 +59,7 @@ export default class User extends Component {
                             style: {width: 12, height: 12},
                             bgColor: '#d883aa'
                         }}
-                        onPress={() => this.navigatorPush({component: SignInContainer, signInfo: Immutable.fromJS({sign_in_days: userProfile.get('sign_in_days'), experience: userProfile.get('sign_in_experience')}), name: 'signin', title: '签到送积分'})}
+                        onPress={() => this.navigatorPush({component: SignInContainer, signInfo: signInData, name: 'signin', title: '签到送积分', actionLog: actionType.BA_MINE_SIGN})}
                     >
                         <View style={{flexDirection: 'column'}}>
                             <Text style={{marginTop: 2}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
@@ -108,7 +112,10 @@ export default class User extends Component {
         );
     }
 
-    navigatorPush = (ops) => {
+    navigatorPush = (value) => {
+        let {actionLog, ...ops} = value;
+        ActionUtil.setAction(actionLog);
+
         this.props.navigator.push({
             bp: actionType.BA_MINE,
             hideNavBar: false,
@@ -138,7 +145,7 @@ class BasicInfo extends Component {
                 <View style={styles.flex}>
                     <Text style={[styles.mobileText, styles.whiteText]}>{showMobile}</Text>
                 </View>
-                <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: AboutEXPContainer, data: {level: userProfile.get('level'), exp: userProfile.get('user_experience')}, name: 'exp', title: '我的等级'})}>
+                <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: AboutEXPContainer, data: {level: userProfile.get('level'), exp: userProfile.get('user_experience')}, name: 'exp', title: '我的等级', actionLog: actionType.BA_MINE_MEMBER, backLog: actionType.BA_MINE_GRADE_BACK})}>
                     <View style={[styles.level, styles.center]}><Text style={styles.whiteText}>V{userProfile.get('level')}会员</Text></View>
                 </TouchableWithoutFeedback>
             </View>

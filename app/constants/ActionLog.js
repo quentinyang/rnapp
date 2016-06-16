@@ -177,6 +177,8 @@ export const BA_MINE_CASH = "101-400004"
 export const BA_MINE_CONNECT = "101-400005"
 export const BA_MINE_RELEASED = "101-400006"
 export const BA_MINE_SET = "101-400007"
+export const BA_MINE_MEMBER = "3-400008"
+export const BA_MINE_SIGN = "3-400009"
 
 //联系过的房源列表
 export const BA_MINE_CONTACT = "101-450000"
@@ -256,5 +258,10 @@ export const BA_MINE_CASH_SUCCESS = "3-440000-10"
 export const BA_MINE_POINTS = "101-410000"
 export const BA_MINE_POINTS_ONVIEW = "101-410001"
 export const BA_MINE_POINTS_RETURN = "101-410002"
+
+//我的等级页
+export const BA_MINE_GRADE = "3-490000"
+export const BA_MINE_GRADE_ONVIEW = "3-490001"
+export const BA_MINE_GRADE_BACK = "3-490002"
 
 
