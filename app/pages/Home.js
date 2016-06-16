@@ -167,7 +167,7 @@ export default class Home extends Component {
             .then((value) => {
                 let today = new Date().getDate().toString();
 
-                if(0 && value && value == today) { //不为空且 == today, 不显示
+                if(value && value == today) { //不为空且 == today, 不显示
                 } else { //为空 或 != today, 则显示并更新
                     self._setGiftModalVisible(true);
                     AsyncStorageComponent.save(key, today);
