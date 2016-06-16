@@ -46,7 +46,7 @@ export default class User extends Component {
             <View style={styles.container}>
                 <Header title='我的' style={styles.bgHeader} fontStyle={styles.whiteText} />
                 <ScrollView
-                    style={{marginBottom: 60}}
+                    style={{paddingBottom: 60}}
                     automaticallyAdjustContentInsets={false}
                 >
                     <BasicInfo userProfile={userProfile}  navigatorPush={this.navigatorPush} />

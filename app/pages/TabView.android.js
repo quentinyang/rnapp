@@ -2,7 +2,7 @@
 
 import {React, Component, View, Text, StyleSheet, Navigator, TouchableOpacity, Image} from 'nuke';
 import HomeContainer from '../containers/HomeContainer';
-import HouseInputEnterContainer from '../containers/HouseInputEnterContainer';
+import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
 import UserContainer from '../containers/UserContainer';
 
 let _navigator = null;
@@ -27,12 +27,13 @@ export default class TabView extends Component {
     _renderScene(route, nav) {
         _navigator = nav;
         let {navigator, routeFromPage} = this.props;
+
         switch(route.key) {
             case 0:
                 return <HomeContainer navigator={navigator} route={routeFromPage || route} rout='全部房源'/>;
                 break;
             case 1:
-                return <HouseInputEnterContainer navigator={navigator} route={routeFromPage || route} rout='发房'/>;
+                return <PublishFirstStepContainer navigator={navigator} route={routeFromPage || route} rout='发房'/>;
                 break;
             case 2:
                 return <UserContainer navigator={navigator} route={routeFromPage || route} rout='我的'/>;
