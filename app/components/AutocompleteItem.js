@@ -20,7 +20,7 @@ export default class AutocompleteItem extends Component {
                         <Text style={styles.text}>{item.get('name')}</Text>
                         <Text numberOfLines={1} style={[styles.text_1, styles.fontColor]}>{item.get('address')}</Text>
                     </View>
-                    <Text style={[styles.text, styles.text_1, styles.sellerNum]}>{'约' + item.get('selling_house_count') + '套在售'}</Text>
+                    <Text style={[styles.text, styles.text_1, styles.sellerNum]}>{'约' + item.get('selling_house_count') + '套'}</Text>
                 </View>
             </TouchableHighlight>
         );

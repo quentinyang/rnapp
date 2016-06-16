@@ -50,7 +50,7 @@ export default class SignIn extends Component {
                         <Image source={require("../images/calendar_panel.png")} style={styles.panel} />
                         <Text style={[styles.h5, styles.days]}><Text style={styles.h1}>{signInfo.get('sign_in_days')}</Text>天</Text>
                     </View>
-                    <Text style={[styles.bottomTip]}>每天签到 经验<Text style={[styles.mediumFont, styles.green, styles.add]}> + </Text><Text style={styles.green}>{signInfo.get('experience')}</Text></Text>
+                    <Text style={[styles.bottomTip]}>每天签到 经验<Text style={[styles.green, styles.add]}> + </Text><Text style={styles.green}>{signInfo.get('experience')}</Text></Text>
                 </View>
 
                 <View style={[styles.row, styles.alignItems, styles.titleBox]}>
