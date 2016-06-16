@@ -12,7 +12,7 @@ export const housePrependFetched = makeActionCreator(types.HOUSE_PREPEND_FETCHED
 
 export const houseFilterFetched = makeActionCreator(types.HOUSE_FILTER_FETCHED, 'filterList');
 export const filterItemPressed = makeActionCreator(types.FILTER_ITEM_PRESSED, 'item');
-export const onlyVerifyChanged = makeActionCreator(types.ONLY_VERIFY_CHANGED, 'onlyVerify');
+export const onlyNewChanged = makeActionCreator(types.ONLY_NEW_CHANGED, 'onlyNew');
 export const blockFilterChanged = makeActionCreator(types.BLOCK_FILTER_CHANGED, 'districtId', 'blockId', 'areaName');
 export const filterTabPriceChanged = makeActionCreator(types.FILTER_TAB_PRICE_CHANGED, 'min', 'max', 'title');
 export const filterTabBedroomsChanged = makeActionCreator(types.FILTER_TAB_BEDROOMS_CHANGED, 'min', 'max', 'title');

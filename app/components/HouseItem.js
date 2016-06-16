@@ -31,9 +31,6 @@ export default class HouseItem extends Component {
                             {
                                 item.get('is_new') ? <Text style={[styles.tagNew]}>新</Text> : null
                             }
-                            {
-                                item.get('is_verify') ? <Text style={[styles.tagNew, styles.tagAuth]}>认</Text> : null
-                            }
                         </View>
                     </View>
                     <View style={[styles.row, styles.bedroomsWrap]}>

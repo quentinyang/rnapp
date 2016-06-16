@@ -41,7 +41,7 @@ export default class HouseList extends Component {
         let houseList = houseData.get('properties');
         let pager = houseData.get('pager');
         let tabType = uiData.get('tabType');
-        let onlyVerify = uiData.get('onlyVerify');
+        let onlyNew = uiData.get('onlyNew');
         let areaName = uiData.get('areaName');
         let bedroomsName = uiData.get('bedroomsName');
         let priceName = uiData.get('priceName');
@@ -55,12 +55,12 @@ export default class HouseList extends Component {
                 />
                 <Filter
                     tabType={tabType}
-                    onlyVerify={onlyVerify}
+                    onlyNew={onlyNew}
                     areaName={areaName}
                     priceName={priceName}
                     bedroomsName={bedroomsName}
                     filterItemPress={this._filterItemPress}
-                    onlyVerifyChanged={this._onlyVerifyChanged}
+                    onlyNewChanged={this._onlyNewChanged}
                 />
                 {
                     Number(pager.get('total')) > 0 ?
@@ -279,18 +279,18 @@ export default class HouseList extends Component {
     };
 
     // 过滤只看认证
-    _onlyVerifyChanged = (verify) => {
+    _onlyNewChanged = (onlyNew) => {
         ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_FILTERCERTIFY);
         let {actions, queryParamsData} = this.props;
         let queryParamsDataJs = queryParamsData.toJS();
-        queryParamsDataJs.only_verify = verify;
+        queryParamsDataJs.only_new = onlyNew;
 
         actions.fetchHouseList({
             page: 1,
             ...queryParamsDataJs
         });
 
-        actions.onlyVerifyChanged(verify)
+        actions.onlyNewChanged(onlyNew)
     };
 
     // 过滤区域板块

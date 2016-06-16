@@ -101,7 +101,7 @@ export function callFeedback(params, propertyId) {
                 dispatch(setFeedbackVisible(false));
                 dispatch(setSellerPhone(oData.seller_phone || ''));
 
-                Toast.show('看房获得5个经验', {
+                Toast.show('看房获得' + (oData.experience || 5) + '个经验', {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER
                 });

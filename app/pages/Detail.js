@@ -440,9 +440,6 @@ class BaseInfo extends Component {
                         {
                             houseInfo.get('is_new') ? <Text style={[styles.tagNew, styles.flex]}>新</Text> : null
                         }
-                        {
-                            houseInfo.get('is_verify') ? <Text style={[styles.tagNew, styles.tagAuth, styles.flex]}>认</Text> : null
-                        }
                     </View>
                 </View>
 
