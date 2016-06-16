@@ -25,6 +25,7 @@ class App extends Component {
         super(props);
         var self = this;
         let {actionsApp} = this.props;
+        this.routeStack = [routes["Home"]];
         this.state = {
             component: null,
             name: '',
@@ -33,7 +34,7 @@ class App extends Component {
             initialRoute: null,
             showModal: false
         };
-
+this.hasSet = false;
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
         AsyncStorageComponent.multiGet([common.USER_TOKEN_KEY, common.USER_ID])
         .then((value) => {
@@ -61,7 +62,6 @@ class App extends Component {
                 })
             } else {
                 if(Platform.OS == "ios" && gpage) {
-                    //routeStack 中加入Home 返回问题
                     self.setState(routes[gpage]);
                 } else {
                     self.setState({
@@ -81,7 +81,7 @@ class App extends Component {
                 self._clientIdReceived(cId);
             });
             this.unlistenPage =  NativeAppEventEmitter.addListener('goPage', (obj) => {
-                _navigator.push(routes[obj.page]);
+                _navigator.push(routes[obj.page] || routes["Home"]);
             });
         } else {
             DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
@@ -89,7 +89,7 @@ class App extends Component {
             });
 
             DeviceEventEmitter.addListener('goPage', (page) => {
-                _navigator.push(routes[page]);
+                _navigator.push(routes[page] || routes["Home"]);
             });
         }
 
@@ -100,6 +100,16 @@ class App extends Component {
         let {appData, actionsApp} = this.props;
         let isAndroid = (Platform.OS == "android");
 
+        if(!this.hasSet && component && this.state.name != "home") {
+            this.hasSet = true;
+            this.routeStack.push({
+                component: this.state.component,
+                name: this.state.name,
+                hideNavBar: true,
+                title: this.state.title,
+                bp: ''});
+        }
+        console.dir(this.routeStack);
         return (
             <View style={styles.flex}>
                 <Modal visible={this.state.showModal} transparent={true} onRequestClose={() => {}}>
@@ -159,13 +169,7 @@ class App extends Component {
                             sceneStyle={styles.sceneStyle}
                             navigationBar={this._navBar()}
                             onWillFocus={this._willFocus}
-                            initialRoute={{
-                            component: this.state.component,
-                            name: this.state.name,
-                            hideNavBar: true,
-                            title: this.state.title,
-                            bp: ''
-                        }}
+                            initialRouteStack={this.routeStack}
                         /> : null
                 }
             </View>

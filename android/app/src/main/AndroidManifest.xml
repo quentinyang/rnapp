@@ -65,7 +65,7 @@
                 <category android:name="android.intent.category.DEFAULT"></category>
                 <category android:name="android.intent.category.BROWSABLE"></category>
 
-                <data android:scheme="app" android:host="start.url"/>
+                <data android:scheme="opendiyifangyuan" android:host="app.diyifangyuan.com"/>
             </intent-filter>
         </activity>
 

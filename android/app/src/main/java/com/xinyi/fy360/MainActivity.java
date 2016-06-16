@@ -42,6 +42,7 @@ public class MainActivity extends ReactActivity {
 
     private final Timer timer = new Timer();
     private TimerTask task;
+    private String pageName;
 
     // 3. Override the getJSBundleFile method in order to let
     // the CodePush runtime determine where to get the JS
@@ -113,8 +114,7 @@ public class MainActivity extends ReactActivity {
             @Override
             public void run() {
                 if (null != ModulePackage.utils) {
-                    android.util.Log.i("life" , "send event if");
-                    ModulePackage.utils.sendEvent("goPage", "HouseList");
+                    ModulePackage.utils.sendEvent("goPage", pageName);
                 }
 
             }
@@ -157,22 +157,12 @@ public class MainActivity extends ReactActivity {
         Intent intent = getIntent();
         if (intent != null){
             Uri uri = intent.getData();
-            android.util.Log.i("life", "intent if");
-
             if (uri != null){
-                android.util.Log.i("life", "uri if");
-                String dataString = intent.getDataString();
-                String scheme = uri.getScheme();
-                String host = uri.getHost();
-                String query = uri.getQuery();
-
-                Log.d("url", "dataString = " + dataString + " | scheme = " + scheme + " | host = " + host + " | query = " + query);
-                android.util.Log.i("life query", query);
-
+                android.util.Log.i("life", uri.toString());
+                pageName = uri.getQuery();
                 timer.schedule(task, 4000);
             }
         }
-        android.util.Log.i("life", "onResume");
     }
 
     @Override
