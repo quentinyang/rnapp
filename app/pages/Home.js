@@ -85,7 +85,7 @@ class GiftModal extends Component {
         }
     }
     _goScore() {
-        let {navigator, closeGiftModal, modalInfo} = this.props;
+        let {navigator, closeGiftModal, modalInfo, log} = this.props;
 
         closeGiftModal(false);
         navigator.push({
