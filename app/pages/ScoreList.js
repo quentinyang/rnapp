@@ -163,7 +163,7 @@ class CashArea extends Component {
     }
 
     _triggerCharge = () => {
-        ActionUtil.setAction(actionType.BA_MINE_RECHANGE);
+        ActionUtil.setAction(actionType.BA_MINE_POINTS_RECHANGE);
         let {navigator, appConfig} = this.props;
         if(appConfig.get('showRecharge')) {
             navigator.push({
@@ -179,7 +179,7 @@ class CashArea extends Component {
     };
 
     _triggerWithdraw = () => {
-        ActionUtil.setAction(actionType.BA_MINE_CASH);
+        ActionUtil.setAction(actionType.BA_MINE_POINTS_CASH);
         let {navigator, score, minPrice, alipayAccount, hasBound} = this.props;
 
         if(parseInt(score) < parseInt(minPrice)) {

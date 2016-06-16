@@ -33,7 +33,7 @@ class GiftModal extends Component {
                         <TouchableHighlight
                             style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
                             underlayColor="#fff"
-                            onPress={() => {closeGiftModal(false)}}
+                            onPress={() => {ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE); closeGiftModal(false)}}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -75,7 +75,15 @@ class GiftModal extends Component {
         </Modal>
         );
     }
-
+    componentWillUpdate(nextProps, nextState) {
+        if(nextProps.modalInfo.get('experience') != "0") {
+            if(nextProps.modalInfo.get('points')) {
+                ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_CREDIT_ONVIEW, {"points": nextProps.modalInfo.get('points')});
+            } else {
+                ActionUtil.setAction(actionType.BA_HOME_PAGE_EXPERIENCE_ONVIEW);
+            }
+        }
+    }
     _goScore() {
         let {navigator, closeGiftModal, modalInfo} = this.props;
 
@@ -85,8 +93,11 @@ class GiftModal extends Component {
             name: 'signIn',
             title: '签到送积分',
             hideNavBar: false,
-            signInfo: modalInfo
+            signInfo: modalInfo,
+            bp: log.pageId,
+            backLog: log.back
         });
+        ActionUtil.setAction(actionType.BA_HOME_PAGE_FIND);
     }
 }
 
@@ -180,6 +191,7 @@ export default class Home extends Component {
                     modalInfo={baseInfo.get('giftModal')}
                     navigator={navigator}
                     closeGiftModal={this._setGiftModalVisible}
+                    log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
                 />
                 <View style={styles.searchWrap}>
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>

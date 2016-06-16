@@ -92,7 +92,7 @@ export function callSeller(params) {
     }
 }
 
-export function callFeedback(params) {
+export function callFeedback(params, propertyId) {
     return dispatch => {
         serviceAction(dispatch)({
             service: postFeedback,
@@ -104,7 +104,8 @@ export function callFeedback(params) {
                 Toast.show('看房获得5个经验', {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER
-                })
+                });
+                ActionUtil.setActionWithExtend(actionType.BA_DETAIL_EXPERIENCE_ONVIEW, {"vpid": propertyId});
             },
             error: function(oData) {
 

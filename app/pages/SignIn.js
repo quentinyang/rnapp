@@ -5,7 +5,7 @@ import * as actionType from '../constants/ActionLog';
 export default class SignIn extends Component {
     constructor(props) {
         super(props);
-        this.pageId = actionType.BA_MINE;
+        ActionUtil.setActionWithExtend(actionType.BA_MINE_CREDIT_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {

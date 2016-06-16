@@ -30,6 +30,7 @@ export const BA_DETAIL_SPENDRECALL_SALED = "3-100000-27"
 export const BA_DETAIL_SPENDRECALL_FALSE = "3-100000-28"
 export const BA_DETAIL_SPENDRECALL_ENSURE = "3-100000-29"
 export const BA_DETAIL_SPEND_ONVIEW = "3-100000-30"
+export const BA_DETAIL_EXPERIENCE_ONVIEW = "3-100000-31"
 
 //设置我的关注 - 1 (跳过)
 export const BA_LOGFOCUS_AREA = "101-110000"
@@ -107,6 +108,10 @@ export const BA_HOME_PAGE_SLIDEUP = "101-200005"
 export const BA_HOME_PAGE_SLIDEDOWN = "101-200006"
 export const BA_HOME_PAGE_CLICKDETAIL = "101-200007"
 export const BA_HOME_PAGE_GOTOSET = "3-200000-8"
+export const BA_HOME_PAGE_EXPERIENCE_ONVIEW = "3-200000-9"
+export const BA_HOME_PAGE_CREDIT_ONVIEW = "3-200000-10"
+export const BA_HOME_PAGE_DELETE = "3-200000-11"
+export const BA_HOME_PAGE_FIND = "3-200000-12"
 
 //发房单页
 export const BA_SEND = "101-300000"
@@ -258,6 +263,12 @@ export const BA_MINE_CASH_SUCCESS = "3-440000-10"
 export const BA_MINE_POINTS = "101-410000"
 export const BA_MINE_POINTS_ONVIEW = "101-410001"
 export const BA_MINE_POINTS_RETURN = "101-410002"
+export const BA_MINE_POINTS_RECHANGE = "3-410006"
+export const BA_MINE_POINTS_CASH = "3-410007"
+
+//签到送积分
+export const BA_MINE_CREDIT_ONVIEW = "3-480001"
+export const BA_MINE_CREDIT_BACK = "3-480002"
 
 //我的等级页
 export const BA_MINE_GRADE = "3-490000"

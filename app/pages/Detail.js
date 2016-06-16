@@ -402,7 +402,7 @@ class CostScoreModal extends Component {
         actions.callFeedback({
             wash_id: callInfo.get('washId'),
             status: 1 //在卖
-        });
+        }, propertyId);
     }
 
     _goBackScore() {

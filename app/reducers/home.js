@@ -105,7 +105,7 @@ let initialBaseInfo = {
     giftModal: {
         "sign_in_days": "1",
         "experience": "0",
-        "score": "0"
+        "points": "0"
     }
 };
 
