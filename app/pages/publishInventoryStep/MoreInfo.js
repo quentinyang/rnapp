@@ -14,7 +14,9 @@ import ErrorMsg from '../../components/ErrorMsg';
 import TouchableSubmit from '../../components/TouchableSubmit';
 import PublishThirdStepContainer from '../../containers/PublishThirdStepContainer';
 let ActionUtil = require( '../../utils/ActionLog');
-import * as actionType from '../../constants/ActionLog'
+import * as actionType from '../../constants/ActionLog';
+
+import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 export default class MoreInfoPage extends Component {
     constructor(props) {
@@ -124,6 +126,7 @@ export default class MoreInfoPage extends Component {
         let houseForm = this.props.houseInput.houseForm.toJS(),
             msg = this.checkForm();
 
+        dismissKeyboard();
         ActionUtil.setAction(actionType.BA_SENDTWO_THREE_NEXT);
         msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };

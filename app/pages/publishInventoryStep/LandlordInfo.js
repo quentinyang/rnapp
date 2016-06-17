@@ -14,7 +14,9 @@ import ErrorMsg from '../../components/ErrorMsg';
 import TouchableSubmit from '../../components/TouchableSubmit';
 import HouseInputSuccessContainer from '../../containers/HouseInputSuccessContainer';
 let ActionUtil = require( '../../utils/ActionLog');
-import * as actionType from '../../constants/ActionLog'
+import * as actionType from '../../constants/ActionLog';
+
+import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 export default class LandlordInfoPage extends Component {
     constructor(props) {
@@ -90,6 +92,7 @@ export default class LandlordInfoPage extends Component {
         let houseForm = this.props.houseInput.houseForm.toJS(),
             msg = this.checkForm();
 
+        dismissKeyboard();
         msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };
 
