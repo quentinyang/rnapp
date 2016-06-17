@@ -35,9 +35,10 @@ export default class LandlordInfoPage extends Component {
                     <WithLabel
                         label='称呼'
                         ref='alias'
-                        value={houseForm.get('seller_alias')}
+                        defaultValue={houseForm.get('seller_alias')}
                         placeholder='(选填)如张先生'
                         underlineColorAndroid = 'transparent'
+                        maxLength={8}
                         onBlur={() => ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_NAME)}
                         onChangeText={(v) => {this.singleAction('aliasChanged', v)}}
                     />
