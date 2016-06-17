@@ -1,4 +1,4 @@
-import {React, Component, View, Text, TextInput, TouchableHighlight, TouchableOpacity, Alert, Modal, PixelRatio, StyleSheet} from 'nuke';
+import {React, Component, View, Text, TextInput, TouchableHighlight, TouchableOpacity, ScrollView, Alert, Modal, PixelRatio, StyleSheet} from 'nuke';
 import WithLabel from '../components/LabelTextInput';
 import TouchableSubmit from '../components/TouchableSubmit';
 import TouchWebContainer from "../containers/TouchWebContainer";
@@ -23,7 +23,7 @@ export default class Withdraw extends Component {
 
         let isOpacity = (price >= minPrice && price <= score) && (withdrawInfo.get('account') || withdrawInfo.get('alipay_account') && withdrawInfo.get('name')) ? 1 : 0.3;
         return (
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 {(withdrawInfo.get('account') || withdrawInfo.get('has_bound') == 0)?
                 <WithLabel
                     label='支付宝'
@@ -52,11 +52,13 @@ export default class Withdraw extends Component {
                         label='真实姓名'
                         labelStyle={styles.aliLabelWidth}
                         value={withdrawInfo.get('name')}
+                        maxLength={10}
                         placeholder='该账号对应的真实姓名'
                         underlineColorAndroid = 'transparent'
                         onFocus={() => ActionUtil.setAction(actionType.BA_MINE_CASH_NAME)}
                         onChangeText={(v) => {this.changeName(v)}}
                     />
+                    <View style={styles.warnBox}><Text style={styles.warnFont}>姓名和账号决定您的提现能否成功，提交后将不可更改，请谨慎填写！</Text></View>
                 </View>
                 }
                 <View style={styles.withdrawBox}>
@@ -86,7 +88,7 @@ export default class Withdraw extends Component {
                         submitText='提现'
                     />
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 
@@ -101,7 +103,9 @@ export default class Withdraw extends Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.priceCleared();
+        let {actions} = this.props;
+        actions.priceCleared();
+        actions.errMsg('');
     }
 
     goBinding() {
@@ -130,6 +134,15 @@ export default class Withdraw extends Component {
         navigator.pop();
     };
 
+    verifyName(value) {
+        let reg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
+        if(!reg.test(value)) {
+            this.props.actions.errMsg('请输入您的真实姓名');
+            return false;
+        }
+        return true;
+    }
+
     changeAccount(value) {
         let {route, actions, withdrawInfo} = this.props;
         actions.aliAccountChanged(value);
@@ -151,14 +164,19 @@ export default class Withdraw extends Component {
     }
 
     handleSubmit = () => {
+        let self = this;
         ActionUtil.setAction(actionType.BA_MINE_CASH_SURE);
         let {navigator, actions, actionsUser, withdrawInfo} = this.props,
             data = {};
         if(!withdrawInfo.get('account') && withdrawInfo.get('has_bound')) {
-            data = {
-                money: withdrawInfo.get('price'),
-                alipay_account: withdrawInfo.get('alipay_account'),
-                name: withdrawInfo.get('name')
+            if(self.verifyName(withdrawInfo.get('name'))) {
+                data = {
+                    money: withdrawInfo.get('price'),
+                    alipay_account: withdrawInfo.get('alipay_account'),
+                    name: withdrawInfo.get('name')
+                };
+            } else {
+                return false
             };
         } else {
             data = {
@@ -167,6 +185,7 @@ export default class Withdraw extends Component {
         }
         withdrawService({body: data})
         .then((oData) => {
+            actions.errMsg('');
             ActionUtil.setAction(actionType.BA_MINE_CASH_SUCCESS);
             Alert.alert('', '申请提现成功\n1个工作日内到账',
                 [{
@@ -180,6 +199,7 @@ export default class Withdraw extends Component {
             );
         })
         .catch((error) => {
+            actions.getAlipayStatus();
             actions.errMsg(error.msg);
         })
     };
@@ -220,7 +240,8 @@ const styles = StyleSheet.create({
         marginVertical: 15,
         backgroundColor: '#fff',
         borderTopWidth: 1/PixelRatio.get(),
-        borderTopColor: '#d9d9d9'
+        borderBottomWidth: 1/PixelRatio.get(),
+        borderColor: '#d9d9d9'
     },
     withdrawBox: {
         paddingVertical: 10,
@@ -233,6 +254,14 @@ const styles = StyleSheet.create({
     cancelLabelPadding: {
         paddingLeft: 0,
         paddingRight: 0
+    },
+    warnBox: {
+        paddingVertical: 5,
+        paddingHorizontal: 20
+    },
+    warnFont: {
+        fontSize: 12,
+        color: '#ffa251'
     },
     labelWidth: {
         width: 20
