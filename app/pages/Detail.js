@@ -256,11 +256,8 @@ export default class Detail extends Component {
         let {route, navigator, actionsHouseList, actionsNavigation} = this.props,
             {item} = route;
 
+        actionsHouseList.houseListPageCleared();
         actionsHouseList.filterCommunityNameChanged(item.get('community_id'), item.get('community_name'));
-        actionsHouseList.fetchHouseList({
-            page: 1,
-            community_id: item.get('community_id')
-        });
 
         actionsNavigation.detailPushRoute();
         navigator.push({
