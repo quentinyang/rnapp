@@ -111,6 +111,7 @@ export default class LandlordInfoPage extends Component {
                 bp: this.pageId
             });
             actions.dataCleared();
+            actions.hiSearchCleared();
         })
         .catch((error) => {
             ActionUtil.setActionWithExtend(actionType.BA_SENDTHREE_THREE_RELEASE, {"error_type": error.status || ""});
