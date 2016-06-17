@@ -50,7 +50,7 @@ class GiftModal extends Component {
                             { modalInfo.get('points') ?
                                 <Text style={styles.scoreAdd}>
                                     <Text style={[styles.h2, styles.addNum]}>+</Text>
-                                    <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('score')}</Text>
+                                    <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('points')}</Text>
                                     积分</Text>
                                 : null
                             }
@@ -606,8 +606,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     noAttention: {
-        width: 90,
-        height: 108,
+        width: 100,
+        height: 100,
         marginBottom: 20
     },
     noAttentionText: {

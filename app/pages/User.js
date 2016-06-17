@@ -63,7 +63,7 @@ export default class User extends Component {
                     >
                         <View style={{flexDirection: 'column'}}>
                             <Text style={{marginTop: 2}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
-                            <Text style={styles.signInPrompt}>连续签到{userProfile.get('go_on_sign_in_day')}天 赚{userProfile.get('get_points')}积分</Text>
+                            <Text style={styles.signInPrompt}>继续签到{userProfile.get('go_on_sign_in_day')}天 赚{userProfile.get('get_points')}积分</Text>
                         </View>
                     </LinkSection>
 
