@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     unsignItem: {
         height: 70,
         backgroundColor: '#F8F8F8',
-        paddingLeft: 15,
+        paddingLeft: 10,
         marginBottom: 1,
         paddingVertical: 16,
         shadowColor: "#000",
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
         marginLeft: 15
     },
     undone: {
-        width: 84,
+        width: 70,
         textAlign: "center"
     },
     signItem: {

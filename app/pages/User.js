@@ -10,6 +10,7 @@ import {
     TouchableWithoutFeedback,
     Alert,
     PixelRatio,
+    Platform,
     StyleSheet
 } from 'nuke';
 
@@ -46,7 +47,7 @@ export default class User extends Component {
             <View style={styles.container}>
                 <Header title='我的' style={styles.bgHeader} fontStyle={styles.whiteText} />
                 <ScrollView
-                    style={{paddingBottom: 60}}
+                    style={styles.scrollBox}
                     automaticallyAdjustContentInsets={false}
                 >
                     <BasicInfo userProfile={userProfile}  navigatorPush={this.navigatorPush} />
@@ -253,6 +254,9 @@ const styles = StyleSheet.create({
     },
     whiteText: {
         color: '#fff'
+    },
+    scrollBox: {
+        marginBottom: (Platform.OS == 'ios') ? 60: 0
     },
     basicSection: {
         paddingTop: 10,
