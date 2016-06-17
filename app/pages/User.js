@@ -22,6 +22,7 @@ import ContactHouseContainer from '../containers/ContactHouseContainer';
 import InputHouseContainer from '../containers/InputHouseContainer';
 import RechargeContainer from '../containers/RechargeContainer';
 import WithdrawContainer from '../containers/WithdrawContainer';
+import BindAlipayContainer from '../containers/BindAlipayContainer';
 import SettingContainer from '../containers/SettingContainer';
 import ScoreListContainer from '../containers/ScoreListContainer';
 import Immutable from 'immutable';
@@ -218,6 +219,13 @@ class UserAccount extends Component {
 
         if(parseInt(value.score) < parseInt(value.min_price)) {
             Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);
+        } else if (value.is_binding_alipay) {
+            navigator.push({
+                component: BindAlipayContainer,
+                name: 'bindAlipay',
+                title: '绑定支付宝',
+                hideNavBar: false
+            });
         } else {
             navigator.push({
                 component: WithdrawContainer,
