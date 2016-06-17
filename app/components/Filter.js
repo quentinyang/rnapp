@@ -40,7 +40,7 @@ export default class Filter extends Component {
                         <TouchableWithoutFeedback onPress={this._onPress.bind(null, 3)}>
                             <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
                                 <Text style={styles.commonText}>
-                                    {bedroomsName ? bedroomsName : '价格 '}
+                                    {bedroomsName ? bedroomsName : '户型 '}
                                 </Text>
                                 <ImageItem dropUp={tabType == 3}/>
                             </View>
