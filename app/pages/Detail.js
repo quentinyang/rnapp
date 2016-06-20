@@ -256,11 +256,8 @@ export default class Detail extends Component {
         let {route, navigator, actionsHouseList, actionsNavigation} = this.props,
             {item} = route;
 
+        actionsHouseList.houseListPageCleared();
         actionsHouseList.filterCommunityNameChanged(item.get('community_id'), item.get('community_name'));
-        actionsHouseList.fetchHouseList({
-            page: 1,
-            community_id: item.get('community_id')
-        });
 
         actionsNavigation.detailPushRoute();
         navigator.push({
@@ -335,7 +332,6 @@ class ErrorTipModal extends Component {
                 right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false, backLog: actionType.BA_SENDRULE_RETURN}},
                 hideNavBar: false,
                 backLog: actionType.BA_SENDTWO_THREE_RETURN,
-                callbackFun: () => {},
                 bp: this.pageId
             });
         } else {
@@ -403,7 +399,7 @@ class CostScoreModal extends Component {
         actions.callFeedback({
             wash_id: callInfo.get('washId'),
             status: 1 //在卖
-        });
+        }, propertyId);
     }
 
     _goBackScore() {
@@ -440,9 +436,6 @@ class BaseInfo extends Component {
                         <Text style={[styles.subName, styles.flex, styles.baseColor]}>{houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}{houseInfo.get('door_num') && '室'}</Text>
                         {
                             houseInfo.get('is_new') ? <Text style={[styles.tagNew, styles.flex]}>新</Text> : null
-                        }
-                        {
-                            houseInfo.get('is_verify') ? <Text style={[styles.tagNew, styles.tagAuth, styles.flex]}>认</Text> : null
                         }
                     </View>
                 </View>

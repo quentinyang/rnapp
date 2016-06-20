@@ -51,7 +51,17 @@ function scoreData(state = Immutable.fromJS(initialScores), action) {
     }
 }
 
+function expLevel(state = Immutable.fromJS([]), action) {
+    switch(action.type) {
+        case types.EXP_RULE:
+            return Immutable.fromJS(action.expRule);
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     userProfile,
-    scoreData
+    scoreData,
+    expLevel
 });

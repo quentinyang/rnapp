@@ -9,60 +9,28 @@ import {
 
 import {inputHouseService} from '../../service/houseInputService';
 import WithLabel from '../../components/LabelTextInput';
-import PublishTitle from '../../components/PublishTitle';
+import PublishStepBlock from '../../components/PublishStepBlock';
 import ErrorMsg from '../../components/ErrorMsg';
 import TouchableSubmit from '../../components/TouchableSubmit';
 import PublishThirdStepContainer from '../../containers/PublishThirdStepContainer';
 let ActionUtil = require( '../../utils/ActionLog');
-import * as actionType from '../../constants/ActionLog'
+import * as actionType from '../../constants/ActionLog';
+
+import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 export default class MoreInfoPage extends Component {
     constructor(props) {
         super(props);
         ActionUtil.setAction(actionType.BA_SENDTWO_THREE_ONVIEW);
-
-        let self = this;
-        let {navigator} = this.props;
-        this.props.route.callbackFun = () => {
-            if(!self.hasValue()) {
-                navigator.pop();
-            } else {
-                Alert.alert('', '确定要离开此页面吗？', [
-                    {
-                        text: '取消',
-                        onPress: () => {
-                            ActionUtil.setAction(actionType.BA_SENDTWO_THREE_CANCEL);
-                        }
-                    },
-                    {
-                        text: '确定',
-                        onPress: () => {
-                            ActionUtil.setAction(actionType.BA_SENDTWO_THREE_ENSURE);
-                            navigator.pop();
-                        }
-                    }
-                ])
-            }
-        };
-    }
-
-    hasValue() {
-        let {houseForm} = this.props.houseInput;
-        if(houseForm.get("bedrooms") || houseForm.get("living_rooms") || houseForm.get("bathrooms") ||
-            houseForm.get("area") || houseForm.get("price")) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     render() {
         let {houseForm, controller, communityData} = this.props.houseInput;
-        let isOpacity = houseForm.get('bedrooms') && houseForm.get('living_rooms') && houseForm.get('bathrooms') && houseForm.get('area') && houseForm.get('price');
+        let isOpacity = houseForm.get('bedrooms') && houseForm.get('living_rooms') && houseForm.get('bathrooms') && houseForm.get('area') && houseForm.get('price') && !controller.get('err_msg');
 
         return (
             <View style={styles.container}>
-                <PublishTitle>还有<Text style={styles.colorFFDB}>2</Text>步即可发布</PublishTitle>
+                <PublishStepBlock step={2} />
                 <View style={styles.colorWhite}>
                     <WithLabel
                         label='户型'
@@ -138,7 +106,7 @@ export default class MoreInfoPage extends Component {
         let {houseInput, actions} = this.props;
 
         houseInput.controller.get('err_msg') && actions.error('');
-        actions[action](value);
+        actions[action](value.trim());
     }
 
     checkForm() {
@@ -147,7 +115,7 @@ export default class MoreInfoPage extends Component {
         if(!parseInt(houseForm.area) || houseForm.area >= 1000000) {
             return 'wrongArea';
         }
-        if(!parseInt(houseForm.price) || houseForm.price >= 1000000) {
+        if(!parseInt(houseForm.price) || houseForm.price >= 429497) {
             return 'wrongPrice';
         }
         return '';
@@ -158,6 +126,7 @@ export default class MoreInfoPage extends Component {
         let houseForm = this.props.houseInput.houseForm.toJS(),
             msg = this.checkForm();
 
+        dismissKeyboard();
         ActionUtil.setAction(actionType.BA_SENDTWO_THREE_NEXT);
         msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };
@@ -170,13 +139,13 @@ export default class MoreInfoPage extends Component {
             name: 'publishInventory',
             title: '房东信息',
             backLog: actionType.BA_SENDTHREE_THREE_RETURN,
-            callbackFun: () => {},
             hideNavBar: false,
         });
     }
 
     componentWillUnmount() {
-        this.props.actions.moreCleared();
+        this.props.actions.error('');
+        //this.props.actions.moreCleared();
     }
 }
 

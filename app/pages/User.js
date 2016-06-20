@@ -1,117 +1,32 @@
 'use strict';
 
-import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio,
-            TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator,
-            WebView, Alert, Platform} from 'nuke';
+import {
+    React,
+    Component,
+    Text,
+    View,
+    ScrollView,
+    Image,
+    TouchableWithoutFeedback,
+    Alert,
+    PixelRatio,
+    Platform,
+    StyleSheet
+} from 'nuke';
 
 import Header from '../components/Header';
-import TouchWebContainer from "../containers/TouchWebContainer";
-import ContactHouseContainer from '../containers/ContactHouseContainer'
-import InputHouseContainer from '../containers/InputHouseContainer'
-import LoginContainer from '../containers/LoginContainer'
-import RechargeContainer from '../containers/RechargeContainer'
-import WithdrawContainer from '../containers/WithdrawContainer'
-import SettingContainer from '../containers/SettingContainer'
-import ScoreListContainer from '../containers/ScoreListContainer'
+import LinkSection from '../components/LinkSection';
+import SignInContainer from '../containers/SignInContainer';
+import AboutEXPContainer from '../containers/AboutEXPContainer';
+import ContactHouseContainer from '../containers/ContactHouseContainer';
+import InputHouseContainer from '../containers/InputHouseContainer';
+import RechargeContainer from '../containers/RechargeContainer';
+import WithdrawContainer from '../containers/WithdrawContainer';
+import SettingContainer from '../containers/SettingContainer';
+import ScoreListContainer from '../containers/ScoreListContainer';
+import Immutable from 'immutable';
 let ActionUtil = require( '../utils/ActionLog');
-import * as actionType from '../constants/ActionLog'
-
-let ds = new ListView.DataSource({
-    rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
-});
-
-class Profile extends Component{
-  render() {
-    var portrait = this.props.portrait ? {uri: this.props.portrait} :  require('../images/profile.jpg');
-    var mobileNum = this.props.mobile ? this._formatMobileNumber(this.props.mobile) : '';
-    return (
-        <View style={[styles.profileContainer]}>
-          <Image style={[styles.profileImage]} source={portrait}/>
-          <Text style={[styles.profileText]}>{mobileNum}</Text>
-          <Text style={[styles.profileText]}>
-            <Text>积分：</Text>
-            <Text>{this.props.score || 0}</Text>
-            <Text style={styles.viewScore} onPress={this.goScoreList}> 查看</Text>
-          </Text>
-        </View>
-    );
-  }
-
-  goScoreList = () => {
-    this.props.navigator.push({
-      component: ScoreListContainer,
-      name: 'scoreList',
-      title: '积分明细',
-      bp: actionType.BA_MINE,
-      backLog: actionType.BA_MINE_POINTS_RETURN,
-      hideNavBar: false
-    })
-  };
-
-  _formatMobileNumber(number) {
-    return number.slice(0, 3) + '****' + number.slice(-4);
-  }
-}
-
-class CashArea extends Component{
-  render() {
-    return (
-      <View style={[styles.cashContainer]}>
-        <TouchableWithoutFeedback onPress={this._triggerCharge}>
-          <View style={[styles.row, styles.cashSplit]}>
-            <Image source={require('../images/recharge.png')} style={[styles.cashImage]}/>
-            <Text style={styles.cashText}>充值</Text>
-          </View>
-        </TouchableWithoutFeedback>
-
-        <TouchableWithoutFeedback onPress={this._triggerWithdraw}>
-          <View style={styles.row}>
-            <Image source={require('../images/withdraw.png')} style={[styles.cashImage]} />
-            <Text style={styles.cashText} >提现</Text>
-          </View>
-        </TouchableWithoutFeedback>
-
-
-      </View>
-    );
-  }
-
-  _triggerCharge = () => {
-      ActionUtil.setAction(actionType.BA_MINE_RECHANGE);
-      let {navigator, appConfig} = this.props;
-      if(appConfig.get('showRecharge')) {
-        navigator.push({
-            component: RechargeContainer,
-            name: 'recharge',
-            title: '充值',
-            bp: actionType.BA_MINE,
-            hideNavBar: false
-        });
-      } else {
-        Alert.alert('温馨提示', '充值功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
-      }
-  };
-
-  _triggerWithdraw = () => {
-      ActionUtil.setAction(actionType.BA_MINE_CASH);
-      let {navigator, score, minPrice, alipayAccount, hasBound} = this.props;
-
-      if(parseInt(score) < parseInt(minPrice)) {
-        Alert.alert('', '余额超过' + minPrice + '元才能提现哦', [{text: '知道了'}]);
-      } else {
-        navigator.push({
-            component: WithdrawContainer,
-            name: 'withdraw',
-            data: {'score': score, 'min_price': minPrice, 'alipay_account': alipayAccount, 'is_binding_alipay': hasBound},
-            title: '提现',
-            bp: actionType.BA_MINE,
-            backLog: actionType.BA_MINE_CASH_RETURN,
-            hideNavBar: false
-        });
-      }
-  };
-}
-
+import * as actionType from '../constants/ActionLog';
 
 export default class User extends Component {
     constructor(props) {
@@ -119,88 +34,203 @@ export default class User extends Component {
 
         this.pageId = actionType.BA_MINE;
         ActionUtil.setActionWithExtend(actionType.BA_MINE_ONVIEW, {"bp": this.props.route.bp});
-        this.state = {};
     }
 
     render() {
         let {userProfile} = this.props;
-
-        var profileData = userProfile.toJS();
-
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        var featureSource = ds.cloneWithRows([{title: '联系过的房源', count: profileData.contacted, component: ContactHouseContainer, name: 'contactHouse', actionLog: actionType.BA_MINE_CONNECT, backLog: actionType.BA_MINE_CONTACT_RETURN},
-            {title: '发布的房源', count: profileData.published, component: InputHouseContainer, name: 'inputHouse', actionLog: actionType.BA_MINE_RELEASED, backLog: actionType.BA_MINE_RELEASE_RETURN}]);
-        var settingSource = ds.cloneWithRows([{title: '设置', component: SettingContainer, name: 'settings', actionLog: actionType.BA_MINE_SET}]);
+        let signInData = Immutable.fromJS({
+            sign_in_days: userProfile.get('sign_in_days'),
+            experience: userProfile.get('sign_in_experience')
+        });
 
         return (
             <View style={styles.container}>
-              <Header title='我的' style={styles.bgHeader} />
-              <ScrollView automaticallyAdjustContentInsets={false}>
-
-                  <View>
-                    <Profile {...profileData} navigator={this.props.navigator} />
-                    <CashArea
-                      navigator={this.props.navigator}
-                      score={profileData.score}
-                      minPrice={profileData.min_withdrawals_money}
-                      alipayAccount={profileData.alipay_account}
-                      hasBound={profileData.is_binding_alipay}
-                      appConfig={this.props.appConfig}
-                    />
-                  </View>
-
-                  <ListView
-                    style={styles.listContainer}
-                    dataSource={featureSource}
-                    renderRow={this._renderRow.bind(this)}
-                    scrollEnabled={false}
+                <Header title='我的' style={styles.bgHeader} fontStyle={styles.whiteText} />
+                <ScrollView
+                    style={styles.scrollBox}
                     automaticallyAdjustContentInsets={false}
-                    enableEmptySections={true} />
+                >
+                    <BasicInfo userProfile={userProfile}  navigatorPush={this.navigatorPush} />
 
-                  <ListView
-                    style={[styles.listContainer, styles.settingContainer]}
-                    dataSource={settingSource}
-                    renderRow={this._renderRow.bind(this)}
-                    scrollEnabled={false}
-                    automaticallyAdjustContentInsets={false}
-                    enableEmptySections={true} />
-              </ScrollView>
+                    <LinkSection
+                        linkStyle={{height: 70, marginBottom: 15}}
+                        iconBoxStyle={{marginTop: -12}}
+                        icon={{
+                            url: require('../images/icon/calendar.png'),
+                            style: {width: 12, height: 12},
+                            bgColor: '#d883aa'
+                        }}
+                        onPress={() => this.navigatorPush({component: SignInContainer, signInfo: signInData, name: 'signin', title: '签到送积分', actionLog: actionType.BA_MINE_SIGN, bp: this.pageId, backLog: actionType.BA_MINE_CREDIT_BACK})}
+                    >
+                        <View style={{flexDirection: 'column'}}>
+                            <Text style={{marginTop: 2}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
+                            <Text style={styles.signInPrompt}>继续签到{userProfile.get('go_on_sign_in_day')}天 赚{userProfile.get('get_points')}积分</Text>
+                        </View>
+                    </LinkSection>
+
+                    <UserAccount navigatorPush={this.navigatorPush} {...this.props} />
+
+                    <LinkSection
+                        linkStyle={{borderBottomWidth: 1/PixelRatio.get(), borderColor: '#d9d9d9'}}
+                        icon={{
+                            url: require('../images/icon/phone.png'),
+                            style: {width: 11.5, height: 11.5},
+                            bgColor: '#54d89f'
+                        }}
+                        onPress={() => this.navigatorPush({component: ContactHouseContainer, name: 'contactHouse', title: '联系过的房源', actionLog: actionType.BA_MINE_CONNECT, backLog: actionType.BA_MINE_CONTACT_RETURN})}
+                    >
+                        <Text style={styles.flex}>联系的房源</Text>
+                        <Text>{userProfile.get('contacted')}</Text>
+                    </LinkSection>
+
+                    <LinkSection
+                        linkStyle={{marginBottom: 15}}
+                        icon={{
+                            url: require('../images/icon/money.png'),
+                            style: {width: 13, height: 12.5},
+                            bgColor: '#54d89f'
+                        }}
+                        onPress={() => this.navigatorPush({component: InputHouseContainer, name: 'inputHouse', title: '发布的房源', actionLog: actionType.BA_MINE_RELEASED, backLog: actionType.BA_MINE_RELEASE_RETURN})}
+                    >
+                        <Text style={styles.flex}>发布的房源</Text>
+                        <Text>{userProfile.get('published')}</Text>
+                    </LinkSection>
+
+                    <LinkSection
+                        linkStyle={{marginBottom: 15}}
+                        icon={{
+                            url: require('../images/icon/setting.png'),
+                            style: {width: 12, height: 12},
+                            bgColor: '#66a1e7'
+                        }}
+                        onPress={() => this.navigatorPush({component: SettingContainer, name: 'settings', title: '设置', actionLog: actionType.BA_MINE_SET})}
+                    >
+                        <Text>设置</Text>
+                    </LinkSection>
+
+                </ScrollView>
             </View>
-        )
+        );
     }
 
-    _renderRow(data, section, rowId, d) {
-      var separator = (rowId != 0) ? styles.listSeparator : {};
-      return (
-          <TouchableWithoutFeedback onPress={this._goPage.bind(this, data)}>
-              <View style={[styles.listItem, separator]}>
-                  <Text style={[styles.listText, styles.flex]}>{data.title}</Text>
-                  <Text style={[styles.listText, styles.listBadge]}>{data.count || ''}</Text>
-                  <Image source={require('../images/next.png')} style={[styles.listIcon, styles.absoluteTop]}/>
-              </View>
-          </TouchableWithoutFeedback>
-      );
+    navigatorPush = (value) => {
+        let {actionLog, ...ops} = value;
+        ActionUtil.setAction(actionLog);
+
+        this.props.navigator.push({
+            bp: actionType.BA_MINE,
+            hideNavBar: false,
+            ...ops
+        })
     }
-    _goPage(data) {
+}
+
+class BasicInfo extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {userProfile} = this.props,
+            mobile = userProfile.get('mobile'),
+            showMobile = mobile ? mobile.slice(0, 3) + '****' + mobile.slice(-4) : '';
+
+        return (
+            <View style={[styles.basicSection, styles.row]}>
+                <View style={[styles.profileAvatar, styles.center]}>
+                    <Image
+                        style={styles.avatarImage}
+                        source={require('../images/bureau_avatar.png')}
+                    />
+                </View>
+                <View style={styles.flex}>
+                    <Text style={[styles.mobileText, styles.whiteText]}>{showMobile}</Text>
+                </View>
+                <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: AboutEXPContainer, data: {level: userProfile.get('level'), exp: userProfile.get('user_experience')}, name: 'exp', title: '我的等级', actionLog: actionType.BA_MINE_MEMBER, backLog: actionType.BA_MINE_GRADE_BACK})}>
+                    <View style={[styles.level, styles.center]}><Text style={styles.whiteText}>V{userProfile.get('level')}会员</Text></View>
+                </TouchableWithoutFeedback>
+            </View>
+        );
+    }
+}
+
+class UserAccount extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {userProfile} = this.props,
+            withdrawData = {
+                score: userProfile.get('score'),
+                min_price: userProfile.get('min_withdrawals_money'),
+                alipay_account: userProfile.get('alipay_account'),
+                is_binding_alipay: userProfile.get('is_binding_alipay')
+            };
+
+        return (
+            <View style={styles.accountSection}>
+                <View style={styles.row}>
+                    <View style={[styles.accountIconBox, styles.center]}>
+                        <Image
+                            style={{width: 12, height: 11}}
+                            source={require('../images/icon/account.png')}
+                        />
+                    </View>
+                    <View style={[styles.flex, styles.row]}>
+                        <Text style={{marginRight: 10}}>积分账户：{userProfile.get('score')}分</Text>
+                        <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: ScoreListContainer, name: 'scoreList', title: '积分明细', backLog: actionType.BA_MINE_POINTS_RETURN, accountData: withdrawData})}>
+                            <View><Text style={{color: '#04c1ae'}}>查看</Text></View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </View>
+                <View style={[styles.row, {marginTop: 15}]}>
+                    <TouchableWithoutFeedback onPress={() => this.goCharge()}>
+                        <View style={[styles.flex, styles.center, styles.btnColor, {marginRight: 15}]}><Text style={{color: '#ff6d4b'}}>充值</Text></View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={() => this.goWithdraw(withdrawData)}>
+                        <View style={[styles.flex, styles.center, styles.btnColor]}><Text style={{color: '#ff6d4b'}}>提现</Text></View>
+                    </TouchableWithoutFeedback>
+                </View>
+            </View>
+        );
+    }
+
+    goCharge() {
+        ActionUtil.setAction(actionType.BA_MINE_RECHANGE);
+        let {navigator, appConfig} = this.props;
+        if(appConfig.get('showRecharge')) {
+            navigator.push({
+                component: RechargeContainer,
+                name: 'recharge',
+                title: '充值',
+                bp: actionType.BA_MINE,
+                hideNavBar: false
+            });
+        } else {
+            Alert.alert('温馨提示', '充值功能正在赶过来，敬请期待！', [{text: '忍一忍'}]);
+        }
+    }
+
+    goWithdraw(value) {
+        ActionUtil.setAction(actionType.BA_MINE_CASH);
         let {navigator} = this.props;
 
-        if(data.actionLog) {
-            ActionUtil.setAction(data.actionLog);
-        }
-
-        if(data.component) {
+        if(parseInt(value.score) < parseInt(value.min_price)) {
+            Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);
+        } else {
             navigator.push({
-                component: data.component,
-                name: data.name,
-                title: data.title,
-                hideNavBar: false,
-                backLog: data.backLog,
-                bp: this.pageId
+                component: WithdrawContainer,
+                name: 'withdraw',
+                data: value,
+                title: '提现',
+                bp: actionType.BA_MINE,
+                backLog: actionType.BA_MINE_CASH_RETURN,
+                hideNavBar: false
             });
         }
     }
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -208,109 +238,77 @@ const styles = StyleSheet.create({
       backgroundColor: '#eee'
     },
     flex: {
-       flex: 1
+        flex: 1
     },
-    bgHeader: {
-      backgroundColor: '#f8f8f8'
+    center: {
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     row: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      height: 35,
-      flexWrap: 'nowrap',
-    },
-    // profile
-    profileContainer: {
-      backgroundColor: '#fff',
-      justifyContent: 'center',
-      height: 154,
-      alignItems: 'center',
-    },
-    profileImage: {
-      width: 50,
-      height: 50,
-      borderRadius: 25
-    },
-    profileText: {
-      fontSize: 16,
-      lineHeight: 24,
-      color: '#3E3E3E',
-    },
-    viewScore: {
-      color: '#04c1ae'
-    },
-    // cash area
-    cashContainer: {
-      backgroundColor: '#fff',
-      flexDirection: 'row',
-      alignItems: 'center',
-      borderTopWidth: 1/PixelRatio.get(),
-      borderColor: '#ccc',
-      height: 60,
-    },
-    cashImage: {
-      width: 35,
-      height: 35,
-    },
-    cashText: {
-      fontSize: 16,
-      color: '#3E3E3E',
-      marginLeft: 10,
-    },
-    cashSplit: {
-      borderRightWidth: 1/PixelRatio.get(),
-      borderColor: '#ccc',
-    },
-    // List
-    listContainer: {
-      top:0,
-      paddingTop: 0,
-      height: 90,
-      backgroundColor: '#fff',
-      marginTop: 16,
-    },
-    listItem: {
-      height: 45,
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    listText: {
-      fontSize: 16,
-      color: '#3E3E3E',
-      marginLeft: 15,
-    },
-    absoluteTop: {
-      position: 'absolute',
-      top: 14,
-    },
-    listBadge: {
-      color: '#8D8C92',
-      right: 36,
-    },
-    listIcon: {
-      width: 9,
-      height: 18 ,
-      right: 13,
-    },
-    listSeparator: {
-      borderTopWidth: 1/PixelRatio.get(),
-      borderColor: '#ccc',
-    },
-    // Setting
-    settingContainer: {
-      height: 45
-    },
-    webView: {
-        height: 200,
-    },
-    justifyContent: {
-        justifyContent: 'center',
-    },
-    alignItems: {
+        flexDirection: 'row',
         alignItems: 'center'
+    },
+    bgHeader: {
+        backgroundColor: '#04c1ae',
+        borderBottomWidth: 0
+    },
+    whiteText: {
+        color: '#fff'
+    },
+    scrollBox: {
+        marginBottom: (Platform.OS == 'ios') ? 60: 0
+    },
+    basicSection: {
+        paddingTop: 10,
+        paddingBottom: 30,
+        paddingLeft: 20,
+        backgroundColor: '#04c1ae'
+    },
+    profileAvatar: {
+        marginRight: 15,
+        width: 60,
+        height: 60,
+        borderRadius: 30,
+        backgroundColor: '#fff'
+    },
+    avatarImage: {
+        width: 36,
+        height: 35.5
+    },
+    mobileText: {
+        fontSize: 19
+    },
+    level: {
+        width: 80,
+        height: 30,
+        backgroundColor: '#ffa251',
+        borderColor: '#fff',
+        borderWidth: 1/PixelRatio.get(),
+        borderRightWidth: 0,
+        borderTopLeftRadius: 15,
+        borderBottomLeftRadius: 15
+    },
+    signInPrompt: {
+        fontSize: 12,
+        color: '#8d8c92'
+    },
+    accountSection: {
+        paddingVertical: 17,
+        paddingHorizontal: 15,
+        backgroundColor: '#fff',
+        marginBottom: 15
+    },
+    accountIconBox: {
+        marginRight: 10,
+        width: 23,
+        height: 23,
+        borderRadius: 11.5,
+        backgroundColor: '#f47e87'
+    },
+    btnColor: {
+        height: 40,
+        borderWidth: 1/PixelRatio.get(),
+        borderColor: '#ff6d4b',
+        borderRadius: 2
     }
 });

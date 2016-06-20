@@ -8,66 +8,37 @@ import {
     TouchableHighlight, Alert, Dimensions
 } from 'nuke';
 
-import {basicInventoryDuplicateService} from '../../service/houseInputService';
+import {basicInventoryDuplicateService, allowToInputService} from '../../service/houseInputService';
+import Header from '../../components/Header';
 import WithLabel from '../../components/LabelTextInput';
 import Attached from '../../components/Attached';
-import PublishTitle from '../../components/PublishTitle';
+import PublishStepBlock from '../../components/PublishStepBlock';
 import ErrorMsg from '../../components/ErrorMsg';
 import TouchableSubmit from '../../components/TouchableSubmit';
 import PublishSecondStepContainer from '../../containers/PublishSecondStepContainer';
 import SearchCommunityContainer from '../../containers/SearchCommunityContainer';
 let ActionUtil = require( '../../utils/ActionLog');
-import * as actionType from '../../constants/ActionLog'
+import * as actionType from '../../constants/ActionLog';
+
+import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 export default class BaseInfoPage extends Component {
     constructor(props) {
         super(props);
         let {route, actions, navigator} = this.props;
         ActionUtil.setActionWithExtend(actionType.BA_SENDONE_THREE_ONVIEW, {"bp": route.bp});
-
-        let self = this;
-        route.callbackFun = () => {
-            if(!self.hasValue()) {
-                navigator.pop();
-            } else {
-                Alert.alert('', '确定要离开此页面吗？', [
-                    {
-                        text: '取消',
-                        onPress: () => {
-                            ActionUtil.setAction(actionType.BA_SENDONE_THREE_CANCEL);
-                        }
-                    },
-                    {
-                        text: '确定',
-                        onPress: () => {
-                            ActionUtil.setAction(actionType.BA_SENDONE_THREE_ENSURE);
-                            actions.hiSearchCleared();
-                            navigator.pop();
-                        }
-                    }
-                ])
-            }
-        };
-    }
-
-    hasValue() {
-        let {houseForm} = this.props.houseInput;
-        if(houseForm.get("community_id") || houseForm.get("building_num") || houseForm.get("door_num")) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     render() {
-        let {navigator} = this.props;
+        let {navigator, route} = this.props;
         let {houseForm, controller} = this.props.houseInput;
-        let isOpacity = !!(houseForm.get('community_name') && (controller.get('single')? true: houseForm.get('building_num')) && (controller.get('villa')?true:houseForm.get('door_num')));
+        let isOpacity = !!(houseForm.get('community_name') && !controller.get('err_msg') && (controller.get('single')? true: houseForm.get('building_num')) && (controller.get('villa')?true:houseForm.get('door_num')));
 
         return (
             <View style={styles.container}>
                 <View>
-                    <PublishTitle><Text style={styles.colorFFDB}>3</Text>步立即发布房源</PublishTitle>
+                    {route.hideNavBar?<Header title='发房' style={styles.bgHeader} />:null}
+                    <PublishStepBlock step={1} />
                     <View style={styles.colorWhite}>
                         <WithLabel
                             label='小区'
@@ -90,34 +61,32 @@ export default class BaseInfoPage extends Component {
                         <WithLabel
                             label='楼栋'
                             rightText='号/座'
-                            rightStyle={controller.get('single')? {color: '#fff'}: {}}
                             value={houseForm.get('building_num')}
-                            placeholder={controller.get('single')?'':'输入楼/座号'}
+                            placeholder={controller.get('single')?'无':'输入楼/座号'}
                             editable={controller.get('single')? false: true}
                             underlineColorAndroid = 'transparent'
                             onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_BUILDING)}
-                            onChangeText={(v) => {this.singleAction('buildingChanged', v)}}
+                            onChangeText={(v) => {this.singleAction('buildingChanged', v.trim())}}
                         >
                             <Attached
                                 isSelected={controller.get('single')}
-                                attachedText='独栋'
+                                attachedText='无'
                                 toggleAttach={() => this.toggleAttach(actionType.BA_SENDONE_THREE_ONEBUILD, 'singleChanged', !controller.get('single'), 'buildingChanged', 'attachBuildingChanged')}
                             />
                         </WithLabel>
                         <WithLabel
                             label='房号'
                             rightText='室'
-                            rightStyle={controller.get('villa')? {color: '#fff'}: {}}
                             value={houseForm.get('door_num')}
-                            placeholder={controller.get('villa')?'':'输入房号'}
+                            placeholder={controller.get('villa')?'无':'输入房号'}
                             underlineColorAndroid = 'transparent'
                             editable={controller.get('villa')? false: true}
                             onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_ROOM)}
-                            onChangeText={(v) => {this.singleAction('doorChanged', v)}}
+                            onChangeText={(v) => {this.singleAction('doorChanged', v.trim())}}
                         >
                             <Attached
                                 isSelected={controller.get('villa')}
-                                attachedText='别墅'
+                                attachedText='无'
                                 toggleAttach={() => this.toggleAttach(actionType.BA_SENDONE_THREE_VILLA, 'villaChanged', !controller.get('villa'), 'doorChanged', 'attachDoorChanged')}
                             />
                         </WithLabel>
@@ -141,9 +110,19 @@ export default class BaseInfoPage extends Component {
     componentDidMount() {
         let {route, actionsApp} = this.props;
         InteractionManager.runAfterInteractions(() => {
-            if(route.clearForbidden) {
-                actionsApp.clickTabChanged(true);
-            }
+            allowToInputService()
+            .then((data) => {
+                if(!data.is_can_input) {
+                    Alert.alert('', '亲，您已经发了'+data.daily_max_input_house_count+'套房了\n明天再来吧~', [
+                    {
+                        text: '好的',
+                        onPress: () => {}
+                    }])
+                }
+            })
+            .catch((error) => {
+                Alert.alert('', error.msg || '');
+            })
         });
 
     }
@@ -181,7 +160,7 @@ export default class BaseInfoPage extends Component {
         let houseForm = this.props.houseInput.houseForm.toJS(),
             msg = this.checkForm();
 
-
+        dismissKeyboard();
         msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };
 
@@ -195,7 +174,6 @@ export default class BaseInfoPage extends Component {
                 name: 'publishInventory',
                 title: '更多房源信息',
                 backLog: actionType.BA_SENDTWO_THREE_RETURN,
-                callbackFun: () => {},
                 hideNavBar: false,
             });
             ActionUtil.setAction(actionType.BA_SENDONE_THREE_NEXT);
@@ -216,6 +194,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#eee'
+    },
+    bgHeader: {
+      backgroundColor: '#f8f8f8'
     },
     colorWhite: {
         backgroundColor: '#fff'

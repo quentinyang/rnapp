@@ -3,30 +3,32 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actionsUser from '../actions/user';
-import TabView from '../pages/TabView';
+import * as actions from '../actions/signIn';
+import SignIn from '../pages/SignIn';
 
-class TabViewContainer extends Component {
+class SignInContainer extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-            <TabView {...this.props}/>
+            <SignIn {...this.props}/>
         );
     }
 }
 
 function mapStateToProps(state) {
+    const {signIn} = state.signIn;
     return {
+        signIn: signIn
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actionsUser: bindActionCreators(actionsUser, dispatch)
+        actions: bindActionCreators(actions, dispatch)
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TabViewContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInContainer);

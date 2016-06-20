@@ -9,68 +9,38 @@ import {
 
 import {inputHouseService} from '../../service/houseInputService';
 import WithLabel from '../../components/LabelTextInput';
-import PublishTitle from '../../components/PublishTitle';
+import PublishStepBlock from '../../components/PublishStepBlock';
 import ErrorMsg from '../../components/ErrorMsg';
 import TouchableSubmit from '../../components/TouchableSubmit';
 import HouseInputSuccessContainer from '../../containers/HouseInputSuccessContainer';
 let ActionUtil = require( '../../utils/ActionLog');
-import * as actionType from '../../constants/ActionLog'
+import * as actionType from '../../constants/ActionLog';
+
+import dismissKeyboard from 'react-native/Libraries/Utilities/dismissKeyboard';
 
 export default class LandlordInfoPage extends Component {
     constructor(props) {
         super(props);
         this.pageId = actionType.BA_SEND;
         ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_ONVIEW);
-
-        let self = this;
-        let {navigator} = this.props;
-        this.props.route.callbackFun = () => {
-            if(!self.hasValue()) {
-                navigator.pop();
-            } else {
-                Alert.alert('', '确定要离开此页面吗？', [
-                    {
-                        text: '取消',
-                        onPress: () => {
-                            ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_CANCEL);
-                        }
-                    },
-                    {
-                        text: '确定',
-                        onPress: () => {
-                            ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_ENSURE);
-                            navigator.pop();
-                        }
-                    }
-                ])
-            }
-        };
-    }
-
-    hasValue() {
-        let {houseForm} = this.props.houseInput;
-        if(houseForm.get("seller_alias") || houseForm.get("seller_phone")) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     render() {
         let {houseForm, controller, communityData} = this.props.houseInput;
-        let isOpacity = !!(houseForm.get('seller_phone') && houseForm.get('seller_phone').length >= 8) ;
+        let isOpacity = !!(!controller.get('err_msg') && houseForm.get('seller_phone') && houseForm.get('seller_phone').length >= 8) ;
 
         return (
             <View style={styles.container}>
-                <PublishTitle>这<Text style={styles.colorFFDB}>1</Text>步即可发布</PublishTitle>
+                <PublishStepBlock step={3} />
                 <View style={styles.paddingHorizon}><Text style={styles.baseInfo}>房源为“{houseForm.get('community_name')}{!controller.get('single')? houseForm.get('building_num')+'号':'独栋'}{!controller.get('villa')?houseForm.get('door_num')+'室':'别墅'}”</Text></View>
                 <View style={styles.colorWhite}>
                     <WithLabel
                         label='称呼'
                         ref='alias'
-                        value={houseForm.get('seller_alias')}
+                        defaultValue={houseForm.get('seller_alias')}
                         placeholder='(选填)如张先生'
                         underlineColorAndroid = 'transparent'
+                        maxLength={8}
                         onBlur={() => ActionUtil.setAction(actionType.BA_SENDTHREE_THREE_NAME)}
                         onChangeText={(v) => {this.singleAction('aliasChanged', v)}}
                     />
@@ -105,7 +75,7 @@ export default class LandlordInfoPage extends Component {
         let {houseInput, actions} = this.props;
 
         houseInput.controller.get('err_msg') && actions.error('');
-        actions[action](value);
+        actions[action](value.trim());
     }
 
     checkForm() {
@@ -122,6 +92,7 @@ export default class LandlordInfoPage extends Component {
         let houseForm = this.props.houseInput.houseForm.toJS(),
             msg = this.checkForm();
 
+        dismissKeyboard();
         msg ? this.props.actions.error(errMsgs[msg]):this.submitSuccess(houseForm);
     };
 
@@ -132,7 +103,7 @@ export default class LandlordInfoPage extends Component {
         .then((oData) => {
             ActionUtil.setActionWithExtend(actionType.BA_SENDTHREE_THREE_RELEASE, {"vpid": oData.property_id});
             let routeStack = this.props.navigator.state.routeStack;
-            let newStack = routeStack.slice(0, routeStack.length-3);
+            let newStack = routeStack.slice(0, routeStack.length-2);
             navigator.immediatelyResetRouteStack(newStack);
             navigator.push({
                 component: HouseInputSuccessContainer,
@@ -143,6 +114,7 @@ export default class LandlordInfoPage extends Component {
                 bp: this.pageId
             });
             actions.dataCleared();
+            actions.hiSearchCleared();
         })
         .catch((error) => {
             ActionUtil.setActionWithExtend(actionType.BA_SENDTHREE_THREE_RELEASE, {"error_type": error.status || ""});
@@ -151,7 +123,8 @@ export default class LandlordInfoPage extends Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.landlordCleared();
+        this.props.actions.error('');
+        //this.props.actions.landlordCleared();
     }
 }
 
@@ -166,9 +139,6 @@ const styles = StyleSheet.create({
     },
     colorWhite: {
         backgroundColor: '#fff'
-    },
-    colorFFDB: {
-        color: '#ff6d4b'
     },
     baseInfo: {
         marginBottom: 15,

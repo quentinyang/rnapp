@@ -15,6 +15,7 @@ import user from './user';
 import settings from './settings';
 import withdraw from './withdraw';
 import backScore from './backScore';
+import signIn from './signIn';
 
 const rootReducer = combineReducers({
     test,
@@ -30,7 +31,8 @@ const rootReducer = combineReducers({
     user,
     settings,
     withdraw,
-    backScore
+    backScore,
+    signIn
 });
 
 export default rootReducer;

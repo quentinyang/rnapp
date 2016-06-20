@@ -63,7 +63,7 @@ function houseData(state = Immutable.fromJS(initialState), action) {
                 return newArr;
             });
             break;
-        default: 
+        default:
             return state;
     }
 }
@@ -91,7 +91,7 @@ function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
         case types.CLEAR_HOME_PAGE:
             return Immutable.fromJS(initialAttentionList);
             break;
-        default: 
+        default:
             return state;
     }
 }
@@ -101,7 +101,11 @@ let initialBaseInfo = {
         visible: false,
         score: 8
     },
-    newCount: ""
+    newCount: "",
+    giftModal: {
+        "sign_in_days": "1",
+        "experience": "0"
+    }
 };
 
 function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
@@ -114,6 +118,9 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
             break;
         case types.HOUSE_NEW_COUNT:
             return state.set('newCount', Immutable.fromJS(action.count));
+            break;
+        case types.GIFT_INFO:
+            return state.set('giftModal', Immutable.fromJS(action.info));
             break;
         default:
             return state;

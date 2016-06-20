@@ -5,16 +5,101 @@ import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, P
 
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
+import SignInContainer from '../containers/SignInContainer';
 import Immutable, {List} from 'immutable';
 import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
 import ScoreRule from './ScoreRule';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
+import AsyncStorageComponent from '../utils/AsyncStorageComponent';
+import * as common from '../constants/Common';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
 });
+
+class GiftModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        let {isVisible, modalInfo, closeGiftModal} = this.props;
+        return (
+        <Modal visible={isVisible} transparent={true} onRequestClose={() => {closeGiftModal(false)}}>
+            <View style={styles.bgWrap}>
+                <View>
+                    <View style={[styles.contentContainer, {marginTop: 32}]}>
+                        <TouchableHighlight
+                            style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
+                            underlayColor="#fff"
+                            onPress={() => {ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE); closeGiftModal(false)}}
+                        >
+                            <Image
+                                style={styles.closeIcon}
+                                source={require("../images/close.png")}
+                            />
+                        </TouchableHighlight>
+
+                        <Text style={[styles.h5, styles.giftDay]}>连续签到<Text>{modalInfo.get('sign_in_days')}</Text>天</Text>
+                        <View style={[styles.row]}>
+                            <Text>
+                                <Text style={[styles.h2, styles.addNum]}>+</Text>
+                                <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('experience')}</Text>
+                                经验</Text>
+                            { modalInfo.get('points') ?
+                                <Text style={styles.scoreAdd}>
+                                    <Text style={[styles.h2, styles.addNum]}>+</Text>
+                                    <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('points')}</Text>
+                                    积分</Text>
+                                : null
+                            }
+                        </View>
+
+                        <TouchableHighlight
+                            underlayColor='#fff'
+                            onPress={this._goScore.bind(this)}
+                        >
+                            <View style={styles.flex}>
+                                <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
+                            </View>
+                        </TouchableHighlight>
+
+                    </View>
+
+                    <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
+                        <Image style={styles.gift} source={require("../images/gift.png")} />
+                    </View>
+                </View>
+            </View>
+        </Modal>
+        );
+    }
+    componentWillUpdate(nextProps, nextState) {
+        if(nextProps.modalInfo.get('experience') != "0") {
+            if(nextProps.modalInfo.get('points')) {
+                ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_CREDIT_ONVIEW, {"points": nextProps.modalInfo.get('points')});
+            } else {
+                ActionUtil.setAction(actionType.BA_HOME_PAGE_EXPERIENCE_ONVIEW);
+            }
+        }
+    }
+    _goScore() {
+        let {navigator, closeGiftModal, modalInfo, log} = this.props;
+
+        closeGiftModal(false);
+        navigator.push({
+            component: SignInContainer,
+            name: 'signIn',
+            title: '签到送积分',
+            hideNavBar: false,
+            signInfo: modalInfo,
+            bp: log.pageId,
+            backLog: log.back
+        });
+        ActionUtil.setAction(actionType.BA_HOME_PAGE_FIND);
+    }
+}
 
 class ScoreModal extends Component {
     constructor(props) {
@@ -68,12 +153,30 @@ class ScoreModal extends Component {
 export default class Home extends Component {
     constructor(props) {
         super(props);
+        var self = this;
 
         this.state = {
-            isRefreshing: false
+            isRefreshing: false,
+            showGiftModal: false
         };
         this.pageId = actionType.BA_HOME_PAGE;
         ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_ONVIEW, {"bp": this.props.route.bp});
+
+        let key = common.APP_OPEN_DATE + guid;
+        AsyncStorageComponent.get(key)
+            .then((value) => {
+                let today = new Date().getDate().toString();
+
+                if(value && value == today) { //不为空且 == today, 不显示
+                } else { //为空 或 != today, 则显示并更新
+                    self._setGiftModalVisible(true);
+                    AsyncStorageComponent.save(key, today);
+                    self.props.actions.fetchGiftInfo();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
     render() {
@@ -83,6 +186,13 @@ export default class Home extends Component {
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
                 <ScoreModal modalInfo={scoreModalInfo} actions={actions} navigator={navigator} />
+                <GiftModal
+                    isVisible={this.state.showGiftModal}
+                    modalInfo={baseInfo.get('giftModal')}
+                    navigator={navigator}
+                    closeGiftModal={this._setGiftModalVisible}
+                    log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
+                />
                 <View style={styles.searchWrap}>
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>
                         <Text style={[styles.searchText, styles.searchTextPadding]}>上海</Text>
@@ -237,7 +347,7 @@ export default class Home extends Component {
                             style={[styles.allHouseImage]}
                         />
                         <Text style={[styles.flex, styles.heiti_16_header]}>{this.props.rout}</Text>
-                        <Text style={styles.noData}>今日新增<Text style={[styles.fontMedium, styles.orange]}>{baseInfo.get('newCount')}</Text>套</Text>
+                        <Text style={styles.noData}>今日新增<Text style={[styles.mediumFont, styles.orange]}>{baseInfo.get('newCount')}</Text>套</Text>
                         <Image
                             source={require('../images/next.png')}
                             style={styles.nextImage}
@@ -283,6 +393,12 @@ export default class Home extends Component {
             attentionList
         });
     };
+
+    _setGiftModalVisible = (visible) => {
+        this.setState({
+            showGiftModal: visible
+        });
+    }
 }
 
 export class Attention extends Component {
@@ -341,14 +457,14 @@ class NoData extends Component {
         return (
             <View style={[styles.alignItems]}>
                 <Image
-                    source={require('../images/noAttention.png')}
+                    source={require('../images/no_house_list.png')}
                     style={styles.noAttention}
                 />
                 {
                     districtBlockSelect.size == 0 && communitySelect.size == 0 ?
                         <View style={[styles.alignItems]}>
-                            <Text style={[styles.noAttentionText]}>设置关注的区域得<Text style={[styles.orange, styles.fontMedium]}>8</Text>积分</Text>
-                            <Text style={[styles.noAttentionText]}>最多免费看<Text style={[styles.orange, styles.fontMedium]}>4</Text>套房源</Text>
+                            <Text style={[styles.noAttentionText]}>设置关注的区域得<Text style={[styles.orange, styles.mediumFont]}>8</Text>积分</Text>
+                            <Text style={[styles.noAttentionText]}>最多免费看<Text style={[styles.orange, styles.mediumFont]}>4</Text>套房源</Text>
                         </View> :
                         <Text style={[styles.noAttentionText]}>关注的板块和小区没有房源</Text>
                 }
@@ -394,6 +510,18 @@ const styles = StyleSheet.create({
     },
     column: {
         flexDirection: 'column'
+    },
+    mediumFont: {
+        fontWeight: '500'
+    },
+    h1: {
+        fontSize: 40
+    },
+    h2: {
+        fontSize: 30
+    },
+    h5: {
+        fontSize: 15
     },
     allHouse: {
         flexDirection: 'row',
@@ -478,8 +606,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     noAttention: {
-        width: 90,
-        height: 108,
+        width: 100,
+        height: 100,
         marginBottom: 20
     },
     noAttentionText: {
@@ -563,7 +691,38 @@ const styles = StyleSheet.create({
     btnSize: {
         fontSize: 18
     },
-    fontMedium: {
-        fontWeight: '500'
+    giftBg: {
+        position: 'absolute',
+        top: 0,
+        left: 100,
+        width: 76,
+        height: 76,
+        borderRadius: 38,
+        borderWidth: 5,
+        borderColor: '#fff',
+        backgroundColor: "#04C1AE"
+    },
+    gift: {
+        width: 34,
+        height: 34
+    },
+    giftDay: {
+        marginTop: 28,
+        marginBottom: 4
+    },
+    scoreAdd: {
+        marginLeft: 30
+    },
+    addNum: {
+        letterSpacing: 6,
+        marginTop: -3
+    },
+    scoreNum: {
+        letterSpacing: 1
+    },
+    giftBtn: {
+        color: "#04c1ae",
+        fontSize: 12,
+        marginTop: 14
     }
 });

@@ -6,3 +6,4 @@ export const USER_TOKEN_KEY = 'user_token';
 export const USER_PHONE = 'user_phone';
 export const USER_ID = 'user_id';
 export const GETUI_CLIENT_ID = 'getui_client_id';
+export const APP_OPEN_DATE = 'app_open_date';

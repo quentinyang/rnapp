@@ -52,16 +52,16 @@ export class SearchHistoryItem extends Component {
     }
 
     render() {
-        let {item, key, onPress} = this.props;
+        let {item, index, onPress} = this.props;
 
         return (
             <TouchableWithoutFeedback
-                key={key}
+                key={index}
                 onPress={onPress.bind(null, item)}
             >
                 <View style={[styles.item, styles.row, styles.justifyBetween, styles.center]}>
                     <Text style={styles.baseColor}>{item.get('name')}</Text>
-                    {/*<Text style={[styles.grayColor, styles.smallFont]}>约{item.get('count')}套在售</Text>*/}
+                    {/*<Text style={[styles.grayColor, styles.smallFont]}>约{item.get('count')}套</Text>*/}
                 </View>
             </TouchableWithoutFeedback>
         );

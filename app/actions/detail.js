@@ -1,6 +1,7 @@
 'use strict';
 
 import {Platform} from 'nuke'
+import Toast from 'react-native-root-toast';
 let CallModule = require('react-native').NativeModules.CallModule;
 
 let ActionUtil = require( '../utils/ActionLog');
@@ -91,7 +92,7 @@ export function callSeller(params) {
     }
 }
 
-export function callFeedback(params) {
+export function callFeedback(params, propertyId) {
     return dispatch => {
         serviceAction(dispatch)({
             service: postFeedback,
@@ -99,6 +100,12 @@ export function callFeedback(params) {
             success: function(oData) {
                 dispatch(setFeedbackVisible(false));
                 dispatch(setSellerPhone(oData.seller_phone || ''));
+
+                Toast.show('看房获得' + (oData.experience || 5) + '个经验', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER
+                });
+                ActionUtil.setActionWithExtend(actionType.BA_DETAIL_EXPERIENCE_ONVIEW, {"vpid": propertyId});
             },
             error: function(oData) {
 

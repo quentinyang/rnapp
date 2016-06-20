@@ -62,6 +62,8 @@ export default class CommunitySearch extends Component {
         actionsInput.buildingChanged('');
         actionsInput.doorChanged('');
         actionsInput.singleChanged('');
+        actionsInput.landlordCleared();
+        actionsInput.moreCleared();
         this.goBack();
     };
     _clearSearchHistory = () => {
@@ -84,6 +86,8 @@ export default class CommunitySearch extends Component {
         actionsInput.buildingChanged('');
         actionsInput.doorChanged('');
         actionsInput.singleChanged('');
+        actionsInput.landlordCleared();
+        actionsInput.moreCleared();
         if(!value && !this.state.isShowSearchHistory) {
             this.setState({
                 isShowSearchHistory: true

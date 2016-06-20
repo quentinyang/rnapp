@@ -9,7 +9,6 @@ export default class AutocompleteItem extends Component {
 
     render() {
         let {item, index} = this.props;
-
         return (
             <TouchableHighlight
                 key={index}
@@ -19,9 +18,9 @@ export default class AutocompleteItem extends Component {
                 <View style={[styles.flex, styles.row, styles.alignItems, styles.item]}>
                     <View style={[styles.flex, styles.justifyContent]}>
                         <Text style={styles.text}>{item.get('name')}</Text>
-                        <Text style={[styles.text_1, styles.fontColor]}>{item.get('address')}</Text>
+                        <Text numberOfLines={1} style={[styles.text_1, styles.fontColor]}>{item.get('address')}</Text>
                     </View>
-                    <Text style={[styles.text, styles.text_1]}>{'约' + item.get('selling_house_count') + '套在售'}</Text>
+                    <Text style={[styles.text, styles.text_1, styles.sellerNum]}>{'约' + item.get('selling_house_count') + '套'}</Text>
                 </View>
             </TouchableHighlight>
         );
@@ -56,6 +55,10 @@ const styles = StyleSheet.create({
     },
     text_1: {
         fontSize: 12
+    },
+    sellerNum: {
+        width: 75,
+        textAlign: "right"
     },
     fontColor: {
         color: '#8d8c92'

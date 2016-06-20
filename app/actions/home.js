@@ -3,7 +3,7 @@
 import * as types from '../constants/Home';
 import {fetchAttentionHouseListService, fetchAttentionAppendHouseListService, fetchAttentionPrependHouseListService, fetchHouseNewCountService} from '../service/houseListService';
 import {fetchAttentionBlockAndCommunityService} from '../service/blockService';
-import {fetchScoreModalStatusService} from '../service/userService'
+import {fetchScoreModalStatusService, getGiftInfo} from '../service/userService'
 import {makeActionCreator, serviceAction} from './base';
 
 export const houseAttentionFetched = makeActionCreator(types.HOUSE_ATTENTION_FETCHED, 'houseList');
@@ -18,6 +18,7 @@ export const HouseNewCount = makeActionCreator(types.HOUSE_NEW_COUNT, 'count');
 //home / list / detail same community
 export const setHomeContactStatus = makeActionCreator(types.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
 export const setLookStatus = makeActionCreator(types.SET_LOOK_STATUS, 'lookStatus');
+export const giftInfo = makeActionCreator(types.GIFT_INFO, 'info');
 
 export function fetchAttentionHouseList(params) {
     return dispatch => {
@@ -104,6 +105,18 @@ export function fetchHouseNewCount() {
             },
             error: function(oData) {
             }
+        })
+    }
+}
+
+export function fetchGiftInfo() {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: getGiftInfo,
+            success: function(oData) {
+                dispatch(giftInfo(oData));
+            },
+            error: function() {}
         })
     }
 }

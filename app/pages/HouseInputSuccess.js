@@ -29,7 +29,7 @@ export default class HouseInputSuccess extends Component {
         return (
             <View style={styles.container}>
                 <Image source={require('../images/success.png')} style={[styles.sucImg]}/>
-                <Text style={styles.promptTitle}>审核通过可获<Text style={styles.promptColor}>{data.money}</Text>积分</Text>
+                <Text style={styles.promptTitle}>审核通过可获<Text style={styles.promptColor}>{data.money}</Text>积分和<Text style={styles.promptColor}>{data.experience}</Text>个经验</Text>
                 <Text style={!data.is_special?styles.subPromptTitle:[styles.subPromptTitle, styles.fontOrange]}>{data.msg}</Text>
                 {data.is_can_input ?
                 <TouchableHighlight
@@ -54,15 +54,7 @@ export default class HouseInputSuccess extends Component {
 
     continueInput = () => {
         ActionUtil.setAction(actionType.BA_SEND_SUCCESS_CONTINIUE);
-        this.props.navigator.replace({
-            component: PublishFirstStepContainer,
-            name: 'publishInventory',
-            title: '房源基本信息',
-            right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false, backLog: actionType.BA_SENDRULE_RETURN}},
-            backLog: actionType.BA_SENDTWO_THREE_RETURN,
-            callbackFun: () => {},
-            hideNavBar: false
-        });
+        this.props.navigator.pop();
     };
 
     lookHouse = () => {
@@ -94,7 +86,7 @@ const styles = StyleSheet.create({
         height: 80
     },
     promptTitle: {
-        fontSize: 19,
+        fontSize: 15,
         fontWeight: '200'
     },
     promptColor: {

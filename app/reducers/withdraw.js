@@ -19,13 +19,13 @@ function withdrawInfo(state = Immutable.fromJS(initialState), action) {
         case types.ALIPAY_ACCOUNT_CHANGED:
             return state.set('alipay_account', action.alipay_account);
             break;
-        case types.NAME_CHANGED:
+        case types.WITHDRAW_NAME_CHANGED:
             return state.set('name', action.name);
             break;
-        case types.PRICE_CHANGED:
+        case types.WITHDRAW_PRICE_CHANGED:
             return state.set('price', action.price);
             break;
-        case types.PRICE_CLEARED:
+        case types.WITHDRAW_PRICE_CLEARED:
             return state.set('price', '');
             break;
         case types.ALIPAY_FETCHED:

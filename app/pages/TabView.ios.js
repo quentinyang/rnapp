@@ -5,7 +5,6 @@ import HomeContainer from '../containers/HomeContainer';
 import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
 import InputHouseRule from '../pages/InputHouseRule';
 import UserContainer from '../containers/UserContainer';
-import {allowToInputService} from '../service/houseInputService';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -19,7 +18,7 @@ export default class TabView extends Component {
     }
 
     render() {
-        let {actionsUser, actionsApp, route, navigator, clickStatus} = this.props;
+        let {actionsUser, route, navigator} = this.props;
         return (
             <View style={styles.container}>
                 <TabBar
@@ -37,38 +36,9 @@ export default class TabView extends Component {
                                         icon={{uri: val.icon, scale: 2}}
                                         key={val.key}
                                         onPress={() => {
-                                            if(val.key == 1) {
-                                                if(!clickStatus.get('chouldTapClick')) return;
-                                                actionsApp.clickTabChanged(false);
-                                                allowToInputService()
-                                                .then((data) => {
-                                                    if(data.is_can_input) {
-                                                        navigator.push({
-                                                            component: PublishFirstStepContainer,
-                                                            name: 'publishInventory',
-                                                            title: '房源基本信息',
-                                                            right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false, backLog: actionType.BA_SENDRULE_RETURN}},
-                                                            backLog: actionType.BA_SENDONE_THREE_RETURN,
-                                                            callbackFun: () => {},
-                                                            clearForbidden: true,
-                                                            hideNavBar: false
-                                                        });
-                                                    } else {
-                                                        Alert.alert('', '亲，您已经发了'+data.daily_max_input_house_count+'套房了\n明天再来吧~', [
-                                                        {
-                                                            text: '好的',
-                                                            onPress: () => {}
-                                                        }])
-                                                    }
-                                                })
-                                                .catch((error) => {
-                                                    Alert.alert('', error.msg);
-                                                })
-                                            } else {
-                                                this.setState({
-                                                    tabIndex: val.key
-                                                });
-                                            }
+                                            this.setState({
+                                                tabIndex: val.key
+                                            });
                                             if (val.key == 2) {
                                                 actionsUser.fetchUserProfile({});
                                             }

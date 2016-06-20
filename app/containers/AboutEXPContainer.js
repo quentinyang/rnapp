@@ -3,30 +3,31 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actionsUser from '../actions/user';
-import TabView from '../pages/TabView';
+import * as actions from '../actions/user';
+import AboutEXP from '../pages/AboutEXP';
 
-class TabViewContainer extends Component {
+class AboutEXPContainer extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-            <TabView {...this.props}/>
+            <AboutEXP {...this.props}/>
         );
     }
 }
 
 function mapStateToProps(state) {
     return {
+        expLevel: state.user.expLevel
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actionsUser: bindActionCreators(actionsUser, dispatch)
+        actions: bindActionCreators(actions, dispatch)
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TabViewContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AboutEXPContainer);

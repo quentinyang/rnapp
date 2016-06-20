@@ -7,11 +7,11 @@ export default class Filter extends Component {
         super(props);
 
         this._onPress = this._onPress.bind(this);
-        this._onlyVerify = this._onlyVerify.bind(this);
+        this._onlyNew = this._onlyNew.bind(this);
     }
 
     render() {
-        let {tabType, onlyVerify, areaName, priceName, bedroomsName} = this.props;
+        let {tabType, onlyNew, areaName, priceName, bedroomsName} = this.props;
 
         return (
             <View style={styles.filterWrap}>
@@ -47,13 +47,13 @@ export default class Filter extends Component {
                         </TouchableWithoutFeedback>
                     </View>
                     <View style={[styles.flex, styles.justifyContent]}>
-                        <TouchableWithoutFeedback onPress={this._onlyVerify.bind(null, !onlyVerify)}>
+                        <TouchableWithoutFeedback onPress={this._onlyNew.bind(null, !onlyNew)}>
                             <View style={[styles.flex, styles.row, styles.alignItems, styles.justifyContent]}>
                                 {
-                                    onlyVerify ?
+                                    onlyNew ?
                                     <Image source={require('../images/selected.png')} style={styles.checkbox}/>
                                     : <Image source={require('../images/unSelected.png')} style={styles.checkbox}/>
-                                }<Text style={styles.commonText}>{' ' + '只看认证'}</Text>
+                                }<Text style={styles.commonText}>{' ' + '最新房源'}</Text>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -66,9 +66,9 @@ export default class Filter extends Component {
         this.props.filterItemPress(type);
     }
 
-    _onlyVerify(verify) {
+    _onlyNew(onlyNew) {
         this.props.filterItemPress('');
-        this.props.onlyVerifyChanged(verify);
+        this.props.onlyNewChanged(onlyNew);
     }
 }
 

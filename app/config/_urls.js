@@ -3,7 +3,7 @@
 // let HOST = 'http://360.master.stage.angejia.com/service/';
 // let HOST = 'http://360.master.dev.angejia.com/service/';
 let HOST = 'https://api.fangyuan360.cn/service/';
-//let HOST = 'http://360.feature-bureau-alipay.dev.angejia.com/service/';
+//let HOST = 'http://360.feature-bureau-20160622.dev.angejia.com/service/';
 
 let urls = {
     detail: {
@@ -21,7 +21,12 @@ let urls = {
         alipayStatus: HOST + 'user/binding/alipay/status',
         withdraw: HOST + 'withdrawals',
         scoreList: HOST + 'my/account/flow',
-        alipayLogin: HOST + 'alipay/quick/login/url'
+        alipayLogin: HOST + 'alipay/quick/login/url',
+
+        signIn: HOST + 'user/sign-in',
+        signInStatus: HOST + 'user/sign-in/status',
+
+        expRule: HOST + 'user/level/rule'
     },
     house: {
         list: HOST + 'property-list',

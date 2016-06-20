@@ -104,8 +104,9 @@ export default class Withdraw extends Component {
 
     componentWillUnmount() {
         let {actions} = this.props;
-        actions.priceCleared();
-        actions.errMsg('');
+
+        actions.withdrawPriceCleared();
+        actions.withdrawErrMsg('');
     }
 
     goBinding() {
@@ -150,16 +151,16 @@ export default class Withdraw extends Component {
 
     changeName(value) {
         let {route, actions, withdrawInfo} = this.props;
-        actions.nameChanged(value);
+        actions.withdrawNameChanged(value);
     }
 
     changePrice(value) {
         let {route, actions, withdrawInfo} = this.props;
-        actions.priceChanged(value);
+        actions.withdrawPriceChanged(value);
         if(parseInt(value) > parseInt(route.data.score)) {
-            actions.errMsg('输入金额超过可提额度');
+            actions.withdrawErrMsg('输入金额超过可提额度');
         } else {
-            withdrawInfo.get('err_msg') && actions.errMsg('');
+            withdrawInfo.get('err_msg') && actions.withdrawErrMsg('');
         }
     }
 
@@ -193,14 +194,14 @@ export default class Withdraw extends Component {
                     onPress: () => {
                         navigator.pop();
                         actionsUser.fetchUserProfile({});
-                        actions.priceCleared();
+                        actions.withdrawPriceCleared();
                     }
                 }]
             );
         })
         .catch((error) => {
             actions.getAlipayStatus();
-            actions.errMsg(error.msg);
+            actions.withdrawErrMsg(error.msg);
         })
     };
 }

@@ -238,6 +238,7 @@ class Login extends Component {
                 actionsApp.setSearchHistory(oData.user_id || "0");
 
                 gtoken = oData.token;
+                guid = oData.user_id;
                 if(oData.is_enter_attention_page) {
                     navigator.resetTo({
                         component: TabViewContainer,
