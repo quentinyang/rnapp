@@ -12,7 +12,9 @@ import { NativeAppEventEmitter, DeviceEventEmitter, ToastAndroid } from 'react-n
 
 import WithdrawContainer from '../containers/WithdrawContainer';
 import PaySection from '../components/PaySection';
+import WithLabel from '../components/LabelTextInput';
 import {tradeService, resultService} from '../service/payService';
+import Toast from 'react-native-root-toast';
 
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
@@ -24,30 +26,35 @@ export default class BindAlipay extends Component {
         this.submitStatus = true;
         this.bindPrice = 1;
         this.tradeId = '';
+        this.step = 1;
     }
 
     render() {
-
         return (
             <ScrollView
                 style={styles.container}
                 automaticallyAdjustContentInsets={false}
             >
-                <View style={[styles.bindInstruction, styles.center]}>
-                    <Text style={styles.instructFont}>充值<Text style={[styles.instructFont, styles.colorOrange]}>{this.bindPrice}</Text>积分</Text>
-                    <Text style={styles.instructFont}>已绑定提现支付宝账号</Text>
-                </View>
+                {
+                    this.props.aliRepeat ?
+                    <AccountRepeated /* 绑定支付宝重复 */ />
+                    :
+                    !this.props.route.alipay_account ?
+                        <ChargeToBind price={this.bindPrice} /> //未绑定支付宝
+                        :
+                        <TypeName
+                            name={this.props.withdrawInfo.name}
+                            actions={this.props.actions}
+                        /> //绑定成功但未填写真实姓名
+                }
 
-                <PaySection price={this.bindPrice} />
-
-                <TouchableHighlight underlayColor='transparent' style={styles.submitButton} onPress={this.submitPrice}>
-                    <View style={styles.submitBox}>
+                <TouchableHighlight underlayColor='transparent' style={styles.submitButton} onPress={this.handleSubmit}>
+                    <View style={[styles.submitBox, styles.center]}>
                         <Text style={styles.submitFont}>确定</Text>
                     </View>
                 </TouchableHighlight>
-
             </ScrollView>
-        )
+        );
     }
 
     componentWillMount() {
@@ -81,15 +88,11 @@ export default class BindAlipay extends Component {
                         }]
                     );
                 } else {
-                    this.results && this.results.remove();
-                    this.props.navigator.replace({
-                        component: WithdrawContainer,
-                        name: 'withdraw',
-                        price: this.bindPrice,
-                        title: '提现',
-                        bp: this.pageId,
-                        hideNavBar: true
+                    Toast.show(data.msg, {
+                        duration: Toast.durations.LONG,
+                        position: Toast.positions.CENTER
                     });
+                    this.results && this.results.remove();
                 }
             }
         );
@@ -98,6 +101,22 @@ export default class BindAlipay extends Component {
     componentWillUnmount() {
         this.results && this.results.remove();
     }
+
+    handleSubmit = () => {
+        switch(this.step) {
+            case 1:
+                this.submitPrice();
+                break;
+            case 2:
+                this.submitName();
+                break;
+            case 3:
+                this.goUsercenter();
+                break;
+            default:
+                return null;
+        }
+    };
 
     submitPrice = () => {
         if(!this.submitStatus) return;
@@ -116,10 +135,92 @@ export default class BindAlipay extends Component {
             Alipay.addEvent(oData.data);
         })
         .catch((data) => {
-            ToastAndroid.show('操作太频繁，请重试', ToastAndroid.LONG);
+            Toast.show(data.msg, {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER
+            });
             this.submitStatus = true;
         })
     };
+
+    submitName = () => {
+        this.props.navigator.replace({
+            component: WithdrawContainer,
+            name: 'withdraw',
+            title: '提现',
+            bp: this.pageId,
+            hideNavBar: true
+        });
+    };
+
+    goUsercenter = () => {
+        this.props.navigator.pop();
+    };
+}
+
+class ChargeToBind extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <View>
+                <View style={[styles.bindInstruction, styles.center]}>
+                    <Text style={styles.instructFont}>充值<Text style={[styles.instructFont, styles.colorOrange]}>{this.props.price}</Text>积分</Text>
+                    <Text style={styles.instructFont}>已绑定提现支付宝账号</Text>
+                </View>
+
+                <PaySection price={this.props.price} style={{marginBottom: 35}} />
+            </View>
+        );
+    }
+}
+
+class TypeName extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <View>
+            <View style={{padding: 20, paddingTop: 0}}>
+                <Text style={{fontSize: 15, color: '#8d8c92', marginVertical: 15}}>您已绑定支付宝账号: 4482348234829@qq.com</Text>
+                <Text style={{fontSize: 19}}>请填写真实姓名以完成绑定</Text>
+            </View>
+                <WithLabel
+                    style={{backgroundColor:'#fff', borderTopWidth: 1/PixelRatio.get(), borderTopColor: '#d9d9d9'}}
+                    label='真实姓名'
+                    defaultValue=''
+                    placeholder='该账号对应的真实姓名'
+                    underlineColorAndroid = 'transparent'
+                    onFocus={() => ActionUtil.setAction(actionType.BA_MINE_CASH_ACCOUNTS)}
+                    onChangeText={(v) => {this.changeAccount(v)}}
+                />
+                <Text style={{fontSize: 12, color: '#ff6d4b', paddingHorizontal: 20, paddingTop: 9, paddingBottom: 28}}>姓名和账户决定提现能否成功，提交后不可更改</Text>
+            </View>
+        );
+    }
+
+    changeAccount(value) {
+        this.props.actions.withdrawNameChanged(value);
+    }
+}
+
+class AccountRepeated extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <View style={[styles.center, {height: 170}]}>
+                <Text style={{marginBottom: 10, fontSize: 19}}>支付宝账号：233243535@qq.com</Text>
+                <Text style={{fontSize: 19}}>已被别人绑定</Text>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -144,11 +245,9 @@ const styles = StyleSheet.create({
     },
     submitButton: {
         margin: 20,
-        marginTop: 45
+        marginTop: 0
     },
     submitBox: {
-        alignItems: 'center',
-        justifyContent: 'center',
         height: 40,
         backgroundColor: '#04c1ae',
         borderRadius: 5

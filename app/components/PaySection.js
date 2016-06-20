@@ -16,9 +16,9 @@ export default class PaySection extends Component {
     }
 
     render() {
-        let {price} = this.props;
+        let {style, price} = this.props;
         return (
-            <View style={styles.payWay}>
+            <View style={[styles.payWay, style]}>
                 <View style={styles.payLeft}>
                     <Image source={require('../images/alipaylogo.png')} style={styles.aliImage} />
                     <Text>支付宝支付: <Text style={styles.colorRed}>{price}元</Text></Text>
