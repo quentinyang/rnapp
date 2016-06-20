@@ -240,13 +240,15 @@ NSString * const UMengChannelId = @"";
 - (void)GeTuiSdkDidReceivePayloadData:(NSData *)payloadData andTaskId:(NSString *)taskId andMsgId:(NSString *)msgId andOffLine:(BOOL)offLine fromGtAppId:(NSString *)appId {
   // [4]: 收到个推消息
   NSString *payloadMsg = nil;
-  NSString *eventName = @"geTuiDataReceived";
+//  NSString *eventName = @"geTuiDataReceived";
   if (payloadData) {
     payloadMsg = [[NSString alloc] initWithBytes:payloadData.bytes
                                           length:payloadData.length
                                         encoding:NSUTF8StringEncoding];
-    GeTui *geTui = [GeTui sharedInstance];
-    [geTui handleRemoteNotificationReceived:eventName andPayloadMsg:payloadMsg withRoot:self.rootView];
+//    GeTui *geTui = [GeTui sharedInstance];
+//    [geTui handleRemoteNotificationReceived:eventName andPayloadMsg:payloadMsg withRoot:self.rootView];
+    
+    [self performSelector:@selector(HandleGeTui:) withObject:payloadMsg afterDelay:3];
   }
   
   NSString *record = [NSString stringWithFormat:@"%d, %@, %@%@", ++_lastPayloadIndex, [self formateTime:[NSDate date]], payloadMsg, offLine ? @"<离线消息>" : @""];
@@ -257,6 +259,11 @@ NSString * const UMengChannelId = @"";
 
   // 汇报个推自定义事件
   [GeTuiSdk sendFeedbackMessage:90001 taskId:taskId msgId:msgId];
+}
+
+- (void)HandleGeTui:payloadMsg {
+  GeTui *geTui = [GeTui sharedInstance];
+  [geTui handleRemoteNotificationReceived:@"geTuiDataReceived" andPayloadMsg:payloadMsg withRoot:self.rootView];
 }
 
 /** SDK收到sendMessage消息回调 */
