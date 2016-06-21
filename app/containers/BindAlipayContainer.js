@@ -20,9 +20,10 @@ class BindAlipayContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {withdrawInfo} = state.withdraw;
+    const {withdrawInfo, bindStepControl} = state.withdraw;
     return {
-        withdrawInfo
+        withdrawInfo,
+        bindStepControl
     }
 }
 

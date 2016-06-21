@@ -26,7 +26,6 @@ export default class BindAlipay extends Component {
         this.submitStatus = true;
         this.bindPrice = 1;
         this.tradeId = '';
-        this.step = 1;
     }
 
     render() {
@@ -36,16 +35,22 @@ export default class BindAlipay extends Component {
                 automaticallyAdjustContentInsets={false}
             >
                 {
-                    this.props.aliRepeat ?
+                    this.props.bindStepControl.get('step') == 1 ?
+                    <ChargeToBind price={this.bindPrice} /> //未绑定支付宝
+                    :null
+                }
+                {
+                    this.props.bindStepControl.get('step') == 2 ?
+                    <TypeName
+                        name={this.props.withdrawInfo.get('name')}
+                        actions={this.props.actions}
+                    /> //绑定成功但未填写真实姓名
+                    :null
+                }
+                {
+                    this.props.bindStepControl.get('step') == 3 ?
                     <AccountRepeated /* 绑定支付宝重复 */ />
-                    :
-                    !this.props.route.alipay_account ?
-                        <ChargeToBind price={this.bindPrice} /> //未绑定支付宝
-                        :
-                        <TypeName
-                            name={this.props.withdrawInfo.name}
-                            actions={this.props.actions}
-                        /> //绑定成功但未填写真实姓名
+                    :null
                 }
 
                 <TouchableHighlight underlayColor='transparent' style={styles.submitButton} onPress={this.handleSubmit}>
@@ -61,7 +66,7 @@ export default class BindAlipay extends Component {
         let self = this;
         let eventEmitter = Platform.OS === 'ios' ? NativeAppEventEmitter : DeviceEventEmitter;
         this.results = eventEmitter.addListener(
-            'EventReminder',
+            'BindEventReminder',
             (data) => {
                 let result = {};
                 self.submitStatus = true;
@@ -78,7 +83,6 @@ export default class BindAlipay extends Component {
                 }
                 let notifyData = Object.assign({}, result, {out_trade_no: self.tradeId});
                 resultService({body:notifyData}).then(() => {}).catch(() => {});
-
                 if(result.resultStatus != 9000) {
                     Alert.alert('', '支付失败，请稍后重试',
                         [{
@@ -88,14 +92,20 @@ export default class BindAlipay extends Component {
                         }]
                     );
                 } else {
-                    Toast.show(data.msg, {
+                    Toast.show('充值成功', {
                         duration: Toast.durations.LONG,
                         position: Toast.positions.CENTER
                     });
                     this.results && this.results.remove();
+                    resultService({body:notifyData}).then(() => {
+                        this.actions.bindStepChanged(3);
+                    }).catch(() => {});
                 }
             }
         );
+        if(this.props.route.alipay_account) {
+            this.props.actions.bindStepChanged(2);
+        }
     }
 
     componentWillUnmount() {
@@ -103,7 +113,8 @@ export default class BindAlipay extends Component {
     }
 
     handleSubmit = () => {
-        switch(this.step) {
+        if(!this.submitStatus) return;
+        switch(this.props.bindStepControl.get('step')) {
             case 1:
                 this.submitPrice();
                 break;
@@ -119,20 +130,19 @@ export default class BindAlipay extends Component {
     };
 
     submitPrice = () => {
-        if(!this.submitStatus) return;
         this.submitStatus = false;
         ActionUtil.setAction(actionType.BA_DEPOSIT_GO);
         let data = {
             subject: '绑定支付宝',
             body: '第一房源绑定支付宝',
-            total_fee: this.bindPrice,
+            total_fee: 1000,
             pay_type: 1
         };
 
         tradeService({body:data})
         .then((oData) => {
             this.tradeId = oData.out_trade_no;
-            Alipay.addEvent(oData.data);
+            Alipay.addEvent(oData.data, 'Bind');
         })
         .catch((data) => {
             Toast.show(data.msg, {
@@ -144,18 +154,34 @@ export default class BindAlipay extends Component {
     };
 
     submitName = () => {
-        this.props.navigator.replace({
-            component: WithdrawContainer,
-            name: 'withdraw',
-            title: '提现',
-            bp: this.pageId,
-            hideNavBar: true
-        });
+        this.submitStatus = false;
+        if(this.verifyName(this.props.withdrawInfo.get('name'))) {
+            this.props.navigator.replace({
+                component: WithdrawContainer,
+                name: 'withdraw',
+                title: '提现',
+                data: {},
+                bp: this.pageId,
+                hideNavBar: false
+            });
+        } else {
+            this.submitStatus = true;
+        }
     };
 
     goUsercenter = () => {
+        this.submitStatus = false;
         this.props.navigator.pop();
     };
+
+    verifyName(value) {
+        let reg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
+        if(!reg.test(value)) {
+            this.props.actions.withdrawErrMsg('请输入您的真实姓名');
+            return false;
+        }
+        return true;
+    }
 }
 
 class ChargeToBind extends Component {

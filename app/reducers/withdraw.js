@@ -42,6 +42,21 @@ function withdrawInfo(state = Immutable.fromJS(initialState), action) {
     }
 }
 
+let initialBindState = {
+    step: 1
+};
+
+function bindStepControl(state = Immutable.fromJS(initialBindState), action) {
+    switch(action.type) {
+        case types.BIND_STEP_CHANGED:
+            return state.set('step', action.step);
+            break;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
-    withdrawInfo
+    withdrawInfo,
+    bindStepControl
 });

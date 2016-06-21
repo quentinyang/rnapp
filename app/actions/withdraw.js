@@ -12,6 +12,8 @@ export const withdrawPriceCleared = makeActionCreator(types.WITHDRAW_PRICE_CLEAR
 export const withdrawErrMsg = makeActionCreator(types.WITHDRAW_ERR_MSG, 'err_msg');
 export const fromUserFetched = makeActionCreator(types.FROM_USER_FETCHED, 'account', 'has_bound');
 
+export const bindStepChanged = makeActionCreator(types.BIND_STEP_CHANGED, 'step');
+
 export function getAlipayStatus() {
     return dispatch => {
         serviceAction(dispatch)({

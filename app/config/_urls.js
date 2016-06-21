@@ -3,7 +3,7 @@
 //let HOST = 'http://360.master.stage.angejia.com/service/';
 // let HOST = 'http://360.master.dev.angejia.com/service/';
 let HOST = 'https://api.fangyuan360.cn/service/';
-//let HOST = 'http://360.feature-bureau-alipay.dev.angejia.com/service/';
+//let HOST = 'http://360.feature-bureau-alipay-binding.dev.angejia.com/service/';
 
 let urls = {
     detail: {
