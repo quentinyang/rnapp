@@ -101,7 +101,7 @@ NSString * const UMengChannelId = @"";
   if(url) {
     urlStr = [url absoluteString];
     NSArray *array = [urlStr componentsSeparatedByString:@"?"];
-    props  = @{@"page" : array[1]};
+    props  = @{@"page" : [@"page=" stringByAppendingString:array[1]]};
   } else {
     props  = @{@"page" : @""};
   }
@@ -298,15 +298,10 @@ NSString * const UMengChannelId = @"";
   if(!url) {
     return NO;
   }
-  
-  NSString *urlString = [url absoluteString];
-  NSString *hostString = [url host];
+
   NSString *queryString = [url query];
-  
-  NSLog(@"urlString in sourceApplication: %@", urlString);
-  NSLog(@"hostString in sourceApplication: %@", hostString);
-  NSLog(@"queryString in sourceApplication: %@", queryString);
-  [Utils sendEventWithParam:@"goPage" withParam:@{@"page": queryString} withRoot:self.rootView];
+
+  [Utils sendEventWithParam:@"goPage" withParam:@{@"page": [@"page=" stringByAppendingString:queryString]} withRoot:self.rootView];
   [[Alipay alipay] application:application openURL:url sourceApplication:sourceApplication annotation:sourceApplication];
   
   
@@ -317,13 +312,12 @@ NSString * const UMengChannelId = @"";
   if(!url) {
     return NO;
   }
-  NSString *urlString = [url absoluteString];
+
   NSString *queryString = [url query];
   
-  NSLog(@"urlString in options: %@", urlString);
   NSLog(@"queryString in options: %@", queryString);
   
-  [Utils sendEventWithParam:@"goPage" withParam:@{@"page": queryString} withRoot:self.rootView];
+  [Utils sendEventWithParam:@"goPage" withParam:@{@"page": [@"page=" stringByAppendingString:queryString]} withRoot:self.rootView];
   [[Alipay alipay] application:app openURL:url options:options];
   return YES;
 }

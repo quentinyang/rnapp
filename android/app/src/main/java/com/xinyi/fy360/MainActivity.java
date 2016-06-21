@@ -23,8 +23,6 @@ import com.microsoft.codepush.react.CodePush;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 // Import react native device info
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -36,13 +34,8 @@ import com.xinyi.fy365.deviceid.DeviceIDManager;
 import javax.annotation.Nullable;
 
 public class MainActivity extends ReactActivity {
-
     // 2. Define a private field to hold the CodePush runtime instance
     private CodePush _codePush;
-
-    private final Timer timer = new Timer();
-    private TimerTask task;
-    private String pageName;
 
     // 3. Override the getJSBundleFile method in order to let
     // the CodePush runtime determine where to get the JS
@@ -76,7 +69,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected List<ReactPackage> getPackages() {
-
         Log.d("GetuiSdk", "initializing sdk...");
 //        PushManager.getInstance().initialize(this.getApplicationContext());
 
@@ -109,16 +101,8 @@ public class MainActivity extends ReactActivity {
         Intent intent = getIntent();
         setPushAction(intent);
         //Log.d("umengKey", "UmengKey:" + BuildConfig.umengKey);
-
-        task = new TimerTask() {
-            @Override
-            public void run() {
-                if (null != ModulePackage.utils) {
-                    ModulePackage.utils.sendEvent("goPage", pageName);
-                }
-
-            }
-        };
+Log.d("life", "onCreate");
+        OpenAppActivity.hasLanched = true;
     }
 
     //检查hash
@@ -153,20 +137,50 @@ public class MainActivity extends ReactActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+Log.d("life", "onResume");
 
-        Intent intent = getIntent();
-        if (intent != null){
-            Uri uri = intent.getData();
-            if (uri != null){
-                android.util.Log.i("life", uri.toString());
-                pageName = uri.getQuery();
-                timer.schedule(task, 4000);
-            }
-        }
+//        if(!hasSendOpenEvent) {
+//            Log.d("life hasSendOPenEvent", hasSendOpenEvent.toString());
+//            Intent intent = getIntent();
+//            if (intent != null){
+//                Log.d("life intent", "intent:" + intent.toString());
+//                Uri uri = intent.getData();
+//                if (uri != null){
+//                    Log.d("life uri", "uri:" + uri.toString());
+//                    android.util.Log.i("life", uri.toString());
+//                    pageName = uri.getQuery();
+//                    if (null != ModulePackage.utils) {
+//                        Log.d("life", "if");
+//                        ModulePackage.utils.sendEvent("goPage", pageName);
+//                        hasSendOpenEvent = false;
+//                    }
+//                }
+//            }
+//        }
     }
 
     @Override
     protected @Nullable Bundle getLaunchOptions() {
         return null;
+    }
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Log.d("life", "onStart");
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        Log.d("life", "onPause");
+    }
+    @Override
+    protected void onStop(){
+        super.onStop();
+        Log.d("life", "onStop");
+    }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        Log.d("life", "onDestory");
     }
 }

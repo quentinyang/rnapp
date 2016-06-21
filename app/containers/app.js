@@ -4,7 +4,7 @@ import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image, Alert, Modal, TouchableHighlight,
     PixelRatio, TouchableWithoutFeedback, Linking, InteractionManager} from 'nuke';
 import {navigationContext} from 'react-native'
-import {NaviGoBack} from '../utils/CommonUtils';
+import {NaviGoBack, parseUrlParam} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 import * as common from '../constants/Common';
@@ -25,16 +25,13 @@ class App extends Component {
         super(props);
         var self = this;
         let {actionsApp} = this.props;
-        this.routeStack = [routes["Home"]];
+
+        this.routeStack = [];
         this.state = {
-            component: null,
-            name: '',
-            title: '',
-            hideNavBar: true,
-            initialRoute: null,
-            showModal: false
+            showModal: false,
+            hasSetRoute: false
         };
-this.hasSet = false;
+
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
         AsyncStorageComponent.multiGet([common.USER_TOKEN_KEY, common.USER_ID])
         .then((value) => {
@@ -55,20 +52,28 @@ this.hasSet = false;
             }
 
             if(!gtoken) {
-                self.setState({
+                self.routeStack.push({
                     component: LoginContainer,
                     name: 'login',
-                    title: '登录',
-                })
+                    title: '登陆',
+                    hideNavBar: true
+                });
+                self.setState({
+                    hasSetRoute: true
+                });
             } else {
                 if(Platform.OS == "ios" && gpage) {
-                    self.setState(routes[gpage]);
-                } else {
+                    self.routeStack.push(routes["home"]);
+                    let params = parseUrlParam(gpage);
+                    routes[params.name] && self.routeStack.push(Object.assign(routes[name], params));
                     self.setState({
-                        component: TabViewContainer,
-                        name: 'home',
-                        title: '我的主页'
-                    });
+                        hasSetRoute: true
+                    });                
+                } else {
+                    self.routeStack.push(routes["home"]);
+                    self.setState({
+                        hasSetRoute: true
+                    });                    
                 }
             }
         })
@@ -81,7 +86,15 @@ this.hasSet = false;
                 self._clientIdReceived(cId);
             });
             this.unlistenPage =  NativeAppEventEmitter.addListener('goPage', (obj) => {
-                _navigator.push(routes[obj.page] || routes["Home"]);
+                let navRoute = _navigator.getCurrentRoutes(), len = navRoute.length;
+                let params = self.parseParam(obj.page);
+
+                //当app在要打开的页面时，从外部打开后，无需跳转
+                if(len && navRoute[len-1].name !== params.name) {                    
+                    let goRoute = routes[params.name] ? Object.assign(routes[params.name], params) : routes['home'];
+                    gtoken && _navigator.push(goRoute);
+                    gpage = obj.page;
+                }
             });
         } else {
             DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
@@ -89,27 +102,25 @@ this.hasSet = false;
             });
 
             DeviceEventEmitter.addListener('goPage', (page) => {
-                _navigator.push(routes[page] || routes["Home"]);
+                let navRoute = _navigator.getCurrentRoutes(), len = navRoute.length;
+                let params = self.parseParam(obj.page);
+
+                //当app在要打开的页面时，从外部打开后，无需跳转
+                if(len && navRoute[len-1].name !== params.name) {
+                    let goRoute = routes[params.name] ? Object.assign(routes[params.name], params) : routes['home'];
+                    gtoken && _navigator.push(goRoute);
+                    gpage = page;
+                }
             });
         }
 
     }
 
     render() {
-        let {component} = this.state;
+        let {hasSetRoute} = this.state;
         let {appData, actionsApp} = this.props;
         let isAndroid = (Platform.OS == "android");
 
-        if(!this.hasSet && component && this.state.name != "home") {
-            this.hasSet = true;
-            this.routeStack.push({
-                component: this.state.component,
-                name: this.state.name,
-                hideNavBar: true,
-                title: this.state.title,
-                bp: ''});
-        }
-        console.dir(this.routeStack);
         return (
             <View style={styles.flex}>
                 <Modal visible={this.state.showModal} transparent={true} onRequestClose={() => {}}>
@@ -161,7 +172,7 @@ this.hasSet = false;
                 </Modal> : null }
 
                 {
-                    component ?
+                    hasSetRoute ?
                         <Navigator
                             style={styles.flex}
                             configureScene={this._configureScene}

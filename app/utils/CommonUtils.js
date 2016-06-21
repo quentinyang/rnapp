@@ -38,3 +38,13 @@ export function callUp(phone) {
         }
     }).catch(err => console.error('An error occurred', err));
 }
+
+export function parseUrlParam(paramStr) {
+    let paramObj = {};
+    let paramArr = paramStr.split("&");
+    paramArr.map((item, i) => {
+        let temp = item.split("=");
+        paramObj[item[0]] = item[1];
+    });
+    return paramObj;
+}

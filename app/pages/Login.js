@@ -18,12 +18,13 @@ import {loginService, sendCodeService} from '../service/userService';
 import TabViewContainer from '../containers/TabViewContainer';
 
 import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer';
-
+import {parseUrlParam} from '../utils/CommonUtils';
 import DeviceInfo from 'react-native-device-info';
 import FormContainer from '../components/FormContainer';
 import * as common from '../constants/Common';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
+import {routes} from '../config/route'
 
 class Login extends Component {
     constructor(props) {
@@ -247,6 +248,11 @@ class Login extends Component {
                         hideNavBar: true,
                         bp: this.pageId
                     });
+                    if(gpage) {
+                        let params = parseUrlParam(gpage);
+                        let goRoute = routes[params.name] ? Object.assign(routes[params.name], params) : routes["home"];
+                        navigator.push(goRoute);
+                    }
                 } else {
                     navigator.resetTo({
                         component: AttentionBlockSetContainer,
