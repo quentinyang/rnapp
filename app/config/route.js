@@ -1,6 +1,7 @@
 import HouseListContainer from '../containers/HouseListContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 import PublishFirstStepContainer from '../containers/PublishFirstStepContainer'
+import DetailContainer from '../containers/DetailContainer'
 
 export var routes = {
     "home": {
@@ -22,5 +23,11 @@ export var routes = {
         title: '发房',
         hideNavBar: true,
         index: 1
-    }
+    },
+    "detail": {
+        component: DetailContainer,
+        name: 'detail',
+        title: '房源详情',
+        hideNavBar: false
+    } 
 }

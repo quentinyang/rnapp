@@ -249,7 +249,7 @@ class Login extends Component {
                         bp: this.pageId
                     });
                     if(gpage) {
-                        let params = parseUrlParam(gpage);
+                        let params = parseUrlParam(unescape(gpage));
                         let goRoute = routes[params.name] ? Object.assign(routes[params.name], params) : routes["home"];
                         navigator.push(goRoute);
                     }
