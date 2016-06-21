@@ -103,7 +103,7 @@ class App extends Component {
 
             DeviceEventEmitter.addListener('goPage', (page) => {
                 let navRoute = _navigator.getCurrentRoutes(), len = navRoute.length;
-                let params = parseUrlParam(obj.page);
+                let params = parseUrlParam(page);
 
                 //当app在要打开的页面时，从外部打开后，无需跳转
                 if(len && navRoute[len-1].name !== params.name) {
