@@ -93,10 +93,22 @@ NSString * const UMengChannelId = @"";
   #else
     jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
   #endif
+  
+  NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+  NSString * urlStr;
+  NSDictionary *props;
+  
+  if(url) {
+    urlStr = [url absoluteString];
+    NSArray *array = [urlStr componentsSeparatedByString:@"?"];
+    props  = @{@"page" : array[1]};
+  } else {
+    props  = @{@"page" : @""};
+  }
 
   self.rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"fy360"
-                                               initialProperties:nil
+                                               initialProperties:props
                                                    launchOptions:launchOptions];
 
 
@@ -290,11 +302,27 @@ NSString * const UMengChannelId = @"";
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation{
+  if(!url) {
+    return NO;
+  }
+
+  NSString *queryString = [url query];
+  [Utils sendEventWithParam:@"goPage" withParam:@{@"page": queryString} withRoot:self.rootView];
+  
   [[Alipay alipay] application:application openURL:url sourceApplication:sourceApplication annotation:sourceApplication];
+  
   return YES;
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options{
+  if(!url) {
+    return NO;
+  }
+
+  NSString *queryString = [url query];
+  NSLog(@"queryString in options: %@", queryString);
+  [Utils sendEventWithParam:@"goPage" withParam:@{@"page": queryString} withRoot:self.rootView];
+  
   [[Alipay alipay] application:app openURL:url options:options];
   return YES;
 }

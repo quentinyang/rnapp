@@ -29,8 +29,9 @@ import com.umeng.analytics.MobclickAgent;
 import com.xinyi.fy360.getui.GeTuiManager;
 import com.xinyi.fy365.deviceid.DeviceIDManager;
 
-public class MainActivity extends ReactActivity {
+import javax.annotation.Nullable;
 
+public class MainActivity extends ReactActivity {
     // 2. Define a private field to hold the CodePush runtime instance
     private CodePush _codePush;
 
@@ -66,7 +67,6 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected List<ReactPackage> getPackages() {
-
         Log.d("GetuiSdk", "initializing sdk...");
 //        PushManager.getInstance().initialize(this.getApplicationContext());
 
@@ -89,7 +89,6 @@ public class MainActivity extends ReactActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d("onCreate", "initializing sdk...");
         super.onCreate(savedInstanceState);
         if (!PushManager.getInstance().isPushTurnedOn(this.getApplicationContext())) {
             PushManager.getInstance().initialize(this.getApplicationContext());
@@ -99,6 +98,7 @@ public class MainActivity extends ReactActivity {
         DevUtil.setDebug(true);
         setPushAction(getIntent());
         //Log.d("umengKey", "UmengKey:" + BuildConfig.umengKey);
+        OpenAppActivity.hasLanched = true;
     }
 
     //检查hash
@@ -133,5 +133,10 @@ public class MainActivity extends ReactActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected @Nullable Bundle getLaunchOptions() {
+        return null;
     }
 }

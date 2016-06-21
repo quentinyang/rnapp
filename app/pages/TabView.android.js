@@ -19,7 +19,7 @@ export default class TabView extends Component {
             this.props.actionsUser.fetchUserProfile({});
         } else {
             this.state = {
-                tabIndex: 0
+                tabIndex: this.props.route.index || 0
             };
         }
     }

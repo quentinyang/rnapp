@@ -106,6 +106,7 @@ export default class Setting extends Component {
                 actionsApp.deletePush(); // 解绑个推
                 AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
                 ActionUtil.setUid("");
+                gtoken = '';
                 AsyncStorageComponent.get('user_phone')
                 .then((value) => {
                     navigator.resetTo({
