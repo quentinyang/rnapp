@@ -642,7 +642,7 @@ var styles = StyleSheet.create({
     },
     date: {
         fontSize: 15,
-        paddingRight: 25
+        width: 100
     },
     itemSize: {
         fontSize: 15

@@ -36,7 +36,7 @@ export default class HouseItem extends Component {
                     <View style={[styles.row, styles.bedroomsWrap]}>
                         <Text style={[styles.bedrooms, styles.bedroomsPadding, item.get('is_click') ? styles.gray : {}]}>{item.get('bedrooms') + '室' + item.get('living_rooms') + '厅' + item.get('bathrooms') + '卫'}</Text>
                         <Text style={[styles.bedrooms, item.get('is_click') ? styles.gray : {}]}>{item.get('area') + '平'}</Text>
-                        <Text style={[styles.flex, styles.price]}><Text style={styles.fontMedium}>{item.get('price')}</Text>万</Text>
+                        <Text style={[styles.flex, styles.price, styles.fontMedium]}>{item.get('price')}万</Text>
                     </View>
                     <View style={[styles.row]}>
                         <Text numberOfLines={1} style={[styles.flex, styles.bottomMsg]}>{item.get('district_name') + '-' + item.get('block_name') + ' ' + item.get('community_address')}</Text>
