@@ -44,7 +44,7 @@ export function parseUrlParam(paramStr) {
     let paramArr = paramStr.split("&");
     paramArr.map((item, i) => {
         let temp = item.split("=");
-        paramObj[item[0]] = item[1];
+        paramObj[temp[0]] = temp[1];
     });
     return paramObj;
 }

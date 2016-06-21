@@ -29,7 +29,7 @@ public class OpenAppActivity extends Activity {
             @Override
             public void run() {
                 if (null != ModulePackage.utils) {
-                    ModulePackage.utils.sendEvent("goPage", "page=" + pageName);
+                    ModulePackage.utils.sendEvent("goPage", pageName);
                 }
             }
         };
@@ -42,7 +42,7 @@ public class OpenAppActivity extends Activity {
 
                 if(hasLanched) {
                     if (null != ModulePackage.utils) {
-                        ModulePackage.utils.sendEvent("goPage", "page=" + pageName);
+                        ModulePackage.utils.sendEvent("goPage", pageName);
                         startActivity(intent);
                         finish();
                     }

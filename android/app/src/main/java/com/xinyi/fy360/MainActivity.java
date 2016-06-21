@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.angejia.android.commonutils.common.DevUtil;
 import com.custom.component.ModulePackage;
-import com.custom.component.Utils;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -101,7 +99,7 @@ public class MainActivity extends ReactActivity {
         Intent intent = getIntent();
         setPushAction(intent);
         //Log.d("umengKey", "UmengKey:" + BuildConfig.umengKey);
-Log.d("life", "onCreate");
+
         OpenAppActivity.hasLanched = true;
     }
 
@@ -137,26 +135,6 @@ Log.d("life", "onCreate");
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
-Log.d("life", "onResume");
-
-//        if(!hasSendOpenEvent) {
-//            Log.d("life hasSendOPenEvent", hasSendOpenEvent.toString());
-//            Intent intent = getIntent();
-//            if (intent != null){
-//                Log.d("life intent", "intent:" + intent.toString());
-//                Uri uri = intent.getData();
-//                if (uri != null){
-//                    Log.d("life uri", "uri:" + uri.toString());
-//                    android.util.Log.i("life", uri.toString());
-//                    pageName = uri.getQuery();
-//                    if (null != ModulePackage.utils) {
-//                        Log.d("life", "if");
-//                        ModulePackage.utils.sendEvent("goPage", pageName);
-//                        hasSendOpenEvent = false;
-//                    }
-//                }
-//            }
-//        }
     }
 
     @Override

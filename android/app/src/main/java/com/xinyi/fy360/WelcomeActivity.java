@@ -31,8 +31,8 @@ public class WelcomeActivity extends Activity{
 
         @Override
         public void handleMessage(Message msg) {
-            finish();
             startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+            finish();
         }
 
     };

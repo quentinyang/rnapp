@@ -65,7 +65,7 @@ class App extends Component {
                 if(Platform.OS == "ios" && gpage) {
                     self.routeStack.push(routes["home"]);
                     let params = parseUrlParam(gpage);
-                    routes[params.name] && self.routeStack.push(Object.assign(routes[name], params));
+                    routes[params.name] && self.routeStack.push(Object.assign(routes[params.name], params));
                     self.setState({
                         hasSetRoute: true
                     });                
@@ -87,7 +87,7 @@ class App extends Component {
             });
             this.unlistenPage =  NativeAppEventEmitter.addListener('goPage', (obj) => {
                 let navRoute = _navigator.getCurrentRoutes(), len = navRoute.length;
-                let params = self.parseParam(obj.page);
+                let params = parseUrlParam(obj.page);
 
                 //当app在要打开的页面时，从外部打开后，无需跳转
                 if(len && navRoute[len-1].name !== params.name) {                    
@@ -103,7 +103,7 @@ class App extends Component {
 
             DeviceEventEmitter.addListener('goPage', (page) => {
                 let navRoute = _navigator.getCurrentRoutes(), len = navRoute.length;
-                let params = self.parseParam(obj.page);
+                let params = parseUrlParam(obj.page);
 
                 //当app在要打开的页面时，从外部打开后，无需跳转
                 if(len && navRoute[len-1].name !== params.name) {
