@@ -23,15 +23,7 @@ public class Utils extends ReactContextBaseJavaModule {
     }
 
     public void sendEvent(String eventName, String params) {
-        android.util.Log.i("life handle", eventName + " event...");
-
-        try {
-            reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-
-
-        //reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
+        android.util.Log.i("handle", eventName + " event...");
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, params);
     }
 }

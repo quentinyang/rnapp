@@ -77,9 +77,9 @@ public class MainActivity extends ReactActivity {
 
         // 5. Add the CodePush package to the list of existing packages
         return Arrays.<ReactPackage>asList(
-                new ModulePackage(),
                 new RNDeviceInfo(),
                 new MainReactPackage(),
+                new ModulePackage(),
                 new GeTuiManager(),
                 new AliPackage(),
                 new DeviceIDManager(),
@@ -96,10 +96,8 @@ public class MainActivity extends ReactActivity {
         //checkHash();
         // Important::please do not change this code, unless change it in the `switch.js`
         DevUtil.setDebug(true);
-        Intent intent = getIntent();
-        setPushAction(intent);
+        setPushAction(getIntent());
         //Log.d("umengKey", "UmengKey:" + BuildConfig.umengKey);
-
         OpenAppActivity.hasLanched = true;
     }
 
@@ -140,25 +138,5 @@ public class MainActivity extends ReactActivity {
     @Override
     protected @Nullable Bundle getLaunchOptions() {
         return null;
-    }
-    @Override
-    protected void onStart(){
-        super.onStart();
-        Log.d("life", "onStart");
-    }
-    @Override
-    protected void onPause(){
-        super.onPause();
-        Log.d("life", "onPause");
-    }
-    @Override
-    protected void onStop(){
-        super.onStop();
-        Log.d("life", "onStop");
-    }
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        Log.d("life", "onDestory");
     }
 }

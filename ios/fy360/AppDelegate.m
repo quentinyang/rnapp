@@ -89,7 +89,7 @@ NSString * const UMengChannelId = @"";
 //   jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
 
   #ifdef DEBUG
-    jsCodeLocation = [NSURL URLWithString:@"http://192.168.162.61:8081/index.ios.bundle?platform=ios&dev=true"];
+    jsCodeLocation = [NSURL URLWithString:@"http://localhost:8081/index.ios.bundle?platform=ios&dev=true"];
   #else
     jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
   #endif
@@ -300,10 +300,9 @@ NSString * const UMengChannelId = @"";
   }
 
   NSString *queryString = [url query];
-
   [Utils sendEventWithParam:@"goPage" withParam:@{@"page": queryString} withRoot:self.rootView];
-  [[Alipay alipay] application:application openURL:url sourceApplication:sourceApplication annotation:sourceApplication];
   
+  [[Alipay alipay] application:application openURL:url sourceApplication:sourceApplication annotation:sourceApplication];
   
   return YES;
 }
@@ -314,10 +313,9 @@ NSString * const UMengChannelId = @"";
   }
 
   NSString *queryString = [url query];
-  
   NSLog(@"queryString in options: %@", queryString);
-  
   [Utils sendEventWithParam:@"goPage" withParam:@{@"page": queryString} withRoot:self.rootView];
+  
   [[Alipay alipay] application:app openURL:url options:options];
   return YES;
 }

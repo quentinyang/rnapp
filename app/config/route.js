@@ -1,3 +1,7 @@
+/*
+    *   本js文件中不应该包含引用该js文件的Container，
+    * example: pages/Login.js 中引用了本文件，因此本文件中不应该包含LoginContainer，否做会报错
+*/
 import HouseListContainer from '../containers/HouseListContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 import PublishFirstStepContainer from '../containers/PublishFirstStepContainer'

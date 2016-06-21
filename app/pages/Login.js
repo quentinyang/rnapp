@@ -250,8 +250,8 @@ class Login extends Component {
                     });
                     if(gpage) {
                         let params = parseUrlParam(unescape(gpage));
-                        let goRoute = routes[params.name] ? Object.assign(routes[params.name], params) : routes["home"];
-                        navigator.push(goRoute);
+                        let goRoute = routes[params.name] ? Object.assign(routes[params.name], params) : null;
+                        goRoute && navigator.push(goRoute);
                     }
                 } else {
                     navigator.resetTo({
