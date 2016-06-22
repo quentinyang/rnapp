@@ -86,13 +86,7 @@ AsyncStorageComponent.get(common.API_HOST)
                 ghost = value;
             }
         } else {
-            NativeModules.CommonUtil.getApiHost((apiHost) => {
-                AsyncStorageComponent.save(common.API_HOST, apiHost);
-                if(apiHost !== ghost) {
-                    urls = replaceJSONContent(urls, ghost, apiHost);
-                    ghost = apiHost;
-                }
-            });
+            AsyncStorageComponent.save(common.API_HOST, ghost);
         }
     })
     .catch((error) => {
@@ -103,12 +97,9 @@ AsyncStorageComponent.get(common.API_HOST)
 AsyncStorageComponent.get(common.IS_DEBUG)
     .then((value) => {
         if(value) {
-            global.gDebug = Boolean(value);
+            gDebug = Boolean(value);
         } else {
-            NativeModules.CommonUtil.getEnv((debug) => {
-                global.gDebug = debug;
-                AsyncStorageComponent.save(common.IS_DEBUG, debug.toString());
-            });
+            AsyncStorageComponent.save(common.IS_DEBUG, gDebug);        
         }
     })
     .catch((error) => {
