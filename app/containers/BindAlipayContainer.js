@@ -3,7 +3,7 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/withdraw';
+import * as actions from '../actions/bindAlipay';
 import * as actionsUser from '../actions/user';
 import BindAlipay from '../pages/BindAlipay';
 
@@ -20,10 +20,9 @@ class BindAlipayContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {withdrawInfo, bindStepControl} = state.withdraw;
+    const {aliInfo} = state.bindAlipay;
     return {
-        withdrawInfo,
-        bindStepControl
+        aliInfo
     }
 }
 

@@ -13,6 +13,7 @@ import attentionBlockSetOne from  './attentionBlockSetOne';
 import communitySearch from  './communitySearch';
 import user from './user';
 import settings from './settings';
+import bindAlipay from './bindAlipay';
 import withdraw from './withdraw';
 import backScore from './backScore';
 import signIn from './signIn';
@@ -30,6 +31,7 @@ const rootReducer = combineReducers({
     communitySearch,
     user,
     settings,
+    bindAlipay,
     withdraw,
     backScore,
     signIn

@@ -28,9 +28,6 @@ function withdrawInfo(state = Immutable.fromJS(initialState), action) {
         case types.WITHDRAW_PRICE_CLEARED:
             return state.set('price', '');
             break;
-        case types.ALIPAY_FETCHED:
-            return state.set('has_bound', action.is_binding_alipay);
-            break;
         case types.FROM_USER_FETCHED:
             return state.set('account', action.account).set('has_bound', action.has_bound);
             break;

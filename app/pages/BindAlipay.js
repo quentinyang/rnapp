@@ -29,27 +29,32 @@ export default class BindAlipay extends Component {
     }
 
     render() {
+        let {route, aliInfo, actions} = this.props;
         return (
             <ScrollView
                 style={styles.container}
                 automaticallyAdjustContentInsets={false}
             >
                 {
-                    this.props.bindStepControl.get('step') == 1 ?
+                    aliInfo.get('step') == 1 ?
                     <ChargeToBind price={this.bindPrice} /> //未绑定支付宝
                     :null
                 }
                 {
-                    this.props.bindStepControl.get('step') == 2 ?
+                    aliInfo.get('step') == 2 ?
                     <TypeName
-                        name={this.props.withdrawInfo.get('name')}
-                        actions={this.props.actions}
+                        name={aliInfo.get('name')}
+                        account={aliInfo.get('alipay_account') || route.data.alipay_account}
+                        actions={actions}
+                        error={aliInfo.get('err_msg')}
                     /> //绑定成功但未填写真实姓名
                     :null
                 }
                 {
-                    this.props.bindStepControl.get('step') == 3 ?
-                    <AccountRepeated /* 绑定支付宝重复 */ />
+                    aliInfo.get('step') == 3 ?
+                    <AccountRepeated
+                        account={aliInfo.get('alipay_account')}
+                    /> //绑定支付宝重复
                     :null
                 }
 
@@ -81,10 +86,11 @@ export default class BindAlipay extends Component {
                 } else {
                     result = data.resultDic;
                 }
+                this.props.actions.getAlipayStatus();
                 let notifyData = Object.assign({}, result, {out_trade_no: self.tradeId});
                 resultService({body:notifyData}).then(() => {}).catch(() => {});
                 if(result.resultStatus != 9000) {
-                    Alert.alert('', '支付失败，请稍后重试',
+                    Alert.alert('', '绑定失败，请稍后重试',
                         [{
                             text: '确定', onPress: () => {
                                 ActionUtil.setAction(actionType.BA_DEPOSIT_KNOW);
@@ -97,13 +103,11 @@ export default class BindAlipay extends Component {
                         position: Toast.positions.CENTER
                     });
                     this.results && this.results.remove();
-                    resultService({body:notifyData}).then(() => {
-                        this.actions.bindStepChanged(3);
-                    }).catch(() => {});
+                    this.props.actions.getAlipayStatus();
                 }
             }
         );
-        if(this.props.route.alipay_account) {
+        if(this.props.route.data.alipay_account) {
             this.props.actions.bindStepChanged(2);
         }
     }
@@ -114,7 +118,7 @@ export default class BindAlipay extends Component {
 
     handleSubmit = () => {
         if(!this.submitStatus) return;
-        switch(this.props.bindStepControl.get('step')) {
+        switch(this.props.aliInfo.get('step')) {
             case 1:
                 this.submitPrice();
                 break;
@@ -155,12 +159,18 @@ export default class BindAlipay extends Component {
 
     submitName = () => {
         this.submitStatus = false;
-        if(this.verifyName(this.props.withdrawInfo.get('name'))) {
+        let {aliInfo, route} = this.props;
+        if(this.verifyName(this.props.aliInfo.get('name'))) {
+            let data = {
+                alipay_account: aliInfo.get('alipay_account'),
+                min_price: route.data.min_price,
+                score: route.data.score
+            };
             this.props.navigator.replace({
                 component: WithdrawContainer,
                 name: 'withdraw',
                 title: '提现',
-                data: {},
+                data: data,
                 bp: this.pageId,
                 hideNavBar: false
             });
@@ -177,7 +187,7 @@ export default class BindAlipay extends Component {
     verifyName(value) {
         let reg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
         if(!reg.test(value)) {
-            this.props.actions.withdrawErrMsg('请输入您的真实姓名');
+            this.props.actions.alipayErrMsg('请输入您的真实姓名');
             return false;
         }
         return true;
@@ -211,12 +221,12 @@ class TypeName extends Component {
     render() {
         return (
             <View>
-            <View style={{padding: 20, paddingTop: 0}}>
-                <Text style={{fontSize: 15, color: '#8d8c92', marginVertical: 15}}>您已绑定支付宝账号: 4482348234829@qq.com</Text>
-                <Text style={{fontSize: 19}}>请填写真实姓名以完成绑定</Text>
-            </View>
+                <View style={{padding: 20, paddingTop: 0}}>
+                    <Text style={styles.typeNamePrompt}>您已绑定支付宝账号: {this.props.account}</Text>
+                    <Text style={styles.instructFont}>请填写真实姓名以完成绑定</Text>
+                </View>
                 <WithLabel
-                    style={{backgroundColor:'#fff', borderTopWidth: 1/PixelRatio.get(), borderTopColor: '#d9d9d9'}}
+                    style={styles.typeNameBox}
                     label='真实姓名'
                     defaultValue=''
                     placeholder='该账号对应的真实姓名'
@@ -224,13 +234,17 @@ class TypeName extends Component {
                     onFocus={() => ActionUtil.setAction(actionType.BA_MINE_CASH_ACCOUNTS)}
                     onChangeText={(v) => {this.changeAccount(v)}}
                 />
-                <Text style={{fontSize: 12, color: '#ff6d4b', paddingHorizontal: 20, paddingTop: 9, paddingBottom: 28}}>姓名和账户决定提现能否成功，提交后不可更改</Text>
+                <View style={styles.nameWarningBox}>
+                    <Text style={styles.typeNameWarning}>{this.props.error || '姓名和账户决定提现能否成功，提交后不可更改'}</Text>
+                </View>
             </View>
         );
     }
 
     changeAccount(value) {
-        this.props.actions.withdrawNameChanged(value);
+        let {actions} = this.props;
+        actions.alipayNameChanged(value);
+        actions.alipayErrMsg('');
     }
 }
 
@@ -242,8 +256,8 @@ class AccountRepeated extends Component {
     render() {
         return (
             <View style={[styles.center, {height: 170}]}>
-                <Text style={{marginBottom: 10, fontSize: 19}}>支付宝账号：233243535@qq.com</Text>
-                <Text style={{fontSize: 19}}>已被别人绑定</Text>
+                <Text style={{marginBottom: 10, fontSize: 19}}>支付宝账号：{this.props.account}</Text>
+                <Text style={styles.instructFont}>已被别人绑定</Text>
             </View>
         );
     }
@@ -281,5 +295,24 @@ const styles = StyleSheet.create({
     submitFont: {
         color: '#fff',
         fontSize: 19
+    },
+    typeNamePrompt: {
+        marginVertical: 15,
+        fontSize: 15,
+        color: '#8d8c92'
+    },
+    typeNameBox: {
+        backgroundColor:'#fff',
+        borderTopWidth: 1/PixelRatio.get(),
+        borderTopColor: '#d9d9d9'
+    },
+    nameWarningBox: {
+        paddingHorizontal: 20,
+        paddingTop: 9,
+        paddingBottom: 28
+    },
+    typeNameWarning: {
+        fontSize: 12,
+        color: '#ff6d4b'
     }
 });

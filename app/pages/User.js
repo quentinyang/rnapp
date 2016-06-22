@@ -223,6 +223,7 @@ class UserAccount extends Component {
             navigator.push({
                 component: BindAlipayContainer,
                 name: 'bindAlipay',
+                data: value,
                 title: '绑定支付宝',
                 hideNavBar: false
             });

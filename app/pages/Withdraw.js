@@ -21,10 +21,12 @@ export default class Withdraw extends Component {
             minPrice = parseInt(route.data.min_price),
             score = parseInt(route.data.score);
 
-        let isOpacity = ((price >= minPrice && price <= score) && withdrawInfo.get('name')) ? 1 : 0.3;
+        let isOpacity = (price >= minPrice && price <= score) ? 1 : 0.3;
         return (
             <ScrollView style={styles.container}>
-                <Text style={styles.aliTitle}>提现到支付宝：448534234324@qq.com</Text>
+                <View style={styles.aliTitle}>
+                <Text style={styles.aliTitleFont}>提现到支付宝：448534234324@qq.com</Text>
+                </View>
                 <View style={styles.withdrawBox}>
                     <Text style={{marginBottom: 10}}>提现金额</Text>
                     <WithLabel
@@ -115,7 +117,9 @@ const styles = StyleSheet.create({
     },
     aliTitle: {
         paddingHorizontal: 20,
-        paddingVertical: 15,
+        paddingVertical: 15
+    },
+    aliTitleFont: {
         fontSize: 15,
         color: '#8d8c92'
     },
