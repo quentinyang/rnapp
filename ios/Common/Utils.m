@@ -17,6 +17,58 @@
 
 RCT_EXPORT_MODULE();
 
+- (NSDictionary *)constantsToExport {
+  BOOL isDebug = NO;
+  
+#ifdef DEBUG
+  isDebug = YES;
+#else
+  isDebug = NO;
+#endif
+  
+  return @{
+      @"isDebug": @(isDebug),
+      @"host": [self getBaseUrl]
+  };
+}
+
+RCT_EXPORT_METHOD(getApiHost:(RCTResponseSenderBlock) callback) {
+  callback(@[[self getBaseUrl]]);
+}
+
+RCT_EXPORT_METHOD(getEnv:(RCTResponseSenderBlock) callback) {
+  BOOL isDebug = NO;
+  
+#ifdef DEBUG
+  isDebug = YES;
+#else
+  isDebug = NO;
+#endif
+  
+  callback(@[@(isDebug)]);
+}
+
+- (NSDictionary *)getInfoDic {
+  return [[NSBundle mainBundle] infoDictionary];
+}
+
+- (NSString *)getBaseUrl {
+  NSString *version = [self getInfoDic][@"version"];
+  
+  if([version isEqualToString:@"online"]) {
+    return @"https://api.fangyuan360.cn/service/";
+    
+  } else if([version isEqualToString:@"master"]) {
+    return @"http://360.master.stage.angejia.com/service/";
+    
+  } else if([version isEqualToString:@"dev"]) {
+    return @"http://360.master.dev.angejia.com/service/";
+    
+  } else {
+    return [NSString stringWithFormat: @"http://360.%@.angejia.com/service/", version];
+  }
+}
+
 +(void)sendEvent:(NSString *)eventName withRoot:(RCTRootView *)rootView
 {
   Utils *utils = [rootView.bridge moduleForClass:[Utils class]];

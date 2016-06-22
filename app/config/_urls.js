@@ -1,9 +1,13 @@
 'use strict';
 
-//let HOST = 'http://360.master.stage.angejia.com/service/';
-// let HOST = 'http://360.master.dev.angejia.com/service/';
-let HOST = 'https://api.fangyuan360.cn/service/';
-//let HOST = 'http://360.feature-bureau-alipay-binding.dev.angejia.com/service/';
+let RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+import AsyncStorageComponent from '../utils/AsyncStorageComponent';
+import { NativeModules } from 'nuke'
+import { replaceJSONContent } from '../utils/CommonUtils'
+import * as common from '../constants/Common'
+
+global.gDebug = NativeModules.Utils.isDebug;
+let HOST = global.ghost = NativeModules.Utils.host;
 
 let urls = {
     detail: {
@@ -74,4 +78,46 @@ let urls = {
     }
 }
 
-module.exports = urls;
+AsyncStorageComponent.get(common.API_HOST)
+    .then((value) => {
+        if(value) {
+            if(value !== global.ghost) {
+                urls = replaceJSONContent(urls, ghost, value);
+                ghost = value;
+            }
+        } else {
+            NativeModules.CommonUtil.getApiHost((apiHost) => {
+                AsyncStorageComponent.save(common.API_HOST, apiHost);
+                if(apiHost !== ghost) {
+                    urls = replaceJSONContent(urls, ghost, apiHost);
+                    ghost = apiHost;
+                }
+            });
+        }
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+
+
+AsyncStorageComponent.get(common.IS_DEBUG)
+    .then((value) => {
+        if(value) {
+            global.gDebug = Boolean(value);
+        } else {
+            NativeModules.CommonUtil.getEnv((debug) => {
+                global.gDebug = debug;
+                AsyncStorageComponent.save(common.IS_DEBUG, debug.toString());
+            });
+        }
+    })
+    .catch((error) => {
+        console.log(error);
+    });
+
+RCTDeviceEventEmitter.addListener(common.HOST_CHANGE, (newHost) => {
+    urls = replaceJSONContent(urls, ghost, newHost);
+    ghost = newHost;
+});
+
+module.exports = () => {return urls};

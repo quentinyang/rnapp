@@ -1,12 +1,12 @@
 import * as ajax from '../utils/Ajax';
-import * as urls from '../config/urls';
+let urls = require('../config/urls');
 
 export function fetchAttentionBlockSetService() {
-    return ajax.get(urls.blocks.attention)
+    return ajax.get(urls().blocks.attention)
 };
 
 export function saveAttentionBlockSetService(params) {
-    return ajax.post(urls.blocks.saveAttention, {
+    return ajax.post(urls().blocks.saveAttention, {
         body: {
             id: params
         }
@@ -14,11 +14,11 @@ export function saveAttentionBlockSetService(params) {
 };
 
 export function fetchAttentionBlockAndCommunityService() {
-    return ajax.get(urls.attention.blockAndCommunity)
+    return ajax.get(urls().attention.blockAndCommunity)
 };
 
 export function saveAttentionCommunitySetService(params) {
-    return ajax.post(urls.attention.saveAttentionCommunity, {
+    return ajax.post(urls().attention.saveAttentionCommunity, {
         body: {
             id: params
         }
@@ -28,6 +28,3 @@ export function saveAttentionCommunitySetService(params) {
 export function enterAttentionBlockSetService() {
     return ajax.put(urls.attention.enter)
 };
-
-
-

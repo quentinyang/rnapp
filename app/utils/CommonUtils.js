@@ -48,3 +48,11 @@ export function parseUrlParam(paramStr) {
     });
     return paramObj;
 }
+
+export function replaceJSONContent(obj, findStr, replaceStr) {
+    let objStr = JSON.stringify(obj);
+    let reg = new RegExp(findStr, "g");
+
+    let resultStr = objStr.replace(reg, replaceStr);
+    return JSON.parse(resultStr);
+}
