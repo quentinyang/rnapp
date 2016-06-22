@@ -10,6 +10,7 @@ export const webNetWorkError = makeActionCreator(types.WEB_NETWORK_ERROR, 'msg')
 export const webStartConfig = makeActionCreator(types.WEB_START_CONFIG, 'config');
 export const appConfig = makeActionCreator(types.APP_CONFIG, 'appConfig');
 export const closeUpdateModal = makeActionCreator(types.CLOSE_UPDATE_MODAL, 'visible');
+export const closeLoginModal = makeActionCreator(types.CLOSE_LOGIN_MODAL, 'visible');
 export const clickBackPage = makeActionCreator(types.CLICK_BACK_PAGE, 'pageName');
 
 export const setSearchHistoryKey = makeActionCreator(types.SET_SEARCH_HISTORY_KEY, 'searchHistoryKey');
@@ -62,7 +63,9 @@ export function setAppConfig() {
             success: function(oData) {
                 dispatch(appConfig({
                     showUpdateModal: Number(oData.update) ? true : false,
-                    showRecharge: Number(oData.recharge_switch) ? true: false
+                    showRecharge: Number(oData.recharge_switch) ? true: false,
+                    isCidLogin: Number(oData.is_cid_login) ? true : false,
+                    isEnforceUpdate: Number(oData.is_enforce_update) ? true : false  //是否强制更新  0  不需要 1 需要
                 }));
             },
             error: function(oData) {

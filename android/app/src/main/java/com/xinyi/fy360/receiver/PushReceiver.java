@@ -51,7 +51,7 @@ public class PushReceiver extends BroadcastReceiver {
                 String taskid = bundle.getString("taskid");
                 String messageid = bundle.getString("messageid");
                 byte[] payload = bundle.getByteArray("payload");
-                if (payload != null && null != GeTuiManager.module) {
+                if (payload != null) {
                     String dataString = new String(payload);
                     Log.d("GetuiSdkDemo", "Got Payload:" + dataString);
 
@@ -59,7 +59,9 @@ public class PushReceiver extends BroadcastReceiver {
                         JSONObject dataObject = new JSONObject(dataString);
 
                         showNotifyToActivityWithExtra(context, dataObject, intent);
-                        GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", dataString);
+                        if (null != GeTuiManager.module) {
+                            GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", dataString);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

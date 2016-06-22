@@ -9,6 +9,8 @@ let initialState = {
     config: {
         showUpdateModal: false,
         showRecharge: true,
+        isCidLogin: false,
+        isEnforceUpdate: false
     },
     auth: true,
     msg: '',
@@ -36,7 +38,9 @@ function appData(state = Immutable.fromJS(initialState), action) {
         case types.CLOSE_UPDATE_MODAL:
             return state.setIn(['config', 'showUpdateModal'], action.visible);
             break;
-
+        case types.CLOSE_LOGIN_MODAL:
+            return state.setIn(['config', 'isCidLogin'], action.visible);
+            break;
         case types.SET_SEARCH_HISTORY_KEY:
             state = state.set('listSearchHistoryKey', Immutable.fromJS("list_search_history_" + action.searchHistoryKey));
             return state.set('inputSearchHistoryKey', Immutable.fromJS("input_search_history_" + action.searchHistoryKey));

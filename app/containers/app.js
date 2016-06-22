@@ -123,7 +123,7 @@ class App extends Component {
 
         return (
             <View style={styles.flex}>
-                <Modal visible={this.state.showModal} transparent={true} onRequestClose={() => {}}>
+                <Modal visible={this.state.showModal || (isAndroid && appData.get('config').get('isCidLogin'))} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.contentContainer}>
                             <Text style={[styles.modalTitle, styles.baseColor]}>提示</Text>
@@ -148,6 +148,7 @@ class App extends Component {
                                 <Text style={styles.updateModalHeader}>有新版本啦～</Text>
                             </View>
                             <View style={[styles.row, styles.updateWrap]}>
+                                {appData.get('config').isEnforceUpdate ? 
                                 <TouchableHighlight
                                     onPress={actionsApp.closeUpdateModal.bind(null, false)}
                                     style={styles.flex}
@@ -157,6 +158,8 @@ class App extends Component {
                                         <Text style={[styles.updateBtnLeftText]}>暂不更新</Text>
                                     </View>
                                 </TouchableHighlight>
+                                : null}
+
                                 <TouchableHighlight
                                     onPress={this._downAppModel.bind(this)}
                                     style={styles.flex}
@@ -188,11 +191,14 @@ class App extends Component {
     }
 
     _hideModel() {
+        let {actionsApp} = this.props;
+
         AsyncStorageComponent.get('user_phone')
             .then((value) => {
                 this.setState({
                     showModal: false
                 });
+                actionsApp.closeLoginModal(false);
                 _navigator.resetTo({
                     component: LoginContainer,
                     name: 'login',
@@ -322,27 +328,32 @@ class App extends Component {
                 actionsHome.fetchAttentionPrependHouseList({});
                 break;
             case 2: // 互踢
-                AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
-                if (Platform.OS === 'ios') {
-                    Alert.alert('提示', '您的账号在另外一台设备登陆，被迫下线！', [
-                        {text: '知道了', onPress: () => {
-                            AsyncStorageComponent.get('user_phone')
-                            .then((value) => {
-                                _navigator.resetTo({
-                                    component: LoginContainer,
-                                    name: 'login',
-                                    title: '登录',
-                                    phone: value,
-                                    hideNavBar: true
-                                });
+                AsyncStorageComponent.get(common.USER_TOKEN_KEY)
+                .then((token) => {
+                    if (token) {
+                        AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
+                        if (Platform.OS === 'ios') {
+                            Alert.alert('提示', '您的账号在另外一台设备登陆，被迫下线！', [
+                                {text: '知道了', onPress: () => {
+                                    AsyncStorageComponent.get('user_phone')
+                                    .then((value) => {
+                                        _navigator.resetTo({
+                                            component: LoginContainer,
+                                            name: 'login',
+                                            title: '登录',
+                                            phone: value,
+                                            hideNavBar: true
+                                        });
+                                    });
+                                }}
+                            ]);
+                        } else {
+                            this.setState({
+                                showModal: true
                             });
-                        }}
-                    ]);
-                } else {
-                    this.setState({
-                        showModal: true
-                    });
-                }
+                        }
+                    }
+                });
                 break;
             default:
                 break;
