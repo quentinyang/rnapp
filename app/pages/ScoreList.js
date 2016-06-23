@@ -205,6 +205,7 @@ class CashArea extends Component {
                 hideNavBar: false
             });
         } else {
+            ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_BOXONVIEW);
             actions.setBindPromptVisible(true);
         }
     };

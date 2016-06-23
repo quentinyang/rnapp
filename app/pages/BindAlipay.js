@@ -23,6 +23,7 @@ export default class BindAlipay extends Component {
     constructor(props) {
         super(props);
 
+        this.pageId = actionType.BA_MINE_ZHIFUBAO;
         this.submitStatus = true;
         this.bindPrice = 1;
         this.tradeId = '';
@@ -92,9 +93,7 @@ export default class BindAlipay extends Component {
                 if(result.resultStatus != 9000) {
                     Alert.alert('', '绑定失败，请稍后重试',
                         [{
-                            text: '确定', onPress: () => {
-                                ActionUtil.setAction(actionType.BA_DEPOSIT_KNOW);
-                            }
+                            text: '确定', onPress: () => {}
                         }]
                     );
                 } else {
@@ -103,6 +102,7 @@ export default class BindAlipay extends Component {
                         position: Toast.positions.CENTER
                     });
                     this.results && this.results.remove();
+                    ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_SUCCESS);
                     actions.getAlipayStatus({
                         out_trade_no: self.tradeId,
                         resultStatus: result.resultStatus
@@ -112,8 +112,10 @@ export default class BindAlipay extends Component {
         );
         if(route.data.alipay_account) {
             actions.bindStepChanged(2);
+            ActionUtil.setActionWithExtend(actionType.BA_MINE_ZHIFUBAO_NAMEONVIEW, {"bp": this.props.route.bp});
         } else {
             actions.bindStepChanged(1);
+            ActionUtil.setActionWithExtend(actionType.BA_MINE_ZHIFUBAO_ONVIEW, {"bp": this.props.route.bp});
         }
     }
 
@@ -127,9 +129,11 @@ export default class BindAlipay extends Component {
         switch(this.props.aliInfo.get('step')) {
             case 1:
                 this.submitPrice();
+                ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_SURE);
                 break;
             case 2:
                 this.submitName();
+                ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_NAMESURE);
                 break;
             case 3:
                 this.goUsercenter();
@@ -244,7 +248,7 @@ class TypeName extends Component {
                     defaultValue=''
                     placeholder='该账号对应的真实姓名'
                     underlineColorAndroid = 'transparent'
-                    onFocus={() => ActionUtil.setAction(actionType.BA_MINE_CASH_ACCOUNTS)}
+                    onFocus={() => ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_NAMEINPUT)}
                     onChangeText={(v) => {this.changeAccount(v)}}
                 />
                 <View style={styles.nameWarningBox}>

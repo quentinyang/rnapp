@@ -12,6 +12,8 @@ import {
 } from 'nuke';
 
 import BindAlipayContainer from '../containers/BindAlipayContainer';
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog';
 
 export default class BindPromptModal extends Component {
     constructor(props) {
@@ -27,7 +29,7 @@ export default class BindPromptModal extends Component {
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.closeBox]}
                             underlayColor="#fff"
-                            onPress={() => {actions.setBindPromptVisible(false)}}
+                            onPress={() => {actions.setBindPromptVisible(false); ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_BOXONVIEW_DELETE);}}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -54,13 +56,15 @@ export default class BindPromptModal extends Component {
 
     pushToBind() {
         let {navigator, actions, withdrawData} = this.props;
+        ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_BOXONVIEW_SURE);
         actions.setBindPromptVisible(false);
         navigator.push({
             component: BindAlipayContainer,
             name: 'bindAlipay',
             data: withdrawData,
             title: '绑定支付宝',
-            hideNavBar: false
+            hideNavBar: false,
+            backLog: actionType.BA_MINE_ZHIFUBAO_BACK,
         });
     }
 }
