@@ -1,6 +1,5 @@
 package com.custom.component;
 
-<<<<<<< b88f65f801b5902db554de10c20b1efbfac2e0c4
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
