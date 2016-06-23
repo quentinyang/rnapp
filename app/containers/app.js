@@ -68,12 +68,12 @@ class App extends Component {
                     routes[params.name] && self.routeStack.push(Object.assign(routes[params.name], params));
                     self.setState({
                         hasSetRoute: true
-                    });                
+                    });
                 } else {
                     self.routeStack.push(routes["home"]);
                     self.setState({
                         hasSetRoute: true
-                    });                    
+                    });
                 }
             }
         })
@@ -90,7 +90,7 @@ class App extends Component {
                 let params = parseUrlParam(unescape(obj.page));
 
                 //当app在要打开的页面时，从外部打开后，无需跳转
-                if(len && navRoute[len-1].name !== params.name) {                    
+                if(len && navRoute[len-1].name !== params.name) {
                     let goRoute = routes[params.name] ? Object.assign(routes[params.name], params) : null;
                     goRoute && gtoken && _navigator.push(goRoute);
                     gpage = obj.page;
@@ -148,7 +148,7 @@ class App extends Component {
                                 <Text style={styles.updateModalHeader}>有新版本啦～</Text>
                             </View>
                             <View style={[styles.row, styles.updateWrap]}>
-                                {appData.get('config').isEnforceUpdate ? 
+                                {!appData.get('config').isEnforceUpdate ?
                                 <TouchableHighlight
                                     onPress={actionsApp.closeUpdateModal.bind(null, false)}
                                     style={styles.flex}
