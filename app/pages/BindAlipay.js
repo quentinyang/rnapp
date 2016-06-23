@@ -13,7 +13,7 @@ import { NativeAppEventEmitter, DeviceEventEmitter, ToastAndroid } from 'react-n
 import WithdrawContainer from '../containers/WithdrawContainer';
 import PaySection from '../components/PaySection';
 import WithLabel from '../components/LabelTextInput';
-import {tradeService, resultService} from '../service/payService';
+import {tradeService, resultService, realNameService} from '../service/payService';
 import Toast from 'react-native-root-toast';
 
 let ActionUtil = require( '../utils/ActionLog');
@@ -70,6 +70,7 @@ export default class BindAlipay extends Component {
     componentWillMount() {
         let self = this;
         let eventEmitter = Platform.OS === 'ios' ? NativeAppEventEmitter : DeviceEventEmitter;
+        let {actions, route} = this.props;
         this.results = eventEmitter.addListener(
             'BindEventReminder',
             (data) => {
@@ -86,7 +87,6 @@ export default class BindAlipay extends Component {
                 } else {
                     result = data.resultDic;
                 }
-                this.props.actions.getAlipayStatus();
                 let notifyData = Object.assign({}, result, {out_trade_no: self.tradeId});
                 resultService({body:notifyData}).then(() => {}).catch(() => {});
                 if(result.resultStatus != 9000) {
@@ -103,17 +103,23 @@ export default class BindAlipay extends Component {
                         position: Toast.positions.CENTER
                     });
                     this.results && this.results.remove();
-                    this.props.actions.getAlipayStatus();
+                    actions.getAlipayStatus({
+                        out_trade_no: self.tradeId,
+                        resultStatus: result.resultStatus
+                    });
                 }
             }
         );
-        if(this.props.route.data.alipay_account) {
-            this.props.actions.bindStepChanged(2);
+        if(route.data.alipay_account) {
+            actions.bindStepChanged(2);
+        } else {
+            actions.bindStepChanged(1);
         }
     }
 
     componentWillUnmount() {
         this.results && this.results.remove();
+        this.props.actionsUser.fetchUserProfile({});
     }
 
     handleSubmit = () => {
@@ -139,7 +145,7 @@ export default class BindAlipay extends Component {
         let data = {
             subject: '绑定支付宝',
             body: '第一房源绑定支付宝',
-            total_fee: 1000,
+            total_fee: 10,
             pay_type: 1
         };
 
@@ -159,21 +165,28 @@ export default class BindAlipay extends Component {
 
     submitName = () => {
         this.submitStatus = false;
-        let {aliInfo, route} = this.props;
-        if(this.verifyName(this.props.aliInfo.get('name'))) {
-            let data = {
-                alipay_account: aliInfo.get('alipay_account'),
-                min_price: route.data.min_price,
-                score: route.data.score
-            };
-            this.props.navigator.replace({
-                component: WithdrawContainer,
-                name: 'withdraw',
-                title: '提现',
-                data: data,
-                bp: this.pageId,
-                hideNavBar: false
-            });
+        let {aliInfo, route, navigator, actions} = this.props;
+        if(this.verifyName(aliInfo.get('name'))) {
+            realNameService({body: {name: aliInfo.get('name')}})
+            .then(() => {
+                let data = {
+                    alipay_account: aliInfo.get('alipay_account'),
+                    min_price: route.data.min_price,
+                    score: route.data.score
+                };
+                navigator.replace({
+                    component: WithdrawContainer,
+                    name: 'withdraw',
+                    title: '提现',
+                    data: data,
+                    bp: this.pageId,
+                    hideNavBar: false
+                });
+            })
+            .catch((data) => {
+                actions.alipayErrMsg(data.msg);
+            })
+
         } else {
             this.submitStatus = true;
         }

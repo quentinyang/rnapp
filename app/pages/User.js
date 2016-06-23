@@ -16,6 +16,7 @@ import {
 
 import Header from '../components/Header';
 import LinkSection from '../components/LinkSection';
+import BindPromptModal from '../components/BindPromptModal';
 import SignInContainer from '../containers/SignInContainer';
 import AboutEXPContainer from '../containers/AboutEXPContainer';
 import ContactHouseContainer from '../containers/ContactHouseContainer';
@@ -38,11 +39,18 @@ export default class User extends Component {
     }
 
     render() {
-        let {userProfile} = this.props;
+        let {userProfile, userControlData, navigator, actions} = this.props;
         let signInData = Immutable.fromJS({
             sign_in_days: userProfile.get('sign_in_days'),
             experience: userProfile.get('sign_in_experience')
         });
+        let withdrawData = {
+            score: userProfile.get('score'),
+            min_price: userProfile.get('min_withdrawals_money'),
+            name: userProfile.get('name'),
+            alipay_account: userProfile.get('alipay_account'),
+            is_binding_alipay: userProfile.get('is_binding_alipay')
+        };
 
         return (
             <View style={styles.container}>
@@ -69,7 +77,7 @@ export default class User extends Component {
                         </View>
                     </LinkSection>
 
-                    <UserAccount navigatorPush={this.navigatorPush} {...this.props} />
+                    <UserAccount navigatorPush={this.navigatorPush} withdrawData={withdrawData} {...this.props} />
 
                     <LinkSection
                         linkStyle={{borderBottomWidth: 1/PixelRatio.get(), borderColor: '#d9d9d9'}}
@@ -110,6 +118,12 @@ export default class User extends Component {
                     </LinkSection>
 
                 </ScrollView>
+                <BindPromptModal
+                    actions={actions}
+                    controller={userControlData}
+                    navigator={navigator}
+                    withdrawData={withdrawData}
+                />
             </View>
         );
     }
@@ -161,13 +175,7 @@ class UserAccount extends Component {
     }
 
     render() {
-        let {userProfile} = this.props,
-            withdrawData = {
-                score: userProfile.get('score'),
-                min_price: userProfile.get('min_withdrawals_money'),
-                alipay_account: userProfile.get('alipay_account'),
-                is_binding_alipay: userProfile.get('is_binding_alipay')
-            };
+        let {userProfile, withdrawData} = this.props;
 
         return (
             <View style={styles.accountSection}>
@@ -215,19 +223,11 @@ class UserAccount extends Component {
 
     goWithdraw(value) {
         ActionUtil.setAction(actionType.BA_MINE_CASH);
-        let {navigator} = this.props;
+        let {navigator, actions} = this.props;
 
         if(parseInt(value.score) < parseInt(value.min_price)) {
             Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);
-        } else if (value.is_binding_alipay) {
-            navigator.push({
-                component: BindAlipayContainer,
-                name: 'bindAlipay',
-                data: value,
-                title: '绑定支付宝',
-                hideNavBar: false
-            });
-        } else {
+        } else if (value.name && value.alipay_account) {
             navigator.push({
                 component: WithdrawContainer,
                 name: 'withdraw',
@@ -237,9 +237,13 @@ class UserAccount extends Component {
                 backLog: actionType.BA_MINE_CASH_RETURN,
                 hideNavBar: false
             });
+        } else {
+            actions.setBindPromptVisible(true);
         }
     }
 }
+
+
 
 const styles = StyleSheet.create({
     container: {

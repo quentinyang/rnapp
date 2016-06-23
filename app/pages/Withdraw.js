@@ -25,7 +25,7 @@ export default class Withdraw extends Component {
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.aliTitle}>
-                <Text style={styles.aliTitleFont}>提现到支付宝：448534234324@qq.com</Text>
+                <Text style={styles.aliTitleFont}>提现到支付宝：{route.data.alipay_account}</Text>
                 </View>
                 <View style={styles.withdrawBox}>
                     <Text style={{marginBottom: 10}}>提现金额</Text>
@@ -91,7 +91,7 @@ export default class Withdraw extends Component {
 
         withdrawService({body: data})
         .then((oData) => {
-            actions.errMsg('');
+            actions.withdrawErrMsg('');
             ActionUtil.setAction(actionType.BA_MINE_CASH_SUCCESS);
             Alert.alert('', '申请提现成功\n1个工作日内到账',
                 [{

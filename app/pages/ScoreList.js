@@ -20,6 +20,7 @@ import * as actionType from '../constants/ActionLog'
 import Immutable, {List} from 'immutable';
 import RechargeContainer from '../containers/RechargeContainer'
 import WithdrawContainer from '../containers/WithdrawContainer'
+import BindPromptModal from '../components/BindPromptModal';
 
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r2)});
 
@@ -31,7 +32,14 @@ export default class ScoreList extends Component {
     }
 
     render() {
-        let { flows } = this.props;
+        let { flows, actions, navigator, userProfile, userControlData} = this.props;
+        let withdrawData = {
+            score: userProfile.get('score'),
+            min_price: userProfile.get('min_withdrawals_money'),
+            name: userProfile.get('name'),
+            alipay_account: userProfile.get('alipay_account'),
+            is_binding_alipay: userProfile.get('is_binding_alipay')
+        };
         return (
             <View style={styles.container}>
                 <ListView
@@ -40,10 +48,16 @@ export default class ScoreList extends Component {
                     onEndReached={() => this.onEndReached()}
                     onEndReachedThreshold= {20}
                     pageSize={10}
-                    renderHeader={() => this.renderHeader()}
+                    renderHeader={() => this.renderHeader(withdrawData)}
                     renderRow={this.renderRow}
                     renderFooter={() => this.renderFooter()}
                     enableEmptySections={true}
+                />
+                <BindPromptModal
+                    actions={actions}
+                    controller={userControlData}
+                    navigator={navigator}
+                    withdrawData={withdrawData}
                 />
             </View>
         )
@@ -75,20 +89,20 @@ export default class ScoreList extends Component {
         }
     };
 
-    renderHeader() {
-        let {navigator, appConfig, route, money} = this.props;
-        let accountData = route.accountData;
+    renderHeader(value) {
+        let {navigator, appConfig, userProfile, actions} = this.props;
 
         return (
             <View>
                 <View style={[styles.totalBox]}>
                     <View style={[styles.justifyContent, styles.alignItems, styles.priceBox]}>
-                        <Text style={styles.totalPrice}>{money}<Text style={styles.unit}>分</Text></Text>
+                        <Text style={styles.totalPrice}>{userProfile.get('score')}<Text style={styles.unit}>分</Text></Text>
                     </View>
                     <CashArea
                         navigator={navigator}
-                        accountData = {accountData}
+                        accountData = {value}
                         appConfig={appConfig}
+                        actions={actions}
                     />
                 </View>
 
@@ -176,11 +190,11 @@ class CashArea extends Component {
 
     _triggerWithdraw = () => {
         ActionUtil.setAction(actionType.BA_MINE_POINTS_CASH);
-        let {navigator, accountData} = this.props;
+        let {navigator, accountData, actions} = this.props;
 
         if(parseInt(accountData.score) < parseInt(accountData.min_price)) {
             Alert.alert('', '余额超过' + accountData.min_price + '元才能提现哦', [{text: '知道了'}]);
-        } else {
+        } else if(accountData.name && accountData.alipay_account){
             navigator.push({
                 component: WithdrawContainer,
                 name: 'withdraw',
@@ -190,6 +204,8 @@ class CashArea extends Component {
                 backLog: actionType.BA_MINE_CASH_RETURN,
                 hideNavBar: false
             });
+        } else {
+            actions.setBindPromptVisible(true);
         }
     };
 }

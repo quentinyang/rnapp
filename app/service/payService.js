@@ -10,8 +10,18 @@ module.exports=function(){
         return ajax.post(urls.pay.result, data);
     }
 
+    function realNameService(data) {
+        return ajax.post(urls.pay.realName, data);
+    }
+
+    function getAlipayStatusService(data) {
+        return ajax.get(urls.pay.aliStatus, {data:data});
+    }
+
     return {
         tradeService: tradeService,
-        resultService: resultService
+        resultService: resultService,
+        realNameService: realNameService,
+        getAlipayStatusService: getAlipayStatusService
     };
 }();

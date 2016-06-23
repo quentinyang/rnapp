@@ -68,7 +68,9 @@ let urls = {
     },
     pay: {
         order: HOST + 'recharge',
-        result: HOST + 'recharge/notify'
+        result: HOST + 'recharge/notify',
+        realName: HOST + 'user/info/edit',
+        aliStatus: HOST + 'recharge/binding/alipay/status'
     }
 }
 
