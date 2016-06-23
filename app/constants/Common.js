@@ -7,3 +7,6 @@ export const USER_PHONE = 'user_phone';
 export const USER_ID = 'user_id';
 export const GETUI_CLIENT_ID = 'getui_client_id';
 export const APP_OPEN_DATE = 'app_open_date';
+export const API_HOST = 'api_host';
+export const IS_DEBUG = 'is_debug';
+export const HOST_CHANGE = 'host_change';

@@ -58,41 +58,13 @@ function replaceFileContent(filepath, findStr, replaceStr) {
     }
 }
 
-// [codepush]
+//ios [codepush, version]
 var cpConfigs = destConfigs.codepush;
 replaceFileContent('ios/fy360/Info.plist', defaultConfigs.codepush.ios, cpConfigs.ios);
-replaceFileContent('android/app/src/main/java/com/xinyi/fy360/MainActivity.java', [{
-    find: defaultConfigs.codepush.android,
-    replace: cpConfigs.android
-}, {
-    find: 'DevUtil\\.setDebug\\(true\\)',
-    replace: 'DevUtil.setDebug(' + (env === 'release' ? 'false' : 'true')+ ')'
+replaceFileContent('ios/fy360/Info.plist', [{
+    find: defaultConfigs.codepush.ios,
+    replace: cpConfigs.ios
+},{
+    find: defaultConfigs.version.ios,
+    replace: destConfigs.version.ios
 }]);
-
-// [GeTui] & [UMeng]
-var gtConfigs = destConfigs.getui;
-var umConfigs = destConfigs.umeng;
-
-// ios - unnecessary to do
-// android
-replaceFileContent('android/app/src/main/AndroidManifest.xml', [
-    // [GeTui]
-    {
-        find: defaultConfigs.getui.appId,
-        replace: gtConfigs.appId,
-    }, {
-        find: defaultConfigs.getui.appKey,
-        replace: gtConfigs.appKey,
-    }, {
-        find: defaultConfigs.getui.appSecret,
-        replace: gtConfigs.appSecret,
-    }, 
-    // [UMeng]
-    {
-        find: defaultConfigs.umeng.android,
-        replace: umConfigs.android,
-    }, {
-        find: 'AppStore',
-        replace: channel
-    }
-]);

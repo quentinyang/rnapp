@@ -3,6 +3,7 @@ import TouchWebContainer from "../containers/TouchWebContainer";
 import LoginContainer from '../containers/LoginContainer';
 import * as common from '../constants/Common';
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
+import ConfigHost from './ConfigHost';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
 import deviceInfo from '../utils/DeviceInfo';
@@ -48,6 +49,28 @@ export default class Setting extends Component {
                         title='喜欢第一房源吗？鼓励一下吧'
                     />
                 </View>
+
+
+                {global.gDebug ?
+
+                    <View style={styles.box}>
+                        <LinkBox
+                            onPress={() => {
+                                let nav = this.props.navigator;
+                                nav.push({
+                                    component: ConfigHost,
+                                    name: "hostApi",
+                                    title: "设置 HOST API",
+                                    hideNavBar: false
+                                });
+                            }}
+                            navigator={this.props.navigator}
+                            title='设置 HOST API'
+                        />
+                    </View>
+                    : null
+                }
+
                 <TouchableWithoutFeedback onPress={this.loginOut}>
                     <View style={[styles.box, styles.linkBox, styles.center]}>
                         <Text style={{fontSize: 16, color: '#3e3e3e'}}>退出</Text>

@@ -88,17 +88,36 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+    def debugChannels = ['dev', '']
+    def myFile = file("customSetting.properties")
+    Properties propFile = new Properties()
+    propFile.load(new FileInputStream(myFile))
+
     defaultConfig {
         applicationId "com.xinyi.fy360"
         minSdkVersion 16
         targetSdkVersion 22
         versionCode 28
-        versionName "1.1.0"
+        versionName "1.3.0"
+        // dex突破65535的限制
+        multiDexEnabled true
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
+
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE   : propFile.getProperty('UMENG_CHANNEL_VALUE_DEBUG'),
+                                UMENG_APPKEY_VALUE    : propFile.getProperty('UMENG_APPKEY_VALUE_DEBUG'),
+                                GETUIPUSH_APPID_VALUE   : propFile.getProperty('GETUIPUSH_APPID_VALUE_DEBUG'),
+                                GETUIPUSH_APPKEY_VALUE   : propFile.getProperty('GETUIPUSH_APPKEY_VALUE_DEBUG'),
+                                GETUIPUSH_APPSECRET_VALUE   : propFile.getProperty('GETUIPUSH_APPSECRET_VALUE_DEBUG'),
+                                GETUIPUSH_MASTERSECRET_VALUE   : propFile.getProperty('GETUIPUSH_MASTERSECRET_VALUE_DEBUG'),
+                                CODEPUSH_KEY_VALUE   : propFile.getProperty('CODEPUSH_KEY_VALUE_DEBUG')]
+
+        buildConfigField "String", "CODE_PUSH_KEY", "\"" + manifestPlaceholders.CODEPUSH_KEY_VALUE + "\""
     }
     signingConfigs {
+        debug {
+        }
         release {
             storeFile file(MYAPP_RELEASE_STORE_FILE)
             storePassword MYAPP_RELEASE_STORE_PASSWORD
@@ -114,13 +133,79 @@ android {
             include "armeabi-v7a", "x86"
         }
     }
+
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+
+            // rename package name
+//            applicationVariants.all { variant ->
+//                if (debugChannels.contains(variant.productFlavors[0].name)) {
+//                    variant.outputs.each { output ->
+//                        def outputFile = output.outputFile
+//                        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                            def fileName = "app_debug_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+//                            output.outputFile = new File(outputFile.parent, fileName)
+//                        }
+//                    }
+//                }
+//            }
+        }
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
+
+            // rename package name
+            applicationVariants.all { variant ->
+                if (!debugChannels.contains(variant.productFlavors[0].name)) {
+                    variant.outputs.each { output ->
+                        def outputFile = output.outputFile
+                        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                            def fileName = "app_release_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                            output.outputFile = new File(outputFile.parent, fileName)
+                        }
+                    }
+                }
+            }
         }
     }
+
+
+    productFlavors {
+        dev {
+            buildConfigField "String", "API_HOST", "\"http://360.master.stage.angejia.com/service/\""
+        }
+
+        //渠道
+//        AppStore {}
+//        QQ {}
+//        360 {}
+//        BAIDU {}
+//        HUAWEI {}
+//        LIANXIANG {}
+//        MEIZU {}
+//        OPPO {}
+//        VIVO {}
+//        WANDOUJIA {}
+//        XIAOMI {}
+    }
+
+    productFlavors.all { flavor ->
+        if (!debugChannels.contains(name)) {
+            flavor.manifestPlaceholders = [ UMENG_CHANNEL_VALUE     : name,
+                                            UMENG_APPKEY_VALUE      : propFile.getProperty('UMENG_APPKEY_VALUE_RELEASE'),
+                                            GETUIPUSH_APPID_VALUE    : propFile.getProperty('GETUIPUSH_APPID_VALUE_RELEASE'),
+                                            GETUIPUSH_APPKEY_VALUE    : propFile.getProperty('GETUIPUSH_APPKEY_VALUE_RELEASE'),
+                                            GETUIPUSH_APPSECRET_VALUE    : propFile.getProperty('GETUIPUSH_APPSECRET_VALUE_RELEASE'),
+                                            GETUIPUSH_MASTERSECRET_VALUE    : propFile.getProperty('GETUIPUSH_MASTERSECRET_VALUE_RELEASE'),
+                                            CODEPUSH_KEY_VALUE    : propFile.getProperty('CODEPUSH_KEY_VALUE_RELEASE')]
+
+            buildConfigField "String", "CODE_PUSH_KEY", "\"" + flavor.manifestPlaceholders.CODEPUSH_KEY_VALUE + "\""
+            buildConfigField "String", "API_HOST", "\"https://api.fangyuan360.cn/service/\""
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'

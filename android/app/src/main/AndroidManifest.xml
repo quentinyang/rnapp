@@ -92,13 +92,13 @@
         <!-- 配置的第三方参数属性 -->
         <meta-data
             android:name="PUSH_APPID"
-            android:value="Ln5H71Iykf94XdqPoLTHI8" /><!--替换为第三方应用的APPID-->
+            android:value="${GETUIPUSH_APPID_VALUE}" /><!--替换为第三方应用的APPID-->
         <meta-data
             android:name="PUSH_APPKEY"
-            android:value="NA6fia56568ieAobzLmJw5" /><!--替换为第三方应用的APPKEY-->
+            android:value="${GETUIPUSH_APPKEY_VALUE}" /><!--替换为第三方应用的APPKEY-->
         <meta-data
             android:name="PUSH_APPSECRET"
-            android:value="Ntat8Ou93MAvkeE3uxSOj3" /><!--替换为第三方应用的APPSECRET-->
+            android:value="${GETUIPUSH_APPSECRET_VALUE}" /><!--替换为第三方应用的APPSECRET-->
         <!-- 配置SDK核心服务 -->
         <service
             android:name="com.igexin.sdk.PushService"
@@ -136,7 +136,7 @@
             android:exported="false" >
             <intent-filter>
                 <!-- APPID需要替换为相应的个推应用ID -->
-                <action android:name="com.igexin.sdk.action.Ln5H71Iykf94XdqPoLTHI8" />
+                <action android:name="com.igexin.sdk.action.${GETUIPUSH_APPID_VALUE}" />
             </intent-filter>
         </receiver>
 
@@ -185,7 +185,7 @@
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4" />
-                <action android:name="com.igexin.sdk.action.Ln5H71Iykf94XdqPoLTHI8" /><!--替换为第三方应用的APPID-->
+                <action android:name="com.igexin.sdk.action.${GETUIPUSH_APPID_VALUE}" /><!--替换为第三方应用的APPID-->
             </intent-filter>
         </receiver>
         <service
@@ -194,10 +194,9 @@
 
         <!-- 个推SDK配置结束 -->
         <!-- Start: UMeng -->
-        <meta-data android:value="56fe1060e0f55a1eea002284" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="AppStore" android:name="UMENG_CHANNEL"/>
+        <meta-data android:value="${UMENG_APPKEY_VALUE}" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
         <!-- End: UMeng -->
-
         <!-- 注册一个BroadcastReceiver监听系统电话状态 -->
         <receiver android:name=".receiver.CallReceiver" android:enabled="true">
             <intent-filter>

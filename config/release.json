@@ -12,5 +12,8 @@
     "codepush": {
         "android": "2IkLNuHEQgMoLO10XyHSCFg6hX6n4yoltiYTl",
         "ios": "0TiAvz7eKrLMbTj2RRdULUuJp1EH4yoltiYTl"
+    },
+    "version": {
+        "ios": "online"
     }
 }
