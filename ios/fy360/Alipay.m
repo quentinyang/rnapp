@@ -25,7 +25,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(addEvent:(NSString *)order role:(NSString *)role)
 {
-  NSString *appScheme = @"fy360";
+  NSString *appScheme = @"opendiyifangyuan";
   self.eventReminder = [role stringByAppendingString:@"EventReminder"];
   
   [[AlipaySDK defaultService] payOrder:order fromScheme:appScheme callback:^(NSDictionary *resultDic) {
