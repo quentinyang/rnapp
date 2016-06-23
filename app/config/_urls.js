@@ -85,8 +85,6 @@ AsyncStorageComponent.get(common.API_HOST)
                 urls = replaceJSONContent(urls, ghost, value);
                 ghost = value;
             }
-        } else {
-            AsyncStorageComponent.save(common.API_HOST, ghost).catch((error) => {console.log(error);});
         }
     })
     .catch((error) => {
@@ -98,8 +96,6 @@ AsyncStorageComponent.get(common.IS_DEBUG)
     .then((value) => {
         if(value) {
             gDebug = Boolean(value);
-        } else {
-            AsyncStorageComponent.save(common.IS_DEBUG, gDebug).catch((error) => {console.log(error);});        
         }
     })
     .catch((error) => {

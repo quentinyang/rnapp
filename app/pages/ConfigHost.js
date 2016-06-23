@@ -43,7 +43,7 @@ export default class ConfigHost extends Component {
             this.setState({
                 ghost: host
             });
-            AsyncStorageComponent.save(commom.API_HOST, host);
+            AsyncStorageComponent.save(commom.API_HOST, host).catch((error) => {console.log(error)});
             RCTDeviceEventEmitter.emit(commom.HOST_CHANGE, host);
         }
     }
