@@ -52,19 +52,22 @@ export default class Setting extends Component {
 
 
                 {global.gDebug ?
-                    <TouchableWithoutFeedback onPress={() => {
-                        let nav = this.props.navigator;
-                        nav.push({
-                            component: ConfigHost,
-                            name: "hostApi",
-                            title: "设置 HOST API",
-                            hideNavBar: false
-                        });
-                    }}>
-                        <View style={[styles.listItem, styles.listTop, styles.itemBg, styles.justifyContent]}>
-                            <Text style={[styles.listText]}>设置HOST API</Text>
-                        </View>
-                    </TouchableWithoutFeedback> 
+
+                    <View style={styles.box}>
+                        <LinkBox
+                            onPress={() => {
+                                let nav = this.props.navigator;
+                                nav.push({
+                                    component: ConfigHost,
+                                    name: "hostApi",
+                                    title: "设置 HOST API",
+                                    hideNavBar: false
+                                });
+                            }}
+                            navigator={this.props.navigator}
+                            title='设置 HOST API'
+                        />
+                    </View>
                     : null
                 }
 

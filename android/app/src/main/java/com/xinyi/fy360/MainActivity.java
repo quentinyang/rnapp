@@ -1,7 +1,6 @@
 package com.xinyi.fy360;
 
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -101,22 +100,6 @@ public class MainActivity extends ReactActivity {
         setPushAction(getIntent());
         //Log.d("umengKey", "UmengKey:" + BuildConfig.umengKey);
         OpenAppActivity.hasLanched = true;
-
-        System.out.println("Debug:" + DevUtil.isDebug());
-        System.out.println("HOST:" + BuildConfig.API_HOST);
-        try {
-            ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-           Log.i("tag","UMENG_CHANNEL_VALUE:" + appInfo.metaData.getString("UMENG_CHANNEL"));
-            System.out.println("UMENG_APPKEY_VALUE:" + appInfo.metaData.getString("UMENG_APPKEY"));
-            System.out.println("GETUIPUSH_APPID_VALUE:" + appInfo.metaData.getString("PUSH_APPID"));
-            System.out.println("GETUIPUSH_APPKEY_VALUE:" + appInfo.metaData.getString("PUSH_APPKEY"));
-            System.out.println("GETUIPUSH_APPSECRET_VALUE:" + appInfo.metaData.getString("PUSH_APPSECRET"));
-            System.out.println("GETUIPUSH_MASTERSECRET_VALUE:" + appInfo.metaData.getString("GETUIPUSH_MASTERSECRET"));
-            System.out.println("CODEPUSH_KEY_VALUE:" + appInfo.metaData.getString("CODEPUSH_KEY"));
-
-        } catch(PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     //检查hash

@@ -78,29 +78,18 @@ let urls = {
     }
 }
 
-AsyncStorageComponent.get(common.API_HOST)
-    .then((value) => {
-        if(value) {
-            if(value !== global.ghost) {
-                urls = replaceJSONContent(urls, ghost, value);
-                ghost = value;
-            }
+gDebug && AsyncStorageComponent.get(common.API_HOST)
+.then((value) => {
+    if(value) {
+        if(value !== global.ghost) {
+            urls = replaceJSONContent(urls, ghost, value);
+            ghost = value;
         }
-    })
-    .catch((error) => {
-        console.log(error);
-    });
-
-
-AsyncStorageComponent.get(common.IS_DEBUG)
-    .then((value) => {
-        if(value) {
-            gDebug = Boolean(value);
-        }
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+    }
+})
+.catch((error) => {
+    console.log(error);
+});
 
 RCTDeviceEventEmitter.addListener(common.HOST_CHANGE, (newHost) => {
     urls = replaceJSONContent(urls, ghost, newHost);
