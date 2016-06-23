@@ -10,9 +10,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
@@ -58,9 +60,12 @@ public class PushReceiver extends BroadcastReceiver {
                     try {
                         JSONObject dataObject = new JSONObject(dataString);
 
-                        showNotifyToActivityWithExtra(context, dataObject, intent);
+                        showNotifyToActivityWithExtra(context, dataObject, dataString);
                         if (null != GeTuiManager.module) {
                             GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", dataString);
+                        } else {
+                            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                            sp.edit().putString("dataString", dataString).commit();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -78,7 +83,7 @@ public class PushReceiver extends BroadcastReceiver {
         return largeIcon;
     }
 
-    public static void showNotifyToActivityWithExtra(Context context, JSONObject dataObject, Intent intent) {
+    public static void showNotifyToActivityWithExtra(Context context, JSONObject dataObject, String dataString) {
         String title = "";
         String type = "";
 
@@ -99,11 +104,13 @@ public class PushReceiver extends BroadcastReceiver {
                 .setOnlyAlertOnce(false)
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setClass(context, MainActivity.class);
-        intent.putExtra("type", type);
+        Intent newIntent = new Intent();
+        newIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        newIntent.setClass(context, MainActivity.class);
+        newIntent.putExtra("type", type);
+        newIntent.putExtra("payload", dataString);
         PendingIntent pendingIntent;
-        pendingIntent = PendingIntent.getActivity(context, 900009, intent,
+        pendingIntent = PendingIntent.getActivity(context, 900009, newIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(pendingIntent);
 

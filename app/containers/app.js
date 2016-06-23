@@ -120,10 +120,10 @@ class App extends Component {
         let {hasSetRoute} = this.state;
         let {appData, actionsApp} = this.props;
         let isAndroid = (Platform.OS == "android");
-
+        // (isAndroid && appData.get('config').get('isCidLogin'))
         return (
             <View style={styles.flex}>
-                <Modal visible={this.state.showModal || (isAndroid && appData.get('config').get('isCidLogin'))} transparent={true} onRequestClose={() => {}}>
+                <Modal visible={this.state.showModal} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.contentContainer}>
                             <Text style={[styles.modalTitle, styles.baseColor]}>提示</Text>
@@ -198,7 +198,7 @@ class App extends Component {
                 this.setState({
                     showModal: false
                 });
-                actionsApp.closeLoginModal(false);
+                // actionsApp.closeLoginModal(false);
                 _navigator.resetTo({
                     component: LoginContainer,
                     name: 'login',

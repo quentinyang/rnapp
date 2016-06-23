@@ -1,10 +1,12 @@
 package com.xinyi.fy360;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.angejia.android.commonutils.common.DevUtil;
@@ -28,6 +30,9 @@ import com.umeng.analytics.MobclickAgent;
 
 import com.xinyi.fy360.getui.GeTuiManager;
 import com.xinyi.fy365.deviceid.DeviceIDManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.annotation.Nullable;
 
@@ -134,6 +139,30 @@ public class MainActivity extends ReactActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        Intent intent = getIntent();
+
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        final String payload = sp.getString("dataString", "");
+
+        if(!payload.equals("")) {
+            try {
+                JSONObject dataObject = new JSONObject(payload);
+                String type = dataObject.getString("type");
+                if (type.equals("2")) {
+                    getWindow().getDecorView().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (null != GeTuiManager.module) {
+                                GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", payload);
+                                sp.edit().putString("dataString", "").commit();
+                            }
+                        }
+                    }, 3000);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
