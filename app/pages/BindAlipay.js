@@ -149,7 +149,7 @@ export default class BindAlipay extends Component {
         let data = {
             subject: '绑定支付宝',
             body: '第一房源绑定支付宝',
-            total_fee: 10,
+            total_fee: this.bindPrice,
             pay_type: 1
         };
 
