@@ -139,15 +139,17 @@ android {
             signingConfig signingConfigs.debug
 
             // rename package name
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        def fileName = "app_debug_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
-                        output.outputFile = new File(outputFile.parent, fileName)
-                    }
-                }
-            }
+//            applicationVariants.all { variant ->
+//                if (debugChannels.contains(variant.productFlavors[0].name)) {
+//                    variant.outputs.each { output ->
+//                        def outputFile = output.outputFile
+//                        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                            def fileName = "app_debug_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+//                            output.outputFile = new File(outputFile.parent, fileName)
+//                        }
+//                    }
+//                }
+//            }
         }
         release {
             minifyEnabled enableProguardInReleaseBuilds
@@ -156,11 +158,13 @@ android {
 
             // rename package name
             applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def outputFile = output.outputFile
-                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        def fileName = "app_release_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
-                        output.outputFile = new File(outputFile.parent, fileName)
+                if (!debugChannels.contains(variant.productFlavors[0].name)) {
+                    variant.outputs.each { output ->
+                        def outputFile = output.outputFile
+                        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                            def fileName = "app_release_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                            output.outputFile = new File(outputFile.parent, fileName)
+                        }
                     }
                 }
             }
@@ -172,13 +176,13 @@ android {
         dev {
             buildConfigField "String", "API_HOST", "\"http://360.master.dev.angejia.com/service/\""
         }
-        master {
-            buildConfigField "String", "API_HOST", "\"http://360.master.stage.angejia.com/service/\""
-        }
+//        master {
+//            buildConfigField "String", "API_HOST", "\"http://360.master.stage.angejia.com/service/\""
+//        }
 
         //渠道
         //AppStore {}
-        QQ {}
+        //QQ {}
     }
 
     productFlavors.all { flavor ->

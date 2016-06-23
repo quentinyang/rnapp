@@ -197,7 +197,8 @@
         <meta-data android:value="${UMENG_APPKEY_VALUE}" android:name="UMENG_APPKEY"></meta-data>
         <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
         <!-- End: UMeng -->
-
+        <meta-data android:value="${GETUIPUSH_MASTERSECRET_VALUE}" android:name="GETUIPUSH_MASTERSECRET"/>
+        <meta-data android:value="${CODEPUSH_KEY_VALUE}" android:name="CODEPUSH_KEY"/>
         <!-- 注册一个BroadcastReceiver监听系统电话状态 -->
         <receiver android:name=".receiver.CallReceiver" android:enabled="true">
             <intent-filter>
