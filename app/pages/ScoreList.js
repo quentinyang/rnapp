@@ -36,6 +36,8 @@ export default class ScoreList extends Component {
         let withdrawData = {
             score: userProfile.get('score'),
             min_price: userProfile.get('min_withdrawals_money'),
+            max_price: userProfile.get('user_max_withdrawals_money'),
+            max_day_price: userProfile.get('max_withdrawals_money'),
             name: userProfile.get('name'),
             alipay_account: userProfile.get('alipay_account'),
             is_binding_alipay: userProfile.get('is_binding_alipay')
