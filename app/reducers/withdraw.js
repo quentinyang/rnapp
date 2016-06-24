@@ -28,9 +28,6 @@ function withdrawInfo(state = Immutable.fromJS(initialState), action) {
         case types.WITHDRAW_PRICE_CLEARED:
             return state.set('price', '');
             break;
-        case types.ALIPAY_FETCHED:
-            return state.set('has_bound', action.is_binding_alipay);
-            break;
         case types.FROM_USER_FETCHED:
             return state.set('account', action.account).set('has_bound', action.has_bound);
             break;
@@ -42,6 +39,21 @@ function withdrawInfo(state = Immutable.fromJS(initialState), action) {
     }
 }
 
+let initialBindState = {
+    step: 1
+};
+
+function bindStepControl(state = Immutable.fromJS(initialBindState), action) {
+    switch(action.type) {
+        case types.BIND_STEP_CHANGED:
+            return state.set('step', action.step);
+            break;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
-    withdrawInfo
+    withdrawInfo,
+    bindStepControl
 });

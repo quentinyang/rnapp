@@ -4,51 +4,51 @@ let urls = require('../config/urls');
 module.exports=function(){
 
     function sendCodeService(data) {
-        return ajax.post(urls.user.sendCode, data);
+        return ajax.post(urls().user.sendCode, data);
     }
 
     function loginService(data) {
-        return ajax.post(urls.user.login, {
+        return ajax.post(urls().user.login, {
             body: data
         });
     }
 
     function getUserProfile(data) {
-        return ajax.get(urls.user.profile, data);
+        return ajax.get(urls().user.profile, data);
     }
 
     function getUserAlipayStatus() {
-        return ajax.get(urls.user.alipayStatus);
+        return ajax.get(urls().user.alipayStatus);
     }
 
     function fetchScoreModalStatusService() {
-        return ajax.get(urls.user.isFirst)
+        return ajax.get(urls().user.isFirst)
     }
 
     function withdrawService(data) {
-        return ajax.post(urls.user.withdraw, data);
+        return ajax.post(urls().user.withdraw, data);
     }
 
     function alipayLoginService() {
-        return ajax.get(urls.user.alipayLogin);
+        return ajax.get(urls().user.alipayLogin);
     }
 
     function scoreListService(params) {
-        return ajax.get(urls.user.scoreList, {
+        return ajax.get(urls().user.scoreList, {
             data: params
         });
     }
 
     function getGiftInfo() {
-        return ajax.get(urls.user.signIn)
+        return ajax.get(urls().user.signIn)
     }
 
     function signInStatusService() {
-        return ajax.get(urls.user.signInStatus);
+        return ajax.get(urls().user.signInStatus);
     }
 
     function expRuleService() {
-        return ajax.get(urls.user.expRule);
+        return ajax.get(urls().user.expRule);
     }
 
     return {

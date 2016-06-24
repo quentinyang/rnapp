@@ -20,16 +20,18 @@ class ScoreListContainer extends Component {
 
 function mapStateToProps(state) {
     let {appConfig} = state.app;
-    let scores = state.user.scoreData;
-    let money = scores.get('money'),
-        flows = scores.get('flows'),
-        pager = scores.get('pager');
+    let {scoreData, userProfile, userControlData} = state.user;
+    let money = scoreData.get('money'),
+        flows = scoreData.get('flows'),
+        pager = scoreData.get('pager');
 
     return {
         appConfig: appConfig,
         money: money,
         flows: flows,
-        pager: pager
+        pager: pager,
+        userProfile: userProfile,
+        userControlData: userControlData
     };
 }
 

@@ -76,7 +76,7 @@ export default class Recharge extends Component {
         let self = this;
         let eventEmitter = Platform.OS === 'ios' ? NativeAppEventEmitter : DeviceEventEmitter;
         this.results = eventEmitter.addListener(
-            'EventReminder',
+            'ChargeEventReminder',
             (data) => {
                 let result = {};
                 self.submitStatus = true;
@@ -141,7 +141,7 @@ export default class Recharge extends Component {
         tradeService({body:data})
         .then((oData) => {
             self.tradeId = oData.out_trade_no;
-            Alipay.addEvent(oData.data);
+            Alipay.addEvent(oData.data, 'Charge');
         })
         .catch((data) => {
             ToastAndroid.show('操作太频繁，请重试', ToastAndroid.LONG);

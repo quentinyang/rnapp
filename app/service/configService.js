@@ -1,8 +1,8 @@
 import * as ajax from '../utils/Ajax';
-import * as urls from '../config/urls';
+let urls = require('../config/urls');
 
 export function setWebStartConfigService(params) {
-    return ajax.post(urls.app.config, {
+    return ajax.post(urls().app.config, {
         body: {
             cid: params.cId
         }
@@ -10,9 +10,9 @@ export function setWebStartConfigService(params) {
 };
 
 export function deletePushService() {
-    return ajax.put(urls.app.deletePush);
+    return ajax.put(urls().app.deletePush);
 }
 
 export function setConfigService() {
-    return ajax.get(urls.app.setConfig);
+    return ajax.get(urls().app.setConfig);
 }

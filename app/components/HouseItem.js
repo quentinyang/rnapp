@@ -23,20 +23,17 @@ export default class HouseItem extends Component {
                         null
                     }
 
-                    <View style={[styles.row, styles.center]}>
-                        <View style={[styles.row, styles.flex, styles.center]}>
-
-                            <Text style={[styles.headerMsg, styles.headerPadding, styles.flex, item.get('is_click') ? styles.gray : {}]} numberOfLines={1}>{item.get('community_name')}  {item.get('building_num') + (item.get('building_num') && item.get('building_unit')) + item.get('door_num') + (item.get('door_num') && '室')}</Text>
-
-                            {
-                                item.get('is_new') ? <Text style={[styles.tagNew]}>新</Text> : null
-                            }
-                        </View>
+                    <View> 
+                        <Text style={[styles.flex, styles.row, styles.center, styles.justifyContent, styles.headerMsg, item.get('is_click') ? styles.gray : {}]} numberOfLines={1}> 
+                            {item.get('community_name') + "  "}
+                            {item.get('building_num') + (item.get('building_num') && item.get('building_unit')) + item.get('door_num') + (item.get('door_num') && '室 ')}
+                            {item.get('is_new') ? <Image style={[styles.tagNew]} source={require("../images/new_tag.png")} /> : null}                                
+                        </Text>
                     </View>
                     <View style={[styles.row, styles.bedroomsWrap]}>
                         <Text style={[styles.bedrooms, styles.bedroomsPadding, item.get('is_click') ? styles.gray : {}]}>{item.get('bedrooms') + '室' + item.get('living_rooms') + '厅' + item.get('bathrooms') + '卫'}</Text>
                         <Text style={[styles.bedrooms, item.get('is_click') ? styles.gray : {}]}>{item.get('area') + '平'}</Text>
-                        <Text style={[styles.flex, styles.price]}><Text style={styles.fontMedium}>{item.get('price')}</Text>万</Text>
+                        <Text style={[styles.flex, styles.price, styles.fontMedium]}>{item.get('price')}万</Text>
                     </View>
                     <View style={[styles.row]}>
                         <Text numberOfLines={1} style={[styles.flex, styles.bottomMsg]}>{item.get('district_name') + '-' + item.get('block_name') + ' ' + item.get('community_address')}</Text>
@@ -86,18 +83,8 @@ const styles = StyleSheet.create({
         paddingRight: 12
     },
     tagNew: {
-        backgroundColor: '#ffa251',
-        color: '#fff',
-        fontSize: 12,
-        padding: (Platform.OS === 'ios') ? 2 : 0,
-        fontWeight: '500',
-        marginRight: 10,
-        width: 16,
-        textAlign: 'center',
-        textAlignVertical: 'top'
-    },
-    tagAuth: {
-        backgroundColor: '#45c7c9'
+        width: 17,
+        height: 17
     },
     updatedAt: {
         textAlign: 'right'
@@ -128,6 +115,9 @@ const styles = StyleSheet.create({
     },
     center: {
         alignItems: 'center',
+    },
+    justifyContent: {
+        justifyContent: 'center'
     },
     gray: {
         color: '#8d8c92'

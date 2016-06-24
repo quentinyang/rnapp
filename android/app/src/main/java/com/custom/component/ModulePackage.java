@@ -15,12 +15,15 @@ import java.util.List;
  */
 public class ModulePackage implements ReactPackage {
     public static CallModule callModule;
+    public static Utils utils;
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
         callModule = new CallModule(reactContext);
+        utils = new Utils(reactContext);
         modules.add(new ActionUtil(reactContext));
         modules.add(callModule);
+        modules.add(utils);
         return modules;
     }
 

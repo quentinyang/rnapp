@@ -6,6 +6,7 @@ import codePush from "react-native-code-push";
 
 // disable Yellow Box
 console.disableYellowBox = true; 
+global.gpage = '';
 
 class fy360 extends Component {
     componentDidMount() {

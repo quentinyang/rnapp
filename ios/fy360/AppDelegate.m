@@ -93,10 +93,22 @@ NSString * const UMengChannelId = @"";
   #else
     jsCodeLocation = [CodePush bundleURLForResource:@"index.ios" withExtension:@"jsbundle"];
   #endif
+  
+  NSURL *url = (NSURL *)[launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+  NSString * urlStr;
+  NSDictionary *props;
+  
+  if(url) {
+    urlStr = [url absoluteString];
+    NSArray *array = [urlStr componentsSeparatedByString:@"?"];
+    props  = @{@"page" : array[1]};
+  } else {
+    props  = @{@"page" : @""};
+  }
 
   self.rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"fy360"
-                                               initialProperties:nil
+                                               initialProperties:props
                                                    launchOptions:launchOptions];
 
 
@@ -240,13 +252,15 @@ NSString * const UMengChannelId = @"";
 - (void)GeTuiSdkDidReceivePayloadData:(NSData *)payloadData andTaskId:(NSString *)taskId andMsgId:(NSString *)msgId andOffLine:(BOOL)offLine fromGtAppId:(NSString *)appId {
   // [4]: 收到个推消息
   NSString *payloadMsg = nil;
-  NSString *eventName = @"geTuiDataReceived";
+//  NSString *eventName = @"geTuiDataReceived";
   if (payloadData) {
     payloadMsg = [[NSString alloc] initWithBytes:payloadData.bytes
                                           length:payloadData.length
                                         encoding:NSUTF8StringEncoding];
-    GeTui *geTui = [GeTui sharedInstance];
-    [geTui handleRemoteNotificationReceived:eventName andPayloadMsg:payloadMsg withRoot:self.rootView];
+//    GeTui *geTui = [GeTui sharedInstance];
+//    [geTui handleRemoteNotificationReceived:eventName andPayloadMsg:payloadMsg withRoot:self.rootView];
+    
+    [self performSelector:@selector(HandleGeTui:) withObject:payloadMsg afterDelay:3];
   }
   
   NSString *record = [NSString stringWithFormat:@"%d, %@, %@%@", ++_lastPayloadIndex, [self formateTime:[NSDate date]], payloadMsg, offLine ? @"<离线消息>" : @""];
@@ -257,6 +271,11 @@ NSString * const UMengChannelId = @"";
 
   // 汇报个推自定义事件
   [GeTuiSdk sendFeedbackMessage:90001 taskId:taskId msgId:msgId];
+}
+
+- (void)HandleGeTui:payloadMsg {
+  GeTui *geTui = [GeTui sharedInstance];
+  [geTui handleRemoteNotificationReceived:@"geTuiDataReceived" andPayloadMsg:payloadMsg withRoot:self.rootView];
 }
 
 /** SDK收到sendMessage消息回调 */
@@ -283,11 +302,27 @@ NSString * const UMengChannelId = @"";
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation{
+  if(!url) {
+    return NO;
+  }
+
+  NSString *queryString = [url query];
+  [Utils sendEventWithParam:@"goPage" withParam:@{@"page": queryString} withRoot:self.rootView];
+  
   [[Alipay alipay] application:application openURL:url sourceApplication:sourceApplication annotation:sourceApplication];
+  
   return YES;
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options{
+  if(!url) {
+    return NO;
+  }
+
+  NSString *queryString = [url query];
+  NSLog(@"queryString in options: %@", queryString);
+  [Utils sendEventWithParam:@"goPage" withParam:@{@"page": queryString} withRoot:self.rootView];
+  
   [[Alipay alipay] application:app openURL:url options:options];
   return YES;
 }

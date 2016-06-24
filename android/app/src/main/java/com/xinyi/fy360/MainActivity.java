@@ -1,10 +1,12 @@
 package com.xinyi.fy360;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.angejia.android.commonutils.common.DevUtil;
@@ -29,8 +31,12 @@ import com.umeng.analytics.MobclickAgent;
 import com.xinyi.fy360.getui.GeTuiManager;
 import com.xinyi.fy365.deviceid.DeviceIDManager;
 
-public class MainActivity extends ReactActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import javax.annotation.Nullable;
+
+public class MainActivity extends ReactActivity {
     // 2. Define a private field to hold the CodePush runtime instance
     private CodePush _codePush;
 
@@ -66,14 +72,13 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected List<ReactPackage> getPackages() {
-
         Log.d("GetuiSdk", "initializing sdk...");
 //        PushManager.getInstance().initialize(this.getApplicationContext());
 
         // 4. Instantiate an instance of the CodePush runtime, using the right deployment key. If you don't
         // already have it, you can run "code-push deployment ls <appName> -k" to retrieve your key.
         //this._codePush = new CodePush(BuildConfig.CODE_PUSH_KEY, this, BuildConfig.DEBUG);
-        this._codePush = new CodePush("h1P3-9fxoznO3bDQ9qubMvvG0ewm4yoltiYTl", this, BuildConfig.DEBUG);
+        this._codePush = new CodePush(BuildConfig.CODE_PUSH_KEY, this, BuildConfig.DEBUG);
 
         // 5. Add the CodePush package to the list of existing packages
         return Arrays.<ReactPackage>asList(
@@ -89,16 +94,17 @@ public class MainActivity extends ReactActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d("onCreate", "initializing sdk...");
         super.onCreate(savedInstanceState);
         if (!PushManager.getInstance().isPushTurnedOn(this.getApplicationContext())) {
             PushManager.getInstance().initialize(this.getApplicationContext());
         }
         //checkHash();
         // Important::please do not change this code, unless change it in the `switch.js`
-        DevUtil.setDebug(true);
+        DevUtil.setDebug(BuildConfig.DEBUG);
+
         setPushAction(getIntent());
         //Log.d("umengKey", "UmengKey:" + BuildConfig.umengKey);
+        OpenAppActivity.hasLanched = true;
     }
 
     //检查hash
@@ -133,5 +139,34 @@ public class MainActivity extends ReactActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        Intent intent = getIntent();
+
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        final String payload = sp.getString("dataString", "");
+
+        if(!payload.equals("")) {
+            try {
+                JSONObject dataObject = new JSONObject(payload);
+                String type = dataObject.getString("type");
+                if (type.equals("2")) {
+                    getWindow().getDecorView().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (null != GeTuiManager.module) {
+                                GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", payload);
+                                sp.edit().putString("dataString", "").commit();
+                            }
+                        }
+                    }, 3000);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    protected @Nullable Bundle getLaunchOptions() {
+        return null;
     }
 }

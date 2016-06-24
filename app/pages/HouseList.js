@@ -63,7 +63,15 @@ export default class HouseList extends Component {
                     onlyNewChanged={this._onlyNewChanged}
                 />
                 {
-                    Number(pager.get('total')) > 0 ?
+                    (Number(pager.get('current_page')) == 1 && houseList.size == 0) ? 
+                     <View style={[styles.flex, styles.center]}>
+                        <Image
+                            source={require('../images/no_house_list.png')}
+                            style={styles.noHouseList}
+                        />
+                        <Text style={styles.noHouseListMsg}>没有找到符合要求的结果</Text>
+                    </View> 
+                    :
                     <ListView
                         dataSource={ds.cloneWithRows(houseList.toArray())}
                         renderRow={this._renderRow}
@@ -86,14 +94,6 @@ export default class HouseList extends Component {
                             />
                         }
                     />
-                    :
-                    <View style={[styles.flex, styles.center]}>
-                        <Image
-                            source={require('../images/no_house_list.png')}
-                            style={styles.noHouseList}
-                        />
-                        <Text style={styles.noHouseListMsg}>没有找到符合要求的结果</Text>
-                    </View>
                 }
                 {
                     tabType && tabType != 4 ?
@@ -216,7 +216,7 @@ export default class HouseList extends Component {
         let propertiesLength = houseData.get('properties').size;
 
         return (
-                (Number(pager.get('current_page')) == Number(pager.get('last_page')) || (Number(pager.get('current_page')) > 0 && propertiesLength < 10 )) ?
+                (Number(pager.get('current_page')) == Number(pager.get('last_page'))) ?
                     <View style={styles.listFooter}>
                         <Text style={styles.noData}>已经没有数据了！</Text>
                     </View>

@@ -5,7 +5,8 @@ import Root from './app/root';
 import codePush from "react-native-code-push";
 
 // disable Yellow Box
-console.disableYellowBox = true; 
+console.disableYellowBox = true;
+global.gpage = '';
 
 class fy360 extends Component {
     componentDidMount() {
@@ -15,7 +16,9 @@ class fy360 extends Component {
         // if aggree, and then display a "downloading" modal, and update immediately
         // codePush.sync({updateDialog: true, installMode: codePush.InstallMode.IMMEDIATE, rollbackTimeout: 3000});
     }
-    
+    componentWillMount() {
+        gpage = this.props.page;
+    }
     render() {
         return (
             <Root />

@@ -12,7 +12,7 @@ export default class TabView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabIndex: 0
+            tabIndex: this.props.route.index || 0
         };
         this._renderScene = this._renderScene.bind(this);
     }

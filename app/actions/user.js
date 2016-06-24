@@ -7,6 +7,7 @@ import {makeActionCreator, serviceAction} from './base';
 export const userProfileFetched = makeActionCreator(types.USER_PROFILE, 'profile');
 export const scoreFetched = makeActionCreator(types.SCORE_LIST, 'scores');
 export const scoreCleared = makeActionCreator(types.SCORE_CLEARED);
+export const setBindPromptVisible = makeActionCreator(types.BIND_VISIBLE_CHANGED, 'visible');
 //我的等级
 export const expRuleFetched = makeActionCreator(types.EXP_RULE, 'expRule');
 

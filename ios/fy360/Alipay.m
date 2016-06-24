@@ -13,7 +13,7 @@
 #import "AppDelegate.h"
 
 @interface Alipay ()
-
+@property (nonatomic, strong) NSString *eventReminder;
 @end
 
 @implementation Alipay
@@ -22,16 +22,15 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(addEvent:(NSString *)order)
+
+RCT_EXPORT_METHOD(addEvent:(NSString *)order role:(NSString *)role)
 {
-  NSString *appScheme = @"fy360";
- 
-  
+  NSString *appScheme = @"opendiyifangyuan";
+  self.eventReminder = [role stringByAppendingString:@"EventReminder"];
   
   [[AlipaySDK defaultService] payOrder:order fromScheme:appScheme callback:^(NSDictionary *resultDic) {
     //NSString *status = [resultDic objectForKey:@"resultStatus"];
-
-    [self.bridge.eventDispatcher sendAppEventWithName:@"EventReminder"
+    [self.bridge.eventDispatcher sendAppEventWithName:self.eventReminder
                                                  body:@{@"resultDic": resultDic}];
   }];
 }
@@ -49,13 +48,12 @@ RCT_EXPORT_METHOD(addEvent:(NSString *)order)
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
          annotation:(id)annotation {
-  
   if ([url.host isEqualToString:@"safepay"]) {
     //跳转支付宝钱包进行支付，处理支付结果
     [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
      // NSString *status = [resultDic objectForKey:@"resultStatus"];
       
-      [self.bridge.eventDispatcher sendAppEventWithName:@"EventReminder"
+      [self.bridge.eventDispatcher sendAppEventWithName:self.eventReminder
                                                    body:@{@"resultDic": resultDic}];
     }];
   }
@@ -70,7 +68,7 @@ RCT_EXPORT_METHOD(addEvent:(NSString *)order)
     [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
       //NSString *status = [resultDic objectForKey:@"resultStatus"];
       
-      [self.bridge.eventDispatcher sendAppEventWithName:@"EventReminder"
+      [self.bridge.eventDispatcher sendAppEventWithName:self.eventReminder
                                                    body:@{@"resultDic": resultDic}];
     }];
   }

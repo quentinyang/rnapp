@@ -24,7 +24,7 @@ public class AliModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void addEvent(final String message) {
+    public void addEvent(final String message, final String order) {
         Runnable payRunnable = new Runnable() {
 
             @Override
@@ -35,7 +35,7 @@ public class AliModule extends ReactContextBaseJavaModule {
                 String result = alipay.pay(message, true);
                 reactContext
                         .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("EventReminder", result);
+                        .emit(order+"EventReminder", result);
             }
         };
 

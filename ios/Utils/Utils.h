@@ -19,5 +19,6 @@
 @interface Utils : NSObject <RCTBridgeModule>
 
 +(void)sendEvent:(NSString *)eventName withRoot:(RCTRootView *)rootView;
++(void)sendEventWithParam:(NSString *)eventName withParam:(NSDictionary *)param withRoot:(RCTRootView *)rootView;
 
 @end

@@ -21,46 +21,12 @@ export default class Withdraw extends Component {
             minPrice = parseInt(route.data.min_price),
             score = parseInt(route.data.score);
 
-        let isOpacity = (price >= minPrice && price <= score) && (withdrawInfo.get('account') || withdrawInfo.get('alipay_account') && withdrawInfo.get('name')) ? 1 : 0.3;
+        let isOpacity = (price >= minPrice && price <= score) ? 1 : 0.3;
         return (
             <ScrollView style={styles.container}>
-                {(withdrawInfo.get('account') || withdrawInfo.get('has_bound') == 0)?
-                <WithLabel
-                    label='支付宝'
-                    style={styles.bindBox}
-                    placeholder={withdrawInfo.get('account') || '暂未绑定'}
-                    editable={false}
-                    underlineColorAndroid = 'transparent'
-                >
-                    { !withdrawInfo.get('account') ?
-                    <TouchableOpacity onPress={() => this.goBinding()}>
-                        <View><Text style={{color: '#04c1ae'}}>去绑定></Text></View>
-                    </TouchableOpacity> : null }
-                </WithLabel>
-                :
-                <View style={styles.bindBox}>
-                    <WithLabel
-                        label='支付宝账号'
-                        labelStyle={styles.aliLabelWidth}
-                        value={withdrawInfo.get('alipay_account')}
-                        placeholder='邮箱/手机号'
-                        underlineColorAndroid = 'transparent'
-                        onFocus={() => ActionUtil.setAction(actionType.BA_MINE_CASH_ACCOUNTS)}
-                        onChangeText={(v) => {this.changeAccount(v)}}
-                    />
-                    <WithLabel
-                        label='真实姓名'
-                        labelStyle={styles.aliLabelWidth}
-                        value={withdrawInfo.get('name')}
-                        maxLength={10}
-                        placeholder='该账号对应的真实姓名'
-                        underlineColorAndroid = 'transparent'
-                        onFocus={() => ActionUtil.setAction(actionType.BA_MINE_CASH_NAME)}
-                        onChangeText={(v) => {this.changeName(v)}}
-                    />
-                    <View style={styles.warnBox}><Text style={styles.warnFont}>姓名和账号决定您的提现能否成功，提交后将不可更改，请谨慎填写！</Text></View>
+                <View style={styles.aliTitle}>
+                <Text style={styles.aliTitleFont}>提现到支付宝：{route.data.alipay_account}</Text>
                 </View>
-                }
                 <View style={styles.withdrawBox}>
                     <Text style={{marginBottom: 10}}>提现金额</Text>
                     <WithLabel
@@ -93,10 +59,6 @@ export default class Withdraw extends Component {
     }
 
     componentWillMount() {
-        let {actions, route} = this.props,
-            {alipay_account, is_binding_alipay} = route.data;
-
-        actions.fromUserFetched(alipay_account, is_binding_alipay);
     }
 
     componentDidMount() {
@@ -107,51 +69,6 @@ export default class Withdraw extends Component {
 
         actions.withdrawPriceCleared();
         actions.withdrawErrMsg('');
-    }
-
-    goBinding() {
-        ActionUtil.setAction(actionType.BA_MINE_CASH_BIND);
-        alipayLoginService()
-        .then((oData) => {
-            this.props.navigator.push({
-                component: TouchWebContainer,
-                name: 'shouquan',
-                title: '支付宝快捷登录',
-                hideNavBar: false,
-                callbackFun: this.callbackFn,
-                url: oData.url,
-                bg: this.pageId,
-                noToken: true
-            });
-        })
-        .catch(() => {
-        })
-
-    }
-
-    callbackFn = () => {
-        let {actions, navigator} = this.props;
-        actions.getAlipayStatus();
-        navigator.pop();
-    };
-
-    verifyName(value) {
-        let reg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
-        if(!reg.test(value)) {
-            this.props.actions.errMsg('请输入您的真实姓名');
-            return false;
-        }
-        return true;
-    }
-
-    changeAccount(value) {
-        let {route, actions, withdrawInfo} = this.props;
-        actions.aliAccountChanged(value);
-    }
-
-    changeName(value) {
-        let {route, actions, withdrawInfo} = this.props;
-        actions.withdrawNameChanged(value);
     }
 
     changePrice(value) {
@@ -168,25 +85,13 @@ export default class Withdraw extends Component {
         let self = this;
         ActionUtil.setAction(actionType.BA_MINE_CASH_SURE);
         let {navigator, actions, actionsUser, withdrawInfo} = this.props,
-            data = {};
-        if(!withdrawInfo.get('account') && withdrawInfo.get('has_bound')) {
-            if(self.verifyName(withdrawInfo.get('name'))) {
-                data = {
-                    money: withdrawInfo.get('price'),
-                    alipay_account: withdrawInfo.get('alipay_account'),
-                    name: withdrawInfo.get('name')
-                };
-            } else {
-                return false
-            };
-        } else {
             data = {
                 money: withdrawInfo.get('price')
             };
-        }
+
         withdrawService({body: data})
         .then((oData) => {
-            actions.errMsg('');
+            actions.withdrawErrMsg('');
             ActionUtil.setAction(actionType.BA_MINE_CASH_SUCCESS);
             Alert.alert('', '申请提现成功\n1个工作日内到账',
                 [{
@@ -200,36 +105,9 @@ export default class Withdraw extends Component {
             );
         })
         .catch((error) => {
-            actions.getAlipayStatus();
             actions.withdrawErrMsg(error.msg);
         })
     };
-}
-
-class BindFailedModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        let showModal = this.props.msg ? true : false;
-        return (
-            <Modal visible={showModal} transparent={true} >
-                <View style={styles.bindFailedBg}>
-                    <View style={styles.bindFailedBox}>
-                        <Text style={{marginBottom: 15}}>绑定失败</Text>
-                        <Text style={{marginBottom: 25}}>{this.props.msg}</Text>
-                        <TouchableHighlight
-                             style={styles.sureButton}
-                             underlayColor="#04c1ae"
-                             onPress={() => {this.props.actions.modalHidden()}}
-                        >
-                            <View><Text style={{color: "#fff", textAlign: "center"}}>确定</Text></View>
-                        </TouchableHighlight>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
 }
 
 const styles = StyleSheet.create({
@@ -237,12 +115,13 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#eee'
     },
-    bindBox: {
-        marginVertical: 15,
-        backgroundColor: '#fff',
-        borderTopWidth: 1/PixelRatio.get(),
-        borderBottomWidth: 1/PixelRatio.get(),
-        borderColor: '#d9d9d9'
+    aliTitle: {
+        paddingHorizontal: 20,
+        paddingVertical: 15
+    },
+    aliTitleFont: {
+        fontSize: 15,
+        color: '#8d8c92'
     },
     withdrawBox: {
         paddingVertical: 10,
@@ -256,19 +135,8 @@ const styles = StyleSheet.create({
         paddingLeft: 0,
         paddingRight: 0
     },
-    warnBox: {
-        paddingVertical: 5,
-        paddingHorizontal: 20
-    },
-    warnFont: {
-        fontSize: 12,
-        color: '#ffa251'
-    },
     labelWidth: {
         width: 20
-    },
-    aliLabelWidth: {
-        width: 100
     },
     inputFont: {
         fontSize: 30,

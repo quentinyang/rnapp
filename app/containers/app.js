@@ -4,7 +4,7 @@ import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image, Alert, Modal, TouchableHighlight,
     PixelRatio, TouchableWithoutFeedback, Linking, InteractionManager} from 'nuke';
 import {navigationContext} from 'react-native'
-import {NaviGoBack} from '../utils/CommonUtils';
+import {NaviGoBack, parseUrlParam} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 import * as common from '../constants/Common';
@@ -12,7 +12,7 @@ import BackScore from '../pages/BackScore'
 var GeTui = require('react-native').NativeModules.GeTui;
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
-
+import {routes} from '../config/route'
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 
 let _navigator;
@@ -25,13 +25,11 @@ class App extends Component {
         super(props);
         var self = this;
         let {actionsApp} = this.props;
+
+        this.routeStack = [];
         this.state = {
-            component: null,
-            name: '',
-            title: '',
-            hideNavBar: true,
-            initialRoute: null,
-            showModal: false
+            showModal: false,
+            hasSetRoute: false
         };
 
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
@@ -52,18 +50,31 @@ class App extends Component {
                         break;
                 }
             }
-            if(gtoken) {
-                self.setState({
-                    component: TabViewContainer,
-                    name: 'home',
-                    title: '我的主页'
-                });
-            } else {
-                self.setState({
+
+            if(!gtoken) {
+                self.routeStack.push({
                     component: LoginContainer,
                     name: 'login',
-                    title: '登录',
-                })
+                    title: '登陆',
+                    hideNavBar: true
+                });
+                self.setState({
+                    hasSetRoute: true
+                });
+            } else {
+                if(Platform.OS == "ios" && gpage) {
+                    self.routeStack.push(routes["home"]);
+                    let params = parseUrlParam(unescape(gpage));
+                    routes[params.name] && self.routeStack.push(Object.assign(routes[params.name], params));
+                    self.setState({
+                        hasSetRoute: true
+                    });
+                } else {
+                    self.routeStack.push(routes["home"]);
+                    self.setState({
+                        hasSetRoute: true
+                    });
+                }
             }
         })
         .catch((error) => {
@@ -74,21 +85,45 @@ class App extends Component {
             this.unlistenNotification =  NativeAppEventEmitter.addListener('clientIdReceived', (cId) => {
                 self._clientIdReceived(cId);
             });
+            this.unlistenPage =  NativeAppEventEmitter.addListener('goPage', (obj) => {
+                let navRoute = _navigator.getCurrentRoutes(), len = navRoute.length;
+                let params = parseUrlParam(unescape(obj.page));
+
+                //当app在要打开的页面时，从外部打开后，无需跳转
+                if(len && navRoute[len-1].name !== params.name) {
+                    let goRoute = routes[params.name] ? Object.assign(routes[params.name], params) : null;
+                    goRoute && gtoken && _navigator.push(goRoute);
+                    gpage = obj.page;
+                }
+            });
         } else {
             DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
                 self._clientIdReceived(cId);
             });
+
+            DeviceEventEmitter.addListener('goPage', (page) => {
+                let navRoute = _navigator.getCurrentRoutes(), len = navRoute.length;
+                let params = parseUrlParam(unescape(page));
+
+                //当app在要打开的页面时，从外部打开后，无需跳转
+                if(len && navRoute[len-1].name !== params.name) {
+                    let goRoute = routes[params.name] ? Object.assign(routes[params.name], params) : routes['home'];
+                    gtoken && _navigator.push(goRoute);
+                    gpage = page;
+                }
+            });
         }
+
     }
 
     render() {
-        let {component} = this.state;
+        let {hasSetRoute} = this.state;
         let {appData, actionsApp} = this.props;
         let isAndroid = (Platform.OS == "android");
-
+        // (isAndroid && appData.get('config').get('isCidLogin'))
         return (
             <View style={styles.flex}>
-                <Modal visible={this.state.showModal} transparent={true}>
+                <Modal visible={this.state.showModal} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.contentContainer}>
                             <Text style={[styles.modalTitle, styles.baseColor]}>提示</Text>
@@ -105,7 +140,7 @@ class App extends Component {
                     </View>
                 </Modal>
                 { isAndroid ?
-                <Modal visible={appData.get('config').get('showUpdateModal')} transparent={true}>
+                <Modal visible={appData.get('config').get('showUpdateModal')} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.updateContentContainer}>
                             <View style={[styles.alignItems, styles.justifyContent]}>
@@ -113,6 +148,7 @@ class App extends Component {
                                 <Text style={styles.updateModalHeader}>有新版本啦～</Text>
                             </View>
                             <View style={[styles.row, styles.updateWrap]}>
+                                {!appData.get('config').isEnforceUpdate ?
                                 <TouchableHighlight
                                     onPress={actionsApp.closeUpdateModal.bind(null, false)}
                                     style={styles.flex}
@@ -122,6 +158,8 @@ class App extends Component {
                                         <Text style={[styles.updateBtnLeftText]}>暂不更新</Text>
                                     </View>
                                 </TouchableHighlight>
+                                : null}
+
                                 <TouchableHighlight
                                     onPress={this._downAppModel.bind(this)}
                                     style={styles.flex}
@@ -137,7 +175,7 @@ class App extends Component {
                 </Modal> : null }
 
                 {
-                    component ?
+                    hasSetRoute ?
                         <Navigator
                             style={styles.flex}
                             configureScene={this._configureScene}
@@ -145,13 +183,7 @@ class App extends Component {
                             sceneStyle={styles.sceneStyle}
                             navigationBar={this._navBar()}
                             onWillFocus={this._willFocus}
-                            initialRoute={{
-                            component: this.state.component,
-                            name: this.state.name,
-                            hideNavBar: true,
-                            title: this.state.title,
-                            bp: ''
-                        }}
+                            initialRouteStack={this.routeStack}
                         /> : null
                 }
             </View>
@@ -159,11 +191,14 @@ class App extends Component {
     }
 
     _hideModel() {
+        let {actionsApp} = this.props;
+
         AsyncStorageComponent.get('user_phone')
             .then((value) => {
                 this.setState({
                     showModal: false
                 });
+                // actionsApp.closeLoginModal(false);
                 _navigator.resetTo({
                     component: LoginContainer,
                     name: 'login',
@@ -258,10 +293,12 @@ class App extends Component {
             this.unlistenNotification.remove();
             this.geTuiDataReceived.remove();
             this.setGeTuiOpenAction.remove();
+            this.unlistenPage.remove();
         } else {
             DeviceEventEmitter.removeAllListeners('clientIdReceived');
             DeviceEventEmitter.removeAllListeners('geTuiDataReceived');
             DeviceEventEmitter.removeAllListeners('setGeTuiOpenAction');
+            DeviceEventEmitter.removeAllListeners('goPage');
         }
     }
 
@@ -291,27 +328,32 @@ class App extends Component {
                 actionsHome.fetchAttentionPrependHouseList({});
                 break;
             case 2: // 互踢
-                AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
-                if (Platform.OS === 'ios') {
-                    Alert.alert('提示', '您的账号在另外一台设备登陆，被迫下线！', [
-                        {text: '知道了', onPress: () => {
-                            AsyncStorageComponent.get('user_phone')
-                            .then((value) => {
-                                _navigator.resetTo({
-                                    component: LoginContainer,
-                                    name: 'login',
-                                    title: '登录',
-                                    phone: value,
-                                    hideNavBar: true
-                                });
+                AsyncStorageComponent.get(common.USER_TOKEN_KEY)
+                .then((token) => {
+                    if (token) {
+                        AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
+                        if (Platform.OS === 'ios') {
+                            Alert.alert('提示', '您的账号在另外一台设备登陆，被迫下线！', [
+                                {text: '知道了', onPress: () => {
+                                    AsyncStorageComponent.get('user_phone')
+                                    .then((value) => {
+                                        _navigator.resetTo({
+                                            component: LoginContainer,
+                                            name: 'login',
+                                            title: '登录',
+                                            phone: value,
+                                            hideNavBar: true
+                                        });
+                                    });
+                                }}
+                            ]);
+                        } else {
+                            this.setState({
+                                showModal: true
                             });
-                        }}
-                    ]);
-                } else {
-                    this.setState({
-                        showModal: true
-                    });
-                }
+                        }
+                    }
+                });
                 break;
             default:
                 break;

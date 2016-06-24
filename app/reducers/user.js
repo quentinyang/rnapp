@@ -23,6 +23,20 @@ function userProfile(state = Immutable.fromJS(initialState), action) {
     }
 }
 
+let controlState = {
+    visible: false
+};
+
+function userControlData(state = Immutable.fromJS(controlState), action) {
+    switch(action.type) {
+        case types.BIND_VISIBLE_CHANGED:
+            return state.set('visible', action.visible);
+            break;
+        default:
+            return state;
+    }
+}
+
 let initialScores = {
     money: '',
     flows: [],
@@ -62,6 +76,7 @@ function expLevel(state = Immutable.fromJS([]), action) {
 
 export default combineReducers({
     userProfile,
+    userControlData,
     scoreData,
     expLevel
 });
