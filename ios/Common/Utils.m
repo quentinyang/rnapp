@@ -58,7 +58,7 @@ RCT_EXPORT_METHOD(getEnv:(RCTResponseSenderBlock) callback) {
   if([version isEqualToString:@"online"]) {
     return @"https://api.fangyuan360.cn/service/";
     
-  } else if([version isEqualToString:@"dev"]) {
+  } else if([version isEqualToString:@"master"]) {
     return @"http://360.master.stage.angejia.com/service/";
     
   } else {
