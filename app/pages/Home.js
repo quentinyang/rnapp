@@ -1,7 +1,7 @@
 'use strict';
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio, Modal, Button, TouchableHighlight,
-        TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform, AppState} from 'nuke';
+        TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform/*, AppState*/} from 'nuke';
 
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
@@ -253,18 +253,18 @@ export default class Home extends Component {
             actions.fetchScoreModalStatus();
             actions.fetchHouseNewCount();
         });
-        AppState.addEventListener('change', this._dealGiftModal.bind(this));
+        //AppState.addEventListener('change', this._dealGiftModal.bind(this));
     }
 
-    _dealGiftModal(currentAppState) {
-        if(currentAppState == 'active') {
-            this._setGiftModalStatus();
-        }
-    }
+    // _dealGiftModal(currentAppState) {
+    //     if(currentAppState == 'active') {
+    //         this._setGiftModalStatus();
+    //     }
+    // }
 
     componentWillUnmount() {
         this.props.actions.clearHomePage();
-        AppState.removeEventListener('change', this._dealGiftModal);
+        //AppState.removeEventListener('change', this._dealGiftModal);
     }
 
     _renderRow = (rowData: any) => {
