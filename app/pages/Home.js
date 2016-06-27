@@ -166,7 +166,6 @@ export default class Home extends Component {
     }
 
     _setGiftModalStatus() {
-        var self = this;
         let key = common.APP_OPEN_DATE + guid;
         AsyncStorageComponent.get(key)
             .then((value) => {
