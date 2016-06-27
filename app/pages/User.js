@@ -26,6 +26,7 @@ import WithdrawContainer from '../containers/WithdrawContainer';
 import BindAlipayContainer from '../containers/BindAlipayContainer';
 import SettingContainer from '../containers/SettingContainer';
 import ScoreListContainer from '../containers/ScoreListContainer';
+import WelfareContainer from '../containers/WelfareContainer';
 import Immutable from 'immutable';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
@@ -56,12 +57,21 @@ export default class User extends Component {
 
         return (
             <View style={styles.container}>
-                <Header title='我的' style={styles.bgHeader} fontStyle={styles.whiteText} />
+                <Header title='我的' style={styles.bgHeader} fontStyle={styles.whiteText}>
+                    <TouchableWithoutFeedback onPress={() => this.navigatorPush({component: SettingContainer, name: 'settings', title: '设置', actionLog: actionType.BA_MINE_SET})}>
+                        <Image
+                            source={require('../images/icon/setting.png')}
+                            style={[styles.settingIcon, styles.center]}
+                        />
+                    </TouchableWithoutFeedback>
+                </Header>
                 <ScrollView
                     style={styles.scrollBox}
                     automaticallyAdjustContentInsets={false}
                 >
                     <BasicInfo userProfile={userProfile}  navigatorPush={this.navigatorPush} />
+
+                    <UserAccount navigatorPush={this.navigatorPush} withdrawData={withdrawData} {...this.props} />
 
                     <LinkSection
                         linkStyle={{height: 70, marginBottom: 15}}
@@ -79,7 +89,18 @@ export default class User extends Component {
                         </View>
                     </LinkSection>
 
-                    <UserAccount navigatorPush={this.navigatorPush} withdrawData={withdrawData} {...this.props} />
+                    <LinkSection
+                        linkStyle={{marginBottom: 15}}
+                        icon={{
+                            url: require('../images/icon/welfare.png'),
+                            style: {width: 13.5, height: 11},
+                            bgColor: '#66a1e7'
+                        }}
+                        onPress={() => this.navigatorPush({component: WelfareContainer, name: 'welfare', title: '福利卡'})}
+                    >
+                        <Text style={styles.flex}>福利卡</Text>
+                        <Text>{4}</Text>
+                    </LinkSection>
 
                     <LinkSection
                         linkStyle={{borderBottomWidth: 1/PixelRatio.get(), borderColor: '#d9d9d9'}}
@@ -105,18 +126,6 @@ export default class User extends Component {
                     >
                         <Text style={styles.flex}>发布的房源</Text>
                         <Text>{userProfile.get('published')}</Text>
-                    </LinkSection>
-
-                    <LinkSection
-                        linkStyle={{marginBottom: 15}}
-                        icon={{
-                            url: require('../images/icon/setting.png'),
-                            style: {width: 12, height: 12},
-                            bgColor: '#66a1e7'
-                        }}
-                        onPress={() => this.navigatorPush({component: SettingContainer, name: 'settings', title: '设置', actionLog: actionType.BA_MINE_SET})}
-                    >
-                        <Text>设置</Text>
                     </LinkSection>
 
                 </ScrollView>
@@ -265,11 +274,17 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     bgHeader: {
+        paddingHorizontal: 15,
         backgroundColor: '#04c1ae',
         borderBottomWidth: 0
     },
     whiteText: {
         color: '#fff'
+    },
+    settingIcon: {
+        marginLeft: -20,
+        width: 20,
+        height: 20
     },
     scrollBox: {
         marginBottom: (Platform.OS == 'ios') ? 60: 0
