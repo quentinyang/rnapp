@@ -11,11 +11,11 @@ module.exports=function(){
     }
 
     function realNameService(data) {
-        return ajax.post(urls.pay.realName, data);
+        return ajax.post(urls().pay.realName, data);
     }
 
     function getAlipayStatusService(data) {
-        return ajax.get(urls.pay.aliStatus, {data:data});
+        return ajax.get(urls().pay.aliStatus, {data:data});
     }
 
     return {

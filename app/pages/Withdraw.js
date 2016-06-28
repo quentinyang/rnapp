@@ -46,7 +46,7 @@ export default class Withdraw extends Component {
                     { withdrawInfo.get('err_msg') ?
                         <Text style={[styles.mark, styles.colorFFDB]}>{withdrawInfo.get('err_msg')}</Text>
                         :
-                        <Text style={styles.mark}>可提金额：{maxPrice <= minPrice ? 0 : minPrice + '-' + maxPrice}元<Text style={{color: '#8d8c92', fontSize: 12}}> (每天限提{maxDayPrice}元，每笔{minPrice}元起提)</Text></Text>
+                        <Text style={styles.mark}>可提：{maxPrice <= minPrice ? 0 : minPrice + '-' + maxPrice}元<Text style={{color: '#8d8c92', fontSize: 12}}> (每天限提{maxDayPrice}，每笔{minPrice}元起提)</Text></Text>
                     }
                 </View>
                 <View style={styles.submitBox}>
