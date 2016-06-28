@@ -9,6 +9,7 @@ import PublishFirstStepContainer from '../containers/PublishFirstStepContainer'
 import InputHouseRule from '../pages/InputHouseRule';
 import RechargeContainer from '../containers/RechargeContainer'
 import BackScoreContainer from '../containers/BackScoreContainer'
+import AboutUserContainer from '../containers/AboutUserContainer'
 let ActionUtil = require( '../utils/ActionLog');
 import {callUp} from '../utils/CommonUtils';
 import * as actionType from '../constants/ActionLog';
