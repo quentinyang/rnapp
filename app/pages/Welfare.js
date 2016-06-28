@@ -10,6 +10,7 @@ import {
     Image,
     Alert,
     Modal,
+    Dimensions,
     PixelRatio,
     StyleSheet
 } from 'nuke';
@@ -99,19 +100,21 @@ class Card extends Component {
 
     render() {
         return (
-            <View style={styles.cardSection}>
-                <View style={[styles.center, {width: 75, flexDirection: 'row'}]}>
-                    <Text style={styles.importantFont}>2</Text><Text style={styles.font12}>积分</Text>
+            <Image source={require('../images/membership.png')} style={styles.imgContainer}>
+                <View style={[styles.cardSection, styles.center]}>
+                    <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
+                        <Text style={styles.importantFont}>2</Text><Text style={styles.font12}>积分</Text>
+                    </View>
+                    <View style={styles.cardDesc}>
+                        <Text style={styles.fontBold}>看房卡</Text>
+                        <Text style={styles.descFont}>· 获任意1套房源的房东电话花1积分</Text>
+                        <Text style={styles.descFont}>· 有效期至2016-07-16</Text>
+                    </View>
+                    <View style={styles.center}>
+                        <Image source={require('../images/used.png')} style={styles.seal} />
+                    </View>
                 </View>
-                <View style={styles.cardDesc}>
-                    <Text style={styles.fontBold}>看房卡</Text>
-                    <Text style={styles.descFont}>· 获任意1套房源的房东电话花1积分</Text>
-                    <Text style={styles.descFont}>· 有效期至2016-07-16</Text>
-                </View>
-                <View style={styles.center}>
-                    <Image source={require('../images/used.png')} style={styles.seal} />
-                </View>
-            </View>
+            </Image>
         );
     }
 }
@@ -156,17 +159,9 @@ const styles = StyleSheet.create({
         height: 67
     },
     cardSection: {
+        flex: 1,
         flexDirection: 'row',
-        marginBottom: 16,
-        paddingVertical: 12,
-        backgroundColor: '#f8f8f8',
-        shadowColor: "#000",
-        shadowOpacity: 0.25,
-        shadowRadius: 1,
-        shadowOffset: {
-            height: 1,
-            width: 0
-        }
+
     },
     importantFont: {
         fontSize: 25,
@@ -177,8 +172,10 @@ const styles = StyleSheet.create({
     },
     cardDesc: {
         paddingLeft: 15,
-        borderLeftWidth: 1/PixelRatio.get(),
-        borderColor: '#dedede'
+        borderWidth: 1,
+
+        borderColor: '#fff',
+        borderStyle: 'dashed'
     },
     fontBold: {
         fontWeight: '600'
@@ -190,5 +187,13 @@ const styles = StyleSheet.create({
     seal: {
         width: 40,
         height: 40
+    },
+    imgContainer: {
+        flex: 1,
+        width: undefined,
+        height: undefined,
+        paddingLeft: 10,
+        paddingRight: 15,
+        backgroundColor: 'transparent'
     }
 });
