@@ -53,8 +53,8 @@ function baseInfo(state, action) {
             let newState = state.set('contact', Immutable.fromJS(action.contact));
             let curTemp = Immutable.List();
             newState = newState.updateIn(['contact', 'logs'], (k) => {
-                curTemp = k.slice(0, 5);
-                return k.splice(0, 5);
+                curTemp = k.slice(0, 2);
+                return k.splice(0, 2);
             });
             return newState.set('curLogs', curTemp);
             break;

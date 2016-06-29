@@ -13,6 +13,7 @@ import AboutUserContainer from '../containers/AboutUserContainer'
 let ActionUtil = require( '../utils/ActionLog');
 import {callUp} from '../utils/CommonUtils';
 import * as actionType from '../constants/ActionLog';
+import TitleBar from '../components/TitleBar';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -68,6 +69,8 @@ export default class Detail extends Component {
                         </View>
                     </TouchableHighlight>
                 </View>
+                <CouponModal />
+                <TelModal />
                 <ErrorTipModal callInfo={callInfo} actions={actions} navigator={navigator} />
                 <CostScoreModal
                     propertyId={route.item.get('property_id')}
@@ -181,6 +184,8 @@ export default class Detail extends Component {
         return (
             <View>
                 <BaseInfo baseInfo={baseInfo.get('baseInfo')} route={route} />
+                <UserInfo />
+
                 {
                     baseInfo.get('contact').get('total') > 0 ?
                         <ContactList
@@ -195,12 +200,7 @@ export default class Detail extends Component {
                     houseList.size > 0 ? <View style={styles.gap}></View> : null
                 }
                 {
-                    houseList.size > 0 ?
-                        <View style={[styles.itemContainer, styles.row, styles.center, styles.padding, styles.titleBox]}>
-                            <View style={styles.bar}></View>
-                            <Text style={[styles.baseSize, styles.baseColor]}>同小区房源</Text>
-                        </View>
-                        : null
+                    houseList.size > 0 ? <TitleBar title="周边房源" />  : null
                 }
             </View>
         )
@@ -272,6 +272,211 @@ export default class Detail extends Component {
             bp: this.pageId
         });
     };
+}
+ 
+class TelModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <Modal visible={false} transparent={true}
+                   onRequestClose={()=>{}}>
+                <View style={[styles.flex, styles.center, styles.justifyContent, styles.bgWrap]}>
+                    <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
+                        <TouchableHighlight
+                            style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
+                            underlayColor="#fff"
+                            onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);}}
+                        >
+                            <Image
+                                style={styles.closeIcon}
+                                source={require("../images/close.png")}
+                            />
+                        </TouchableHighlight>
+
+                        <Text style={styles.saleTel}>房东电话：123437545456</Text>
+                        <Text style={styles.expMsg}>同时您获得了5经验</Text>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+}
+
+class CouponModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <Modal visible={true} transparent={true} onRequestClose={() => {}}>
+                <View style={[styles.flex, styles.bgWrap]}>
+                    <View style={styles.flex}></View>
+
+{/*
+
+                    
+                    <View style={[styles.flex, styles.couponWrap]}>
+                        <View style={styles.couponHeader}>
+                            <TouchableWithoutFeedback onPress={()=>{}}>
+                                <View style={styles.touchBox}>
+                                    <Image style={styles.closeIcon} source={require('../images/close.png')} />
+                                </View>
+                            </TouchableWithoutFeedback>
+                            <View style={styles.center}>
+                                <Text style={styles.subName}>是否要使用看房卡</Text>
+                                <Text style={[styles.itemSize, styles.grayColor]}>未成功卡可退回</Text>
+                            </View>
+                            <TouchableWithoutFeedback onPress={()=>{}}>
+                                <View style={styles.touchBox}>
+                                    <Text style={[styles.greenColor, styles.couponSure]}>确定</Text>
+                                </View>
+                            </TouchableWithoutFeedback>
+                        </View>
+
+                        <ListView
+                            contentContainerStyle={styles.touchBox}
+                            dataSource={ds.cloneWithRows([{}, {}, {}, {}])}
+                            renderRow={this._renderRow}
+                            renderFooter={this._renderFooter}
+                            enableEmptySections={true}
+                            showsVerticalScrollIndicator={false}                          
+                        />
+
+                    </View>
+*/}
+                    <View style={[styles.flex, styles.justifyBetween, styles.couponWrap, styles.voiceWrap]}>
+                        <TouchableHighlight 
+                            style={[styles.closeBox, styles.center, styles.justifyContent]} 
+                            onPress={()=>{}}
+                            underlayColor="#fff"
+                        >                            
+                            <Image style={styles.closeIcon} source={require('../images/close.png')} />                            
+                        </TouchableHighlight>
+                        <View style={[styles.justifyContent, styles.center]}>
+                            <Text style={[styles.subName]}>今日已有2通电话确认房子在卖</Text>
+                            <Text style={styles.subName}>请听通话录音</Text>
+                        </View>
+
+                        <View>
+                            <View style={[styles.row, styles.justifyContent, styles.center, {marginBottom: 28}]}>
+                                <Text>通话1</Text>
+                                <View style={[styles.flex, styles.center, styles.justifyContent, styles.voiceBox]}>
+                                    <Image style={styles.voice} source={require('../images/voice.png')} />
+                                    <Image style={styles.boxArrow} source={require('../images/next.png')} />
+                                    <Text style={styles.greenColor}>点击播放</Text>
+                                </View>
+                                <Text style={[styles.grayColor, styles.itemSize]}>09:34</Text>
+                            </View>
+                            <View style={[styles.row, styles.justifyContent, styles.center]}>
+                                <Text>通话1</Text>
+                                <View style={[styles.flex, styles.center, styles.justifyContent, styles.voiceBox]}>
+                                    <Image style={styles.voice} source={require('../images/voice.png')} />
+                                    <Image style={styles.boxArrow} source={require('../images/next.png')} />
+                                    <Text style={styles.greenColor}>点击播放</Text>
+                                </View>
+                                <Text style={[styles.grayColor, styles.itemSize]}>09:34</Text>
+                            </View>
+                        </View>
+
+                        <TouchableHighlight
+                            style={[styles.contactButton]}
+                            onPress={()=>{}}
+                            underlayColor="#04C1AE"
+                        >
+                            <View style={[styles.justifyContent, styles.center]}>
+                                <Text style={styles.contactText}>
+                                    4积分 获取房东电话
+                                </Text>
+                            </View>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+    _renderFooter() {
+        return (
+            <TouchableWithoutFeedback onPress={()=> {}}>
+                <View style={[styles.center, styles.justifyContent, styles.couponFooter]}>
+                    <Text style={[styles.greenColor, styles.more]}>不使用看房卡</Text>
+                </View>
+            </TouchableWithoutFeedback>            
+        );
+    }
+    _renderRow() {
+        return (
+            <View style={[styles.row, styles.center, styles.couponItem]}>
+                <TouchableWithoutFeedback onPress={() => {}}>                    
+                    <View style={[styles.markBg, styles.greenBg, styles.center, styles.justifyContent]}>
+                        {1 ? <Image style={styles.mark} source={require('../images/mark_white.png')} /> : null}
+                    </View>
+                </TouchableWithoutFeedback>
+                <View style={{height: 78, width: 305, backgroundColor: '#eee'}}>
+
+                </View>
+            </View>
+        );
+    }
+}
+
+class UserInfo extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        return (
+            <View>
+                <View style={styles.gap}></View>
+                <TitleBar title="发房用户" />
+                
+                <TouchableWithoutFeedback onPress={() => { }}>
+                    <View>
+                        <View style={[styles.row, styles.center]}>
+                            <View style={styles.avatarBox}>
+                                <View style={[styles.avatarBg, styles.center, styles.justifyContent]}>
+                                    <Image
+                                        style={styles.avatarImage}
+                                        source={require('../images/avatar_white.png')}
+                                    />
+                                </View>
+
+                                <View style={[styles.levelBg, styles.center, styles.justifyContent]}>
+                                    <Text style={[styles.levelText]}>{"V1"}</Text>
+                                </View>
+                            </View>
+                            <Text style={styles.subName}>123</Text>
+                        </View>                        
+
+                        <View style={[styles.info, styles.row]}>
+                            <View style={[styles.flex, styles.center, styles.justifyContent]}>
+                                <Text style={styles.userVal}>{47}</Text>
+                                <Text style={[styles.grayColor, styles.more]}>累计登录</Text>
+                            </View>
+                            <View style={styles.vline}></View>
+                            <View style={[styles.flex, styles.center, styles.justifyContent]}>
+                                <Text style={styles.userVal}>{47}</Text>
+                                <Text style={[styles.grayColor, styles.more]}>已赚积分</Text>
+                            </View>
+                            <View style={styles.vline}></View>
+                            <View style={[styles.flex, styles.center, styles.justifyContent]}>
+                                <Text style={styles.userVal}>{47}</Text>
+                                <Text style={[styles.grayColor, styles.more]}>发房</Text>
+                            </View>
+                            <View style={styles.vline}></View>
+                            <View style={[styles.flex, styles.center, styles.justifyContent]}>
+                                <Text style={styles.userVal}>{47}</Text>
+                                <Text style={[styles.grayColor, styles.more]}>看房</Text>
+                            </View>
+                        </View>
+                    </View>                    
+                </TouchableWithoutFeedback>
+            </View>
+        );
+    }
 }
 
 class ErrorTipModal extends Component {
@@ -430,7 +635,7 @@ class BaseInfo extends Component {
         let houseInfo = route.item;
 
         return (
-            <View style={[styles.itemContainer, styles.baseBox]}>
+            <View>
                 <View style={[styles.center, styles.justifyContent, styles.nameBox]}>
                     <Text style={[styles.name, styles.baseColor]}>{houseInfo.get('community_name') || ''}</Text>
                     <View style={[styles.row, styles.justifyContent]}>
@@ -482,10 +687,7 @@ class ContactList extends Component {
         return (
             <View>
                 <View style={styles.gap}></View>
-                <View style={[styles.itemContainer, styles.row, styles.center, styles.padding, styles.titleBox]}>
-                    <Text style={styles.bar}></Text>
-                    <Text style={[styles.baseSize, styles.baseColor]}>联系房东记录 ({contact.get('total')}次)</Text>
-                </View>
+                <TitleBar title={"联系房东记录 (" + contact.get('total') + "次)"} />            
                 <View style={[styles.contactBox]}>
                     {contactList}
                 </View>
@@ -530,6 +732,9 @@ var styles = StyleSheet.create({
     justifyContent: {
         justifyContent: 'center'
     },
+    justifyBetween: {
+        justifyContent: 'space-between'
+    },
     baseColor: {
         color: "#3e3e3e"
     },
@@ -551,16 +756,6 @@ var styles = StyleSheet.create({
     },
     listView: {
         marginBottom: 70
-    },
-    itemContainer: {
-        borderStyle: 'solid',
-        borderBottomWidth: 1/PixelRatio.get(),
-        borderBottomColor: '#d9d9d9',
-        borderTopWidth: 1/PixelRatio.get(),
-        borderTopColor: '#d9d9d9'
-    },
-    baseBox: {
-        borderTopWidth: 0
     },
     nameBox: {
         height: 90,
@@ -621,16 +816,6 @@ var styles = StyleSheet.create({
     },
     baseSize: {
         fontSize: 16
-    },
-    titleBox: {
-        height: 42
-    },
-    bar: {
-        width: 3,
-        height: 15,
-        backgroundColor: '#04C1AE',
-        marginRight: 8,
-        borderRadius: 2
     },
     contactBox: {
         marginTop: 8,
@@ -714,6 +899,7 @@ var styles = StyleSheet.create({
         height: 30
     },
     closeIcon: {
+        marginTop: 5,
         width: 15,
         height: 13
     },
@@ -760,5 +946,118 @@ var styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#d9d9d9",
         marginBottom: 10
+    },
+    avatarBox: {
+        width: 50,
+        height: 50,
+        marginHorizontal: 15
+    },
+    avatarBg: {
+        marginRight: 15,
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: '#04c1ae'
+    },
+    avatarImage: {
+        width: 30,
+        height: 30
+    },
+    levelBg: {
+        position: 'absolute',
+        bottom: 2,
+        right: -6,
+        width: 19,
+        height: 19,
+        borderRadius: 10,
+        backgroundColor: '#FAAE6C',
+        borderWidth: 1/PixelRatio.get(),
+        borderColor: "#fff"
+    },
+    levelText: {
+        fontSize: 12,
+        color: '#fff',
+        backgroundColor: "transparent"
+    },
+    userVal: {
+        fontSize: 20,
+        marginTop: 4,
+        marginBottom: 6
+    },
+    couponWrap: {
+        backgroundColor: '#fff'
+    },
+    couponHeader: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        marginVertical: 20
+    },
+    couponSure: {
+        fontSize: 18
+    },
+    touchBox: {
+        padding: 15,
+        paddingTop: 0
+    },
+    couponFooter: {
+        marginTop: 20
+    },
+    couponItem: {
+        marginBottom: 20
+    },
+    markBg: {
+        width: 24,
+        height: 24,
+        borderRadius: 12,
+        marginRight: 16
+    },
+    mark: {
+        width: 13.5,
+        height: 9
+    },
+    greyBg: {
+        backgroundColor: '#eee'
+    },
+    greenBg: {
+        backgroundColor: '#04C1AE'
+    },
+    voiceWrap: {
+        paddingHorizontal: 20,
+        paddingVertical: 25
+    },
+    voiceBox: {
+        height: 44,
+        borderColor: '#D9D9D9',
+        borderWidth: 1/PixelRatio.get(),
+        borderRadius: 3,
+        backgroundColor: '#F8F8F8',
+        marginLeft: 15, 
+        marginRight: 10
+    },
+    voice: {
+        height: 17,
+        width: 12,
+        position: 'absolute',
+        left: 17,
+        top: 13, 
+    },
+    saleTel: {
+        marginTop: 14,
+        marginBottom: 6
+    },
+    expMsg: {
+        marginBottom: 12
+    },
+    boxArrow: {
+        position: 'absolute',
+        top: 17,
+        left: -5,
+        width: 5,
+        height: 10,
+        backgroundColor: '#F8F8F8',
+        transform:[
+            {rotate: '180deg'}
+        ]
     },
 });
