@@ -14,6 +14,7 @@ let ActionUtil = require( '../utils/ActionLog');
 import {callUp} from '../utils/CommonUtils';
 import * as actionType from '../constants/ActionLog';
 import TitleBar from '../components/TitleBar';
+import WelfareCard from '../components/WelfareCard';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -316,7 +317,7 @@ class CouponModal extends Component {
                 <View style={[styles.flex, styles.bgWrap]}>
                     <View style={styles.flex}></View>
 
-{/*
+
 
                     
                     <View style={[styles.flex, styles.couponWrap]}>
@@ -347,7 +348,7 @@ class CouponModal extends Component {
                         />
 
                     </View>
-*/}
+{/*
                     <View style={[styles.flex, styles.justifyBetween, styles.couponWrap, styles.voiceWrap]}>
                         <TouchableHighlight 
                             style={[styles.closeBox, styles.center, styles.justifyContent]} 
@@ -393,7 +394,7 @@ class CouponModal extends Component {
                                 </Text>
                             </View>
                         </TouchableHighlight>
-                    </View>
+                    </View>*/}
                 </View>
             </Modal>
         );
@@ -415,9 +416,7 @@ class CouponModal extends Component {
                         {1 ? <Image style={styles.mark} source={require('../images/mark_white.png')} /> : null}
                     </View>
                 </TouchableWithoutFeedback>
-                <View style={{height: 78, width: 305, backgroundColor: '#eee'}}>
-
-                </View>
+                <WelfareCard />
             </View>
         );
     }

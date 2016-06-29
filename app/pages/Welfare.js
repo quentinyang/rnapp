@@ -34,8 +34,8 @@ export default class Welfare extends Component {
                 <Wtabs current={this.state.current} tabs={tabs} onPress={this.tabClick} />
                 {/*<NoCoupon current={this.state.current} tabs={tabs} />*/}
                 <ScrollView style={styles.container}>
-                    <Card />
-                    <Card />
+                    <Card wrapStyle={{marginBottom: 15}} />
+                    <Card wrapStyle={{marginBottom: 15}} />
                 </ScrollView>
             </View>
         );

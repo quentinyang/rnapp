@@ -16,9 +16,9 @@ export default class Card extends Component {
     }
 
     render() {
-        let {errBoxStyle, errTextStyle, errText} = this.props;
+        let {wrapStyle, errBoxStyle, errTextStyle, errText} = this.props;
         return (
-            <Image source={require('../images/membership.png')} style={[styles.wfCaSection, styles.center]} resizeMode='stretch'>
+            <Image source={require('../images/membership.png')} style={[styles.wfCaSection, styles.center, wrapStyle]} resizeMode='stretch'>
                 <View style={styles.wfCaLeft}>
                     <Text style={styles.highFont}>2</Text><Text style={styles.font12}>积分</Text>
                 </View>
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     wfCaSection: {
         flex: 1,
         flexDirection: 'row',
-        marginBottom: 15,
         padding: 10,
         width: undefined,
         height: 78,
