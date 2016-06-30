@@ -174,8 +174,10 @@ export default class BindAlipay extends Component {
             realNameService({body: {name: aliInfo.get('name')}})
             .then(() => {
                 let data = {
-                    alipay_account: aliInfo.get('alipay_account'),
+                    alipay_account: aliInfo.get('alipay_account') || route.data.alipay_account,
                     min_price: route.data.min_price,
+                    max_price: route.data.max_price,
+                    max_day_price: route.data.max_day_price,
                     score: route.data.score
                 };
                 navigator.replace({

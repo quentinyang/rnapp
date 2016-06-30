@@ -19,9 +19,11 @@ export default class Withdraw extends Component {
         let {withdrawInfo, route} = this.props;
         let price = parseInt(withdrawInfo.get('price')),
             minPrice = parseInt(route.data.min_price),
+            maxPrice = parseInt(route.data.max_price),
+            maxDayPrice = parseInt(route.data.max_day_price),
             score = parseInt(route.data.score);
 
-        let isOpacity = (price >= minPrice && price <= score) ? 1 : 0.3;
+        let isOpacity = ((price >= minPrice && price <= maxPrice) || (minPrice > maxPrice && false)) ? 1 : 0.3;
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.aliTitle}>
@@ -44,7 +46,7 @@ export default class Withdraw extends Component {
                     { withdrawInfo.get('err_msg') ?
                         <Text style={[styles.mark, styles.colorFFDB]}>{withdrawInfo.get('err_msg')}</Text>
                         :
-                        <Text style={styles.mark}>可提金额：{score == minPrice ? score : minPrice + '-' + score}元</Text>
+                        <Text style={styles.mark}>可提：{maxPrice <= minPrice ? 0 : minPrice + '-' + maxPrice}元<Text style={{color: '#8d8c92', fontSize: 12}}> (每天限提{maxDayPrice}，每笔{minPrice}元起提)</Text></Text>
                     }
                 </View>
                 <View style={styles.submitBox}>
@@ -74,7 +76,7 @@ export default class Withdraw extends Component {
     changePrice(value) {
         let {route, actions, withdrawInfo} = this.props;
         actions.withdrawPriceChanged(value);
-        if(parseInt(value) > parseInt(route.data.score)) {
+        if(parseInt(value) > parseInt(route.data.max_price)) {
             actions.withdrawErrMsg('输入金额超过可提额度');
         } else {
             withdrawInfo.get('err_msg') && actions.withdrawErrMsg('');

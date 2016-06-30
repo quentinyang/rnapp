@@ -62,7 +62,7 @@ export default class SignIn extends Component {
                     {unsignList}
                 </View>
 
-                {signArr.length ?
+                {signArr.size ?
                     <View style={[styles.row, styles.alignItems, styles.titleBox]}>
                         <View style={styles.bar}></View>
                         <Text style={[styles.mediumFont]}>已领取积分</Text>
@@ -70,7 +70,7 @@ export default class SignIn extends Component {
                 : null }
 
                 <View>
-                    {signList}
+                    {signList}                   
                 </View>
             </ScrollView>
         )

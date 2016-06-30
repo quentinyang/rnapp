@@ -1,7 +1,7 @@
 'use strict';
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio, Modal, Button, TouchableHighlight,
-        TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform} from 'nuke';
+        TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform, AppState} from 'nuke';
 
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
@@ -162,6 +162,11 @@ export default class Home extends Component {
         this.pageId = actionType.BA_HOME_PAGE;
         ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_ONVIEW, {"bp": this.props.route.bp});
 
+        this._setGiftModalStatus();
+    }
+
+    _setGiftModalStatus() {
+        var self = this;
         let key = common.APP_OPEN_DATE + guid;
         AsyncStorageComponent.get(key)
             .then((value) => {
@@ -248,10 +253,18 @@ export default class Home extends Component {
             actions.fetchScoreModalStatus();
             actions.fetchHouseNewCount();
         });
+        AppState.addEventListener('change', this._dealGiftModal.bind(this));
+    }
+
+    _dealGiftModal(currentAppState) {
+        if(currentAppState == 'active') {
+            this._setGiftModalStatus();
+        }
     }
 
     componentWillUnmount() {
         this.props.actions.clearHomePage();
+        AppState.removeEventListener('change', this._dealGiftModal);
     }
 
     _renderRow = (rowData: any) => {
