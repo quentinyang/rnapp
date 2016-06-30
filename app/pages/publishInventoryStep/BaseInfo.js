@@ -65,6 +65,7 @@ export default class BaseInfoPage extends Component {
                             placeholder={controller.get('single')?'无':'输入楼/座号'}
                             editable={controller.get('single')? false: true}
                             underlineColorAndroid = 'transparent'
+                            maxLength={6}
                             onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_BUILDING)}
                             onChangeText={(v) => {this.singleAction('buildingChanged', v.trim())}}
                         >
@@ -81,6 +82,7 @@ export default class BaseInfoPage extends Component {
                             placeholder={controller.get('villa')?'无':'输入房号'}
                             underlineColorAndroid = 'transparent'
                             editable={controller.get('villa')? false: true}
+                            maxLength={6}
                             onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_ROOM)}
                             onChangeText={(v) => {this.singleAction('doorChanged', v.trim())}}
                         >
