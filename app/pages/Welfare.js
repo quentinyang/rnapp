@@ -3,21 +3,18 @@ import {
     Component,
     View,
     Text,
-    TextInput,
     TouchableHighlight,
-    TouchableOpacity,
-    ScrollView,
+    ListView,
     Image,
-    Alert,
-    Modal,
-    Dimensions,
-    PixelRatio,
-    StyleSheet
+    StyleSheet,
+    InteractionManager
 } from 'nuke';
 
 import Card from '../components/WelfareCard';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
+
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r2)});
 
 export default class Welfare extends Component {
     constructor(props) {
@@ -25,33 +22,56 @@ export default class Welfare extends Component {
         this.state = {
             current: 0
         };
-
         if(this.props.route.callbackFun) {
             this.props.route.callbackFun = () => {
                 this.props.navigator.pop();
                 this.props.homeActions.setRuleModalVisible(true);
             }
         }
+        this.tabs = ['未使用', '已使用', '已过期'];
     }
 
     render() {
-        let tabs = ['未使用', '已使用', '已过期'];
         return (
-            <View>
-                <Wtabs current={this.state.current} tabs={tabs} onPress={this.tabClick} />
+            <ListView
+                style={styles.container}
+                dataSource={ds.cloneWithRows(this.props.welfareInfo.get('list').toArray())}
+                renderHeader={this._renderHeader}
+                renderRow={this._renderRow}
+                enableEmptySections={true}
+            />
+        );
+    }
+
+    _renderHeader = () => {
+        return (
+            <Wtabs current={this.state.current} tabs={this.tabs} onPress={this.tabClick} />
+        )
+    };
+
+    _renderRow = (rowData, secId, rowId, highlightRow) => {
+        return (
+            <View style={styles.cardSection}>
                 {/*<NoCoupon current={this.state.current} tabs={tabs} />*/}
-                <ScrollView style={styles.container}>
-                    <Card wrapStyle={{marginBottom: 15}} />
-                    <Card wrapStyle={{marginBottom: 15}} />
-                </ScrollView>
+                <Card item={rowData} />
             </View>
         );
     }
 
     componentWillMount() {
+        let {actions, welfareInfo} = this.props;
+        let pager = welfareInfo.get('pager');
+
+        InteractionManager.runAfterInteractions(() => {
+            actions.fetchWelfareList({
+                page: 1,
+                status: 1
+            });
+        });
     }
 
     componentDidMount() {
+
     }
 
     componentWillUnmount() {
@@ -105,16 +125,20 @@ class NoCoupon extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 19,
         backgroundColor: '#fff'
     },
     center: {
         alignItems: 'center',
         justifyContent: 'center'
     },
+    cardSection: {
+        paddingHorizontal: 19,
+        paddingBottom: 19
+    },
     tabSection: {
         flex: 1,
         flexDirection: 'row',
+        marginBottom: 20,
         paddingHorizontal: 25,
         height: 48,
         backgroundColor: '#f8f8f8'

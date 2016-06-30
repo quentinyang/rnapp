@@ -17,6 +17,7 @@ import bindAlipay from './bindAlipay';
 import withdraw from './withdraw';
 import backScore from './backScore';
 import signIn from './signIn';
+import card from './welfare'
 
 const rootReducer = combineReducers({
     test,
@@ -34,7 +35,8 @@ const rootReducer = combineReducers({
     bindAlipay,
     withdraw,
     backScore,
-    signIn
+    signIn,
+    card
 });
 
 export default rootReducer;

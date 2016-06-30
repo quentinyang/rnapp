@@ -3,6 +3,7 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import * as actions from '../actions/welfare';
 import Welfare from '../pages/Welfare';
 import * as homeActions from '../actions/home';
 
@@ -13,20 +14,22 @@ class WelfareContainer extends Component {
 
     render() {
         return (
-            <Welfare {...this.props}/>
+            <Welfare {...this.props} />
         );
     }
 }
 
 function mapStateToProps(state) {
+    let {welfareInfo} = state.card;
     return {
-
+        welfareInfo
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        homeActions: bindActionCreators(homeActions, dispatch)
+        homeActions: bindActionCreators(homeActions, dispatch),
+        actions: bindActionCreators(actions, dispatch)
     }
 }
 

@@ -16,20 +16,27 @@ export default class Card extends Component {
     }
 
     render() {
-        let {wrapStyle, errBoxStyle, errTextStyle, errText} = this.props;
+        let {wrapStyle, errBoxStyle, errTextStyle, errText, item} = this.props;
         return (
             <Image source={require('../images/membership.png')} style={[styles.wfCaSection, styles.center, wrapStyle]} resizeMode='stretch'>
                 <View style={styles.wfCaLeft}>
-                    <Text style={styles.highFont}>2</Text><Text style={styles.font12}>积分</Text>
+                    <Text style={[styles.highFont, item.get('status') != 1 ? styles.gray : null]}>{item.get('cost')}</Text><Text style={[styles.font12, item.get('status') != 1 ? styles.gray : null]}>积分</Text>
                 </View>
                 <View style={styles.wfSlice}></View>
                 <View style={styles.wfCaDesc}>
-                    <Text style={styles.fontBold}>看房卡</Text>
-                    <Text style={styles.descFont} numberOfLines={1}>· 获任意1套房源的房东电话花1积分</Text>
-                    <Text style={styles.descFont} numberOfLines={1}>· 有效期至2016-07-16</Text>
+                    <Text style={[styles.fontBold, item.get('status') != 1 ? styles.gray : null]}>{item.get('name')}</Text>
+                    <Text style={styles.descFont} numberOfLines={1}>· {item.get('brief')}</Text>
+                    <Text style={styles.descFont} numberOfLines={1}>· 有效期至{item.get('end_at')}</Text>
                 </View>
                 <View style={styles.wfBadge}>
-                    <Image source={require('../images/expired.png')} style={styles.wfBadgeImg} />
+                    {item.get('status') == 2 ?
+                    <Image source={require('../images/used.png')} style={styles.wfBadgeImg} />
+                    : (
+                        item.get('status') == 3 ?
+                        <Image source={require('../images/expired.png')} style={styles.wfBadgeImg} />
+                        :null
+                      )
+                    }
                 </View>
             </Image>
         )
@@ -92,4 +99,7 @@ const styles = StyleSheet.create({
         height: 40,
         backgroundColor: '#f8f8f8'
     },
+    gray: {
+        color: '#8d8c92'
+    }
 });

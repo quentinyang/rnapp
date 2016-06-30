@@ -78,6 +78,9 @@ let urls = {
         result: HOST + 'recharge/notify',
         realName: HOST + 'user/info/edit',
         aliStatus: HOST + 'recharge/binding/alipay/status'
+    },
+    card: {
+        welfare: HOST + 'user-welfare-card'
     }
 }
 
