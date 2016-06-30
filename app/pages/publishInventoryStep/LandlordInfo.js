@@ -111,7 +111,8 @@ export default class LandlordInfoPage extends Component {
                 title: '发布成功',
                 data: oData,
                 hideNavBar: false,
-                bp: this.pageId
+                bp: this.pageId,
+                backLog: actionType.BA_SEND_SUCCESS_RETURN
             });
             actions.dataCleared();
             actions.hiSearchCleared();
