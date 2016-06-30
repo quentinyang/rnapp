@@ -77,7 +77,7 @@ export default class Withdraw extends Component {
         let {route, actions, withdrawInfo} = this.props;
         actions.withdrawPriceChanged(value);
         if(parseInt(value) > parseInt(route.data.max_price)) {
-            actions.withdrawErrMsg('输入金额超过可提额度');
+            actions.withdrawErrMsg('每天限额' + parseInt(route.data.max_day_price) + '，您已超过限额');
         } else {
             withdrawInfo.get('err_msg') && actions.withdrawErrMsg('');
         }
