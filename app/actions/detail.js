@@ -10,7 +10,7 @@ import * as homeTypes from '../constants/Home';
 import * as types from '../constants/DetailType';
 
 import { InteractionManager } from 'nuke'
-import { getBaseInfoService, callSellerPhone, postFeedback, getContactLogService } from '../service/detailService';
+import { getBaseInfoService, callSellerPhone, postFeedback, getContactLogService, getUserInfoService, getCouponService, getSellerPhoneService } from '../service/detailService';
 import { fetchSimilarHouseListService } from '../service/houseListService';
 import {makeActionCreator, serviceAction} from './base';
 import {callUp} from '../utils/CommonUtils'
@@ -23,12 +23,20 @@ export const houseBaseFetched = makeActionCreator(types.HOUSE_BASE_FETCHED, 'hou
 export const clearHouseDetailPage = makeActionCreator(types.CLEAR_HOUSE_DETAIL_PAGE);
 export const setErrorTipVisible = makeActionCreator(types.ERROR_TIP_VISIBLE_CHANGED, 'visible');
 export const setFeedbackVisible = makeActionCreator(types.FEEDBACK_VISIBLE_CHANGED, 'visible');
-export const setSellerPhone = makeActionCreator(types.SET_SELLER_PHONE, 'phone');
+
+export const setSellerPhone = makeActionCreator(types.SET_SELLER_PHONE, 'info');
 export const callSellerFailed = makeActionCreator(types.CALL_SELLER_FAILED, 'callError');
 export const houseContactLogFetched = makeActionCreator(types.HOSUE_CONTACT_LOG, 'contact');
 export const contactLogAppendFetched = makeActionCreator(types.APPEND_HOUSE_CONTACT_LOG, 'contact');
 export const changeCurrentContactLog = makeActionCreator(types.CHANGE_CURRENT_CONTACT_LOG);
 export const setWashId = makeActionCreator(types.SET_WASH_ID, 'washId');
+
+export const userInfoFetched = makeActionCreator(types.USER_INFO_FETCHED, 'userInfo');
+export const couponFetched = makeActionCreator(types.COUPON_FETCHED, 'coupon');
+
+export const setCouponVisible = makeActionCreator(types.COUPON_VISIBLE_CHANGED, 'visible');
+export const setVoiceVisible = makeActionCreator(types.VOICE_VISIBLE_CHANGED, 'visible');
+export const setSellerPhoneVisible = makeActionCreator(types.SELLERPHONE_VISIBLE_CHANGED, 'visible');
 
 export function fetchBaseInfo(data) {
     return dispatch => {
@@ -99,7 +107,10 @@ export function callFeedback(params, propertyId) {
             data: params,
             success: function(oData) {
                 dispatch(setFeedbackVisible(false));
-                dispatch(setSellerPhone(oData.seller_phone || ''));
+                dispatch(setSellerPhone({
+                    phone: oData.seller_phone || '',
+                    exp: oData.experience || 5
+                }));
 
                 Toast.show('看房获得' + (oData.experience || 5) + '个经验', {
                     duration: Toast.durations.SHORT,
@@ -136,6 +147,53 @@ export function fetchAppendContactLog(params) {
             data: params,
             success: function(oData) {
                 dispatch(contactLogAppendFetched(oData))
+            },
+            error: function(oData) {
+
+            }
+        })
+    }
+}
+
+export function fetchUserInfo(data) {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: getUserInfoService,
+            data: data,
+            success: function(oData) {
+                dispatch(userInfoFetched(oData));
+            },
+            error: function(oData) {
+
+            }
+        })
+    }
+}
+
+export function fetchCoupon(data) {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: getCouponService,
+            success: function(oData) {
+                dispatch(couponFetched(oData));
+            },
+            error: function(oData) {
+
+            }
+        })
+    }
+}
+
+export function fetchSellerPhone(data) {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: getSellerPhoneService,
+            data: data,
+            success: function(oData) {
+                dispatch(setSellerPhone({
+                    phone: '',
+                    exp: 0
+                }));
             },
             error: function(oData) {
 

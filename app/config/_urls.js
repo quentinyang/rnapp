@@ -15,7 +15,9 @@ let urls = {
         status: HOST + 'property/log',
         call: HOST + 'wash/call',
         feedback: HOST + 'wash/status',
-        contactLog: HOST + 'property/contact/log'
+        contactLog: HOST + 'property/contact/log',
+        userInfo: HOST + 'property/input-user/info',
+
     },
     user: {
         sendCode: HOST + 'passport/login/sms',
@@ -68,7 +70,8 @@ let urls = {
     app: {
         config: HOST + 'update/push',
         deletePush: HOST + 'delete/push',
-        setConfig: HOST + 'configs'
+        setConfig: HOST + 'configs',
+        setLoginDay: HOST + 'user/login/days'
     },
     pay: {
         order: HOST + 'recharge',

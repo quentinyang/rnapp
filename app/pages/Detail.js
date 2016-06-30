@@ -34,14 +34,15 @@ export default class Detail extends Component {
         let houseList = sameCommunityList.get('properties');
         let info = baseInfo.get("baseInfo");
         let status = Number(info.get('phone_lock_status'));
-        let phoneStr = "联系房东" + (status ? ("(" + info.get('seller_phone') + ")") : (callInfo.get('sellerPhone') ? ("(" + callInfo.get('sellerPhone') + ")") : ''));
+        let phone = callInfo.get('sellerPhone').get('phone');
+        let phoneStr = "联系房东" + (status ? ("(" + info.get('seller_phone') + ")") : (phone ? ("(" + phone + ")") : ''));
 
 
         return (
             <View style={styles.flex}>
                 <View style={[styles.contactWrap, styles.row, styles.center]}>
                     {
-                        (status || !status && callInfo.get('sellerPhone')) ?
+                        (status || !status && phone) ?
                             null :
                             <Image
                                 style={styles.moneyIcon}
@@ -49,7 +50,7 @@ export default class Detail extends Component {
                             />
                     }
                     {
-                        (status || !status && callInfo.get('sellerPhone')) ?
+                        (status || !status && phone) ?
                             null :
                             <Text style={[styles.greenColor, styles.baseSize]}>{route.item.get('unlock_phone_cost') || 0}积分</Text>
                     }
@@ -70,9 +71,29 @@ export default class Detail extends Component {
                         </View>
                     </TouchableHighlight>
                 </View>
-                <CouponModal />
-                <TelModal />
-                <ErrorTipModal callInfo={callInfo} actions={actions} navigator={navigator} />
+
+                <CouponModal 
+                    callInfo={callInfo}
+                    actions={actions} 
+                    navigator={navigator}
+                />
+                <VoiceModal 
+                    callInfo={callInfo}
+                    actions={actions} 
+                    navigator={navigator}
+                />
+                <PhoneModal
+                    callInfo={callInfo}
+                    actions={actions}
+                    navigator={navigator} 
+                />
+
+                <ErrorTipModal 
+                    callInfo={callInfo} 
+                    actions={actions} 
+                    navigator={navigator} 
+                />
+
                 <CostScoreModal
                     propertyId={route.item.get('property_id')}
                     callInfo={callInfo}
@@ -109,6 +130,9 @@ export default class Detail extends Component {
             actions.fetchContactLog({
                 property_id: propertyId,
                 page: 1
+            });
+            actions.fetchUserInfo({
+                property_id: propertyId
             });
         });
 
@@ -180,12 +204,17 @@ export default class Detail extends Component {
     };
 
     _renderHeader = () => {
-        let {baseInfo, sameCommunityList, route, actions} = this.props;
+        let {baseInfo, sameCommunityList, route, actions, navigator} = this.props;
         let houseList = sameCommunityList.get('properties');
+        let userInfo = baseInfo.get('userInfo');
+
         return (
             <View>
                 <BaseInfo baseInfo={baseInfo.get('baseInfo')} route={route} />
-                <UserInfo />
+                { userInfo.get('input_user_id') ? 
+                    <UserInfo userInfo={userInfo} navigator={navigator} />
+                    : null
+                }
 
                 {
                     baseInfo.get('contact').get('total') > 0 ?
@@ -275,21 +304,22 @@ export default class Detail extends Component {
     };
 }
  
-class TelModal extends Component {
+class PhoneModal extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
+        let {callInfo, actions, navigator} = this.props;
         return (
-            <Modal visible={false} transparent={true}
-                   onRequestClose={()=>{}}>
+            <Modal visible={callInfo.get('sellerPhoneVisible')} transparent={true}
+                   onRequestClose={actions.setSellerPhoneVisible}>
                 <View style={[styles.flex, styles.center, styles.justifyContent, styles.bgWrap]}>
                     <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
                             underlayColor="#fff"
-                            onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);}}
+                            onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);actions.setSellerPhoneVisible(false);}}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -306,23 +336,83 @@ class TelModal extends Component {
     }
 }
 
+class VoiceModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {callInfo, actions, navigator} = this.props;
+        return (
+            <Modal visible={callInfo.get('voiceVisible')} transparent={true} onRequestClose={actions.setVoiceVisible}>
+                <View style={[styles.flex, styles.bgWrap]}>
+                    <View style={styles.flex}></View>
+                    <View style={[styles.flex, styles.justifyBetween, styles.couponWrap, styles.voiceWrap]}>
+                        <TouchableHighlight 
+                            style={[styles.closeBox, styles.center, styles.justifyContent]} 
+                            onPress={()=>{actions.setVoiceVisible(false);}}
+                            underlayColor="#fff"
+                        >                            
+                            <Image style={styles.closeIcon} source={require('../images/close.png')} />                            
+                        </TouchableHighlight>
+                        <View style={[styles.justifyContent, styles.center]}>
+                            <Text style={[styles.subName]}>今日已有2通电话确认房子在卖</Text>
+                            <Text style={styles.subName}>请听通话录音</Text>
+                        </View>
+
+                        <View>
+                            <View style={[styles.row, styles.justifyContent, styles.center, {marginBottom: 28}]}>
+                                <Text>通话1</Text>
+                                <View style={[styles.flex, styles.center, styles.justifyContent, styles.voiceBox]}>
+                                    <Image style={styles.voice} source={require('../images/voice_anim.gif')} />
+                                    <Image style={styles.boxArrow} source={require('../images/arrow_left.png')} />
+                                    <Text style={styles.greenColor}>点击播放</Text>
+                                </View>
+                                <Text style={[styles.grayColor, styles.itemSize]}>09:34</Text>
+                            </View>
+                            <View style={[styles.row, styles.justifyContent, styles.center]}>
+                                <Text>通话1</Text>
+                                <View style={[styles.flex, styles.center, styles.justifyContent, styles.voiceBox]}>
+                                    <Image style={styles.voice} source={require('../images/voice_anim.gif')} />
+                                    <Image style={styles.boxArrow} source={require('../images/arrow_left.png')} />
+                                    <Text style={styles.greenColor}>点击播放</Text>
+                                </View>
+                                <Text style={[styles.grayColor, styles.itemSize]}>09:34</Text>
+                            </View>
+                        </View>
+
+                        <TouchableHighlight
+                            style={[styles.contactButton]}
+                            onPress={()=>{}}
+                            underlayColor="#04C1AE"
+                        >
+                            <View style={[styles.justifyContent, styles.center]}>
+                                <Text style={styles.contactText}>
+                                    4积分 获取房东电话
+                                </Text>
+                            </View>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+}
+
 class CouponModal extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
+        let {callInfo, actions, navigator} = this.props;
         return (
-            <Modal visible={true} transparent={true} onRequestClose={() => {}}>
+            <Modal visible={callInfo.get('couponVisible')} transparent={true} onRequestClose={actions.setCouponVisible}>
                 <View style={[styles.flex, styles.bgWrap]}>
-                    <View style={styles.flex}></View>
-
-
-
-                    
+                    <View style={styles.flex}></View>                    
                     <View style={[styles.flex, styles.couponWrap]}>
                         <View style={styles.couponHeader}>
-                            <TouchableWithoutFeedback onPress={()=>{}}>
+                            <TouchableWithoutFeedback onPress={()=>{actions.setCouponVisible(false)}}>
                                 <View style={styles.touchBox}>
                                     <Image style={styles.closeIcon} source={require('../images/close.png')} />
                                 </View>
@@ -348,53 +438,6 @@ class CouponModal extends Component {
                         />
 
                     </View>
-{/*
-                    <View style={[styles.flex, styles.justifyBetween, styles.couponWrap, styles.voiceWrap]}>
-                        <TouchableHighlight 
-                            style={[styles.closeBox, styles.center, styles.justifyContent]} 
-                            onPress={()=>{}}
-                            underlayColor="#fff"
-                        >                            
-                            <Image style={styles.closeIcon} source={require('../images/close.png')} />                            
-                        </TouchableHighlight>
-                        <View style={[styles.justifyContent, styles.center]}>
-                            <Text style={[styles.subName]}>今日已有2通电话确认房子在卖</Text>
-                            <Text style={styles.subName}>请听通话录音</Text>
-                        </View>
-
-                        <View>
-                            <View style={[styles.row, styles.justifyContent, styles.center, {marginBottom: 28}]}>
-                                <Text>通话1</Text>
-                                <View style={[styles.flex, styles.center, styles.justifyContent, styles.voiceBox]}>
-                                    <Image style={styles.voice} source={require('../images/voice.png')} />
-                                    <Image style={styles.boxArrow} source={require('../images/next.png')} />
-                                    <Text style={styles.greenColor}>点击播放</Text>
-                                </View>
-                                <Text style={[styles.grayColor, styles.itemSize]}>09:34</Text>
-                            </View>
-                            <View style={[styles.row, styles.justifyContent, styles.center]}>
-                                <Text>通话1</Text>
-                                <View style={[styles.flex, styles.center, styles.justifyContent, styles.voiceBox]}>
-                                    <Image style={styles.voice} source={require('../images/voice.png')} />
-                                    <Image style={styles.boxArrow} source={require('../images/next.png')} />
-                                    <Text style={styles.greenColor}>点击播放</Text>
-                                </View>
-                                <Text style={[styles.grayColor, styles.itemSize]}>09:34</Text>
-                            </View>
-                        </View>
-
-                        <TouchableHighlight
-                            style={[styles.contactButton]}
-                            onPress={()=>{}}
-                            underlayColor="#04C1AE"
-                        >
-                            <View style={[styles.justifyContent, styles.center]}>
-                                <Text style={styles.contactText}>
-                                    4积分 获取房东电话
-                                </Text>
-                            </View>
-                        </TouchableHighlight>
-                    </View>*/}
                 </View>
             </Modal>
         );
@@ -427,12 +470,26 @@ class UserInfo extends Component {
         super(props);
     }
     render() {
+        let {userInfo, navigator} = this.props;
+        let mobile = userInfo.get('mobile'),
+            showMobile = mobile ? mobile.slice(0, 3) + '****' + mobile.slice(-4) : '';
         return (
             <View>
                 <View style={styles.gap}></View>
                 <TitleBar title="发房用户" />
                 
-                <TouchableWithoutFeedback onPress={() => { }}>
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        navigator.push({
+                            component: '',
+                            title: '',
+                            name: '',
+                            backLog: '',
+                            bp: '',
+                            userInfo
+                        });
+                    }
+                }>
                     <View>
                         <View style={[styles.row, styles.center]}>
                             <View style={styles.avatarBox}>
@@ -444,30 +501,30 @@ class UserInfo extends Component {
                                 </View>
 
                                 <View style={[styles.levelBg, styles.center, styles.justifyContent]}>
-                                    <Text style={[styles.levelText]}>{"V1"}</Text>
+                                    <Text style={[styles.levelText]}>V{userInfo.get('level')}</Text>
                                 </View>
                             </View>
-                            <Text style={styles.subName}>123</Text>
+                            <Text style={styles.subName}>{showMobile}</Text>
                         </View>                        
 
                         <View style={[styles.info, styles.row]}>
                             <View style={[styles.flex, styles.center, styles.justifyContent]}>
-                                <Text style={styles.userVal}>{47}</Text>
+                                <Text style={styles.userVal}>{userInfo.get('login_days')}</Text>
                                 <Text style={[styles.grayColor, styles.more]}>累计登录</Text>
                             </View>
                             <View style={styles.vline}></View>
                             <View style={[styles.flex, styles.center, styles.justifyContent]}>
-                                <Text style={styles.userVal}>{47}</Text>
+                                <Text style={styles.userVal}>{Number(userInfo.get('earn_money'))}</Text>
                                 <Text style={[styles.grayColor, styles.more]}>已赚积分</Text>
                             </View>
                             <View style={styles.vline}></View>
                             <View style={[styles.flex, styles.center, styles.justifyContent]}>
-                                <Text style={styles.userVal}>{47}</Text>
+                                <Text style={styles.userVal}>{userInfo.get('input_house_count')}</Text>
                                 <Text style={[styles.grayColor, styles.more]}>发房</Text>
                             </View>
                             <View style={styles.vline}></View>
                             <View style={[styles.flex, styles.center, styles.justifyContent]}>
-                                <Text style={styles.userVal}>{47}</Text>
+                                <Text style={styles.userVal}>{userInfo.get('look_house_count')}</Text>
                                 <Text style={[styles.grayColor, styles.more]}>看房</Text>
                             </View>
                         </View>
@@ -1051,12 +1108,9 @@ var styles = StyleSheet.create({
     boxArrow: {
         position: 'absolute',
         top: 17,
-        left: -5,
+        left: -4,
         width: 5,
         height: 10,
-        backgroundColor: '#F8F8F8',
-        transform:[
-            {rotate: '180deg'}
-        ]
+        backgroundColor: '#F8F8F8'
     },
 });

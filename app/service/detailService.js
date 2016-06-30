@@ -24,3 +24,19 @@ export function getContactLogService(params) {
         data: params
     });
 }
+
+export function getUserInfoService(params) {
+    return ajax.get(urls().detail.userInfo, {
+        data: params
+    });
+}
+
+export function getCouponService(params) {
+    return ajax.get(urls().detail.coupon);
+}
+
+export function getSellerPhoneService(params) {
+    return ajax.get(urls().detail.sellerPhone, {
+        data: params
+    });
+}

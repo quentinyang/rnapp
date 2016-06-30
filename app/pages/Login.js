@@ -25,6 +25,7 @@ import * as common from '../constants/Common';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import {routes} from '../config/route'
+import setLoginDays from '../containers/app';
 
 class Login extends Component {
     constructor(props) {
@@ -235,7 +236,7 @@ class Login extends Component {
                 AsyncStorageComponent.save(common.USER_PHONE, data.phone);
                 AsyncStorageComponent.save(common.USER_ID, oData.user_id || "");
                 ActionUtil.setUid(oData.user_id || "");
-
+                setLoginDays();
                 actionsApp.setSearchHistory(oData.user_id || "0");
 
                 gtoken = oData.token;

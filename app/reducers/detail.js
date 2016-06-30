@@ -32,7 +32,9 @@ let initialBaseInfo = {
         logs: [],
         pager: {},
         total: ""
-    }
+    },
+    userInfo: {},
+    couponArr: []
 };
 
 function baseInfo(state, action) {
@@ -68,6 +70,13 @@ function baseInfo(state, action) {
                 return k.concat(temp);
             });
             break;
+
+        case types.USER_INFO_FETCHED:
+            return state.set('userInfo', Immutable.fromJS(action.userInfo));
+            break;
+        case types.COUPON_FETCHED:
+            return state.set('couponArr', Immutable.fromJS(action.coupon));
+            break;
         default:
             return state;
     }
@@ -79,8 +88,16 @@ let initParam = {
     },
     errorTipVisible: false,
     feedbackVisible: false,
-    sellerPhone: '',
-    washId: ''
+    washId: '',
+
+    sellerPhone: {
+        phone: '',
+        exp: 0
+    },
+
+    couponVisible: false,
+    voiceVisible: false,
+    sellerPhoneVisible: false
 };
 
 function callInfo(state, action) {
@@ -92,7 +109,7 @@ function callInfo(state, action) {
             return state.set('feedbackVisible', Immutable.fromJS(action.visible));
             break;
         case types.SET_SELLER_PHONE:
-            return state.set('sellerPhone', Immutable.fromJS(action.phone));
+            return state.set('sellerPhone', Immutable.fromJS(action.info));
             break;
         case types.CALL_SELLER_FAILED:
             return state.set('callError', Immutable.fromJS(action.callError));
@@ -108,6 +125,15 @@ function callInfo(state, action) {
                 return state.set('feedbackVisible', Immutable.fromJS(true));
             }
             return state;
+            break;
+        case types.COUPON_VISIBLE_CHANGED:
+            return state.set('couponVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.VOICE_VISIBLE_CHANGED:
+            return state.set('voiceVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.SELLERPHONE_VISIBLE_CHANGED:
+            return state.set('sellerPhoneVisible', Immutable.fromJS(action.visible));
             break;
         default:
             return state;
