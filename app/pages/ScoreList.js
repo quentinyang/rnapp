@@ -142,11 +142,12 @@ class ScoreItem extends Component {
         return (
             <View style={styles.scoreListBox}>
                 <View style={styles.scoreLeft}>
-                    <Text style={styles.scoreDesc}>{item.get('method')}</Text>
+                    <Text>{item.get('method')}</Text>
+                    <Text style={[styles.scoreReason, styles.scoreTime]}>{item.get('method')}</Text>
                     <Text style={styles.scoreTime}>{item.get('time')}</Text>
                 </View>
                 <View style={styles.scoreRight}>
-                    <Text style={styles.scorePrice}>{item.get('money_change')}{parseInt(item.get('money'))}</Text>
+                    <Text style={[styles.scorePrice, item.get('money_change') == "＋" ? {color: '#FF6D4B'} : {}]}>{item.get('money_change')}{parseInt(item.get('money'))}</Text>
                 </View>
             </View>
         );
@@ -286,10 +287,8 @@ const styles = StyleSheet.create({
     scoreRight: {
         justifyContent: 'flex-end'
     },
-    scoreDesc: {
-        marginBottom: 5,
-        fontSize: 16,
-        color: '#3e3e3e'
+    scoreReason: {
+        marginVertical: 2
     },
     scoreTime: {
         fontSize: 12,
@@ -297,8 +296,7 @@ const styles = StyleSheet.create({
     },
     scorePrice: {
         fontSize: 19,
-        fontWeight: '600',
-        color: '#3e3e3e'
+        fontWeight: '600'
     },
     noMore: {
         padding: 10,

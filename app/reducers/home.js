@@ -97,11 +97,28 @@ function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
 }
 
 let initialBaseInfo = {
+    newCount: "",
+
+    scoreVisible: true,
     scoreModal: {
         visible: false,
         score: 8
     },
-    newCount: "",
+
+    couponVisible: false,
+    couponModal: {
+        visible: false,
+        score: 1
+    },
+
+    ruleVisible: false,
+    ruleModal: {
+        visible: false,
+        score: 8
+    },
+
+    giftVisible: false,
+    giftCanShow: false,
     giftModal: {
         "sign_in_days": "1",
         "experience": "0"
@@ -111,16 +128,36 @@ let initialBaseInfo = {
 function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
     switch (action.type) {
         case types.SCORE_MODAL_VISIBLE_CHANGED:
-            return state.setIn(['scoreModal','visible'], Immutable.fromJS(action.visible));
+            return state.set('scoreVisible', Immutable.fromJS(action.visible));
             break;
         case types.SCORE_MODAL_STATUS:
             return state.set('scoreModal', Immutable.fromJS(action.status));
             break;
+        case types.COUPON_MODAL_VISIBLE_CHANGED:
+            return state.set('couponVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.COUPON_MODAL_STATUS:
+        console.dir(action.status);
+            return state.set('couponModal', Immutable.fromJS(action.status));
+            break;
+        case types.RULE_MODAL_VISIBLE_CHANGED:
+            return state.set('ruleVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.RULE_MODAL_STATUS:
+            return state.set('ruleModal', Immutable.fromJS(action.status));
+            break;
+        case types.GIFT_MODAL_VISIBLE_CHANGED:
+            return state.set('giftVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.GIFT_MODAL_STATUS:
+            return state.set('giftModal', Immutable.fromJS(action.status));
+            break;
+        case types.GIFT_MODAL_SHOW:
+            return state.set('giftCanShow', Immutable.fromJS(action.visible));
+            break;
+
         case types.HOUSE_NEW_COUNT:
             return state.set('newCount', Immutable.fromJS(action.count));
-            break;
-        case types.GIFT_INFO:
-            return state.set('giftModal', Immutable.fromJS(action.info));
             break;
         default:
             return state;

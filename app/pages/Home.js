@@ -10,6 +10,7 @@ import Immutable, {List} from 'immutable';
 import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
 import ScoreRule from './ScoreRule';
+import WelfareContainer from '../containers/WelfareContainer';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
@@ -19,21 +20,25 @@ let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
 });
 
-class GiftModal extends Component {
+class InputRuleModal extends Component {
     constructor(props) {
         super(props);
     }
     render() {
-        let {isVisible, modalInfo, closeGiftModal} = this.props;
+        let {isVisible, modalInfo, actions} = this.props;
         return (
-        <Modal visible={isVisible} transparent={true} onRequestClose={() => {closeGiftModal(false)}}>
+        <Modal visible={isVisible && modalInfo.get('visible')} transparent={true} onRequestClose={actions.setRuleModalVisible}>
             <View style={styles.bgWrap}>
                 <View>
                     <View style={[styles.contentContainer, {marginTop: 32}]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
                             underlayColor="#fff"
-                            onPress={() => {ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE); closeGiftModal(false)}}
+                            onPress={() => {
+                                //ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE); 
+                                actions.setRuleModalVisible(false);
+                                actions.setGiftModalVisible(true);
+                            }}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -41,14 +46,121 @@ class GiftModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={[styles.h5, styles.giftDay]}>连续签到<Text>{modalInfo.get('sign_in_days')}</Text>天</Text>
+                        <Text style={[styles.h5, styles.giftDay, styles.grey]}>发房新规则</Text>
+                        
+                        <Text>1、发布一套房源审核通过后获得<Text style={styles.orange}>7</Text>积分</Text>                            
+                        <Text>2、房源的电话每被查看1次获得<Text style={styles.orange}>2</Text>积分</Text>
+                    </View>
+
+                    <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
+                        <Image style={styles.horn} source={require("../images/horn.png")} />
+                    </View>
+                </View>
+            </View>
+        </Modal>
+        );
+    }
+}
+
+class CouponModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        let {isVisible, modalInfo, actions} = this.props;
+        return (
+        <Modal visible={isVisible && modalInfo.get('visible')} transparent={true} onRequestClose={actions.setCouponModalVisible}>
+            <View style={styles.bgWrap}>
+                <View>
+                    <View style={[styles.contentContainer, {marginTop: 32}]}>
+                        <TouchableHighlight
+                            style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
+                            underlayColor="#fff"
+                            onPress={() => {
+                                //ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE);
+                                actions.setCouponModalVisible(false);
+                                actions.setRuleModalVisible(true);
+                            }}
+                        >
+                            <Image
+                                style={styles.closeIcon}
+                                source={require("../images/close.png")}
+                            />
+                        </TouchableHighlight>
+
+                        <Text style={[styles.h5, styles.giftDay]}>恭喜你获得1张</Text>                        
+                        <Text style={styles.h5}><Text style={[styles.h0, styles.scoreNum]}>1积分</Text>看房卡</Text> 
+
+                        <TouchableHighlight
+                            underlayColor='#fff'
+                            onPress={this._goCoupon.bind(this)}
+                        >
+                            <View style={styles.flex}>
+                                <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
+                            </View>
+                        </TouchableHighlight>
+
+                    </View>
+
+                    <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
+                        <Image style={styles.coupon} source={require("../images/coupon_white.png")} />
+                    </View>
+                </View>
+            </View>
+        </Modal>
+        );
+    }
+
+    _goCoupon() {
+        let {navigator, actions, log} = this.props;
+
+        actions.setCouponModalVisible(false);
+        navigator.push({
+            component: WelfareContainer,
+            name: 'welfare',
+            title: '福利卡',
+            hideNavBar: false,
+            bp: log.pageId,
+            backLog: log.back,
+            callbackFun: () => {}
+        });
+        //ActionUtil.setAction(actionType.BA_HOME_PAGE_FIND);
+    }
+}
+
+class GiftModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        let {isVisible, modalInfo, actions} = this.props;
+        return (
+        <Modal visible={isVisible} transparent={true} onRequestClose={actions.setGiftModalVisible}>
+            <View style={styles.bgWrap}>
+                <View>
+                    <View style={[styles.contentContainer, {marginTop: 32}]}>
+                        <TouchableHighlight
+                            style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
+                            underlayColor="#fff"
+                            onPress={() => {
+                                ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE); 
+                                actions.setGiftModalVisible(false);
+                            }}
+                        >
+                            <Image
+                                style={styles.closeIcon}
+                                source={require("../images/close.png")}
+                            />
+                        </TouchableHighlight>
+
+                        <Text style={[styles.h3, styles.giftDay]}>连续签到<Text style={[styles.h3, styles.mediumFont]}>{modalInfo.get('sign_in_days')}</Text>天</Text>
                         <View style={[styles.row]}>
-                            <Text>
+                            <Text style={styles.h5}>
                                 <Text style={[styles.h2, styles.addNum]}>+</Text>
                                 <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('experience')}</Text>
                                 经验</Text>
                             { modalInfo.get('points') ?
-                                <Text style={styles.scoreAdd}>
+                                <Text style={[styles.scoreAdd, styles.h5]}>
                                     <Text style={[styles.h2, styles.addNum]}>+</Text>
                                     <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('points')}</Text>
                                     积分</Text>
@@ -85,9 +197,9 @@ class GiftModal extends Component {
         }
     }
     _goScore() {
-        let {navigator, closeGiftModal, modalInfo, log} = this.props;
+        let {navigator, actions, modalInfo, log} = this.props;
 
-        closeGiftModal(false);
+        actions.setGiftModalVisible(false);
         navigator.push({
             component: SignInContainer,
             name: 'signIn',
@@ -106,15 +218,19 @@ class ScoreModal extends Component {
         super(props);
     }
     render() {
-        let {modalInfo, actions} = this.props;
+        let {isVisible, modalInfo, actions} = this.props;
         return (
-            <Modal visible={modalInfo.get('visible')} transparent={true} onModalVisibilityChanged={actions.setScoreModalVisible}>
+            <Modal visible={isVisible && modalInfo.get('visible')} transparent={true} onRequestClose={actions.setScoreModalVisible}>
                 <View style={styles.bgWrap}>
                     <View style={styles.contentContainer}>
                         <TouchableHighlight
                             style={styles.closeBox}
                             underlayColor="#fff"
-                            onPress={() => {ActionUtil.setAction(actionType.BA_FIRSTOPEN_DELETE);actions.setScoreModalVisible(false);}}
+                            onPress={() => {
+                                ActionUtil.setAction(actionType.BA_FIRSTOPEN_DELETE);
+                                actions.setScoreModalVisible(false);
+                                actions.setCouponModalVisible(true);
+                            }}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -145,7 +261,9 @@ class ScoreModal extends Component {
             hideNavBar: false,
             bp: actionType.BA_HOME_PAGE,
             backLog: actionType.BA_FIRSTOPEN_RETURN,
-            score: this.props.modalInfo.get('score')
+            score: this.props.modalInfo.get('score'),
+            actions: actions,
+            callbackFun: () => {}
         });
     }
 }
@@ -156,8 +274,7 @@ export default class Home extends Component {
         var self = this;
 
         this.state = {
-            isRefreshing: false,
-            showGiftModal: false
+            isRefreshing: false
         };
         this.pageId = actionType.BA_HOME_PAGE;
         ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_ONVIEW, {"bp": this.props.route.bp});
@@ -166,6 +283,7 @@ export default class Home extends Component {
     }
 
     _setGiftModalStatus() {
+        let {actions} = this.props;
         let key = common.APP_OPEN_DATE + guid;
         AsyncStorageComponent.get(key)
             .then((value) => {
@@ -173,9 +291,9 @@ export default class Home extends Component {
 
                 if(value && value == today) { //不为空且 == today, 不显示
                 } else { //为空 或 != today, 则显示并更新
-                    self._setGiftModalVisible(true);
+                    actions.setGiftShowVisible(true);
+                    actions.fetchGiftInfo();
                     AsyncStorageComponent.save(key, today);
-                    self.props.actions.fetchGiftInfo();
                 }
             })
             .catch((error) => {
@@ -186,15 +304,32 @@ export default class Home extends Component {
     render() {
         let {houseData, baseInfo, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
-        let scoreModalInfo = baseInfo.get('scoreModal');
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
-                <ScoreModal modalInfo={scoreModalInfo} actions={actions} navigator={navigator} />
-                <GiftModal
-                    isVisible={this.state.showGiftModal}
-                    modalInfo={baseInfo.get('giftModal')}
+                <ScoreModal 
+                    isVisible={baseInfo.get('scoreVisible')} 
+                    modalInfo={baseInfo.get('scoreModal')} 
+                    actions={actions} 
+                    navigator={navigator} 
+                    log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
+                />
+                <CouponModal 
+                    isVisible={baseInfo.get('couponVisible')} 
+                    modalInfo={baseInfo.get('couponModal')} 
+                    actions={actions} 
                     navigator={navigator}
-                    closeGiftModal={this._setGiftModalVisible}
+                    log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
+                />
+                <InputRuleModal 
+                    isVisible={baseInfo.get('ruleVisible')} 
+                    modalInfo={baseInfo.get('ruleModal')} 
+                    actions={actions}
+                />
+                <GiftModal
+                    isVisible={baseInfo.get('giftVisible') && baseInfo.get('giftCanShow')}
+                    modalInfo={baseInfo.get('giftModal')}
+                    actions={actions}
+                    navigator={navigator}
                     log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
                 />
                 <View style={styles.searchWrap}>
@@ -251,6 +386,8 @@ export default class Home extends Component {
             actions.fetchAttentionBlockAndCommunity({});
             actions.fetchScoreModalStatus();
             actions.fetchHouseNewCount();
+            actions.fetchCouponModalStatus();
+            actions.fetchRuleModalStatus();            
         });
         AppState.addEventListener('change', this._dealGiftModal.bind(this));
     }
@@ -405,12 +542,6 @@ export default class Home extends Component {
             attentionList
         });
     };
-
-    _setGiftModalVisible = (visible) => {
-        this.setState({
-            showGiftModal: visible
-        });
-    }
 }
 
 export class Attention extends Component {
@@ -526,11 +657,17 @@ const styles = StyleSheet.create({
     mediumFont: {
         fontWeight: '500'
     },
+    h0: {
+        fontSize: 38
+    },
     h1: {
-        fontSize: 40
+        fontSize: 28
     },
     h2: {
-        fontSize: 30
+        fontSize: 25
+    },
+    h3: {
+        fontSize: 19
     },
     h5: {
         fontSize: 15
@@ -692,6 +829,9 @@ const styles = StyleSheet.create({
     orange: {
         color: "#FD9673"
     },
+    grey: {
+        color: '#8d8c92'
+    },
     btn: {
         width: 220,
         justifyContent: "center",
@@ -736,5 +876,13 @@ const styles = StyleSheet.create({
         color: "#04c1ae",
         fontSize: 12,
         marginTop: 14
+    },
+    coupon: {
+        width: 37.5,
+        height: 25
+    },
+    horn: {
+        width: 34,
+        height: 32.5
     }
 });

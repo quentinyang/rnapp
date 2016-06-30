@@ -4,6 +4,7 @@ import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Welfare from '../pages/Welfare';
+import * as homeActions from '../actions/home';
 
 class WelfareContainer extends Component {
     constructor(props) {
@@ -25,6 +26,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        homeActions: bindActionCreators(homeActions, dispatch)
     }
 }
 

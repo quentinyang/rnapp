@@ -25,6 +25,13 @@ export default class Welfare extends Component {
         this.state = {
             current: 0
         };
+
+        if(this.props.route.callbackFun) {
+            this.props.route.callbackFun = () => {
+                this.props.navigator.pop();
+                this.props.homeActions.setRuleModalVisible(true);
+            }
+        }
     }
 
     render() {
