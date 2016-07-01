@@ -11,56 +11,86 @@ import {
     TouchableHighlight,
     PixelRatio,
     Platform,
-    StyleSheet
+    StyleSheet,
+    InteractionManager
 } from 'nuke';
 
 import AboutEXPContainer from '../containers/AboutEXPContainer';
 import TitleBar from '../components/TitleBar';
 import Immutable from 'immutable';
+import {formatDate} from '../utils/CommonUtils';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
+
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r2)});
 
 export default class AboutUser extends Component {
     constructor(props) {
         super(props);
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-        this.state = {
-            dataSource: ds.cloneWithRows(['row1', 'row2', 'row1', 'row2','row1', 'row2', 'row1', 'row2'])
-        };
     }
 
     render() {
         return (
             <ListView
-                initialListSize={1}
-                dataSource={this.state.dataSource}
+                dataSource={ds.cloneWithRows(this.props.properties.toArray())}
                 renderHeader={this._renderHeader}
                 renderRow={this._renderRow}
+                onEndReached={this._onEndReached}
+                onEndReachedThreshold={50}
+                enableEmptySections={true}
             />
         );
+    }
+
+    componentWillMount() {
+        let {actions, pager} = this.props;
+        this.getHouseList(1);
+    }
+
+    componentWillUnmount() {
+        this.props.actions.userInputHouseCleared();
     }
 
     _renderHeader = () => {
         return (
             <View style={styles.container}>
-                <UserSection navigator={this.props.navigator} />
+                <UserSection navigator={this.props.navigator} userInfo={this.props.userInfo} />
                 <HouseSection />
             </View>
         );
     };
 
-    _renderRow = () => {
+    _renderRow = (rowData, secId, rowId, highlightRow) => {
+        let date = formatDate(rowData.get('created_at'));
         return (
             <View style={styles.houseItem}>
-                <Text style={{width: 80}}>6月15日</Text>
+                <Text style={{width: 80}}>{date.month}月{date.day}日</Text>
                 <View style={styles.flex}>
-                    <Text style={{fontWeight: '500'}}>金阳新村 23号344室</Text>
-                    <Text style={{fontSize: 12, marginTop: 2}}>2室1厅1卫 60平 250万</Text>
-                    <Text style={{fontSize: 12, color: '#8d8c92', marginTop: 2}}>浦东-金阳 张杨路322弄</Text>
+                    <Text style={{fontWeight: '500'}}>{rowData.get('community_name')} {rowData.get('building_num') + rowData.get('building_unit') + rowData.get('door_num')}室</Text>
+                    <Text style={{fontSize: 12, marginTop: 2}}>{rowData.get('bedrooms')}室{rowData.get('living_roooms')}厅{rowData.get('bathrooms')}卫 {rowData.get('area')}平 {rowData.get('price')}万</Text>
+                    <Text style={{fontSize: 12, color: '#8d8c92', marginTop: 2}}>{rowData.get('district_name')}-{rowData.get('block_name')} {rowData.get('community_address')}</Text>
                 </View>
             </View>
         );
     };
+
+    _onEndReached = () => {
+        let {pager, actions} = this.props;
+        if(pager.get('total') > pager.get('page')*pager.get('per_page')) {
+            this.getHouseList(Number(pager.get('page')) + 1);
+        }
+    };
+
+    getHouseList = (page) => {
+        InteractionManager.runAfterInteractions(() => {
+            this.props.actions.fetchUserInputHouse({
+                page: page,
+                user_id: 3
+            });
+        });
+    };
+
+
 
 
 }

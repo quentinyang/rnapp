@@ -32,7 +32,9 @@ let urls = {
         signIn: HOST + 'user/sign-in',
         signInStatus: HOST + 'user/sign-in/status',
 
-        expRule: HOST + 'user/level/rule'
+        expRule: HOST + 'user/level/rule',
+
+        inputList: HOST + 'user/house/checked/success/list'
     },
     house: {
         list: HOST + 'property-list',

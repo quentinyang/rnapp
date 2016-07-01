@@ -74,9 +74,31 @@ function expLevel(state = Immutable.fromJS([]), action) {
     }
 }
 
+let initUserInputHouse = {
+    properties: [],
+    pager: {}
+};
+
+function userHouseData(state = Immutable.fromJS(initUserInputHouse), action) {
+    switch(action.type) {
+        case types.USER_INPUT_HOUSE_FETCHED:
+            let newData = state.updateIn(['properties'], (k) => {
+                return k.concat(Immutable.fromJS(action.data.properties));
+            });
+            return newData.set('pager', Immutable.fromJS(action.data.pager));
+            break;
+        case types.USER_INPUT_HOUSE_CLEARED:
+            return Immutable.fromJS(initUserInputHouse);
+            break;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     userProfile,
     userControlData,
     scoreData,
-    expLevel
+    expLevel,
+    userHouseData
 });
