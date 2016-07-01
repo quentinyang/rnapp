@@ -31,10 +31,6 @@ export function getUserInfoService(params) {
     });
 }
 
-export function getCouponService(params) {
-    return ajax.get(urls().detail.coupon);
-}
-
 export function getSellerPhoneService(params) {
     return ajax.get(urls().detail.sellerPhone, {
         data: params

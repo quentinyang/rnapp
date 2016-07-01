@@ -143,7 +143,7 @@ class ScoreItem extends Component {
             <View style={styles.scoreListBox}>
                 <View style={styles.scoreLeft}>
                     <Text>{item.get('method')}</Text>
-                    <Text style={[styles.scoreReason, styles.scoreTime]}>{item.get('method')}</Text>
+                    {item.get('object') ? <Text style={[styles.scoreReason, styles.scoreTime]}>{item.get('object')}</Text> : null }
                     <Text style={styles.scoreTime}>{item.get('time')}</Text>
                 </View>
                 <View style={styles.scoreRight}>
