@@ -10,7 +10,7 @@ import InputHouseRule from '../pages/InputHouseRule';
 import RechargeContainer from '../containers/RechargeContainer'
 import BackScoreContainer from '../containers/BackScoreContainer'
 import AboutUserContainer from '../containers/AboutUserContainer'
-let ActionUtil = require( '../utils/ActionLog');
+let ActionUtil = require('../utils/ActionLog');
 import {callUp} from '../utils/CommonUtils';
 import * as actionType from '../constants/ActionLog';
 import TitleBar from '../components/TitleBar';
@@ -29,7 +29,10 @@ export default class Detail extends Component {
         this.isVoiceGetCall = false;
         this.couponObj;
         this.pageId = actionType.BA_DETAIL;
-        ActionUtil.setActionWithExtend(actionType.BA_DETAIL_ONVIEW, {"vpid": this.props.route.item.get('property_id'), "bp": this.props.route.bp});
+        ActionUtil.setActionWithExtend(actionType.BA_DETAIL_ONVIEW, {
+            "vpid": this.props.route.item.get('property_id'),
+            "bp": this.props.route.bp
+        });
     }
 
     render() {
@@ -41,11 +44,12 @@ export default class Detail extends Component {
         let phone = callInfo.get('sellerPhone').get('phone');
 
         let phoneStr = '';
-        if(status || phone) {
+        if (status || phone) {
             phoneStr = "联系房东(" + (status ? info.get('seller_phone') : phone ) + ")";
         } else {
             phoneStr = "获取房东电话";
         }
+
         let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');
 
         return (
@@ -62,7 +66,8 @@ export default class Detail extends Component {
                     {
                         (status || !status && phone) ?
                             null :
-                            <Text style={[styles.greenColor, styles.baseSize]}>{route.item.get('unlock_phone_cost') || 0}积分</Text>
+                            <Text
+                                style={[styles.greenColor, styles.baseSize]}>{route.item.get('unlock_phone_cost') || 0}积分</Text>
                     }
 
                     <TouchableHighlight
@@ -164,8 +169,8 @@ export default class Detail extends Component {
             });
         });
 
-        if(Platform.OS === 'ios') {
-            this.callSubscription =  NativeAppEventEmitter.addListener('callIdle', () => {
+        if (Platform.OS === 'ios') {
+            this.callSubscription = NativeAppEventEmitter.addListener('callIdle', () => {
                 self._showFeedbackModal();
             });
         } else {
@@ -174,12 +179,13 @@ export default class Detail extends Component {
             });
         }
     }
+
     _showFeedbackModal() {
         let {baseInfo, callInfo, actions} = this.props;
         let info = baseInfo.get("baseInfo");
         let status = Number(info.get('phone_lock_status'));
 
-        if(status || !status && callInfo.get('sellerPhone').get('phone')) {
+        if (status || !status && callInfo.get('sellerPhone').get('phone')) {
         } else {
             ActionUtil.setAction(actionType.BA_DETAIL_SPEND);
             actions.setFeedbackVisible(true);
@@ -190,15 +196,15 @@ export default class Detail extends Component {
     componentWillUnmount() {
         let {route, actions, actionsNavigation} = this.props;
         actions.clearHouseDetailPage();
-        if(route.from == 'houseDetail') {
+        if (route.from == 'houseDetail') {
             actionsNavigation.detailPopRoute();
-        } else if(route.from == 'houseList') {
+        } else if (route.from == 'houseList') {
             actionsNavigation.listPopRoute();
         } else if(route.from == 'aboutUser') {
             actionsNavigation.aboutUserPopRoute();
         }
 
-        if(Platform.OS === 'ios') {
+        if (Platform.OS === 'ios') {
             this.callSubscription.remove();
         } else {
             DeviceEventEmitter.removeAllListeners('callIdle');
@@ -206,7 +212,7 @@ export default class Detail extends Component {
     }
 
     _clickPhoneBtn(status, phone, hasPhone) {
-        if(this.isGetCall) {
+        if (this.isGetCall) {
             return;
         }
 
@@ -214,14 +220,16 @@ export default class Detail extends Component {
         let propertyId = route.item.get("property_id");
 
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
-        if(status || hasPhone) { //1: 已解锁 或 已反馈在卖
+        if (status || hasPhone) { //1: 已解锁 或 已反馈在卖
             callUp(phone);
         } else {   //0: 未解锁
             let voice = baseInfo.get('baseInfo').get('record_url');
 
-            if(baseInfo.get('couponArr').size) {  //是否有看房卡
+            if (baseInfo.get('couponArr').size) {  //是否有看房卡
+                ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_ONVIEW);
                 actions.setCouponVisible(true);
             } else if (voice && voice.size) {     //是否有录音
+                ActionUtil.setAction(actionType.BA_DETAIL_TAPE_ONVIEW);
                 actions.setVoiceVisible(true);
             } else {                             //获取短号拨打
                 this.isGetCall = true;
@@ -232,6 +240,7 @@ export default class Detail extends Component {
             }
         }
     }
+
     _useCoupon(coupon) {
         let {baseInfo, route, actions} = this.props;
         let propertyId = route.item.get("property_id");
@@ -248,11 +257,13 @@ export default class Detail extends Component {
             });
         }
     }
+
     _getSellerPhone() {
-        if(this.isVoiceGetCall) {
+        if (this.isVoiceGetCall) {
             return;
         }
         let {actions, route} = this.props;
+
         actions.setVoiceVisible(false);
         actions.fetchSellerPhone({
             property_id: route.item.get('property_id'),
@@ -265,7 +276,7 @@ export default class Detail extends Component {
         }, 10000);
     }
 
-    _renderRow = (rowData: any) => {
+    _renderRow = (rowData:any) => {
         return (
             <HouseItem item={rowData} onItemPress={this._onItemPress}/>
         );
@@ -278,7 +289,8 @@ export default class Detail extends Component {
 
         return (
             <View>
-                <BaseInfo baseInfo={baseInfo.get('baseInfo')} route={route} />
+
+                <BaseInfo baseInfo={baseInfo.get('baseInfo')} route={route}/>
                 { userInfo.get('input_user_id') ?
                     <UserInfo userInfo={userInfo} navigator={navigator} actionsNavigation={actionsNavigation} />
                     : null
@@ -298,7 +310,7 @@ export default class Detail extends Component {
                     houseList.size > 0 ? <View style={styles.gap}></View> : null
                 }
                 {
-                    houseList.size > 0 ? <TitleBar title="周边房源" />  : null
+                    houseList.size > 0 ? <TitleBar title="周边房源"/> : null
                 }
             </View>
         )
@@ -325,7 +337,9 @@ export default class Detail extends Component {
     };
 
     _onItemPress = (item) => {
-        ActionUtil.setAction(actionType.BA_DETAIL_SAMECOM_DETAIL);
+
+        ActionUtil.setActionWithExtend(actionType.BA_DETAIL_SAME_CLICK, {"vpid": item.get('property_id')});
+
         let {navigator, actionsNavigation, actions, actionsHouseList, actionsHome} = this.props;
 
         actionsNavigation.detailPushRoute();
@@ -339,7 +353,7 @@ export default class Detail extends Component {
             bp: this.pageId,
             item
         });
-        if(!item.get('is_click')) {
+        if (!item.get('is_click')) {
             actionsNavigation.setLookStatus({
                 property_id: item.get('property_id'),
                 is_click: "1"
@@ -379,6 +393,7 @@ class PhoneModal extends Component {
 
     render() {
         let {isVisible, phoneInfo, actions} = this.props;
+        ActionUtil.setAction(actionType.BA_DETAIL_PHENO_ONVIEW);
         return (
             <Modal visible={isVisible} transparent={true}
                    onRequestClose={actions.setSellerPhoneVisible}>
@@ -413,18 +428,31 @@ class VoiceModal extends Component {
     }
 
     render() {
-        let {isVisible, voiceInfo, costScore, getSellerPhone, actions, navigator} = this.props;
+        let {isVisible, voiceInfo, costScore, getSellerPhone, actions, navigator,propertyId} = this.props;
 
         let voiceList = voiceInfo.map((item, index) => {
             let time = item.get('record_time'), m = parseInt(time / 60), s = time % 60;
             let voiceIcon = this.state.playing == index ? require('../images/voice_anim.gif') : require('../images/voice.png');
             return (
                 <View key={index} style={[styles.row, styles.justifyContent, styles.center, {marginBottom: 28}]}>
-                    <Text>通话{index+1}</Text>
+                    <Text>通话{index + 1}</Text>
                     <TouchableHighlight
                         style={styles.flex}
                         underlayColor="#F8F8F8"
                         onPress={() => {
+                            if(index == 0){
+                            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_TAPE_ONE, {
+                                "vpid": propertyId,
+                                "time": m+':'+s
+
+                            });
+                            }else if(index == 1){
+                            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_TAPE_TWO, {
+                                "vpid": propertyId,
+                                "time": m+':'+s
+                            });
+                            }
+
                             this.setState({
                                 playing: index
                             });
@@ -435,8 +463,8 @@ class VoiceModal extends Component {
                         }}
                     >
                         <View style={[styles.center, styles.justifyContent, styles.voiceBox]}>
-                            <Image style={styles.voice} source={voiceIcon} />
-                            <Image style={styles.boxArrow} source={require('../images/arrow_left.png')} />
+                            <Image style={styles.voice} source={voiceIcon}/>
+                            <Image style={styles.boxArrow} source={require('../images/arrow_left.png')}/>
                             <Text style={styles.greenColor}>点击播放</Text>
                         </View>
                     </TouchableHighlight>
@@ -445,19 +473,21 @@ class VoiceModal extends Component {
             );
         });
         return (
-            <Modal visible={isVisible && deviceInfo.version >= "1.4.0"} transparent={true} onRequestClose={actions.setVoiceVisible}>
+            <Modal visible={isVisible && deviceInfo.version >= "1.4.0"} transparent={true}
+                   onRequestClose={actions.setVoiceVisible}>
                 <View style={[styles.flex, styles.bgWrap]}>
                     <View style={styles.flex}></View>
                     <View style={[styles.flex, styles.justifyBetween, styles.couponWrap, styles.voiceWrap]}>
                         <TouchableHighlight
                             style={[styles.closeBox, styles.center, styles.justifyContent]}
                             onPress={()=>{
+                            ActionUtil.setAction(actionType.BA_DETAIL_TAPE_DELETE);
                                 actions.setVoiceVisible(false);
                                 AudioPlayer.stop();
                             }}
                             underlayColor="#fff"
                         >
-                            <Image style={styles.closeIcon} source={require('../images/close.png')} />
+                            <Image style={styles.closeIcon} source={require('../images/close.png')}/>
                         </TouchableHighlight>
                         <View style={[styles.justifyContent, styles.center]}>
                             <Text style={[styles.subName]}>今日已有2通电话确认房子在卖</Text>
@@ -501,16 +531,22 @@ class CouponModal extends Component {
                     <View style={styles.flex}></View>
                     <View style={[styles.flex, styles.couponWrap]}>
                         <View style={styles.couponHeader}>
-                            <TouchableWithoutFeedback onPress={()=>{actions.setCouponVisible(false)}}>
+                            <TouchableWithoutFeedback onPress={()=>{
+                            ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_DELETE);
+                            actions.setCouponVisible(false)}}>
                                 <View style={styles.touchBox}>
-                                    <Image style={styles.closeIcon} source={require('../images/close.png')} />
+                                    <Image style={styles.closeIcon} source={require('../images/close.png')}/>
                                 </View>
                             </TouchableWithoutFeedback>
                             <View style={styles.center}>
                                 <Text style={styles.subName}>是否要使用看房卡</Text>
                                 <Text style={[styles.itemSize, styles.grayColor]}>未成功卡可退回</Text>
                             </View>
-                            <TouchableWithoutFeedback onPress={()=>{useCoupon(this.state.curCoupon)}}>
+                            <TouchableWithoutFeedback onPress={()=>{
+                            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_WELFARECARD_SURE, {
+                                "card_type": this.state.curCoupon.get('id')
+                            });
+                            useCoupon(this.state.curCoupon)}}>
                                 <View style={styles.touchBox}>
                                     <Text style={[styles.greenColor, styles.couponSure]}>确定</Text>
                                 </View>
@@ -531,15 +567,19 @@ class CouponModal extends Component {
             </Modal>
         );
     }
+
     _renderFooter() {
         return (
-            <TouchableWithoutFeedback onPress={()=> {this.props.useCoupon()}}>
+            <TouchableWithoutFeedback onPress={()=> {
+                ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_NOUSE);
+                this.props.useCoupon()}}>
                 <View style={[styles.center, styles.justifyContent, styles.couponFooter]}>
                     <Text style={[styles.greenColor, styles.more]}>不使用看房卡</Text>
                 </View>
             </TouchableWithoutFeedback>
         );
     }
+
     _renderRow(rowData) {
         let isCur = this.state.curCoupon.get('id') == rowData.get("id");
         return (
@@ -555,7 +595,7 @@ class CouponModal extends Component {
                         {isCur ? <Image style={styles.mark} source={require('../images/mark_white.png')} /> : null}
                     </View>
                 </TouchableWithoutFeedback>
-                <WelfareCard item={rowData} />
+                <WelfareCard item={rowData}/>
             </View>
         );
     }
@@ -565,6 +605,7 @@ class UserInfo extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         let {userInfo, navigator, actionsNavigation} = this.props;
         let mobile = userInfo.get('mobile'),
@@ -577,6 +618,7 @@ class UserInfo extends Component {
                 <TouchableWithoutFeedback
                     onPress={() => {
                         actionsNavigation.detailPushRoute();
+                        ActionUtil.setAction(actionType.BA_DETAIL_USER);
                         navigator.push({
                             component: AboutUserContainer,
                             title: '用户' + showMobile,
@@ -634,6 +676,7 @@ class ErrorTipModal extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         let { callInfo, actions } = this.props;
         return (
@@ -662,13 +705,13 @@ class ErrorTipModal extends Component {
                             <View><Text style={{color: "#04C1AE", textAlign: "center"}}>去发房</Text></View>
                         </TouchableHighlight>
 
-                         <TouchableHighlight
-                             style={[styles.btn, styles.borderBtn, styles.margin]}
-                             underlayColor="#fff"
-                             onPress={this._goPage.bind(this, RechargeContainer, '充值', actionType.BA_DETAIL_RECHANGE)}
-                         >
+                        <TouchableHighlight
+                            style={[styles.btn, styles.borderBtn, styles.margin]}
+                            underlayColor="#fff"
+                            onPress={this._goPage.bind(this, RechargeContainer, '充值', actionType.BA_DETAIL_RECHANGE)}
+                        >
                             <View><Text style={{color: "#04C1AE", textAlign: "center"}}>去充值</Text></View>
-                         </TouchableHighlight>
+                        </TouchableHighlight>
 
                     </View>
                 </View>
@@ -681,12 +724,21 @@ class ErrorTipModal extends Component {
 
         let {navigator, actions} = this.props;
         actions.setErrorTipVisible(false);
-        if(title == '房源基本信息') {
+        if (title == '房源基本信息') {
             navigator.push({
                 component: component,
                 name: 'publishInventory',
                 title: title,
-                right: {msg: "发房规则", route: {component: InputHouseRule, name: 'InputHouseRule', title: '发房规则', hideNavBar: false, backLog: actionType.BA_SENDRULE_RETURN}},
+                right: {
+                    msg: "发房规则",
+                    route: {
+                        component: InputHouseRule,
+                        name: 'InputHouseRule',
+                        title: '发房规则',
+                        hideNavBar: false,
+                        backLog: actionType.BA_SENDRULE_RETURN
+                    }
+                },
                 hideNavBar: false,
                 backLog: actionType.BA_SENDTWO_THREE_RETURN,
                 bp: this.pageId
@@ -708,6 +760,7 @@ class CostScoreModal extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         let {callInfo, actions, score} = this.props;
         return (
@@ -791,7 +844,8 @@ class BaseInfo extends Component {
                 <View style={[styles.center, styles.justifyContent, styles.nameBox]}>
                     <Text style={[styles.name, styles.baseColor]}>{houseInfo.get('community_name') || ''}</Text>
                     <View style={[styles.row, styles.justifyContent]}>
-                        <Text style={[styles.subName, styles.flex, styles.baseColor]}>{houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}{houseInfo.get('door_num') && '室'}</Text>
+                        <Text
+                            style={[styles.subName, styles.flex, styles.baseColor]}>{houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}{houseInfo.get('door_num') && '室'}</Text>
                         {
                             houseInfo.get('is_new') ? <Text style={[styles.tagNew, styles.flex]}>新</Text> : null
                         }
@@ -806,7 +860,8 @@ class BaseInfo extends Component {
                     <View style={styles.vline}></View>
                     <View style={[styles.flex, styles.center, styles.justifyContent]}>
                         <Text style={[styles.attr, styles.baseColor]}>户型</Text>
-                        <Text style={[styles.attrVal, styles.fontMedium]}>{houseInfo.get('bedrooms') || ''}室{houseInfo.get('living_rooms') || ''}厅{houseInfo.get('bathrooms') || ''}卫</Text>
+                        <Text
+                            style={[styles.attrVal, styles.fontMedium]}>{houseInfo.get('bedrooms') || ''}室{houseInfo.get('living_rooms') || ''}厅{houseInfo.get('bathrooms') || ''}卫</Text>
                     </View>
                     <View style={styles.vline}></View>
                     <View style={[styles.flex, styles.center, styles.justifyContent]}>
@@ -815,7 +870,8 @@ class BaseInfo extends Component {
                     </View>
                 </View>
                 <View style={[styles.justifyContent, styles.address]}>
-                    <Text style={[styles.baseSize, styles.baseColor]} numberOfLines={1}>地址: {houseInfo.get('district_name') || baseInfo.get('district_name') || ''}{houseInfo.get('block_name') || baseInfo.get('block_name') || ''}  {houseInfo.get('community_address') || baseInfo.get('community_address') || ''}</Text>
+                    <Text style={[styles.baseSize, styles.baseColor]}
+                          numberOfLines={1}>地址: {houseInfo.get('district_name') || baseInfo.get('district_name') || ''}{houseInfo.get('block_name') || baseInfo.get('block_name') || ''} {houseInfo.get('community_address') || baseInfo.get('community_address') || ''}</Text>
                 </View>
             </View>
         );
@@ -826,13 +882,15 @@ class ContactList extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         let {curLogs, contact, actions} = this.props;
 
         let contactList = curLogs.map((item, index) => {
             return (
                 <View key={index} style={[styles.row, styles.contactItem, styles.center]}>
-                    <Text style={[styles.grayColor, styles.date]}>{item.get('time')}</Text><Text style={[styles.baseColor, styles.itemSize]}>{item.get('phone')}联系了房东</Text>
+                    <Text style={[styles.grayColor, styles.date]}>{item.get('time')}</Text><Text
+                    style={[styles.baseColor, styles.itemSize]}>{item.get('phone')}联系了房东</Text>
                 </View>
             );
         });
@@ -851,7 +909,7 @@ class ContactList extends Component {
                         <View style={[styles.row, styles.justifyContent, styles.center, styles.moreBox]}>
                             <Image
                                 style={styles.moreIcon}
-                                source={require('../images/dropDown.png')} />
+                                source={require('../images/dropDown.png')}/>
                             <Text style={[styles.grayColor, styles.more]}>更多</Text>
                         </View>
                     </TouchableWithoutFeedback>
@@ -859,10 +917,11 @@ class ContactList extends Component {
             </View>
         );
     }
+
     componentDidUpdate() {
         let {propertyId, contact, actions} = this.props;
         let pager = contact.get('pager');
-        if(contact.get('logs').size < 5 && pager.get('current_page') < pager.get('last_page')) {
+        if (contact.get('logs').size < 5 && pager.get('current_page') < pager.get('last_page')) {
             actions.fetchAppendContactLog({
                 property_id: propertyId,
                 page: Number(pager.get('current_page')) + 1
@@ -914,7 +973,7 @@ var styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         borderStyle: 'solid',
-        borderBottomWidth: 1/PixelRatio.get(),
+        borderBottomWidth: 1 / PixelRatio.get(),
         borderBottomColor: '#d9d9d9',
     },
     name: {
@@ -953,7 +1012,7 @@ var styles = StyleSheet.create({
     vline: {
         height: 32,
         borderStyle: 'solid',
-        borderLeftWidth: 1/PixelRatio.get(),
+        borderLeftWidth: 1 / PixelRatio.get(),
         borderLeftColor: '#d9d9d9',
         width: 1,
         marginTop: 28
@@ -963,7 +1022,7 @@ var styles = StyleSheet.create({
         marginLeft: 15,
         marginRight: 15,
         borderStyle: 'solid',
-        borderTopWidth: 1/PixelRatio.get(),
+        borderTopWidth: 1 / PixelRatio.get(),
         borderTopColor: '#d9d9d9',
     },
     baseSize: {
@@ -987,7 +1046,7 @@ var styles = StyleSheet.create({
     },
     moreBox: {
         borderStyle: 'solid',
-        borderBottomWidth: 1/PixelRatio.get(),
+        borderBottomWidth: 1 / PixelRatio.get(),
         borderBottomColor: '#d9d9d9',
         paddingBottom: 8
     },
@@ -1005,16 +1064,16 @@ var styles = StyleSheet.create({
         left: 0,
         right: 0,
         height: 60,
-        borderTopWidth: 1/PixelRatio.get(),
+        borderTopWidth: 1 / PixelRatio.get(),
         borderStyle: 'solid',
         borderTopColor: '#d9d9d9',
-        backgroundColor :'#fff'
+        backgroundColor: '#fff'
     },
     moneyIcon: {
         width: 11,
         height: 15,
         marginRight: 4,
-        marginLeft :13
+        marginLeft: 13
     },
     contactButton: {
         marginLeft: 12,
@@ -1077,7 +1136,7 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         height: 40,
         borderColor: '#04c1ae',
-        borderWidth: 2/PixelRatio.get(),
+        borderWidth: 2 / PixelRatio.get(),
         borderStyle: 'solid',
         borderRadius: 5,
     },
@@ -1116,7 +1175,7 @@ var styles = StyleSheet.create({
         height: 19,
         borderRadius: 10,
         backgroundColor: '#FAAE6C',
-        borderWidth: 1/PixelRatio.get(),
+        borderWidth: 1 / PixelRatio.get(),
         borderColor: "#fff"
     },
     levelText: {
@@ -1174,7 +1233,7 @@ var styles = StyleSheet.create({
     voiceBox: {
         height: 44,
         borderColor: '#D9D9D9',
-        borderWidth: 1/PixelRatio.get(),
+        borderWidth: 1 / PixelRatio.get(),
         borderRadius: 3,
         backgroundColor: '#F8F8F8',
         marginLeft: 15,

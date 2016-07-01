@@ -694,7 +694,9 @@ class NoData extends Component {
         getAttentionStatus()
             .then((oData) => {
                 this.setState({current: oData.user_set_status});
-            })
+            }).catch(() => {
+            this.setState({current: 1});
+        })
     }
 }
 
