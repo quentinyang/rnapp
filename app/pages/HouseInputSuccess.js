@@ -29,8 +29,8 @@ export default class HouseInputSuccess extends Component {
         return (
             <View style={styles.container}>
                 <Image source={require('../images/success.png')} style={[styles.sucImg]}/>
-                <Text style={styles.promptTitle}>审核通过可获<Text style={styles.promptColor}>{data.money}</Text>积分和<Text style={styles.promptColor}>{data.experience}</Text>个经验</Text>
-                <Text style={!data.is_special?styles.subPromptTitle:[styles.subPromptTitle, styles.fontOrange]}>{data.msg}</Text>
+                <Text style={styles.promptTitle}>1、审核通过可获<Text style={styles.promptColor}>{data.money}</Text>积分和<Text style={styles.promptColor}>{data.experience}</Text>个经验</Text>
+                <Text style={!data.is_special?styles.subPromptTitle:[styles.subPromptTitle, styles.fontOrange]}>2、该房源的电话每被查看1次获得<Text style={styles.promptColor}>2</Text>积分</Text>
                 {data.is_can_input ?
                 <TouchableHighlight
                     style={[styles.sucButton, styles.backgroundGreen]}
@@ -41,13 +41,6 @@ export default class HouseInputSuccess extends Component {
                 </TouchableHighlight>
                 :null
                 }
-                <TouchableHighlight
-                    style={[styles.sucButton, styles.backgroundWhite]}
-                    underlayColor='#04c1ae'
-                    onPress={this.lookHouse}
-                >
-                    <View><Text style={[styles.sucButtonText, styles.fontGreen]}>查看房源</Text></View>
-                </TouchableHighlight>
             </View>
         )
     }

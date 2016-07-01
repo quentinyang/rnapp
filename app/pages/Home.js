@@ -1,7 +1,7 @@
 'use strict';
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio, Modal, Button, TouchableHighlight,
-        TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform, AppState} from 'nuke';
+    TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform, AppState} from 'nuke';
 
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
@@ -11,10 +11,11 @@ import HouseItem from '../components/HouseItem';
 import DetailContainer from '../containers/DetailContainer';
 import ScoreRule from './ScoreRule';
 import WelfareContainer from '../containers/WelfareContainer';
-let ActionUtil = require( '../utils/ActionLog');
+let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import * as common from '../constants/Common';
+import {getAttentionStatus} from '../service/blockService';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -24,6 +25,7 @@ class InputRuleModal extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         let {isVisible, modalInfo, actions} = this.props;
 
@@ -40,25 +42,29 @@ class InputRuleModal extends Component {
                                 actions.setRuleModalVisible(false);
                                 actions.setGiftModalVisible(true);
                             }}
-                        >
-                            <Image
-                                style={styles.closeIcon}
-                                source={require("../images/close.png")}
-                            />
-                        </TouchableHighlight>
+                            >
+                                <Image
+                                    style={styles.closeIcon}
+                                    source={require("../images/close.png")}
+                                />
+                            </TouchableHighlight>
 
-                        <Text style={[styles.h5, styles.giftDay, styles.grey]}>发房新规则</Text>
-                        
-                        <Text>1、发布一套房源审核通过后获得<Text style={styles.orange}>{modalInfo.get('input_points')}</Text>积分</Text>                            
-                        <Text>2、房源的电话每被查看1次获得<Text style={styles.orange}>{modalInfo.get('looked_points')}</Text>积分</Text>
-                    </View>
 
-                    <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
-                        <Image style={styles.horn} source={require("../images/horn.png")} />
+                            <Text style={[styles.h5, styles.giftDay, styles.grey]}>发房新规则</Text>
+
+                            <Text>1、发布一套房源审核通过后获得<Text
+                                style={styles.orange}>{modalInfo.get('input_points')}</Text>积分</Text>
+                            <Text>2、房源的电话每被查看1次获得<Text
+                                style={styles.orange}>{modalInfo.get('looked_points')}</Text>积分</Text>
+                        </View>
+
+
+                        <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
+                            <Image style={styles.horn} source={require("../images/horn.png")}/>
+                        </View>
                     </View>
                 </View>
-            </View>
-        </Modal>
+            </Modal>
         );
     }
 }
@@ -67,54 +73,59 @@ class CouponModal extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         let {isVisible, modalInfo, actions} = this.props;
         let cardMsg = modalInfo.get('cost') == "0" ? "免费" : modalInfo.get('cost') + "积分";
 
         return (
-        <Modal visible={isVisible && modalInfo.get('visible')} transparent={true} onRequestClose={actions.setCouponModalVisible}>
-            <View style={styles.bgWrap}>
-                <View>
-                    <View style={[styles.contentContainer, {marginTop: 32}]}>
-                        <TouchableHighlight
-                            style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
-                            underlayColor="#fff"
-                            onPress={() => {
+            <Modal visible={isVisible && modalInfo.get('visible')} transparent={true}
+                   onRequestClose={actions.setCouponModalVisible}>
+                <View style={styles.bgWrap}>
+                    <View>
+                        <View style={[styles.contentContainer, {marginTop: 32}]}>
+                            <TouchableHighlight
+                                style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
+                                underlayColor="#fff"
+                                onPress={() => {
                                 //ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE);
                                 actions.setCouponModalVisible(false);
                                 actions.setRuleModalVisible(true);
                             }}
-                        >
-                            <Image
-                                style={styles.closeIcon}
-                                source={require("../images/close.png")}
-                            />
-                        </TouchableHighlight>
+                            >
+                                <Image
+                                    style={styles.closeIcon}
+                                    source={require("../images/close.png")}
+                                />
+                            </TouchableHighlight>
 
-                        <Text style={[styles.h5, styles.giftDay]}>恭喜你获得1张</Text>
 
-                        { modalInfo.get('type') == "1" ?
-                            <Text style={styles.h5}><Text style={[styles.h0, styles.scoreNum]}>{cardMsg}</Text>看房卡</Text> 
-                            : <Text style={[styles.h0, styles.scoreNum]}>补签卡</Text>
-                        }
+                            <Text style={[styles.h5, styles.giftDay]}>恭喜你获得1张</Text>
 
-                        <TouchableHighlight
-                            underlayColor='#fff'
-                            onPress={this._goCoupon.bind(this)}
-                        >
-                            <View style={styles.flex}>
-                                <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
-                            </View>
-                        </TouchableHighlight>
+                            { modalInfo.get('type') == "1" ?
+                                <Text style={styles.h5}><Text
+                                    style={[styles.h0, styles.scoreNum]}>{cardMsg}</Text>看房卡</Text>
+                                : <Text style={[styles.h0, styles.scoreNum]}>补签卡</Text>
+                            }
 
-                    </View>
 
-                    <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
-                        <Image style={styles.coupon} source={require("../images/coupon_white.png")} />
+                            <TouchableHighlight
+                                underlayColor='#fff'
+                                onPress={this._goCoupon.bind(this)}
+                            >
+                                <View style={styles.flex}>
+                                    <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
+                                </View>
+                            </TouchableHighlight>
+
+                        </View>
+
+                        <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
+                            <Image style={styles.coupon} source={require("../images/coupon_white.png")}/>
+                        </View>
                     </View>
                 </View>
-            </View>
-        </Modal>
+            </Modal>
         );
     }
 
@@ -129,7 +140,8 @@ class CouponModal extends Component {
             hideNavBar: false,
             bp: log.pageId,
             backLog: log.back,
-            callbackFun: () => {}
+            callbackFun: () => {
+            }
         });
         //ActionUtil.setAction(actionType.BA_HOME_PAGE_FIND);
     }
@@ -139,70 +151,75 @@ class GiftModal extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         let {isVisible, modalInfo, actions} = this.props;
         return (
-        <Modal visible={isVisible} transparent={true} onRequestClose={actions.setGiftModalVisible}>
-            <View style={styles.bgWrap}>
-                <View>
-                    <View style={[styles.contentContainer, {marginTop: 32}]}>
-                        <TouchableHighlight
-                            style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
-                            underlayColor="#fff"
-                            onPress={() => {
+
+            <Modal visible={isVisible} transparent={true} onRequestClose={actions.setGiftModalVisible}>
+                <View style={styles.bgWrap}>
+                    <View>
+                        <View style={[styles.contentContainer, {marginTop: 32}]}>
+                            <TouchableHighlight
+                                style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
+                                underlayColor="#fff"
+                                onPress={() => {
                                 ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE); 
                                 actions.setGiftModalVisible(false);
                             }}
-                        >
-                            <Image
-                                style={styles.closeIcon}
-                                source={require("../images/close.png")}
-                            />
-                        </TouchableHighlight>
+                            >
+                                <Image
+                                    style={styles.closeIcon}
+                                    source={require("../images/close.png")}
+                                />
+                            </TouchableHighlight>
 
-                        <Text style={[styles.h3, styles.giftDay]}>连续签到<Text style={[styles.h3, styles.mediumFont]}>{modalInfo.get('sign_in_days')}</Text>天</Text>
-                        <View style={[styles.row]}>
-                            <Text style={styles.h5}>
-                                <Text style={[styles.h2, styles.addNum]}>+</Text>
-                                <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('experience')}</Text>
-                                经验</Text>
-                            { modalInfo.get('points') ?
-                                <Text style={[styles.scoreAdd, styles.h5]}>
+                            <Text style={[styles.h3, styles.giftDay]}>连续签到<Text
+                                style={[styles.h3, styles.mediumFont]}>{modalInfo.get('sign_in_days')}</Text>天</Text>
+                            <View style={[styles.row]}>
+                                <Text style={styles.h5}>
                                     <Text style={[styles.h2, styles.addNum]}>+</Text>
-                                    <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('points')}</Text>
-                                    积分</Text>
-                                : null
-                            }
+                                    <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('experience')}</Text>
+                                    经验</Text>
+                                { modalInfo.get('points') ?
+                                    <Text style={styles.scoreAdd}>
+                                        <Text style={[styles.h2, styles.addNum]}>+</Text>
+                                        <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('points')}</Text>
+                                        积分</Text>
+                                    : null
+                                }
+                            </View>
+
+                            <TouchableHighlight
+                                underlayColor='#fff'
+                                onPress={this._goScore.bind(this)}
+                            >
+                                <View style={styles.flex}>
+                                    <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
+                                </View>
+                            </TouchableHighlight>
+
                         </View>
 
-                        <TouchableHighlight
-                            underlayColor='#fff'
-                            onPress={this._goScore.bind(this)}
-                        >
-                            <View style={styles.flex}>
-                                <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
-                            </View>
-                        </TouchableHighlight>
-
-                    </View>
-
-                    <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
-                        <Image style={styles.gift} source={require("../images/gift.png")} />
+                        <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
+                            <Image style={styles.gift} source={require("../images/gift.png")}/>
+                        </View>
                     </View>
                 </View>
-            </View>
-        </Modal>
+            </Modal>
         );
     }
+
     componentWillUpdate(nextProps, nextState) {
-        if(nextProps.modalInfo.get('experience') != "0") {
-            if(nextProps.modalInfo.get('points')) {
+        if (nextProps.modalInfo.get('experience') != "0") {
+            if (nextProps.modalInfo.get('points')) {
                 ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_CREDIT_ONVIEW, {"points": nextProps.modalInfo.get('points')});
             } else {
                 ActionUtil.setAction(actionType.BA_HOME_PAGE_EXPERIENCE_ONVIEW);
             }
         }
     }
+
     _goScore() {
         let {navigator, actions, modalInfo, log} = this.props;
 
@@ -224,10 +241,14 @@ class ScoreModal extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         let {isVisible, modalInfo, actions} = this.props;
         return (
-            <Modal visible={isVisible && modalInfo.get('visible')} transparent={true} onRequestClose={actions.setScoreModalVisible}>
+
+            <Modal visible={isVisible && modalInfo.get('visible')} transparent={true}
+                   onRequestClose={actions.setScoreModalVisible}>
+
                 <View style={styles.bgWrap}>
                     <View style={styles.contentContainer}>
                         <TouchableHighlight
@@ -249,7 +270,7 @@ class ScoreModal extends Component {
                         <Button
                             containerStyle={[styles.btn, styles.btnMarginBottom]}
                             itemStyle={styles.btnSize} label="立即领取"
-                            onPress={this._goScoreDetail.bind(this)} />
+                            onPress={this._goScoreDetail.bind(this)}/>
                     </View>
                 </View>
             </Modal>
@@ -270,7 +291,8 @@ class ScoreModal extends Component {
             backLog: actionType.BA_FIRSTOPEN_RETURN,
             score: this.props.modalInfo.get('score'),
             actions: actions,
-            callbackFun: () => {}
+            callbackFun: () => {
+            }
         });
     }
 }
@@ -303,7 +325,8 @@ export default class Home extends Component {
                     actions.setGiftModalVisible(true)
                 }
 
-                if(value && value == today) { //不为空且 == today, 不显示
+                if (value && value == today) { //不为空且 == today, 不显示
+
                 } else { //为空 或 != today, 则显示并更新
                     actions.setGiftShowVisible(true);
                     actions.fetchGiftInfo();
@@ -321,25 +344,26 @@ export default class Home extends Component {
 
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
-                <ScoreModal 
-                    isVisible={baseInfo.get('scoreVisible')} 
-                    modalInfo={baseInfo.get('scoreModal')} 
-                    actions={actions} 
-                    navigator={navigator} 
+                <ScoreModal
+                    isVisible={baseInfo.get('scoreVisible')}
+                    modalInfo={baseInfo.get('scoreModal')}
+                    actions={actions}
+                    navigator={navigator}
                     log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
                 />
-                <CouponModal 
-                    isVisible={baseInfo.get('couponVisible')} 
-                    modalInfo={baseInfo.get('couponModal')} 
-                    actions={actions} 
+                <CouponModal
+                    isVisible={baseInfo.get('couponVisible')}
+                    modalInfo={baseInfo.get('couponModal')}
+                    actions={actions}
                     navigator={navigator}
                     log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
                 />
                 <InputRuleModal 
                     isVisible={baseInfo.get('ruleVisible') && baseInfo.get('ruleCanShow')} 
-                    modalInfo={baseInfo.get('ruleModal')} 
+                    modalInfo={baseInfo.get('ruleModal')}
                     actions={actions}
                 />
+
                 <GiftModal
                     isVisible={baseInfo.get('giftVisible') && baseInfo.get('giftCanShow')}
                     modalInfo={baseInfo.get('giftModal')}
@@ -351,7 +375,8 @@ export default class Home extends Component {
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>
                         <Text style={[styles.searchText, styles.searchTextPadding]}>上海</Text>
                         <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, 'search')}>
-                            <View style={[styles.flex, styles.searchBtn, styles.alignItems, styles.justifyContent, styles.row]}>
+                            <View
+                                style={[styles.flex, styles.searchBtn, styles.alignItems, styles.justifyContent, styles.row]}>
                                 <Image
                                     source={require('../images/searchWhite.png')}
                                     style={styles.searchWhite}
@@ -402,13 +427,13 @@ export default class Home extends Component {
             actions.fetchScoreModalStatus();
             actions.fetchHouseNewCount();
             actions.fetchCouponModalStatus();
-            actions.fetchRuleModalStatus();            
+            actions.fetchRuleModalStatus();
         });
         AppState.addEventListener('change', this._dealGiftModal.bind(this));
     }
 
     _dealGiftModal(currentAppState) {
-        if(currentAppState == 'active') {
+        if (currentAppState == 'active') {
             this._setGiftModalStatus();
         }
     }
@@ -418,7 +443,7 @@ export default class Home extends Component {
         AppState.removeEventListener('change', this._dealGiftModal);
     }
 
-    _renderRow = (rowData: any) => {
+    _renderRow = (rowData:any) => {
         return (
             <HouseItem item={rowData} onItemPress={this._onItemPress}/>
         )
@@ -427,7 +452,7 @@ export default class Home extends Component {
     _onItemPress = (item) => {
         ActionUtil.setAction(actionType.BA_HOME_PAGE_CLICKDETAIL);
         let {navigator, actions} = this.props;
-        if(!item.get('is_click')) {
+        if (!item.get('is_click')) {
             actions.setLookStatus({
                 property_id: item.get('property_id')
             });
@@ -504,14 +529,15 @@ export default class Home extends Component {
 
         return (
             <View>
-                <TouchableWithoutFeedback  onPress={this._onHandlePress.bind(null, 'list')}>
+                <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, 'list')}>
                     <View style={styles.allHouse}>
                         <Image
                             source={require('../images/all_house.png')}
                             style={[styles.allHouseImage]}
                         />
                         <Text style={[styles.flex, styles.heiti_16_header]}>{this.props.rout}</Text>
-                        <Text style={styles.noData}>今日新增<Text style={[styles.mediumFont, styles.orange]}>{baseInfo.get('newCount')}</Text>套</Text>
+                        <Text style={styles.noData}>今日新增<Text
+                            style={[styles.mediumFont, styles.orange]}>{baseInfo.get('newCount')}</Text>套</Text>
                         <Image
                             source={require('../images/next.png')}
                             style={styles.nextImage}
@@ -519,7 +545,8 @@ export default class Home extends Component {
                     </View>
                 </TouchableWithoutFeedback>
                 <View style={[styles.headerLine]}></View>
-                <Attention attentionList={attentionList} hasHouse={houseList.size} navigator={navigator} onAttentionBlockSet={this._onAttentionBlockSet}/>
+                <Attention attentionList={attentionList} hasHouse={houseList.size} navigator={navigator}
+                           onAttentionBlockSet={this._onAttentionBlockSet}/>
             </View>
         )
     };
@@ -531,14 +558,15 @@ export default class Home extends Component {
 
         if (Number(pager.get('current_page')) == Number(pager.get('last_page')) && Number(pager.get('total')) != 0) {
             footerView = <View style={styles.listFooter}>
-                        <Text style={styles.noData}>已经没有数据了！</Text>
-                    </View>
-        } else if(Number(pager.get('current_page')) != Number(pager.get('last_page')) && Number(pager.get('total')) != 0) {
+                <Text style={styles.noData}>已经没有数据了！</Text>
+            </View>
+        } else if (Number(pager.get('current_page')) != Number(pager.get('last_page')) && Number(pager.get('total')) != 0) {
             footerView = <View style={styles.listFooter}>
-                        <ActivityIndicator color={'#ccc'} styleAttr="Small"/>
-                    </View>
+                <ActivityIndicator color={'#ccc'} styleAttr="Small"/>
+            </View>
         } else {
-            footerView = <NoData attentionList={attentionList} navigator={navigator} onAttentionBlockSet={this._onAttentionBlockSet}/>
+            footerView = <NoData attentionList={attentionList} navigator={navigator}
+                                 onAttentionBlockSet={this._onAttentionBlockSet}/>
         }
         return footerView;
     };
@@ -569,12 +597,12 @@ export class Attention extends Component {
         let districtBlockSelect = attentionList.get('district_block_select');
         let communitySelect = attentionList.get('community_select');
         let dbArr = districtBlockSelect.size > 0 && (districtBlockSelect.map((v) => {
-            return v.get('name');
-        })).toJS() || ['去设置板块'];
+                return v.get('name');
+            })).toJS() || ['去设置板块'];
 
         let commArr = communitySelect.size > 0 && (communitySelect.map((c) => {
-            return c.get('name')
-        })).toJS() || ['去设置小区'];
+                return c.get('name')
+            })).toJS() || ['去设置小区'];
 
         return (
             <View style={styles.attention}>
@@ -582,7 +610,8 @@ export class Attention extends Component {
                     <View style={styles.bar}></View>
                     <Text style={[styles.flex, styles.heiti_16_header]}>我的关注</Text>
                 </View>
-                <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList, actionType.BA_HOME_PAGE_SETFOCUS)}>
+                <TouchableWithoutFeedback
+                    onPress={this.props.onAttentionBlockSet.bind(null, attentionList, actionType.BA_HOME_PAGE_SETFOCUS)}>
                     <View style={[styles.row, styles.attentionMsg, styles.alignItems]}>
                         <View style={[styles.column, styles.flex]}>
                             <Text style={[styles.heiti_15_content]} numberOfLines={1}>板块：{dbArr.join('、')}</Text>
@@ -596,7 +625,7 @@ export class Attention extends Component {
                 </TouchableWithoutFeedback>
                 <View style={[styles.row, styles.alignItems]}>
                     {hasHouse ? <View style={styles.bar}></View> : null}
-                    <Text style={[styles.flex, styles.heiti_16_header]}>{hasHouse ? '关注的房源': ''}</Text>
+                    <Text style={[styles.flex, styles.heiti_16_header]}>{hasHouse ? '关注的房源' : ''}</Text>
                 </View>
             </View>
         )
@@ -606,6 +635,9 @@ export class Attention extends Component {
 class NoData extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            current: 0
+        };
     }
 
     render() {
@@ -616,28 +648,53 @@ class NoData extends Component {
             <View style={[styles.alignItems]}>
                 <Image
                     source={require('../images/no_house_list.png')}
-                    style={styles.noAttention}
-                />
+                    style={styles.noAttention}/>
                 {
                     districtBlockSelect.size == 0 && communitySelect.size == 0 ?
-                        <View style={[styles.alignItems]}>
-                            <Text style={[styles.noAttentionText]}>设置关注的区域得<Text style={[styles.orange, styles.mediumFont]}>8</Text>积分</Text>
-                            <Text style={[styles.noAttentionText]}>最多免费看<Text style={[styles.orange, styles.mediumFont]}>4</Text>套房源</Text>
-                        </View> :
+                        (this.state.current == 0 ?
+                            <View style={[styles.alignItems]}>
+                                <Text style={[styles.noAttentionText]}>设置关注的区域得<Text
+                                    style={[styles.orange, styles.mediumFont]}>8</Text>积分</Text>
+                                <Text style={[styles.noAttentionText]}>最多免费看<Text
+                                    style={[styles.orange, styles.mediumFont]}>4</Text>套房源</Text>
+                            </View>
+                            : (this.state.current == 1 ?
+                            <View style={[styles.alignItems]}>
+                                <Text style={[styles.noAttentionText]}>关注的房源会出现在这里</Text>
+                            </View> :
+                            '')) :
                         <Text style={[styles.noAttentionText]}>关注的板块和小区没有房源</Text>
                 }
 
                 {
                     districtBlockSelect.size == 0 && communitySelect.size == 0 ?
-                    <TouchableWithoutFeedback onPress={this.props.onAttentionBlockSet.bind(null, attentionList, actionType.onAttentionBlockSet)}>
-                        <View style={[styles.noAttentionBtn, styles.alignItems]}>
-                            <Text style={styles.noAttentionBtnText}>去设置</Text>
-                        </View>
-                    </TouchableWithoutFeedback>
-                    : null
+                        <TouchableWithoutFeedback
+                            onPress={this.props.onAttentionBlockSet.bind(null, attentionList, actionType.onAttentionBlockSet)}>
+                            <View style={[styles.noAttentionBtn, styles.alignItems]}>
+                                <Text style={styles.noAttentionBtnText}>去设置</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                        : null
                 }
             </View>
         )
+    }
+
+    componentWillMount() {
+        this.getNullDataStatus();
+    }
+
+    componentDidMount() {
+    }
+
+    componentWillUnmount() {
+    }
+
+    getNullDataStatus() {
+        getAttentionStatus()
+            .then((oData) => {
+                this.setState({current: oData.user_set_status});
+            })
     }
 }
 
@@ -697,7 +754,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderColor: '#d9d9d9',
         // marginBottom: 10,
-        borderBottomWidth: 1/PixelRatio.get()
+        borderBottomWidth: 1 / PixelRatio.get()
     },
     headerLine: {
         height: 10,
@@ -730,14 +787,14 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         backgroundColor: '#fff',
         borderColor: '#d9d9d9',
-        borderTopWidth: 1/PixelRatio.get()
+        borderTopWidth: 1 / PixelRatio.get()
     },
     attentionMsg: {
         height: 70,
         paddingLeft: 15,
         paddingRight: 15,
         backgroundColor: '#f8f8f8',
-        borderWidth: 1/PixelRatio.get(),
+        borderWidth: 1 / PixelRatio.get(),
         borderColor: '#d9d9d9',
         borderRadius: 3,
         marginBottom: 15

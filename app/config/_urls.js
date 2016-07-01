@@ -60,7 +60,8 @@ let urls = {
     attention: {
         blockAndCommunity: HOST + 'get-attention-community-block',
         saveAttentionCommunity: HOST + 'set-attention-community',
-        enter: HOST + 'set-attention-enter'
+        enter: HOST + 'set-attention-enter',
+        status: HOST + 'service/set-attention-status'
     },
     community: {
         list: HOST + 'community/search/app'
@@ -89,21 +90,23 @@ let urls = {
 }
 
 gDebug && AsyncStorageComponent.get(common.API_HOST)
-.then((value) => {
-    if(value) {
-        if(value !== global.ghost) {
-            urls = replaceJSONContent(urls, ghost, value);
-            ghost = value;
+    .then((value) => {
+        if (value) {
+            if (value !== global.ghost) {
+                urls = replaceJSONContent(urls, ghost, value);
+                ghost = value;
+            }
         }
-    }
-})
-.catch((error) => {
-    console.log(error);
-});
+    })
+    .catch((error) => {
+        console.log(error);
+    });
 
 RCTDeviceEventEmitter.addListener(common.HOST_CHANGE, (newHost) => {
     urls = replaceJSONContent(urls, ghost, newHost);
     ghost = newHost;
 });
 
-module.exports = () => {return urls};
+module.exports = () => {
+    return urls
+};

@@ -11,7 +11,7 @@ rm -rf "$bundleFile" "$assetDir"
 echo "Remove Android cache [Done]"
 
 echo "Start bundle ..."
-react-native bundle --platform android --entry-file index.android.js \
+sudo /usr/local/node/node_global/lib/node_modules/react-native-cli/index.js bundle --platform android --entry-file index.android.js \
 --bundle-output "$bundleFile" \
 --assets-dest "$destDir" \
 --dev false

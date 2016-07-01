@@ -28,3 +28,7 @@ export function saveAttentionCommunitySetService(params) {
 export function enterAttentionBlockSetService() {
     return ajax.put(urls().attention.enter)
 };
+
+export function getAttentionStatus() {
+    return ajax.put(urls.attention.status)
+};
