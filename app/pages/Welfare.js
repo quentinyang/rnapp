@@ -19,9 +19,7 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r
 export default class Welfare extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            current: 0
-        };
+
         if(this.props.route.callbackFun) {
             this.props.route.callbackFun = () => {
                 this.props.navigator.pop();
@@ -29,58 +27,79 @@ export default class Welfare extends Component {
             }
         }
         this.tabs = ['未使用', '已使用', '已过期'];
+        this.status = [1, 2, 3];
     }
 
     render() {
         return (
             <ListView
                 style={styles.container}
-                dataSource={ds.cloneWithRows(this.props.welfareInfo.get('list').toArray())}
+                dataSource={ds.cloneWithRows(this.props.list.toArray())}
                 renderHeader={this._renderHeader}
                 renderRow={this._renderRow}
+                renderFooter={this._renderFooter}
+                onEndReached={this._onEndReached}
+                onEndReachedThreshold={50}
                 enableEmptySections={true}
             />
         );
     }
 
+    componentWillMount() {
+        let {actions, pager} = this.props;
+        this.getWelfareList(1, 1);
+    }
+
+    componentWillUnmount() {
+        this.props.actions.welfareListCleared();
+    }
+
     _renderHeader = () => {
         return (
-            <Wtabs current={this.state.current} tabs={this.tabs} onPress={this.tabClick} />
+            <Wtabs current={this.props.current} tabs={this.tabs} onPress={this.tabClick} />
         )
     };
 
     _renderRow = (rowData, secId, rowId, highlightRow) => {
         return (
             <View style={styles.cardSection}>
-                {/*<NoCoupon current={this.state.current} tabs={tabs} />*/}
                 <Card item={rowData} />
             </View>
         );
-    }
+    };
 
-    componentWillMount() {
-        let {actions, welfareInfo} = this.props;
-        let pager = welfareInfo.get('pager');
+    _renderFooter = () => {
+        let {pager, current} = this.props;
+        if(pager.get('total') == 0) {
+            return <NoCoupon current={current} tabs={this.tabs} />
+        } else if(pager.get('total') > pager.get('page')*pager.get('per_page')) {
+            return <Text style={{textAlign: 'center'}}>加载中...</Text>
+        }
+    };
 
-        InteractionManager.runAfterInteractions(() => {
-            actions.fetchWelfareList({
-                page: 1,
-                status: 1
-            });
-        });
-    }
+    _onEndReached = () => {
+        let {pager, current, actions} = this.props;
 
-    componentDidMount() {
-
-    }
-
-    componentWillUnmount() {
-    }
+        if(pager.get('total') > pager.get('page')*pager.get('per_page')) {
+            this.getWelfareList(Number(pager.get('page')) + 1, this.status[current]);
+        }
+    };
 
     tabClick = (index) => {
-        if(index != this.state.current) {
-            this.setState({current: index});
+        let {actions, current} = this.props;
+        if(index != current) {
+            actions.welfareStatusChanged(index);
+            this.getWelfareList(1, this.status[index]);
         }
+    };
+
+    getWelfareList = (page, status) => {
+        InteractionManager.runAfterInteractions(() => {
+            this.props.actions.fetchWelfareList({
+                page: page,
+                status: status
+            });
+        });
     };
 }
 
@@ -90,7 +109,6 @@ class Wtabs extends Component {
     }
 
     render() {
-
         return (
             <View style={[styles.tabSection, styles.center]}>
                 {this.props.tabs.map((value, index) => {

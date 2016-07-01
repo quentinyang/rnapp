@@ -22,7 +22,9 @@ class WelfareContainer extends Component {
 function mapStateToProps(state) {
     let {welfareInfo} = state.card;
     return {
-        welfareInfo
+        list: welfareInfo.get('list'),
+        pager: welfareInfo.get('pager'),
+        current: welfareInfo.get('current')
     }
 }
 
