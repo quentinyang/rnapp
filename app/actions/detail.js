@@ -116,8 +116,7 @@ export function callFeedback(params, propertyId) {
         serviceAction(dispatch)({
             service: postFeedback,
             data: params,
-            success: function(oData) {
-                dispatch(setFeedbackVisible(false));
+            success: function(oData) {                
                 dispatch(setSellerPhone({
                     phone: oData.seller_phone || '',
                     exp: oData.experience || 5
@@ -248,20 +247,19 @@ export function fetchCoupon(data) {
 
 export function fetchSellerPhone(data) {
     return dispatch => {
-        
         serviceAction(dispatch)({
             service: getSellerPhoneService,
             data: data,
             success: function(oData) {
                 dispatch(setSellerPhone({
-                    phone: '12345678969',
-                    exp: 5
+                    phone: oData.seller_phone,
+                    exp: oData.experience || 5
                 }));
                 dispatch(setSellerPhoneVisible(true));
             },
-            error: function(oData) {
-                   dispatch(callSellerFailed(error));    
-                   dispatch(setErrorTipVisible(true));
+            error: function(error) {
+               dispatch(callSellerFailed(error));    
+               dispatch(setErrorTipVisible(true));
             }
         })
     }

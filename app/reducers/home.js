@@ -112,9 +112,10 @@ let initialBaseInfo = {
     },
 
     ruleVisible: false,
+    ruleCanShow: false,
     ruleModal: {
-        visible: false,
-        score: 8
+        "input_points": 7, //发房积分
+        "looked_points": 2 //房源被查看
     },
 
     giftVisible: false,
@@ -145,6 +146,9 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
             break;
         case types.RULE_MODAL_STATUS:
             return state.set('ruleModal', Immutable.fromJS(action.status));
+            break;
+        case types.RULE_MODAL_SHOW:
+            return state.set('ruleCanShow', Immutable.fromJS(action.visible));
             break;
         case types.GIFT_MODAL_VISIBLE_CHANGED:
             return state.set('giftVisible', Immutable.fromJS(action.visible));

@@ -48,8 +48,8 @@ class InputRuleModal extends Component {
 
                         <Text style={[styles.h5, styles.giftDay, styles.grey]}>发房新规则</Text>
                         
-                        <Text>1、发布一套房源审核通过后获得<Text style={styles.orange}>7</Text>积分</Text>                            
-                        <Text>2、房源的电话每被查看1次获得<Text style={styles.orange}>2</Text>积分</Text>
+                        <Text>1、发布一套房源审核通过后获得<Text style={styles.orange}>{modalInfo.get('input_points')}</Text>积分</Text>                            
+                        <Text>2、房源的电话每被查看1次获得<Text style={styles.orange}>{modalInfo.get('looked_points')}</Text>积分</Text>
                     </View>
 
                     <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
@@ -68,6 +68,8 @@ class CouponModal extends Component {
     }
     render() {
         let {isVisible, modalInfo, actions} = this.props;
+        let cardMsg = modalInfo.get('cost') == "0" ? "免费" : modalInfo.get('cost') + "积分";
+
         return (
         <Modal visible={isVisible && modalInfo.get('visible')} transparent={true} onRequestClose={actions.setCouponModalVisible}>
             <View style={styles.bgWrap}>
@@ -88,8 +90,12 @@ class CouponModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={[styles.h5, styles.giftDay]}>恭喜你获得1张</Text>                        
-                        <Text style={styles.h5}><Text style={[styles.h0, styles.scoreNum]}>1积分</Text>看房卡</Text> 
+                        <Text style={[styles.h5, styles.giftDay]}>恭喜你获得1张</Text>
+
+                        { modalInfo.get('type') == "1" ?
+                            <Text style={styles.h5}><Text style={[styles.h0, styles.scoreNum]}>{cardMsg}</Text>看房卡</Text> 
+                            : <Text style={[styles.h0, styles.scoreNum]}>补签卡</Text>
+                        }
 
                         <TouchableHighlight
                             underlayColor='#fff'
@@ -288,6 +294,11 @@ export default class Home extends Component {
         AsyncStorageComponent.get(key)
             .then((value) => {
                 let today = new Date().getDate().toString();
+
+                if(!value) {
+                    actions.setRuleModalVisible(true);
+                    actions.fetchRuleModalStatus();
+                }
 
                 if(value && value == today) { //不为空且 == today, 不显示
                 } else { //为空 或 != today, 则显示并更新

@@ -15,6 +15,7 @@ import {callUp} from '../utils/CommonUtils';
 import * as actionType from '../constants/ActionLog';
 import TitleBar from '../components/TitleBar';
 import WelfareCard from '../components/WelfareCard';
+import deviceInfo from '../utils/DeviceInfo';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -23,8 +24,8 @@ let ds = new ListView.DataSource({
 export default class Detail extends Component {
     constructor(props) {
         super(props);
-        this.flag = false;
-        this.isCall = false;
+        this.isGetCall = false;
+        this.isVoiceGetCall = false;
         this.couponObj;
         this.pageId = actionType.BA_DETAIL;
         ActionUtil.setActionWithExtend(actionType.BA_DETAIL_ONVIEW, {"vpid": this.props.route.item.get('property_id'), "bp": this.props.route.bp});
@@ -44,7 +45,7 @@ export default class Detail extends Component {
         } else {
             phoneStr = "获取房东电话";
         }
-        let cost = this.couponObj ? (this.couponObj.get('cost') == "0" ? "免费" : this.couponObj.get('cost') + "积分") : info.get('unlock_phone_cost') + "积分";
+        let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');
                     
         return (
             <View style={styles.flex}>
@@ -96,7 +97,7 @@ export default class Detail extends Component {
                         <VoiceModal 
                             isVisible={callInfo.get('voiceVisible')}
                             voiceInfo={info.get('record_url')}
-                            costScore={cost}
+                            costScore={cost== "0" ? "免费" : cost + "积分"}
                             getSellerPhone={this._getSellerPhone.bind(this)}
                             actions={actions} 
                             navigator={navigator}
@@ -121,7 +122,7 @@ export default class Detail extends Component {
                     callInfo={callInfo}
                     actions={actions}
                     navigator={navigator}
-                    score={route.item.get('unlock_phone_cost') || 0}
+                    score={cost}
                 />
                 <ListView
                     dataSource={ds.cloneWithRows(houseList.toArray())}
@@ -177,17 +178,11 @@ export default class Detail extends Component {
         let info = baseInfo.get("baseInfo");
         let status = Number(info.get('phone_lock_status'));
 
-        if(status || !status && callInfo.get('sellerPhone')) {
-        } else {
-            if(this.isCall) {
-                ActionUtil.setAction(actionType.BA_DETAIL_SPEND);
-                actions.setFeedbackVisible(true);
-            }
-        }
-    }
-    componentDidUpdate() {
-        if(!this.props.callInfo.get('feedbackVisible') && this.flag) {
-            this.flag = false;
+        if(status || !status && callInfo.get('sellerPhone').get('phone')) {
+        } else {            
+            ActionUtil.setAction(actionType.BA_DETAIL_SPEND);
+            actions.setFeedbackVisible(true);
+            this.isGetCall = false;
         }
     }
 
@@ -208,6 +203,10 @@ export default class Detail extends Component {
     }
 
     _clickPhoneBtn(status, phone, hasPhone) {
+        if(this.isGetCall) {
+            return;
+        }
+
         let {actions, actionsNavigation, actionsHome, route, baseInfo} = this.props;
         let propertyId = route.item.get("property_id");
 
@@ -215,8 +214,6 @@ export default class Detail extends Component {
         if(status || hasPhone) { //1: 已解锁 或 已反馈在卖
             callUp(phone);
         } else {   //0: 未解锁
-            this.isCall = true;
-
             let voice = baseInfo.get('baseInfo').get('record_url');
 
             if(baseInfo.get('couponArr').size) {  //是否有看房卡
@@ -224,6 +221,7 @@ export default class Detail extends Component {
             } else if (voice && voice.size) {     //是否有录音
                 actions.setVoiceVisible(true);      
             } else {                             //获取短号拨打
+                this.isGetCall = true;
                 actions.callSeller({
                     property_id: propertyId,
                     card_id: this.couponObj ? this.couponObj.get('id') : null
@@ -238,7 +236,7 @@ export default class Detail extends Component {
 
         this.couponObj = coupon;
         actions.setCouponVisible(false);
-        if (1 || voice && voice.size) {     //是否有录音
+        if (voice && voice.size) {     //是否有录音
             actions.setVoiceVisible(true);      
         } else {                             //获取短号拨打
             actions.callSeller({
@@ -248,11 +246,20 @@ export default class Detail extends Component {
         }           
     }
     _getSellerPhone() {
-        let {actions} = this.props;
+        if(this.isVoiceGetCall) {
+            return;
+        }
+        let {actions, route} = this.props;
         actions.setVoiceVisible(false);
         actions.fetchSellerPhone({
+            property_id: route.item.get('property_id'),
             card_id: this.couponObj ? this.couponObj.get('id') : null
-        })
+        });
+        this.isVoiceGetCall = true;
+
+        setTimeout(() => {
+            this.isVoiceGetCall = false;
+        }, 10000);
     }
 
     _renderRow = (rowData: any) => {
@@ -434,7 +441,7 @@ class VoiceModal extends Component {
             );
         });
         return (
-            <Modal visible={isVisible} transparent={true} onRequestClose={actions.setVoiceVisible}>
+            <Modal visible={isVisible && deviceInfo.version >= "1.4.0"} transparent={true} onRequestClose={actions.setVoiceVisible}>
                 <View style={[styles.flex, styles.bgWrap]}>
                     <View style={styles.flex}></View>
                     <View style={[styles.flex, styles.justifyBetween, styles.couponWrap, styles.voiceWrap]}>
@@ -713,7 +720,7 @@ class CostScoreModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={[styles.msgTip, styles.baseColor]}>本次通话您消耗了{score}积分</Text>
+                        <Text style={[styles.msgTip, styles.baseColor]}>本次通话花费了您{score}积分</Text>
 
                         <TouchableHighlight
                             style={[styles.btn, styles.sureBtn]}
@@ -728,7 +735,7 @@ class CostScoreModal extends Component {
                         <TouchableWithoutFeedback
                             onPress={this._goBackScore.bind(this)}
                         >
-                            <View><Text style={styles.backScore}>找回积分</Text></View>
+                            <View><Text style={styles.backScore}>退还积分</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
@@ -740,6 +747,7 @@ class CostScoreModal extends Component {
         let {callInfo, actions, propertyId} = this.props;
 
         ActionUtil.setActionWithExtend(actionLog, {"vpid": propertyId});
+        actions.setFeedbackVisible(false);
         actions.callFeedback({
             wash_id: callInfo.get('washId'),
             status: 1 //在卖

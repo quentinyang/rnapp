@@ -27,9 +27,6 @@ module.exports=function(){
     function fetchRuleStatusService() {
         return ajax.get(urls().user.isFirst)
     }
-    function fetchCouponStatusService() {
-        return ajax.get(urls().user.isFirst)
-    }
 
     function withdrawService(data) {
         return ajax.post(urls().user.withdraw, data);
@@ -64,7 +61,6 @@ module.exports=function(){
         getUserAlipayStatus: getUserAlipayStatus,
         fetchScoreModalStatusService: fetchScoreModalStatusService,
         fetchRuleStatusService: fetchRuleStatusService,
-        fetchCouponStatusService: fetchCouponStatusService,
         withdrawService: withdrawService,
         alipayLoginService: alipayLoginService,
         scoreListService: scoreListService,

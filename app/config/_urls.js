@@ -17,7 +17,7 @@ let urls = {
         feedback: HOST + 'wash/status',
         contactLog: HOST + 'property/contact/log',
         userInfo: HOST + 'property/input-user/info',
-
+        sellerPhone: HOST + 'wash/record/phone'
     },
     user: {
         sendCode: HOST + 'passport/login/sms',
@@ -80,7 +80,8 @@ let urls = {
         aliStatus: HOST + 'recharge/binding/alipay/status'
     },
     card: {
-        welfare: HOST + 'user-welfare-card'
+        welfare: HOST + 'user-welfare-card',
+        getNewWelfare: HOST + 'user-welfare-card/one-new'
     }
 }
 
