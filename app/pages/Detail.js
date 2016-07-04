@@ -107,6 +107,7 @@ export default class Detail extends Component {
                             getSellerPhone={this._getSellerPhone.bind(this)}
                             actions={actions}
                             navigator={navigator}
+                            propertyId={route.item.get('property_id')}
                         />
                     : null
                 }
@@ -249,6 +250,7 @@ export default class Detail extends Component {
         this.couponObj = coupon;
         actions.setCouponVisible(false);
         if (voice && voice.size) {     //是否有录音
+            ActionUtil.setAction(actionType.BA_DETAIL_TAPE_ONVIEW);
             actions.setVoiceVisible(true);
         } else {                             //获取短号拨打
             actions.callSeller({
@@ -393,7 +395,6 @@ class PhoneModal extends Component {
 
     render() {
         let {isVisible, phoneInfo, actions} = this.props;
-        ActionUtil.setAction(actionType.BA_DETAIL_PHENO_ONVIEW);
         return (
             <Modal visible={isVisible} transparent={true}
                    onRequestClose={actions.setSellerPhoneVisible}>
@@ -428,7 +429,7 @@ class VoiceModal extends Component {
     }
 
     render() {
-        let {isVisible, voiceInfo, costScore, getSellerPhone, actions, navigator,propertyId} = this.props;
+        let {isVisible, voiceInfo, costScore, getSellerPhone, actions, navigator, propertyId} = this.props;
 
         let voiceList = voiceInfo.map((item, index) => {
             let time = item.get('record_time'), m = parseInt(time / 60), s = time % 60;
@@ -443,13 +444,13 @@ class VoiceModal extends Component {
                             if(index == 0){
                             ActionUtil.setActionWithExtend(actionType.BA_DETAIL_TAPE_ONE, {
                                 "vpid": propertyId,
-                                "time": m+':'+s
+                                "time": time
 
                             });
                             }else if(index == 1){
                             ActionUtil.setActionWithExtend(actionType.BA_DETAIL_TAPE_TWO, {
                                 "vpid": propertyId,
-                                "time": m+':'+s
+                                "time": time
                             });
                             }
 
@@ -544,7 +545,7 @@ class CouponModal extends Component {
                             </View>
                             <TouchableWithoutFeedback onPress={()=>{
                             ActionUtil.setActionWithExtend(actionType.BA_DETAIL_WELFARECARD_SURE, {
-                                "card_type": this.state.curCoupon.get('id')
+                                "card_type": this.state.curCoupon.get('type')
                             });
                             useCoupon(this.state.curCoupon)}}>
                                 <View style={styles.touchBox}>
@@ -626,7 +627,7 @@ class UserInfo extends Component {
                             from: 'houseDetail',
                             name: 'aboutUser',
                             backLog: actionType.BA_USER_RETURN,
-                            bp: '',
+                            bp: this.pageId,
                             userInfo
                         });
                     }

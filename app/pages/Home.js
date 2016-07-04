@@ -139,7 +139,7 @@ class CouponModal extends Component {
             title: '福利卡',
             hideNavBar: false,
             bp: log.pageId,
-            backLog: actionType.BA_MINE_WELFARE_BACK,
+            backLog: log.pageId,
             callbackFun: () => {
             }
         });
@@ -150,8 +150,6 @@ class CouponModal extends Component {
 class GiftModal extends Component {
     constructor(props) {
         super(props);
-
-        ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": this.props.modalInfo.points});
     }
 
     render() {
@@ -260,6 +258,7 @@ class ScoreModal extends Component {
                             onPress={() => {
                                 ActionUtil.setAction(actionType.BA_FIRSTOPEN_DELETE);
                                 actions.setScoreModalVisible(false);
+                                ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": this.props.modalInfo.points});
                                 actions.setCouponModalVisible(true);
                             }}
                         >
@@ -359,7 +358,7 @@ export default class Home extends Component {
                     modalInfo={baseInfo.get('couponModal')}
                     actions={actions}
                     navigator={navigator}
-                    log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
+                    log={{pageId: this.pageId, back: actionType.BA_MINE_WELFARE_BACK}}
                 />
                 <InputRuleModal 
                     isVisible={baseInfo.get('ruleVisible') && baseInfo.get('ruleCanShow')} 
@@ -638,13 +637,10 @@ export class Attention extends Component {
 class NoData extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            current: 0
-        };
     }
 
     render() {
-        let {attentionList} = this.props;
+        let {attentionList,baseInfo} = this.props;
         let districtBlockSelect = attentionList.get('district_block_select');
         let communitySelect = attentionList.get('community_select');
         return (
@@ -654,14 +650,14 @@ class NoData extends Component {
                     style={styles.noAttention}/>
                 {
                     districtBlockSelect.size == 0 && communitySelect.size == 0 ?
-                        (this.state.current == 0 ?
+                        (baseInfo.get('current') == 0 ?
                             <View style={[styles.alignItems]}>
                                 <Text style={[styles.noAttentionText]}>设置关注的区域得<Text
                                     style={[styles.orange, styles.mediumFont]}>8</Text>积分</Text>
                                 <Text style={[styles.noAttentionText]}>最多免费看<Text
                                     style={[styles.orange, styles.mediumFont]}>4</Text>套房源</Text>
                             </View>
-                            : (this.state.current == 1 ?
+                            : (baseInfo.get('current') == 1 ?
                             <View style={[styles.alignItems]}>
                                 <Text style={[styles.noAttentionText]}>关注的房源会出现在这里</Text>
                             </View> :
@@ -683,24 +679,6 @@ class NoData extends Component {
         )
     }
 
-    componentWillMount() {
-        this.getNullDataStatus();
-    }
-
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
-    }
-
-    getNullDataStatus() {
-        getAttentionStatus()
-            .then((oData) => {
-                this.setState({current: oData.user_set_status});
-            }).catch(() => {
-            this.setState({current: 1});
-        })
-    }
 }
 
 const styles = StyleSheet.create({

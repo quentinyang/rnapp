@@ -18,8 +18,8 @@ export default class AboutEXP extends Component {
     constructor(props) {
         super(props);
         this.pageId = actionType.BA_MINE_GRADE;
-        if (this.props.title.indexOf('TA') > 0) {
-            ActionUtil.setAction(actionType.BA_USER_GRADE_ONVIEW);
+        if (this.props.route.title.indexOf('TA') > 0) {
+            ActionUtil.setActionWithExtend(actionType.BA_USER_GRADE_ONVIEW, {"bp": this.props.route.bp});
         } else {
             ActionUtil.setActionWithExtend(actionType.BA_MINE_GRADE_ONVIEW, {"bp": this.props.route.bp});
         }

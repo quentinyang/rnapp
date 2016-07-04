@@ -4,7 +4,7 @@ import {Platform} from 'nuke'
 import Toast from 'react-native-root-toast';
 let CallModule = require('react-native').NativeModules.CallModule;
 
-let ActionUtil = require( '../utils/ActionLog');
+let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import * as homeTypes from '../constants/Home';
 import * as types from '../constants/DetailType';
@@ -47,13 +47,13 @@ export function fetchBaseInfo(data) {
             success: function(oData) {
                 dispatch(houseBaseFetched(oData));
 
-                if(!Number(oData.is_reply)) {
+                if (!Number(oData.is_reply)) {
                     ActionUtil.setAction(actionType.BA_DETAIL_SPEND_ONVIEW);
                     dispatch(setFeedbackVisible(true));
                     dispatch(setWashId(oData.log_id));
                 }
             },
-            error: function(oData) {
+            error: function (oData) {
 
             }
         })
@@ -65,10 +65,10 @@ export function fetchSimilarHouseList(params) {
         serviceAction(dispatch)({
             service: fetchSimilarHouseListService,
             data: params,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(houseSimilarFetched(oData))
             },
-            error: function(oData) {
+            error: function (oData) {
 
             }
         })
@@ -80,20 +80,20 @@ export function callSeller(params) {
         serviceAction(dispatch)({
             service: callSellerPhone,
             data: params,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(setWashId(oData.log_id));
 
                 dispatch(setHomeContactStatus({"property_id": params.property_id, "is_contact": "1"}));
                 dispatch(setContactStatus({"property_id": params.property_id, "is_contact": "1"}));
 
                 //oData 拿到短号, 直接拨出
-                if(Platform.OS == "android") {
+                if (Platform.OS == "android") {
                     CallModule.callUp(oData.main_number + ",,," + oData.short_number);
-                }else {
+                } else {
                     callUp(oData.main_number + "," + oData.short_number);
                 }
             },
-            error: function(error) {
+            error: function (error) {
                 dispatch(setErrorTipVisible(true));
                 dispatch(callSellerFailed(error))
             }
@@ -106,7 +106,7 @@ export function callFeedback(params, propertyId) {
         serviceAction(dispatch)({
             service: postFeedback,
             data: params,
-            success: function(oData) {                
+            success: function (oData) {
                 dispatch(setSellerPhone({
                     phone: oData.seller_phone || '',
                     exp: oData.experience || 5
@@ -118,7 +118,7 @@ export function callFeedback(params, propertyId) {
                 });
                 ActionUtil.setActionWithExtend(actionType.BA_DETAIL_EXPERIENCE_ONVIEW, {"vpid": propertyId});
             },
-            error: function(oData) {
+            error: function (oData) {
 
             }
         })
@@ -130,10 +130,10 @@ export function fetchContactLog(params) {
         serviceAction(dispatch)({
             service: getContactLogService,
             data: params,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(houseContactLogFetched(oData))
             },
-            error: function(oData) {
+            error: function (oData) {
 
             }
         })
@@ -145,10 +145,10 @@ export function fetchAppendContactLog(params) {
         serviceAction(dispatch)({
             service: getContactLogService,
             data: params,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(contactLogAppendFetched(oData))
             },
-            error: function(oData) {
+            error: function (oData) {
 
             }
         })
@@ -160,10 +160,10 @@ export function fetchUserInfo(data) {
         serviceAction(dispatch)({
             service: getUserInfoService,
             data: data,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(userInfoFetched(oData));
             },
-            error: function(oData) {
+            error: function (oData) {
 
             }
         })
@@ -190,16 +190,17 @@ export function fetchSellerPhone(data) {
         serviceAction(dispatch)({
             service: getSellerPhoneService,
             data: data,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(setSellerPhone({
                     phone: oData.seller_phone,
                     exp: oData.experience || 5
                 }));
+                ActionUtil.setAction(actionType.BA_DETAIL_PHENO_ONVIEW);
                 dispatch(setSellerPhoneVisible(true));
             },
-            error: function(error) {
-               dispatch(callSellerFailed(error));    
-               dispatch(setErrorTipVisible(true));
+            error: function (error) {
+                dispatch(callSellerFailed(error));
+                dispatch(setErrorTipVisible(true));
             }
         })
     }

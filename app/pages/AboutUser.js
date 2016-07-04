@@ -30,11 +30,10 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r
 export default class AboutUser extends Component {
     constructor(props) {
         super(props);
-
         this.userInfo = this.props.route.userInfo;
 
         this.pageId = actionType.BA_USER;
-        ActionUtil.setAction(actionType.BA_USER_ONVIEW);
+        ActionUtil.setActionWithExtend(actionType.BA_USER_ONVIEW, {"bp": this.props.route.bp});
 
     }
 
@@ -108,7 +107,7 @@ export default class AboutUser extends Component {
     _onEndReached = () => {
         let {pager, actions} = this.props;
         if(pager.get('total') > pager.get('current_page')*pager.get('per_page')) {
-        ActionUtil.setActionWithExtend(actionType.BA_USER_SLIDEUP, {"times": Number(pager.get('page')) + 1});
+        ActionUtil.setActionWithExtend(actionType.BA_USER_SLIDEUP, {"times": Number(pager.get('current_page'))});
             this.getHouseList(Number(pager.get('current_page')) + 1);
         }
     };

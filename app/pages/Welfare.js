@@ -89,19 +89,19 @@ export default class Welfare extends Component {
 
     tabClick = (index) => {
         let {actions, current} = this.props;
-        switch (this.status[index]) {
-            case 1:
-                ActionUtil.setAction(actionType.BA_MINE_WELFARE_NOUSE_ONVIEW);
-                break;
-            case 2:
-                ActionUtil.setAction(actionType.BA_MINE_WELFARE_USED_ONVIEW);
-                break;
-            case 3:
-                ActionUtil.setAction(actionType.BA_MINE_WELFARE_OVERDUE_ONVIEW);
-                break;
-        }
 
         if (index != current) {
+            switch (this.status[index]) {
+                case 1:
+                    ActionUtil.setAction(actionType.BA_MINE_WELFARE_NOUSE_ONVIEW);
+                    break;
+                case 2:
+                    ActionUtil.setAction(actionType.BA_MINE_WELFARE_USED_ONVIEW);
+                    break;
+                case 3:
+                    ActionUtil.setAction(actionType.BA_MINE_WELFARE_OVERDUE_ONVIEW);
+                    break;
+            }
             actions.welfareStatusChanged(index);
             this.getWelfareList(1, this.status[index]);
         }

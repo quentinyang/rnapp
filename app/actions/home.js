@@ -2,8 +2,9 @@
 
 import * as types from '../constants/Home';
 import {fetchAttentionHouseListService, fetchAttentionAppendHouseListService, fetchAttentionPrependHouseListService, fetchHouseNewCountService} from '../service/houseListService';
-import {fetchAttentionBlockAndCommunityService} from '../service/blockService';
-import {fetchScoreModalStatusService, getGiftInfo} from '../service/userService'
+
+import {fetchAttentionBlockAndCommunityService,getAttentionStatus} from '../service/blockService';
+import {fetchScoreModalStatusService, getGiftInfo, fetchRuleStatusService} from '../service/userService'
 import {fetchCouponStatusService} from '../service/cardService';
 import {fetchRuleStatusService} from '../service/configService';
 import {makeActionCreator, serviceAction} from './base';
@@ -26,6 +27,7 @@ export const setGiftShowVisible = makeActionCreator(types.GIFT_MODAL_SHOW, 'visi
 
 export const attentionBlockAndCommunityFetched = makeActionCreator(types.ATTENTION_BLOCK_COMMUNITY_FETCHED, 'attentionList');
 export const HouseNewCount = makeActionCreator(types.HOUSE_NEW_COUNT, 'count');
+export const HouseCurrentStatus = makeActionCreator(types.HOUSE_CURRENT_STATUS, 'current');
 
 //home / list / detail same community
 export const setHomeContactStatus = makeActionCreator(types.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
@@ -36,13 +38,13 @@ export function fetchAttentionHouseList(params) {
         serviceAction(dispatch)({
             service: fetchAttentionHouseListService,
             data: params,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(houseAttentionFetched(oData))
             },
-            error: function(oData) {
+            error: function (oData) {
             }
         })
-        
+
     }
 }
 
@@ -51,13 +53,13 @@ export function fetchAttentionAppendHouseList(params) {
         serviceAction(dispatch)({
             service: fetchAttentionAppendHouseListService,
             data: params,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(houseAttentionAppendFetched(oData))
             },
-            error: function(oData) {
+            error: function (oData) {
             }
         })
-        
+
     }
 }
 
@@ -66,13 +68,13 @@ export function fetchAttentionPrependHouseList(params) {
         serviceAction(dispatch)({
             service: fetchAttentionPrependHouseListService,
             data: params,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(houseAttentionPrependFetched(oData))
             },
-            error: function(oData) {
+            error: function (oData) {
             }
         })
-        
+
     }
 }
 
@@ -81,13 +83,13 @@ export function fetchAttentionBlockAndCommunity(params) {
         serviceAction(dispatch)({
             service: fetchAttentionBlockAndCommunityService,
             data: params,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(attentionBlockAndCommunityFetched(oData))
             },
-            error: function(oData) {
+            error: function (oData) {
             }
         })
-        
+
     }
 }
 //注册领积分
@@ -95,17 +97,17 @@ export function fetchScoreModalStatus() {
     return dispatch => {
         serviceAction(dispatch)({
             service: fetchScoreModalStatusService,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(scoreModalStatusFetched({
                     visible: Number(oData.is_notify) ? true : false,
                     score: oData.point || 8
                 }))
 
-                if(!Number(oData.is_notify)) {
+                if (!Number(oData.is_notify)) {
                     dispatch(setCouponModalVisible(true));
                 }
             },
-            error: function(oData) {
+            error: function (oData) {
             }
         })
     }
@@ -116,14 +118,14 @@ export function fetchCouponModalStatus() {
         serviceAction(dispatch)({
             service: fetchCouponStatusService,
             success: function(oData) {
-                oData.visible = oData.id ? true : false;                
+                oData.visible = oData.id ? true : false;
                 dispatch(couponModalStatusFetched(oData))
 
-                if(!oData.visible) {
+                if (!oData.visible) {
                     dispatch(setRuleModalVisible(true));
                 }
             },
-            error: function(oData) {
+            error: function (oData) {
             }
         })
     }
@@ -136,7 +138,7 @@ export function fetchRuleModalStatus() {
             success: function(oData) {
                 dispatch(ruleModalStatusFetched(oData))
             },
-            error: function(oData) {
+            error: function (oData) {
             }
         })
     }
@@ -146,10 +148,10 @@ export function fetchHouseNewCount() {
     return dispatch => {
         serviceAction(dispatch)({
             service: fetchHouseNewCountService,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(HouseNewCount(oData.count))
             },
-            error: function(oData) {
+            error: function (oData) {
             }
         })
     }
@@ -159,10 +161,23 @@ export function fetchGiftInfo() {
     return dispatch => {
         serviceAction(dispatch)({
             service: getGiftInfo,
-            success: function(oData) {
+            success: function (oData) {
                 dispatch(giftModalStatusFetched(oData));
             },
-            error: function() {}
+            error: function () {
+            }
+        })
+    }
+}
+export function fetchCurrentStatus() {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: getAttentionStatus,
+            success: function (oData) {
+                dispatch(HouseCurrentStatus(oData.user_set_status))
+            },
+            error: function (oData) {
+            }
         })
     }
 }

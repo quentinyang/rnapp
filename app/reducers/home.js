@@ -16,7 +16,7 @@ let initialState = {
 };
 
 function houseData(state = Immutable.fromJS(initialState), action) {
-    switch(action.type) {
+    switch (action.type) {
         case types.HOUSE_ATTENTION_FETCHED:
             return Immutable.fromJS(action.houseList);
             break;
@@ -39,7 +39,7 @@ function houseData(state = Immutable.fromJS(initialState), action) {
             return state.updateIn(['properties'], (k) => {
                 let newArr = Immutable.List();
                 k.forEach((val, key) => {
-                    if(val.get('property_id') == action.contactStatus.property_id) {
+                    if (val.get('property_id') == action.contactStatus.property_id) {
                         let newVal = val.set('is_contact', Immutable.fromJS(true));
                         newArr = newArr.push(newVal);
                     } else {
@@ -53,7 +53,7 @@ function houseData(state = Immutable.fromJS(initialState), action) {
             return state.updateIn(['properties'], (k) => {
                 let newArr = Immutable.List();
                 k.forEach((val, key) => {
-                    if(val.get('property_id') == action.lookStatus.property_id) {
+                    if (val.get('property_id') == action.lookStatus.property_id) {
                         let newVal = val.set('is_click', Immutable.fromJS(true));
                         newArr = newArr.push(newVal);
                     } else {
@@ -74,7 +74,7 @@ let initialAttentionList = {
 };
 
 function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
-    switch(action.type) {
+    switch (action.type) {
         case types.ATTENTION_BLOCK_COMMUNITY_FETCHED:
             return Immutable.fromJS(action.attentionList);
             break;
@@ -98,6 +98,7 @@ function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
 
 let initialBaseInfo = {
     newCount: "",
+    current: 0,
 
     scoreVisible: true,
     scoreModal: {
@@ -161,6 +162,9 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
 
         case types.HOUSE_NEW_COUNT:
             return state.set('newCount', Immutable.fromJS(action.count));
+            break;
+        case types.HOUSE_CURRENT_STATUS:
+            return state.set('current', Immutable.fromJS(action.current));
             break;
         default:
             return state;
