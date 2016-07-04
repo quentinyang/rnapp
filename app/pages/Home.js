@@ -139,7 +139,7 @@ class CouponModal extends Component {
             title: '福利卡',
             hideNavBar: false,
             bp: log.pageId,
-            backLog: log.back,
+            backLog: actionType.BA_MINE_WELFARE_BACK,
             callbackFun: () => {
             }
         });

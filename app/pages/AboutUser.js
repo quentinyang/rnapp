@@ -107,8 +107,8 @@ export default class AboutUser extends Component {
 
     _onEndReached = () => {
         let {pager, actions} = this.props;
-
         if(pager.get('total') > pager.get('current_page')*pager.get('per_page')) {
+        ActionUtil.setActionWithExtend(actionType.BA_USER_SLIDEUP, {"times": Number(pager.get('page')) + 1});
             this.getHouseList(Number(pager.get('current_page')) + 1);
         }
     };

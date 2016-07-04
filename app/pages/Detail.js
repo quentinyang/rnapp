@@ -620,11 +620,12 @@ class UserInfo extends Component {
                         actionsNavigation.detailPushRoute();
                         ActionUtil.setAction(actionType.BA_DETAIL_USER);
                         navigator.push({
+
                             component: AboutUserContainer,
                             title: '用户' + showMobile,
                             from: 'houseDetail',
                             name: 'aboutUser',
-                            backLog: '',
+                            backLog: actionType.BA_USER_RETURN,
                             bp: '',
                             userInfo
                         });
