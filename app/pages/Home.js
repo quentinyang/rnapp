@@ -26,8 +26,9 @@ class InputRuleModal extends Component {
     }
     render() {
         let {isVisible, modalInfo, actions} = this.props;
+
         return (
-        <Modal visible={isVisible && modalInfo.get('visible')} transparent={true} onRequestClose={actions.setRuleModalVisible}>
+        <Modal visible={isVisible} transparent={true} onRequestClose={actions.setRuleModalVisible}>
             <View style={styles.bgWrap}>
                 <View>
                     <View style={[styles.contentContainer, {marginTop: 32}]}>
@@ -296,8 +297,10 @@ export default class Home extends Component {
                 let today = new Date().getDate().toString();
 
                 if(!value) {
-                    actions.setRuleModalVisible(true);
+                    actions.setRuleShowVisible(true);
                     actions.fetchRuleModalStatus();
+                } else {
+                    actions.setGiftModalVisible(true)
                 }
 
                 if(value && value == today) { //不为空且 == today, 不显示
@@ -315,6 +318,7 @@ export default class Home extends Component {
     render() {
         let {houseData, baseInfo, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
+
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
                 <ScoreModal 
@@ -332,7 +336,7 @@ export default class Home extends Component {
                     log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
                 />
                 <InputRuleModal 
-                    isVisible={baseInfo.get('ruleVisible')} 
+                    isVisible={baseInfo.get('ruleVisible') && baseInfo.get('ruleCanShow')} 
                     modalInfo={baseInfo.get('ruleModal')} 
                     actions={actions}
                 />

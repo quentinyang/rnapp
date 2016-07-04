@@ -25,7 +25,7 @@ import * as common from '../constants/Common';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import {routes} from '../config/route'
-import setLoginDays from '../containers/app';
+import  {setLoginDays} from '../containers/app';
 
 class Login extends Component {
     constructor(props) {

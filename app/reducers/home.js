@@ -138,7 +138,6 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
             return state.set('couponVisible', Immutable.fromJS(action.visible));
             break;
         case types.COUPON_MODAL_STATUS:
-        console.dir(action.status);
             return state.set('couponModal', Immutable.fromJS(action.status));
             break;
         case types.RULE_MODAL_VISIBLE_CHANGED:

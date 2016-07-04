@@ -32,7 +32,7 @@ export function getUserInfoService(params) {
 }
 
 export function getSellerPhoneService(params) {
-    return ajax.get(urls().detail.sellerPhone, {
-        data: params
+    return ajax.post(urls().detail.sellerPhone, {
+        body: params
     });
 }

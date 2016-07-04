@@ -73,7 +73,8 @@ let urls = {
         config: HOST + 'update/push',
         deletePush: HOST + 'delete/push',
         setConfig: HOST + 'configs',
-        setLoginDay: HOST + 'user/login/days'
+        setLoginDay: HOST + 'user/login/days',
+        inputRule: HOST + 'property/rule'
     },
     pay: {
         order: HOST + 'recharge',

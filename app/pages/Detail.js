@@ -16,6 +16,7 @@ import * as actionType from '../constants/ActionLog';
 import TitleBar from '../components/TitleBar';
 import WelfareCard from '../components/WelfareCard';
 import deviceInfo from '../utils/DeviceInfo';
+var AudioPlayer = require('react-native').NativeModules.RNAudioPlayer;
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -425,8 +426,9 @@ class VoiceModal extends Component {
                             this.setState({
                                 playing: index
                             });
-                            //Voice.start(item.get('record_url'));
-                            //stop other voice
+                            AudioPlayer.stop();
+                            AudioPlayer.play(item.get('record_url'));
+                            //AudioPlayer.play('http://7xkjhw.dl1.z0.glb.clouddn.com/078977e9ea117fb8279afc6919f48736.mp3');
                             //listen voice stop: playing -> -1
                         }}
                     >
@@ -447,7 +449,10 @@ class VoiceModal extends Component {
                     <View style={[styles.flex, styles.justifyBetween, styles.couponWrap, styles.voiceWrap]}>
                         <TouchableHighlight
                             style={[styles.closeBox, styles.center, styles.justifyContent]}
-                            onPress={()=>{actions.setVoiceVisible(false);}}
+                            onPress={()=>{
+                                actions.setVoiceVisible(false);
+                                AudioPlayer.stop();
+                            }}
                             underlayColor="#fff"
                         >
                             <Image style={styles.closeIcon} source={require('../images/close.png')} />
@@ -514,7 +519,7 @@ class CouponModal extends Component {
                             contentContainerStyle={styles.touchBox}
                             dataSource={ds.cloneWithRows(couponArr.toArray())}
                             renderRow={this._renderRow.bind(this)}
-                            renderFooter={this._renderFooter}
+                            renderFooter={this._renderFooter.bind(this)}
                             enableEmptySections={true}
                             showsVerticalScrollIndicator={false}
                         />

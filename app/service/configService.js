@@ -20,3 +20,7 @@ export function setConfigService() {
 export function setLoginDaysService() {
     return ajax.get(urls().app.setLoginDay);
 }
+
+export function fetchRuleStatusService() {
+    return ajax.get(urls().app.inputRule)
+}

@@ -3,8 +3,9 @@
 import * as types from '../constants/Home';
 import {fetchAttentionHouseListService, fetchAttentionAppendHouseListService, fetchAttentionPrependHouseListService, fetchHouseNewCountService} from '../service/houseListService';
 import {fetchAttentionBlockAndCommunityService} from '../service/blockService';
-import {fetchScoreModalStatusService, getGiftInfo, fetchRuleStatusService} from '../service/userService'
+import {fetchScoreModalStatusService, getGiftInfo} from '../service/userService'
 import {fetchCouponStatusService} from '../service/cardService';
+import {fetchRuleStatusService} from '../service/configService';
 import {makeActionCreator, serviceAction} from './base';
 
 export const houseAttentionFetched = makeActionCreator(types.HOUSE_ATTENTION_FETCHED, 'houseList');
@@ -115,7 +116,7 @@ export function fetchCouponModalStatus() {
         serviceAction(dispatch)({
             service: fetchCouponStatusService,
             success: function(oData) {
-                oData.visible = oData.get('id') ? true : false;                
+                oData.visible = oData.id ? true : false;                
                 dispatch(couponModalStatusFetched(oData))
 
                 if(!oData.visible) {
@@ -133,14 +134,7 @@ export function fetchRuleModalStatus() {
         serviceAction(dispatch)({
             service: fetchRuleStatusService,
             success: function(oData) {
-                dispatch(ruleModalStatusFetched({
-                    visible: true,
-                    score: oData.point || 8
-                }))
-
-                if(!Number(oData.is_notify)) {
-                    //dispatch(setGiftModalVisible(true));
-                }
+                dispatch(ruleModalStatusFetched(oData))
             },
             error: function(oData) {
             }
