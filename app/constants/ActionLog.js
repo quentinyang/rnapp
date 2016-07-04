@@ -201,7 +201,7 @@ export const BA_MINE_RELEASED = "101-400006"
 export const BA_MINE_SET = "101-400007"
 export const BA_MINE_MEMBER = "3-400008"
 export const BA_MINE_SIGN = "3-400009"
-export const BA_MINE_WELFARE = "3-400010"
+export const BA_MINE_WELFARE_INPUT = "3-400010"
 
 //联系过的房源列表
 export const BA_MINE_CONTACT = "101-450000"

@@ -28,7 +28,7 @@ import SettingContainer from '../containers/SettingContainer';
 import ScoreListContainer from '../containers/ScoreListContainer';
 import WelfareContainer from '../containers/WelfareContainer';
 import Immutable from 'immutable';
-let ActionUtil = require( '../utils/ActionLog');
+let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
 
 export default class User extends Component {
@@ -58,7 +58,8 @@ export default class User extends Component {
         return (
             <View style={styles.container}>
                 <Header title='我的' style={styles.bgHeader} fontStyle={styles.whiteText}>
-                    <TouchableWithoutFeedback onPress={() => this.navigatorPush({component: SettingContainer, name: 'settings', title: '设置', actionLog: actionType.BA_MINE_SET})}>
+                    <TouchableWithoutFeedback
+                        onPress={() => this.navigatorPush({component: SettingContainer, name: 'settings', title: '设置', actionLog: actionType.BA_MINE_SET})}>
                         <Image
                             source={require('../images/icon/setting.png')}
                             style={[styles.settingIcon, styles.center]}
@@ -69,7 +70,7 @@ export default class User extends Component {
                     style={styles.scrollBox}
                     automaticallyAdjustContentInsets={false}
                 >
-                    <BasicInfo userProfile={userProfile}  navigatorPush={this.navigatorPush} />
+                    <BasicInfo userProfile={userProfile} navigatorPush={this.navigatorPush}/>
 
                     <UserAccount navigatorPush={this.navigatorPush} withdrawData={withdrawData} {...this.props} />
 
@@ -85,7 +86,8 @@ export default class User extends Component {
                     >
                         <View style={{flexDirection: 'column'}}>
                             <Text style={{marginTop: 2}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
-                            <Text style={styles.signInPrompt}>继续签到{userProfile.get('go_on_sign_in_day')}天 赚{userProfile.get('get_points')}积分</Text>
+                            <Text style={styles.signInPrompt}>继续签到{userProfile.get('go_on_sign_in_day')}天
+                                赚{userProfile.get('get_points')}积分</Text>
                         </View>
                     </LinkSection>
 
@@ -96,7 +98,7 @@ export default class User extends Component {
                             style: {width: 13.5, height: 11},
                             bgColor: '#66a1e7'
                         }}
-                        onPress={() => this.navigatorPush({component: WelfareContainer, name: 'welfare', title: '福利卡', actionLog: actionType.BA_MINE_WELFARE, backLog: actionType.BA_MINE_WELFARE_BACK})}
+                        onPress={() => this.navigatorPush({component: WelfareContainer, name: 'welfare', title: '福利卡', actionLog: actionType.BA_MINE_WELFARE_INPUT, backLog: actionType.BA_MINE_WELFARE_BACK})}
                     >
                         <Text style={styles.flex}>福利卡</Text>
                         <Text>{userProfile.get('welfare_card_count')}</Text>
@@ -170,8 +172,10 @@ class BasicInfo extends Component {
                 <View style={styles.flex}>
                     <Text style={[styles.mobileText, styles.whiteText]}>{showMobile}</Text>
                 </View>
-                <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: AboutEXPContainer, data: {level: userProfile.get('level'), exp: userProfile.get('user_experience')}, name: 'exp', title: '我的等级', actionLog: actionType.BA_MINE_MEMBER, backLog: actionType.BA_MINE_GRADE_BACK})}>
-                    <View style={[styles.level, styles.center]}><Text style={styles.whiteText}>V{userProfile.get('level')}会员</Text></View>
+                <TouchableWithoutFeedback
+                    onPress={() => this.props.navigatorPush({component: AboutEXPContainer, data: {level: userProfile.get('level'), exp: userProfile.get('user_experience')}, name: 'exp', title: '我的等级', actionLog: actionType.BA_MINE_MEMBER, backLog: actionType.BA_MINE_GRADE_BACK})}>
+                    <View style={[styles.level, styles.center]}><Text
+                        style={styles.whiteText}>V{userProfile.get('level')}会员</Text></View>
                 </TouchableWithoutFeedback>
             </View>
         );
@@ -197,17 +201,20 @@ class UserAccount extends Component {
                     </View>
                     <View style={[styles.flex, styles.row]}>
                         <Text style={{marginRight: 10}}>积分账户：{userProfile.get('score')}分</Text>
-                        <TouchableWithoutFeedback onPress={() => this.props.navigatorPush({component: ScoreListContainer, name: 'scoreList', title: '积分明细', backLog: actionType.BA_MINE_POINTS_RETURN, accountData: withdrawData})}>
+                        <TouchableWithoutFeedback
+                            onPress={() => this.props.navigatorPush({component: ScoreListContainer, name: 'scoreList', title: '积分明细', backLog: actionType.BA_MINE_POINTS_RETURN, accountData: withdrawData})}>
                             <View><Text style={{color: '#04c1ae'}}>查看</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
                 <View style={[styles.row, {marginTop: 15}]}>
                     <TouchableWithoutFeedback onPress={() => this.goCharge()}>
-                        <View style={[styles.flex, styles.center, styles.btnColor, {marginRight: 15}]}><Text style={{color: '#ff6d4b'}}>充值</Text></View>
+                        <View style={[styles.flex, styles.center, styles.btnColor, {marginRight: 15}]}><Text
+                            style={{color: '#ff6d4b'}}>充值</Text></View>
                     </TouchableWithoutFeedback>
                     <TouchableWithoutFeedback onPress={() => this.goWithdraw(withdrawData)}>
-                        <View style={[styles.flex, styles.center, styles.btnColor]}><Text style={{color: '#ff6d4b'}}>提现</Text></View>
+                        <View style={[styles.flex, styles.center, styles.btnColor]}><Text
+                            style={{color: '#ff6d4b'}}>提现</Text></View>
                     </TouchableWithoutFeedback>
                 </View>
             </View>
@@ -217,7 +224,7 @@ class UserAccount extends Component {
     goCharge() {
         ActionUtil.setAction(actionType.BA_MINE_RECHANGE);
         let {navigator, appConfig} = this.props;
-        if(appConfig.get('showRecharge')) {
+        if (appConfig.get('showRecharge')) {
             navigator.push({
                 component: RechargeContainer,
                 name: 'recharge',
@@ -234,7 +241,7 @@ class UserAccount extends Component {
         ActionUtil.setAction(actionType.BA_MINE_CASH);
         let {navigator, actions} = this.props;
 
-        if(parseInt(value.score) < parseInt(value.min_price)) {
+        if (parseInt(value.score) < parseInt(value.min_price)) {
             Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);
         } else if (value.name && value.alipay_account) {
             navigator.push({
@@ -254,11 +261,10 @@ class UserAccount extends Component {
 }
 
 
-
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#eee'
+        flex: 1,
+        backgroundColor: '#eee'
     },
     flex: {
         flex: 1
@@ -285,7 +291,7 @@ const styles = StyleSheet.create({
         height: 20
     },
     scrollBox: {
-        marginBottom: (Platform.OS == 'ios') ? 60: 0
+        marginBottom: (Platform.OS == 'ios') ? 60 : 0
     },
     basicSection: {
         paddingTop: 10,
@@ -313,7 +319,7 @@ const styles = StyleSheet.create({
         height: 30,
         backgroundColor: '#ffa251',
         borderColor: '#fff',
-        borderWidth: 1/PixelRatio.get(),
+        borderWidth: 1 / PixelRatio.get(),
         borderRightWidth: 0,
         borderTopLeftRadius: 15,
         borderBottomLeftRadius: 15
@@ -337,7 +343,7 @@ const styles = StyleSheet.create({
     },
     btnColor: {
         height: 40,
-        borderWidth: 1/PixelRatio.get(),
+        borderWidth: 1 / PixelRatio.get(),
         borderColor: '#ff6d4b',
         borderRadius: 2
     }
