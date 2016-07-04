@@ -51,7 +51,11 @@ export default class AboutUser extends Component {
     }
 
     componentWillUnmount() {
-        this.props.actions.userInputHouseCleared();
+        let {route, actions, actionsNavigation} = this.props;
+        actions.userInputHouseCleared();
+        if(route.from == 'houseDetail') {
+            actionsNavigation.detailPopRoute();
+        }
     }
 
     _renderHeader = () => {
@@ -108,7 +112,10 @@ export default class AboutUser extends Component {
     };
 
     goDetail = (item) => {
-        this.props.navigator.push({
+        let {navigator, actions, actionsNavigation} = this.props;
+        actionsNavigation.aboutUserPushRoute();
+        actions.userInputHouseCleared();
+        navigator.push({
             component: DetailContainer,
             from: 'aboutUser',
             name: 'houseDetail',

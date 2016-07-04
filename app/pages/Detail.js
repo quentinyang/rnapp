@@ -194,6 +194,8 @@ export default class Detail extends Component {
             actionsNavigation.detailPopRoute();
         } else if(route.from == 'houseList') {
             actionsNavigation.listPopRoute();
+        } else if(route.from == 'aboutUser') {
+            actionsNavigation.aboutUserPopRoute();
         }
 
         if(Platform.OS === 'ios') {
@@ -270,7 +272,7 @@ export default class Detail extends Component {
     };
 
     _renderHeader = () => {
-        let {baseInfo, sameCommunityList, route, actions, navigator} = this.props;
+        let {baseInfo, sameCommunityList, route, actions, navigator, actionsNavigation} = this.props;
         let houseList = sameCommunityList.get('properties');
         let userInfo = baseInfo.get('userInfo');
 
@@ -278,7 +280,7 @@ export default class Detail extends Component {
             <View>
                 <BaseInfo baseInfo={baseInfo.get('baseInfo')} route={route} />
                 { userInfo.get('input_user_id') ?
-                    <UserInfo userInfo={userInfo} navigator={navigator} />
+                    <UserInfo userInfo={userInfo} navigator={navigator} actionsNavigation={actionsNavigation} />
                     : null
                 }
 
@@ -564,7 +566,7 @@ class UserInfo extends Component {
         super(props);
     }
     render() {
-        let {userInfo, navigator} = this.props;
+        let {userInfo, navigator, actionsNavigation} = this.props;
         let mobile = userInfo.get('mobile'),
             showMobile = mobile ? mobile.slice(0, 3) + '****' + mobile.slice(-4) : '';
         return (
@@ -574,9 +576,11 @@ class UserInfo extends Component {
 
                 <TouchableWithoutFeedback
                     onPress={() => {
+                        actionsNavigation.detailPushRoute();
                         navigator.push({
                             component: AboutUserContainer,
                             title: '用户' + showMobile,
+                            from: 'houseDetail',
                             name: 'aboutUser',
                             backLog: '',
                             bp: '',

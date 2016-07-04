@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import AboutUser from '../pages/AboutUser';
 import * as actions from '../actions/user';
+import * as actionsNavigation from '../actions/navigation';
 
 class AboutUserContainer extends Component {
     constructor(props) {
@@ -31,6 +32,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(actions, dispatch),
+        actionsNavigation: bindActionCreators(actionsNavigation, dispatch)
     }
 }
 

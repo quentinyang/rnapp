@@ -3,6 +3,7 @@
 import { combineReducers } from 'redux';
 import * as types from '../constants/User';
 import Immutable from 'immutable';
+import navigation from './navigation';
 
 let initialState = {
     uid: 0,
@@ -100,5 +101,5 @@ export default combineReducers({
     userControlData,
     scoreData,
     expLevel,
-    userHouseData
+    userHouseData: navigation(userHouseData, Immutable.fromJS(initUserInputHouse), 'aboutUser')
 });
