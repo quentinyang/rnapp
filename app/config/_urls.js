@@ -82,8 +82,8 @@ let urls = {
         aliStatus: HOST + 'recharge/binding/alipay/status'
     },
     card: {
-        welfare: HOST + 'user-welfare-card',
-        getNewWelfare: HOST + 'user-welfare-card/one-new'
+        welfare: HOST + 'my-welfare-cards',
+        getNewWelfare: HOST + 'my-welfare-card/latest'
     }
 }
 
