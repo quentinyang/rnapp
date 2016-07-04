@@ -16,6 +16,7 @@ import {
 } from 'nuke';
 
 import AboutEXPContainer from '../containers/AboutEXPContainer';
+import DetailContainer from '../containers/DetailContainer';
 import TitleBar from '../components/TitleBar';
 import Immutable from 'immutable';
 import {formatDate} from '../utils/CommonUtils';
@@ -35,6 +36,7 @@ export default class AboutUser extends Component {
                 dataSource={ds.cloneWithRows(this.props.properties.toArray())}
                 renderHeader={this._renderHeader}
                 renderRow={this._renderRow}
+                renderFooter={this._renderFooter}
                 onEndReached={this._onEndReached}
                 onEndReachedThreshold={50}
                 enableEmptySections={true}
@@ -63,15 +65,31 @@ export default class AboutUser extends Component {
     _renderRow = (rowData, secId, rowId, highlightRow) => {
         let date = formatDate(rowData.get('created_at'));
         return (
-            <View style={styles.houseItem}>
-                <Text style={{width: 80}}>{date.month}月{date.day}日</Text>
-                <View style={styles.flex}>
-                    <Text style={{fontWeight: '500'}}>{rowData.get('community_name')} {rowData.get('building_num') + rowData.get('building_unit') + rowData.get('door_num')}室</Text>
-                    <Text style={{fontSize: 12, marginTop: 2}}>{rowData.get('bedrooms')}室{rowData.get('living_roooms')}厅{rowData.get('bathrooms')}卫 {rowData.get('area')}平 {rowData.get('price')}万</Text>
-                    <Text style={{fontSize: 12, color: '#8d8c92', marginTop: 2}}>{rowData.get('district_name')}-{rowData.get('block_name')} {rowData.get('community_address')}</Text>
+            <TouchableHighlight onPress={() => this.goDetail(rowData)} underlayColor='transparent'>
+                <View style={styles.houseItem}>
+                    <Text style={{width: 80}}>{date.month}月{date.day}日</Text>
+                    <View style={styles.flex}>
+                        <Text style={{fontWeight: '500'}} numberOfLines={1}>{rowData.get('community_name')} {rowData.get('building_num') + rowData.get('building_unit') + rowData.get('door_num')}室</Text>
+                        <Text style={{fontSize: 12, marginTop: 2}}>{rowData.get('bedrooms')}室{rowData.get('living_roooms')}厅{rowData.get('bathrooms')}卫 {rowData.get('area')}平 {rowData.get('price')}万</Text>
+                        <Text style={{fontSize: 12, color: '#8d8c92', marginTop: 2}}>{rowData.get('district_name')}-{rowData.get('block_name')} {rowData.get('community_address')}</Text>
+                    </View>
                 </View>
-            </View>
+            </TouchableHighlight>
         );
+    };
+
+    _renderFooter = () => {
+        let userInfo = Immutable.fromJS({
+            "input_house_count": 0,  //发房数量
+        });
+        if(userInfo.get('input_house_count') == 0) {
+            return (
+                <View style={[styles.center, styles.flex, {marginVertical: 70}]}>
+                    <Image source={require('../images/icon/house_light_gray_big.png')} style={styles.noHouse} />
+                    <Text style={{fontSize: 15}}>Ta还没有发布房源</Text>
+                </View>
+            );
+        }
     };
 
     _onEndReached = () => {
@@ -90,9 +108,16 @@ export default class AboutUser extends Component {
         });
     };
 
-
-
-
+    goDetail = (item) => {
+        this.props.navigator.push({
+            component: DetailContainer,
+            from: 'aboutUser',
+            name: 'houseDetail',
+            title: '房源详情',
+            hideNavBar: false,
+            item
+        })
+    };
 }
 
 class UserSection extends Component {
@@ -101,6 +126,27 @@ class UserSection extends Component {
     }
 
     render() {
+        let userInfo = Immutable.fromJS({
+            "input_user_id": 1,
+            "mobile": "15000859650",
+            "login_days": 50,
+            "input_house_count": 3,  //发房数量
+            "look_house_count": 2, //看房数量
+            "earn_money": 50, //赚钱积分
+            "user_experience": "12",//用户经验值
+            "level": "1", //用户级别，
+            "input_house_selling_rate": "60%", //发房在卖率
+            "user_attention_block_list" : [
+                     "徐家汇",
+                     "南京西路"
+            ], //可能为空
+            "user_attention_community_list" : [
+                     "上海康城",
+                     "上南一村"
+            ] //可能为空
+        });
+        let attentArr = userInfo.get('user_attention_block_list').size > 0 ? userInfo.get('user_attention_block_list').toJS() : userInfo.get('user_attention_community_list').size > 0 ? userInfo.get('user_attention_community_list').toJS() : null;
+
         return (
             <View style={styles.basicBox}>
                 <View style={styles.center}>
@@ -110,36 +156,38 @@ class UserSection extends Component {
                             source={require('../images/avatar_white.png')}
                         />
                     </View>
-                    <Text style={{fontSize: 17}}>155****4568</Text>
+                    <Text style={{fontSize: 17}}>{userInfo.get('mobile')}</Text>
                     <View style={[styles.row, styles.resultList]}>
                         <View style={[styles.center, styles.resultItem]}>
-                            <Text style={[styles.resultNum]}>{47}</Text>
+                            <Text style={[styles.resultNum]}>{userInfo.get('login_days')}</Text>
                             <Text style={styles.smallFont}>累计登录</Text>
                         </View>
                         <View style={styles.vline}></View>
                         <View style={[styles.center, styles.resultItem]}>
-                            <Text style={[styles.resultNum]}>{201}</Text>
+                            <Text style={[styles.resultNum]}>{userInfo.get('earn_money')}</Text>
                             <Text style={styles.smallFont}>已赚积分</Text>
                         </View>
                         <View style={styles.vline}></View>
                         <View style={[styles.center, styles.resultItem]}>
-                            <Text style={[styles.resultNum]}>{259}</Text>
+                            <Text style={[styles.resultNum]}>{userInfo.get('user_experience')}</Text>
                             <Text style={styles.smallFont}>已获经验</Text>
                         </View>
                     </View>
                 </View>
                 <View style={styles.baseBottom}>
+                    {attentArr ?
                     <View style={{marginBottom: 6, flexDirection: 'row'}}>
                         <Image source={require('../images/icon/love.png')} style={{width: 17, height: 16, marginRight: 10}} />
-                        <Text style={styles.font12} numberOfLines={1}>关注：徐家汇、长寿路、静安寺、中山公园、中山公园、中山公园</Text>
+                        <Text style={styles.font12} numberOfLines={1}>关注：{attentArr.join('、')}</Text>
                     </View>
+                    :null}
                     <View style={{flexDirection: 'row'}}>
                         <Image source={require('../images/icon/house_light_gray.png')} style={{width: 17, height: 16, marginRight: 10}} />
-                        <Text style={styles.font12}>看房：105套</Text>
+                        <Text style={styles.font12}>看房：{userInfo.get('look_house_count')}套</Text>
                     </View>
                 </View>
-                <TouchableHighlight style={styles.levelBtn} underlayColor='transparent' onPress={() => this.navigatorPush({component: AboutEXPContainer, data: {level: '1', exp: '12', name: 'exp', title: '我的等级'}})}>
-                    <View style={[styles.level, styles.center]}><Text style={styles.whiteText}>V1会员</Text></View>
+                <TouchableHighlight style={styles.levelBtn} underlayColor='transparent' onPress={() => this.navigatorPush({component: AboutEXPContainer, data: {level: userInfo.get('level'), exp: userInfo.get('user_experience'), name: 'exp', title: '我的等级'}})}>
+                    <View style={[styles.level, styles.center]}><Text style={styles.whiteText}>V{userInfo.get('level')}会员</Text></View>
                 </TouchableHighlight>
             </View>
         );
@@ -157,13 +205,34 @@ class HouseSection extends Component {
     }
 
     render() {
+        let userInfo = Immutable.fromJS({
+            "input_user_id": 1,
+            "mobile": "15000859650",
+            "login_days": 50,
+            "input_house_count": 0,  //发房数量
+            "look_house_count": 2, //看房数量
+            "earn_money": 50, //赚钱积分
+            "user_experience": "12",//用户经验值
+            "level": "1", //用户级别，
+            "input_house_selling_rate": "60%", //发房在卖率
+            "user_attention_block_list" : [
+                     "徐家汇",
+                     "南京西路"
+            ], //可能为空
+            "user_attention_community_list" : [
+                     "上海康城",
+                     "上南一村"
+            ] //可能为空
+        });
         return (
             <View style={styles.houseBox}>
                 <TitleBar title="Ta发的房源" />
+                {userInfo.get('input_house_count') != 0 ?
                 <View style={styles.inputResult}>
-                    <Text>累计发房：47</Text>
-                    <Text>发房在卖率：58%</Text>
+                    <Text>累计发房：{userInfo.get('input_house_count')}</Text>
+                    <Text>发房在卖率：{userInfo.get('input_house_selling_rate')}</Text>
                 </View>
+                : null}
             </View>
         );
     }
@@ -271,5 +340,10 @@ const styles = StyleSheet.create({
         borderColor: '#d9d9d9',
         flexDirection: 'row',
         alignItems: 'flex-start'
+    },
+    noHouse: {
+        marginBottom: 15,
+        width: 80,
+        height: 75
     }
 });

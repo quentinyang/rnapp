@@ -99,7 +99,7 @@ export default class User extends Component {
                         onPress={() => this.navigatorPush({component: WelfareContainer, name: 'welfare', title: '福利卡'})}
                     >
                         <Text style={styles.flex}>福利卡</Text>
-                        <Text>{4}</Text>
+                        <Text>{userProfile.get('welfare_card_count')}</Text>
                     </LinkSection>
 
                     <LinkSection

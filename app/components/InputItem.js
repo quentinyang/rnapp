@@ -37,6 +37,21 @@ class HouseItem extends Component {
         let {item} = this.props;
         let date = formatDate(item.get('created_at'));
         let statusStr = ['待审核', '已通过', '未通过'];
+        let reason = '';
+        switch(Number(item.get('check_status'))) {
+            case 0:
+                reason = date.month + '月' + date.day + '日发布';
+                break;
+            case 1:
+                reason = date.month + '月' + date.day + '日审核通过';
+                break;
+            case 2:
+                reason = item.get('reason');
+                break;
+            default:
+                reason =  '';
+        }
+
         return (
             <View style={styles.itemTop}>
                 <View style={[styles.row, styles.alignCenter]}>
@@ -55,7 +70,7 @@ class HouseItem extends Component {
                 </View>
                 <View style={[styles.row]}>
                     <Text numberOfLines={1} style={[styles.flex, styles.smallFont]}>{item.get('district_name') + '-' + item.get('block_name') + ' ' + item.get('community_address')}</Text>
-                    <Text style={styles.smallFont}>{item.get('reason')}</Text>
+                    <Text style={styles.smallFont}>{reason}</Text>
                 </View>
             </View>
         );
