@@ -37,6 +37,7 @@
 		3BE977CF1CE31A7E00988AAA /* Keychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE977CC1CE31A7E00988AAA /* Keychain.m */; };
 		3BE977D01CE31A7E00988AAA /* UUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BE977CE1CE31A7E00988AAA /* UUID.m */; };
 		543246E61CC11A4400E24300 /* libGeTui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 547ED1781CC1181800245AC3 /* libGeTui.a */; };
+		54B79B1C1D2A05E300D11D71 /* RNAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 54B79B1B1D2A05E300D11D71 /* RNAudioPlayer.m */; };
 		54C9C5521C9BE52E00914E77 /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 54C9C5511C9BE52E00914E77 /* bundle */; };
 		6620FB961CAA91AB00BB2A3F /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */; };
 		6620FB981CAA91B500BB2A3F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6620FB971CAA91B500BB2A3F /* Security.framework */; };
@@ -206,6 +207,8 @@
 		3BE977CD1CE31A7E00988AAA /* UUID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUID.h; sourceTree = "<group>"; };
 		3BE977CE1CE31A7E00988AAA /* UUID.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUID.m; sourceTree = "<group>"; };
 		547ED1731CC1181800245AC3 /* GeTui.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GeTui.xcodeproj; path = "../node_modules/nuke/source-native/GeTui/GeTui/GeTui.xcodeproj"; sourceTree = "<group>"; };
+		54B79B1A1D2A05E300D11D71 /* RNAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNAudioPlayer.h; sourceTree = "<group>"; };
+		54B79B1B1D2A05E300D11D71 /* RNAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNAudioPlayer.m; sourceTree = "<group>"; };
 		54C9C5511C9BE52E00914E77 /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		6620FB971CAA91B500BB2A3F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -368,6 +371,8 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				2DDF0ADB1CDC918F00D261BE /* Alipay.m */,
 				2DDF0ADD1CDC91A300D261BE /* Alipay.h */,
+				54B79B1A1D2A05E300D11D71 /* RNAudioPlayer.h */,
+				54B79B1B1D2A05E300D11D71 /* RNAudioPlayer.m */,
 			);
 			name = fy360;
 			sourceTree = "<group>";
@@ -816,6 +821,7 @@
 				3BE977CF1CE31A7E00988AAA /* Keychain.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				3B0723AA1CEC8A7800989ECE /* Utils.m in Sources */,
+				54B79B1C1D2A05E300D11D71 /* RNAudioPlayer.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				2DDF0ADC1CDC918F00D261BE /* Alipay.m in Sources */,
 			);
