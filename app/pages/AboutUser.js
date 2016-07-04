@@ -19,8 +19,10 @@ import AboutEXPContainer from '../containers/AboutEXPContainer';
 import DetailContainer from '../containers/DetailContainer';
 import TitleBar from '../components/TitleBar';
 import Immutable from 'immutable';
+
 import {formatDate} from '../utils/CommonUtils';
-let ActionUtil = require( '../utils/ActionLog');
+let ActionUtil = require('../utils/ActionLog');
+
 import * as actionType from '../constants/ActionLog';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r2)});
@@ -28,7 +30,12 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r
 export default class AboutUser extends Component {
     constructor(props) {
         super(props);
+
         this.userInfo = this.props.route.userInfo;
+
+        this.pageId = actionType.BA_USER;
+        ActionUtil.setAction(actionType.BA_USER_ONVIEW);
+
     }
 
     render() {
@@ -67,8 +74,11 @@ export default class AboutUser extends Component {
         );
     };
 
+
     _renderRow = (rowData, secId, rowId, highlightRow) => {
         let date = formatDate(rowData.get('created_at'));
+        ActionUtil.setAction(actionType.BA_USER_DETAIL);
+
         return (
             <TouchableHighlight onPress={() => this.goDetail(rowData)} underlayColor='transparent'>
                 <View style={styles.houseItem}>
@@ -97,6 +107,7 @@ export default class AboutUser extends Component {
 
     _onEndReached = () => {
         let {pager, actions} = this.props;
+
         if(pager.get('total') > pager.get('current_page')*pager.get('per_page')) {
             this.getHouseList(Number(pager.get('current_page')) + 1);
         }
@@ -124,6 +135,7 @@ export default class AboutUser extends Component {
             item
         })
     };
+
 }
 
 class UserSection extends Component {
@@ -182,6 +194,7 @@ class UserSection extends Component {
     }
 
     navigatorPush = (opt) => {
+        ActionUtil.setAction(actionType.BA_USER_GRADE);
         this.props.navigator.push(opt);
     };
 }
@@ -189,7 +202,6 @@ class UserSection extends Component {
 class HouseSection extends Component {
     constructor(props) {
         super(props);
-
     }
 
     render() {
@@ -211,8 +223,8 @@ class HouseSection extends Component {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#f8f8f8'
+        flex: 1,
+        backgroundColor: '#f8f8f8'
     },
     flex: {
         flex: 1
@@ -265,7 +277,7 @@ const styles = StyleSheet.create({
     baseBottom: {
         padding: 10,
         backgroundColor: '#fff',
-        borderWidth: 1/PixelRatio.get(),
+        borderWidth: 1 / PixelRatio.get(),
         borderColor: '#d9d9d9',
         borderRadius: 3
     },
@@ -280,7 +292,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         height: 50,
         backgroundColor: '#f8f8f8',
-        borderWidth: 1/PixelRatio.get(),
+        borderWidth: 1 / PixelRatio.get(),
         borderColor: '#d9d9d9',
         borderRadius: 3
     },
@@ -294,7 +306,7 @@ const styles = StyleSheet.create({
         height: 30,
         backgroundColor: '#ffa251',
         borderColor: '#fff',
-        borderWidth: 1/PixelRatio.get(),
+        borderWidth: 1 / PixelRatio.get(),
         borderRightWidth: 0,
         borderTopLeftRadius: 15,
         borderBottomLeftRadius: 15
@@ -304,7 +316,7 @@ const styles = StyleSheet.create({
     },
     houseItem: {
         padding: 15,
-        borderBottomWidth: 1/PixelRatio.get(),
+        borderBottomWidth: 1 / PixelRatio.get(),
         borderColor: '#d9d9d9',
         flexDirection: 'row',
         alignItems: 'flex-start'

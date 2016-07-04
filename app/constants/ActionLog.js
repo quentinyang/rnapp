@@ -39,12 +39,12 @@ export const BA_DETAIL_WELFARECARD_DELETE = "3-100000-35"
 export const BA_DETAIL_WELFARECARD_SURE = "3-100000-36"
 export const BA_DETAIL_WELFARECARD_NOUSE = "3-100000-37"
 export const BA_DETAIL_TAPE_ONVIEW = "3-100000-38"
-export const BA_DETAIL_TAPE_DELETE = "3-100000-38"
-export const BA_DETAIL_TAPE_ONE = "3-100000-39"
-export const BA_DETAIL_TAPE_TWO = "3-100000-40"
+export const BA_DETAIL_TAPE_DELETE = "3-100000-39"
+export const BA_DETAIL_TAPE_ONE = "3-100000-40"
+export const BA_DETAIL_TAPE_TWO = "3-100000-41"
 
-export const BA_DETAIL_TAPE_SURE = "3-100000-41"
-export const BA_DETAIL_PHENO_ONVIEW = "3-100000-42"
+export const BA_DETAIL_TAPE_SURE = "3-100000-42"
+export const BA_DETAIL_PHENO_ONVIEW = "3-100000-43"
 
 
 //设置我的关注 - 1 (跳过)
@@ -127,6 +127,9 @@ export const BA_HOME_PAGE_EXPERIENCE_ONVIEW = "3-200000-9"
 export const BA_HOME_PAGE_CREDIT_ONVIEW = "3-200000-10"
 export const BA_HOME_PAGE_DELETE = "3-200000-11"
 export const BA_HOME_PAGE_FIND = "3-200000-12"
+export const BA_HOME_PAGEWELFARECARD_ONVIEW = "3-200000-13"
+export const BA_HOME_SENDRULE_ONVIEW = "3-200000-14"
+
 
 //发房单页
 export const BA_SEND = "101-300000"
@@ -198,6 +201,7 @@ export const BA_MINE_RELEASED = "101-400006"
 export const BA_MINE_SET = "101-400007"
 export const BA_MINE_MEMBER = "3-400008"
 export const BA_MINE_SIGN = "3-400009"
+export const BA_MINE_WELFARE = "3-400010"
 
 //联系过的房源列表
 export const BA_MINE_CONTACT = "101-450000"
@@ -233,6 +237,16 @@ export const BA_FIRSTOPEN_DELETE = "101-111003"
 export const BA_FIRSTOPEN_FIND = "101-111004"
 export const BA_FIRSTOPEN_SEND = "101-111005"
 export const BA_FIRSTOPEN_RETURN = "101-111006"
+
+//用户单页
+export const BA_USER = "3-112000"
+export const BA_USER_ONVIEW = "3-112001"
+export const BA_USER_RETURN = "3-112002"
+export const BA_USER_GRADE = "3-112003"
+export const BA_USER_DETAIL = "3-112004"
+export const BA_USER_SLIDEUP = "3-112005"
+export const BA_USER_GRADE_ONVIEW = "3-112006"
+
 
 //充值
 export const BA_DEPOSIT = "101-800000"
@@ -303,3 +317,11 @@ export const BA_MINE_ZHIFUBAO_NAMEBACK = "3-441009"
 export const BA_MINE_ZHIFUBAO_NAMEINPUT = "3-441010"
 export const BA_MINE_ZHIFUBAO_NAMESURE = "3-441011"
 export const BA_MINE_ZHIFUBAO_EXISTONVIEW = "3-441012"
+
+//我的福利页
+export const BA_MINE_WELFARE = "3-411000"
+export const BA_MINE_WELFARE_NOUSE_ONVIEW = "3-411001"
+export const BA_MINE_WELFARE_BACK = "3-411002"
+export const BA_MINE_WELFARE_USED_ONVIEW = "3-411003"
+export const BA_MINE_WELFARE_OVERDUE_ONVIEW = "3-411004"
+

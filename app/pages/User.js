@@ -96,7 +96,7 @@ export default class User extends Component {
                             style: {width: 13.5, height: 11},
                             bgColor: '#66a1e7'
                         }}
-                        onPress={() => this.navigatorPush({component: WelfareContainer, name: 'welfare', title: '福利卡'})}
+                        onPress={() => this.navigatorPush({component: WelfareContainer, name: 'welfare', title: '福利卡', actionLog: actionType.BA_MINE_WELFARE})}
                     >
                         <Text style={styles.flex}>福利卡</Text>
                         <Text>{userProfile.get('welfare_card_count')}</Text>

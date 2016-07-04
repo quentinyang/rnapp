@@ -11,7 +11,7 @@ import {
 } from 'nuke';
 
 import Card from '../components/WelfareCard';
-let ActionUtil = require( '../utils/ActionLog');
+let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r2)});
@@ -20,7 +20,7 @@ export default class Welfare extends Component {
     constructor(props) {
         super(props);
 
-        if(this.props.route.callbackFun) {
+        if (this.props.route.callbackFun) {
             this.props.route.callbackFun = () => {
                 this.props.navigator.pop();
                 this.props.homeActions.setRuleModalVisible(true);
@@ -28,6 +28,8 @@ export default class Welfare extends Component {
         }
         this.tabs = ['未使用', '已使用', '已过期'];
         this.status = [1, 2, 3];
+
+        this.pageId = actionType.BA_MINE_WELFARE;
     }
 
     render() {
@@ -56,23 +58,23 @@ export default class Welfare extends Component {
 
     _renderHeader = () => {
         return (
-            <Wtabs current={this.props.current} tabs={this.tabs} onPress={this.tabClick} />
+            <Wtabs current={this.props.current} tabs={this.tabs} onPress={this.tabClick}/>
         )
     };
 
     _renderRow = (rowData, secId, rowId, highlightRow) => {
         return (
             <View style={styles.cardSection}>
-                <Card item={rowData} />
+                <Card item={rowData}/>
             </View>
         );
     };
 
     _renderFooter = () => {
         let {pager, current} = this.props;
-        if(pager.get('total') == 0) {
-            return <NoCoupon current={current} tabs={this.tabs} />
-        } else if(pager.get('total') > pager.get('page')*pager.get('per_page')) {
+        if (pager.get('total') == 0) {
+            return <NoCoupon current={current} tabs={this.tabs}/>
+        } else if (pager.get('total') > pager.get('page') * pager.get('per_page')) {
             return <Text style={{textAlign: 'center'}}>加载中...</Text>
         }
     };
@@ -80,14 +82,26 @@ export default class Welfare extends Component {
     _onEndReached = () => {
         let {pager, current, actions} = this.props;
 
-        if(pager.get('total') > pager.get('page')*pager.get('per_page')) {
+        if (pager.get('total') > pager.get('page') * pager.get('per_page')) {
             this.getWelfareList(Number(pager.get('page')) + 1, this.status[current]);
         }
     };
 
     tabClick = (index) => {
         let {actions, current} = this.props;
-        if(index != current) {
+        switch (this.status[index]) {
+            case 1:
+                ActionUtil.setAction(actionType.BA_MINE_WELFARE_NOUSE_ONVIEW);
+                break;
+            case 2:
+                ActionUtil.setAction(actionType.BA_MINE_WELFARE_USED_ONVIEW);
+                break;
+            case 3:
+                ActionUtil.setAction(actionType.BA_MINE_WELFARE_OVERDUE_ONVIEW);
+                break;
+        }
+
+        if (index != current) {
             actions.welfareStatusChanged(index);
             this.getWelfareList(1, this.status[index]);
         }
@@ -113,8 +127,10 @@ class Wtabs extends Component {
             <View style={[styles.tabSection, styles.center]}>
                 {this.props.tabs.map((value, index) => {
                     return (
-                        <TouchableHighlight onPress={() => this.props.onPress(index)} key={index} underlayColor='transparent'>
-                            <View style={[styles.tabsItem, styles.center, this.props.current == index ? styles.tabsActive:{}]}>
+                        <TouchableHighlight onPress={() => this.props.onPress(index)} key={index}
+                                            underlayColor='transparent'>
+                            <View
+                                style={[styles.tabsItem, styles.center, this.props.current == index ? styles.tabsActive:{}]}>
                                 <Text style={this.props.current == index ? styles.tabsFontActive: {}}>{value}</Text>
                             </View>
                         </TouchableHighlight>
@@ -133,7 +149,7 @@ class NoCoupon extends Component {
     render() {
         return (
             <View style={[styles.noCouponBox, styles.center]}>
-                <Image source={require('../images/coupon.png')}  style={styles.coupon} />
+                <Image source={require('../images/coupon.png')} style={styles.coupon}/>
                 <Text>您当前没有{this.props.tabs[this.props.current]}的福利卡</Text>
             </View>
         );

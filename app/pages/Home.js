@@ -150,6 +150,8 @@ class CouponModal extends Component {
 class GiftModal extends Component {
     constructor(props) {
         super(props);
+
+        ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": this.props.modalInfo.points});
     }
 
     render() {
@@ -240,6 +242,7 @@ class GiftModal extends Component {
 class ScoreModal extends Component {
     constructor(props) {
         super(props);
+        ActionUtil.setAction(actionType.BA_HOME_SENDRULE_ONVIEW);
     }
 
     render() {

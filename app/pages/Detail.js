@@ -263,7 +263,7 @@ export default class Detail extends Component {
             return;
         }
         let {actions, route} = this.props;
-
+        ActionUtil.setAction(actionType.BA_DETAIL_TAPE_SURE);
         actions.setVoiceVisible(false);
         actions.fetchSellerPhone({
             property_id: route.item.get('property_id'),
