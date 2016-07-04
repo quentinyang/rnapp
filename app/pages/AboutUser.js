@@ -28,6 +28,7 @@ var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r
 export default class AboutUser extends Component {
     constructor(props) {
         super(props);
+        this.userInfo = this.props.route.userInfo;
     }
 
     render() {
@@ -56,8 +57,8 @@ export default class AboutUser extends Component {
     _renderHeader = () => {
         return (
             <View style={styles.container}>
-                <UserSection navigator={this.props.navigator} userInfo={this.props.userInfo} />
-                <HouseSection />
+                <UserSection navigator={this.props.navigator} userInfo={this.userInfo} />
+                <HouseSection userInfo={this.userInfo} />
             </View>
         );
     };
@@ -79,9 +80,7 @@ export default class AboutUser extends Component {
     };
 
     _renderFooter = () => {
-        let userInfo = Immutable.fromJS({
-            "input_house_count": 0,  //发房数量
-        });
+        let userInfo = this.userInfo;
         if(userInfo.get('input_house_count') == 0) {
             return (
                 <View style={[styles.center, styles.flex, {marginVertical: 70}]}>
@@ -94,8 +93,8 @@ export default class AboutUser extends Component {
 
     _onEndReached = () => {
         let {pager, actions} = this.props;
-        if(pager.get('total') > pager.get('page')*pager.get('per_page')) {
-            this.getHouseList(Number(pager.get('page')) + 1);
+        if(pager.get('total') > pager.get('current_page')*pager.get('per_page')) {
+            this.getHouseList(Number(pager.get('current_page')) + 1);
         }
     };
 
@@ -103,7 +102,7 @@ export default class AboutUser extends Component {
         InteractionManager.runAfterInteractions(() => {
             this.props.actions.fetchUserInputHouse({
                 page: page,
-                user_id: 3
+                user_id: this.userInfo.get('input_user_id')
             });
         });
     };
@@ -126,25 +125,9 @@ class UserSection extends Component {
     }
 
     render() {
-        let userInfo = Immutable.fromJS({
-            "input_user_id": 1,
-            "mobile": "15000859650",
-            "login_days": 50,
-            "input_house_count": 3,  //发房数量
-            "look_house_count": 2, //看房数量
-            "earn_money": 50, //赚钱积分
-            "user_experience": "12",//用户经验值
-            "level": "1", //用户级别，
-            "input_house_selling_rate": "60%", //发房在卖率
-            "user_attention_block_list" : [
-                     "徐家汇",
-                     "南京西路"
-            ], //可能为空
-            "user_attention_community_list" : [
-                     "上海康城",
-                     "上南一村"
-            ] //可能为空
-        });
+        let {userInfo} = this.props;
+        let mobile = userInfo.get('mobile');
+        let showMobile = mobile ? mobile.slice(0, 3) + '****' + mobile.slice(-4) : '';
         let attentArr = userInfo.get('user_attention_block_list').size > 0 ? userInfo.get('user_attention_block_list').toJS() : userInfo.get('user_attention_community_list').size > 0 ? userInfo.get('user_attention_community_list').toJS() : null;
 
         return (
@@ -156,7 +139,7 @@ class UserSection extends Component {
                             source={require('../images/avatar_white.png')}
                         />
                     </View>
-                    <Text style={{fontSize: 17}}>{userInfo.get('mobile')}</Text>
+                    <Text style={{fontSize: 17}}>{showMobile}</Text>
                     <View style={[styles.row, styles.resultList]}>
                         <View style={[styles.center, styles.resultItem]}>
                             <Text style={[styles.resultNum]}>{userInfo.get('login_days')}</Text>
@@ -164,7 +147,7 @@ class UserSection extends Component {
                         </View>
                         <View style={styles.vline}></View>
                         <View style={[styles.center, styles.resultItem]}>
-                            <Text style={[styles.resultNum]}>{userInfo.get('earn_money')}</Text>
+                            <Text style={[styles.resultNum]}>{Number(userInfo.get('earn_money'))}</Text>
                             <Text style={styles.smallFont}>已赚积分</Text>
                         </View>
                         <View style={styles.vline}></View>
@@ -205,25 +188,7 @@ class HouseSection extends Component {
     }
 
     render() {
-        let userInfo = Immutable.fromJS({
-            "input_user_id": 1,
-            "mobile": "15000859650",
-            "login_days": 50,
-            "input_house_count": 0,  //发房数量
-            "look_house_count": 2, //看房数量
-            "earn_money": 50, //赚钱积分
-            "user_experience": "12",//用户经验值
-            "level": "1", //用户级别，
-            "input_house_selling_rate": "60%", //发房在卖率
-            "user_attention_block_list" : [
-                     "徐家汇",
-                     "南京西路"
-            ], //可能为空
-            "user_attention_community_list" : [
-                     "上海康城",
-                     "上南一村"
-            ] //可能为空
-        });
+        let {userInfo} = this.props;
         return (
             <View style={styles.houseBox}>
                 <TitleBar title="Ta发的房源" />

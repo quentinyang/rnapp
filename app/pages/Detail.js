@@ -46,7 +46,7 @@ export default class Detail extends Component {
             phoneStr = "获取房东电话";
         }
         let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');
-                    
+
         return (
             <View style={styles.flex}>
                 <View style={[styles.contactWrap, styles.row, styles.center]}>
@@ -81,8 +81,8 @@ export default class Detail extends Component {
                     </TouchableHighlight>
                 </View>
 
-                { couponArr.size ? 
-                    <CouponModal 
+                { couponArr.size ?
+                    <CouponModal
                         isVisible={callInfo.get('couponVisible')}
                         useCoupon={this._useCoupon.bind(this)}
                         couponArr={couponArr}
@@ -90,31 +90,31 @@ export default class Detail extends Component {
                     />
                     : null
                 }
-                
+
 
                 {
-                    info.get('record_url') && info.get('record_url').size ? 
-                        <VoiceModal 
+                    info.get('record_url') && info.get('record_url').size ?
+                        <VoiceModal
                             isVisible={callInfo.get('voiceVisible')}
                             voiceInfo={info.get('record_url')}
                             costScore={cost== "0" ? "免费" : cost + "积分"}
                             getSellerPhone={this._getSellerPhone.bind(this)}
-                            actions={actions} 
+                            actions={actions}
                             navigator={navigator}
-                        /> 
+                        />
                     : null
                 }
-                
+
                 <PhoneModal
                     isVisible={callInfo.get('sellerPhoneVisible')}
                     phoneInfo={callInfo.get('sellerPhone')}
-                    actions={actions} 
+                    actions={actions}
                 />
 
-                <ErrorTipModal 
-                    callInfo={callInfo} 
-                    actions={actions} 
-                    navigator={navigator} 
+                <ErrorTipModal
+                    callInfo={callInfo}
+                    actions={actions}
+                    navigator={navigator}
                 />
 
                 <CostScoreModal
@@ -179,7 +179,7 @@ export default class Detail extends Component {
         let status = Number(info.get('phone_lock_status'));
 
         if(status || !status && callInfo.get('sellerPhone').get('phone')) {
-        } else {            
+        } else {
             ActionUtil.setAction(actionType.BA_DETAIL_SPEND);
             actions.setFeedbackVisible(true);
             this.isGetCall = false;
@@ -219,31 +219,31 @@ export default class Detail extends Component {
             if(baseInfo.get('couponArr').size) {  //是否有看房卡
                 actions.setCouponVisible(true);
             } else if (voice && voice.size) {     //是否有录音
-                actions.setVoiceVisible(true);      
+                actions.setVoiceVisible(true);
             } else {                             //获取短号拨打
                 this.isGetCall = true;
                 actions.callSeller({
                     property_id: propertyId,
                     card_id: this.couponObj ? this.couponObj.get('id') : null
                 });
-            }            
+            }
         }
     }
     _useCoupon(coupon) {
-        let {baseInfo, route, actions} = this.props;     
+        let {baseInfo, route, actions} = this.props;
         let propertyId = route.item.get("property_id");
         let voice = baseInfo.get('baseInfo').get('record_url');
 
         this.couponObj = coupon;
         actions.setCouponVisible(false);
         if (voice && voice.size) {     //是否有录音
-            actions.setVoiceVisible(true);      
+            actions.setVoiceVisible(true);
         } else {                             //获取短号拨打
             actions.callSeller({
                 property_id: propertyId,
                 card_id: this.couponObj ? this.couponObj.get('id') : null
             });
-        }           
+        }
     }
     _getSellerPhone() {
         if(this.isVoiceGetCall) {
@@ -276,7 +276,7 @@ export default class Detail extends Component {
         return (
             <View>
                 <BaseInfo baseInfo={baseInfo.get('baseInfo')} route={route} />
-                { userInfo.get('input_user_id') ? 
+                { userInfo.get('input_user_id') ?
                     <UserInfo userInfo={userInfo} navigator={navigator} />
                     : null
                 }
@@ -368,7 +368,7 @@ export default class Detail extends Component {
         });
     };
 }
- 
+
 class PhoneModal extends Component {
     constructor(props) {
         super(props);
@@ -415,11 +415,11 @@ class VoiceModal extends Component {
         let voiceList = voiceInfo.map((item, index) => {
             let time = item.get('record_time'), m = parseInt(time / 60), s = time % 60;
             let voiceIcon = this.state.playing == index ? require('../images/voice_anim.gif') : require('../images/voice.png');
-            return (                
+            return (
                 <View key={index} style={[styles.row, styles.justifyContent, styles.center, {marginBottom: 28}]}>
                     <Text>通话{index+1}</Text>
                     <TouchableHighlight
-                        style={styles.flex}                 
+                        style={styles.flex}
                         underlayColor="#F8F8F8"
                         onPress={() => {
                             this.setState({
@@ -445,12 +445,12 @@ class VoiceModal extends Component {
                 <View style={[styles.flex, styles.bgWrap]}>
                     <View style={styles.flex}></View>
                     <View style={[styles.flex, styles.justifyBetween, styles.couponWrap, styles.voiceWrap]}>
-                        <TouchableHighlight 
-                            style={[styles.closeBox, styles.center, styles.justifyContent]} 
+                        <TouchableHighlight
+                            style={[styles.closeBox, styles.center, styles.justifyContent]}
                             onPress={()=>{actions.setVoiceVisible(false);}}
                             underlayColor="#fff"
-                        >                            
-                            <Image style={styles.closeIcon} source={require('../images/close.png')} />                            
+                        >
+                            <Image style={styles.closeIcon} source={require('../images/close.png')} />
                         </TouchableHighlight>
                         <View style={[styles.justifyContent, styles.center]}>
                             <Text style={[styles.subName]}>今日已有2通电话确认房子在卖</Text>
@@ -491,7 +491,7 @@ class CouponModal extends Component {
         return (
             <Modal visible={isVisible} transparent={true} onRequestClose={actions.setCouponVisible}>
                 <View style={[styles.flex, styles.bgWrap]}>
-                    <View style={styles.flex}></View>                    
+                    <View style={styles.flex}></View>
                     <View style={[styles.flex, styles.couponWrap]}>
                         <View style={styles.couponHeader}>
                             <TouchableWithoutFeedback onPress={()=>{actions.setCouponVisible(false)}}>
@@ -516,7 +516,7 @@ class CouponModal extends Component {
                             renderRow={this._renderRow.bind(this)}
                             renderFooter={this._renderFooter}
                             enableEmptySections={true}
-                            showsVerticalScrollIndicator={false}                          
+                            showsVerticalScrollIndicator={false}
                         />
 
                     </View>
@@ -530,7 +530,7 @@ class CouponModal extends Component {
                 <View style={[styles.center, styles.justifyContent, styles.couponFooter]}>
                     <Text style={[styles.greenColor, styles.more]}>不使用看房卡</Text>
                 </View>
-            </TouchableWithoutFeedback>            
+            </TouchableWithoutFeedback>
         );
     }
     _renderRow(rowData) {
@@ -543,7 +543,7 @@ class CouponModal extends Component {
                             curCoupon: rowData
                         });
                     }
-                }}>                    
+                }}>
                     <View style={[styles.markBg, isCur ? styles.greenBg : styles.greyBg, styles.center, styles.justifyContent]}>
                         {isCur ? <Image style={styles.mark} source={require('../images/mark_white.png')} /> : null}
                     </View>
@@ -566,13 +566,13 @@ class UserInfo extends Component {
             <View>
                 <View style={styles.gap}></View>
                 <TitleBar title="发房用户" />
-                
+
                 <TouchableWithoutFeedback
                     onPress={() => {
                         navigator.push({
-                            component: '',
-                            title: '',
-                            name: '',
+                            component: AboutUserContainer,
+                            title: '用户' + showMobile,
+                            name: 'aboutUser',
                             backLog: '',
                             bp: '',
                             userInfo
@@ -594,7 +594,7 @@ class UserInfo extends Component {
                                 </View>
                             </View>
                             <Text style={styles.subName}>{showMobile}</Text>
-                        </View>                        
+                        </View>
 
                         <View style={[styles.info, styles.row]}>
                             <View style={[styles.flex, styles.center, styles.justifyContent]}>
@@ -617,7 +617,7 @@ class UserInfo extends Component {
                                 <Text style={[styles.grayColor, styles.more]}>看房</Text>
                             </View>
                         </View>
-                    </View>                    
+                    </View>
                 </TouchableWithoutFeedback>
             </View>
         );
@@ -833,7 +833,7 @@ class ContactList extends Component {
         return (
             <View>
                 <View style={styles.gap}></View>
-                <TitleBar title={"联系房东记录 (" + contact.get('total') + "次)"} />            
+                <TitleBar title={"联系房东记录 (" + contact.get('total') + "次)"} />
                 <View style={[styles.contactBox]}>
                     {contactList}
                 </View>
@@ -1178,7 +1178,7 @@ var styles = StyleSheet.create({
         borderWidth: 1/PixelRatio.get(),
         borderRadius: 3,
         backgroundColor: '#F8F8F8',
-        marginLeft: 15, 
+        marginLeft: 15,
         marginRight: 10
     },
     voice: {
@@ -1186,7 +1186,7 @@ var styles = StyleSheet.create({
         width: 12,
         position: 'absolute',
         left: 17,
-        top: 13, 
+        top: 13,
     },
     saleTel: {
         marginTop: 14,
