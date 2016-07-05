@@ -67,7 +67,7 @@ export default class AboutUser extends Component {
     _renderHeader = () => {
         return (
             <View style={styles.container}>
-                <UserSection navigator={this.props.navigator} userInfo={this.userInfo} />
+                <UserSection navigator={this.props.navigator} userInfo={this.userInfo} log={this.pageId}/>
                 <HouseSection userInfo={this.userInfo} />
             </View>
         );
@@ -145,7 +145,7 @@ class UserSection extends Component {
     }
 
     render() {
-        let {userInfo} = this.props;
+        let {userInfo, log} = this.props;
         let mobile = userInfo.get('mobile');
         let showMobile = mobile ? mobile.slice(0, 3) + '****' + mobile.slice(-4) : '';
         let attentArr = userInfo.get('user_attention_block_list').size > 0 ? userInfo.get('user_attention_block_list').toJS() : userInfo.get('user_attention_community_list').size > 0 ? userInfo.get('user_attention_community_list').toJS() : null;
@@ -187,7 +187,7 @@ class UserSection extends Component {
                         <Text style={styles.font12}>看房：{userInfo.get('look_house_count')}套</Text>
                     </View>
                 </View>
-                <TouchableHighlight style={styles.levelBtn} underlayColor='transparent' onPress={() => this.navigatorPush({component: AboutEXPContainer, data: {level: userInfo.get('level'), exp: userInfo.get('user_experience'), name: 'exp', title: '我的等级'}})}>
+                <TouchableHighlight style={styles.levelBtn} underlayColor='transparent' onPress={() => this.navigatorPush({component: AboutEXPContainer, data: {level: userInfo.get('level'), exp: userInfo.get('user_experience')}, name: 'exp', title: 'TA的等级', bp:log})}>
                     <View style={[styles.level, styles.center]}><Text style={styles.whiteText}>V{userInfo.get('level')}会员</Text></View>
                 </TouchableHighlight>
             </View>

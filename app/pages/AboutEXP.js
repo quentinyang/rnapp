@@ -23,7 +23,6 @@ export default class AboutEXP extends Component {
         } else {
             ActionUtil.setActionWithExtend(actionType.BA_MINE_GRADE_ONVIEW, {"bp": this.props.route.bp});
         }
-
     }
 
     render() {
