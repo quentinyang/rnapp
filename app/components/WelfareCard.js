@@ -20,11 +20,13 @@ export default class Card extends Component {
         return (
             <Image source={require('../images/membership.png')} style={[styles.wfCaSection, styles.center, wrapStyle]} resizeMode='stretch'>
                 <View style={[styles.center, styles.wfCaLeft]}>
-                    {item.get('cost') == 0 || !item.get('cost') ?
-                    <Text style={[styles.highFont, {fontSize: 20}, item.get('status') != 1 ? styles.gray : null]}>{item.get('function') || '免费' }</Text>
-                    :
-                    <Text><Text style={[styles.highFont, item.get('status') != 1 ? styles.gray : null]}>{item.get('cost')}</Text><Text style={[styles.font12, item.get('status') != 1 ? styles.gray : null]}>积分</Text></Text>
-                    }
+                    {item.get('type') == 2 ?
+                    <Text style={[styles.highFont, {fontSize: 20}, item.get('status') != 1 ? styles.gray : null]}>补签</Text>:null}
+                    {item.get('type') == 1 ?
+                        item.get('cost') == 0 ?
+                        <Text style={[styles.highFont, {fontSize: 20}, item.get('status') != 1 ? styles.gray : null]}>免费</Text>:
+                        <Text><Text style={[styles.highFont, item.get('status') != 1 ? styles.gray : null]}>{item.get('cost')}</Text><Text style={[styles.font12, item.get('status') != 1 ? styles.gray : null]}>积分</Text></Text>
+                    :null}
                 </View>
                 <View style={styles.wfSlice}></View>
                 <View style={styles.wfCaDesc}>
