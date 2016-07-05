@@ -4,7 +4,7 @@ import * as types from '../constants/Card';
 import {makeActionCreator, serviceAction} from './base';
 import { getWelfareList } from '../service/cardService';
 
-export const welfareListFetched = makeActionCreator(types.WELFARE_LIST_FETCHED, 'wfData');
+export const welfareListFetched = makeActionCreator(types.WELFARE_LIST_FETCHED, 'wfData', 'index');
 
 export const welfareListCleared = makeActionCreator(types.WELFARE_LIST_CLEARED);
 
@@ -16,7 +16,7 @@ export function fetchWelfareList(params) {
             service: getWelfareList,
             data: params,
             success: function(oData) {
-                dispatch(welfareListFetched(oData))
+                dispatch(welfareListFetched(oData, params.status || ''))
             },
             error: function(oData) {
             }

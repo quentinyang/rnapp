@@ -33,34 +33,34 @@ export default class Welfare extends Component {
     }
 
     render() {
+        let list = 'list' + this.status[this.props.current];
+        let dsRow = ds.cloneWithRows(this.props[list].toArray());
         return (
-            <ListView
-                style={styles.container}
-                dataSource={ds.cloneWithRows(this.props.list.toArray())}
-                renderHeader={this._renderHeader}
-                renderRow={this._renderRow}
-                renderFooter={this._renderFooter}
-                onEndReached={this._onEndReached}
-                onEndReachedThreshold={50}
-                enableEmptySections={true}
-            />
+            <View>
+                <Wtabs current={this.props.current} tabs={this.tabs} onPress={this.tabClick}/>
+                <ListView
+                    style={styles.container}
+                    dataSource={dsRow}
+                    renderRow={this._renderRow}
+                    renderFooter={this._renderFooter}
+                    onEndReached={this._onEndReached}
+                    onEndReachedThreshold={50}
+                    enableEmptySections={true}
+                />
+            </View>
         );
     }
 
     componentWillMount() {
-        let {actions, pager} = this.props;
+        let {actions, current} = this.props;
         this.getWelfareList(1, 1);
+        this.getWelfareList(1, 2);
+        this.getWelfareList(1, 3);
     }
 
     componentWillUnmount() {
         this.props.actions.welfareListCleared();
     }
-
-    _renderHeader = () => {
-        return (
-            <Wtabs current={this.props.current} tabs={this.tabs} onPress={this.tabClick}/>
-        )
-    };
 
     _renderRow = (rowData, secId, rowId, highlightRow) => {
         return (
@@ -71,7 +71,8 @@ export default class Welfare extends Component {
     };
 
     _renderFooter = () => {
-        let {pager, current} = this.props;
+        let {current} = this.props,
+            pager = this.props['pager' + this.status[current]];
         if (pager.get('total') == 0) {
             return <NoCoupon current={current} tabs={this.tabs}/>
         } else if (pager.get('total') > pager.get('page') * pager.get('per_page')) {
@@ -80,7 +81,8 @@ export default class Welfare extends Component {
     };
 
     _onEndReached = () => {
-        let {pager, current, actions} = this.props;
+        let {current, actions} = this.props,
+            pager = this.props['pager' + this.status[current]];
 
         if (pager.get('total') > pager.get('page') * pager.get('per_page')) {
             this.getWelfareList(Number(pager.get('page')) + 1, this.status[current]);
@@ -103,7 +105,6 @@ export default class Welfare extends Component {
                     break;
             }
             actions.welfareStatusChanged(index);
-            this.getWelfareList(1, this.status[index]);
         }
     };
 
