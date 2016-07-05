@@ -16,7 +16,7 @@ export default class InputItem extends Component {
                     <HouseItem item={item} />
 
                     <View style={[styles.itemBottom, styles.row]}>
-                        <Text style={styles.bottomMsg}>获得积分：<Text style={[styles.bottomMsg, styles.tagOrange, styles.fontBold]}>{Number(item.get('money'))}</Text></Text>
+                        <Text style={styles.bottomMsg}>获得积分：<Text style={[styles.bottomMsg, styles.tagOrange, styles.fontBold]}>{Number(item.get('earn_money'))}</Text></Text>
                     </View>
                 </View>
             </TouchableWithoutFeedback>

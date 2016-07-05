@@ -19,8 +19,12 @@ export default class Card extends Component {
         let {wrapStyle, errBoxStyle, errTextStyle, errText, item} = this.props;
         return (
             <Image source={require('../images/membership.png')} style={[styles.wfCaSection, styles.center, wrapStyle]} resizeMode='stretch'>
-                <View style={styles.wfCaLeft}>
-                    <Text style={[styles.highFont, item.get('status') != 1 ? styles.gray : null]}>{item.get('cost')}</Text><Text style={[styles.font12, item.get('status') != 1 ? styles.gray : null]}>积分</Text>
+                <View style={[styles.center, styles.wfCaLeft]}>
+                    {item.get('cost') == 0 || !item.get('cost') ?
+                    <Text style={[styles.highFont, {fontSize: 20}, item.get('status') != 1 ? styles.gray : null]}>{item.get('function') || '免费' }</Text>
+                    :
+                    <Text><Text style={[styles.highFont, item.get('status') != 1 ? styles.gray : null]}>{item.get('cost')}</Text><Text style={[styles.font12, item.get('status') != 1 ? styles.gray : null]}>积分</Text></Text>
+                    }
                 </View>
                 <View style={styles.wfSlice}></View>
                 <View style={styles.wfCaDesc}>
@@ -59,8 +63,8 @@ const styles = StyleSheet.create({
     wfCaLeft: {
         flexDirection: 'row',
         alignItems: 'flex-end',
-        marginRight: 10,
-        marginLeft: 8
+        marginLeft: -5,
+        width: 70
     },
     highFont: {
         fontSize: 25,
