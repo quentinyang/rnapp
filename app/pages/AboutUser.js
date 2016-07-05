@@ -76,7 +76,6 @@ export default class AboutUser extends Component {
 
     _renderRow = (rowData, secId, rowId, highlightRow) => {
         let date = formatDate(rowData.get('created_at'));
-        ActionUtil.setAction(actionType.BA_USER_DETAIL);
 
         return (
             <TouchableHighlight onPress={() => this.goDetail(rowData)} underlayColor='transparent'>
@@ -123,6 +122,7 @@ export default class AboutUser extends Component {
 
     goDetail = (item) => {
         let {navigator, actions, actionsNavigation} = this.props;
+        ActionUtil.setAction(actionType.BA_USER_DETAIL);
         actionsNavigation.aboutUserPushRoute();
         actions.userInputHouseCleared();
         navigator.push({
@@ -131,6 +131,8 @@ export default class AboutUser extends Component {
             name: 'houseDetail',
             title: '房源详情',
             hideNavBar: false,
+            bp: this.pageId,
+            backLog: actionType.BA_DETAIL_RETURN,
             item
         })
     };

@@ -652,7 +652,6 @@ class UserInfo extends Component {
                         actionsNavigation.detailPushRoute();
                         ActionUtil.setAction(actionType.BA_DETAIL_USER);
                         navigator.push({
-
                             component: AboutUserContainer,
                             title: '用户' + showMobile,
                             from: 'houseDetail',
@@ -665,7 +664,7 @@ class UserInfo extends Component {
                 }>
                     <View>
                         <View style={[styles.row, styles.center]}>
-                            <View style={styles.avatarBox}>                                
+                            <View style={styles.avatarBox}>
                                 <Image
                                     style={styles.avatarImage}
                                     source={require('../images/avatar.png')}
