@@ -26,7 +26,7 @@ export default class Card extends Component {
                 <View style={styles.wfCaDesc}>
                     <Text style={[styles.fontBold, item.get('status') != 1 ? styles.gray : null]}>{item.get('name')}</Text>
                     <Text style={styles.descFont} numberOfLines={1}>· {item.get('brief')}</Text>
-                    <Text style={styles.descFont} numberOfLines={1}>· 有效期至{item.get('end_at')}</Text>
+                    <Text style={styles.descFont} numberOfLines={1}>· 有效期至{item.get('end_at').substring(0, 10)}</Text>
                 </View>
                 <View style={styles.wfBadge}>
                     {item.get('status') == 2 ?
