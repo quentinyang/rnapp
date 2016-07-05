@@ -477,6 +477,7 @@ export default class Home extends Component {
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionPrependHouseList({});
             actions.fetchHouseNewCount();
+            actions.fetchCurrentStatus();
         });
         this.setState({
             isRefreshing: false
