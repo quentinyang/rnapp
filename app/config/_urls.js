@@ -61,7 +61,7 @@ let urls = {
         blockAndCommunity: HOST + 'get-attention-community-block',
         saveAttentionCommunity: HOST + 'set-attention-community',
         enter: HOST + 'set-attention-enter',
-        status: HOST + 'service/set-attention-status'
+        status: HOST + 'set-attention-status'
     },
     community: {
         list: HOST + 'community/search/app'

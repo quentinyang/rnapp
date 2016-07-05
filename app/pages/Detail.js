@@ -444,13 +444,13 @@ class VoiceModal extends Component {
                             if(index == 0){
                             ActionUtil.setActionWithExtend(actionType.BA_DETAIL_TAPE_ONE, {
                                 "vpid": propertyId,
-                                "time": time
+                                "time": time.toString()
 
                             });
                             }else if(index == 1){
                             ActionUtil.setActionWithExtend(actionType.BA_DETAIL_TAPE_TWO, {
                                 "vpid": propertyId,
-                                "time": time
+                                "time": time.toString()
                             });
                             }
 

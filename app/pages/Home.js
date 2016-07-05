@@ -28,17 +28,15 @@ class InputRuleModal extends Component {
 
     render() {
         let {isVisible, modalInfo, actions} = this.props;
-
         return (
-        <Modal visible={isVisible} transparent={true} onRequestClose={actions.setRuleModalVisible}>
+        <Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
             <View style={styles.bgWrap}>
                 <View>
                     <View style={[styles.contentContainer, {marginTop: 32}]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
                             underlayColor="#fff"
-                            onPress={() => {
-                                //ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE); 
+                            onPress={() => { 
                                 actions.setRuleModalVisible(false);
                                 actions.setGiftModalVisible(true);
                             }}
@@ -77,10 +75,9 @@ class CouponModal extends Component {
     render() {
         let {isVisible, modalInfo, actions} = this.props;
         let cardMsg = modalInfo.get('cost') == "0" ? "免费" : modalInfo.get('cost') + "积分";
-
         return (
             <Modal visible={isVisible && modalInfo.get('visible')} transparent={true}
-                   onRequestClose={actions.setCouponModalVisible}>
+                   onRequestClose={() => {}}>
                 <View style={styles.bgWrap}>
                     <View>
                         <View style={[styles.contentContainer, {marginTop: 32}]}>
@@ -88,7 +85,6 @@ class CouponModal extends Component {
                                 style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
                                 underlayColor="#fff"
                                 onPress={() => {
-                                //ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE);
                                 actions.setCouponModalVisible(false);
                                 actions.setRuleModalVisible(true);
                             }}
@@ -143,7 +139,6 @@ class CouponModal extends Component {
             callbackFun: () => {
             }
         });
-        //ActionUtil.setAction(actionType.BA_HOME_PAGE_FIND);
     }
 }
 
@@ -156,7 +151,7 @@ class GiftModal extends Component {
         let {isVisible, modalInfo, actions} = this.props;
         return (
 
-            <Modal visible={isVisible} transparent={true} onRequestClose={actions.setGiftModalVisible}>
+            <Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
                 <View style={styles.bgWrap}>
                     <View>
                         <View style={[styles.contentContainer, {marginTop: 32}]}>
@@ -248,7 +243,7 @@ class ScoreModal extends Component {
         return (
 
             <Modal visible={isVisible && modalInfo.get('visible')} transparent={true}
-                   onRequestClose={actions.setScoreModalVisible}>
+                   onRequestClose={() => {}}>
 
                 <View style={styles.bgWrap}>
                     <View style={styles.contentContainer}>
@@ -343,7 +338,8 @@ export default class Home extends Component {
     render() {
         let {houseData, baseInfo, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
-
+        
+//console.log('Ajax baseInfo in render: ', baseInfo.toJS());
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
                 <ScoreModal
@@ -430,6 +426,7 @@ export default class Home extends Component {
             actions.fetchHouseNewCount();
             actions.fetchCouponModalStatus();
             actions.fetchRuleModalStatus();
+            actions.fetchCurrentStatus();
         });
         AppState.addEventListener('change', this._dealGiftModal.bind(this));
     }
@@ -554,7 +551,7 @@ export default class Home extends Component {
     };
 
     _renderFooter = () => {
-        let {houseData, attentionList, navigator} = this.props;
+        let {houseData, attentionList, navigator, baseInfo} = this.props;
         let pager = houseData.get('pager');
         let footerView = null;
 
@@ -568,7 +565,8 @@ export default class Home extends Component {
             </View>
         } else {
             footerView = <NoData attentionList={attentionList} navigator={navigator}
-                                 onAttentionBlockSet={this._onAttentionBlockSet}/>
+                                 onAttentionBlockSet={this._onAttentionBlockSet}
+                                 baseInfo={baseInfo}/>
         }
         return footerView;
     };
@@ -661,7 +659,7 @@ class NoData extends Component {
                             <View style={[styles.alignItems]}>
                                 <Text style={[styles.noAttentionText]}>关注的房源会出现在这里</Text>
                             </View> :
-                            '')) :
+                            null)) :
                         <Text style={[styles.noAttentionText]}>关注的板块和小区没有房源</Text>
                 }
 

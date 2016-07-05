@@ -30,5 +30,5 @@ export function enterAttentionBlockSetService() {
 };
 
 export function getAttentionStatus() {
-    return ajax.put(urls().attention.status)
+    return ajax.get(urls().attention.status)
 };

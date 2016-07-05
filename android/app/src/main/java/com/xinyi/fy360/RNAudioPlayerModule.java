@@ -41,7 +41,7 @@ public class RNAudioPlayerModule extends ReactContextBaseJavaModule {
             mp.start();
             mp.setOnCompletionListener(new OnCompletionListener() {
                 @Override
-                public void onCompletion(MediaPlayer mp) {
+                public void onCompletion(MediaPlayer mediaPlayer) {
                     handleRemoteNotificationReceived("mediaCompletioned", null);
                     mp.reset();
                     mp.release();
