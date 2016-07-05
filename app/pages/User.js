@@ -162,13 +162,11 @@ class BasicInfo extends Component {
             showMobile = mobile ? mobile.slice(0, 3) + '****' + mobile.slice(-4) : '';
 
         return (
-            <View style={[styles.basicSection, styles.row]}>
-                <View style={[styles.profileAvatar, styles.center]}>
-                    <Image
-                        style={styles.avatarImage}
-                        source={require('../images/bureau_avatar.png')}
-                    />
-                </View>
+            <View style={[styles.basicSection, styles.row]}>                
+                <Image
+                    style={styles.profileAvatar}
+                    source={require('../images/avatar.png')}
+                />                
                 <View style={styles.flex}>
                     <Text style={[styles.mobileText, styles.whiteText]}>{showMobile}</Text>
                 </View>
@@ -300,7 +298,8 @@ const styles = StyleSheet.create({
         width: 60,
         height: 60,
         borderRadius: 30,
-        backgroundColor: '#fff'
+        borderWidth: 2,
+        borderColor: '#fff'
     },
     avatarImage: {
         width: 36,

@@ -29,13 +29,11 @@ export default class AboutEXP extends Component {
         return (
             <ScrollView automaticallyAdjustContentInsets={false}>
                 <View style={[styles.myExp, styles.center]}>
-                    <View style={{marginBottom: 10}}>
-                        <View style={[styles.avatarBox, styles.center]}>
-                            <Image
-                                style={styles.userAvatar}
-                                source={require('../images/bureau_avatar.png')}
-                            />
-                        </View>
+                    <View style={{marginBottom: 10}}>                        
+                        <Image
+                            style={styles.avatarBox}
+                            source={require('../images/avatar.png')}
+                        />                        
                         <View style={[styles.center, styles.vip]}>
                             <Text style={{fontSize: 12, color: '#fff'}}>V{route.data.level}</Text>
                         </View>
@@ -191,9 +189,7 @@ const styles = StyleSheet.create({
     },
     avatarBox: {
         width: 50,
-        height: 50,
-        backgroundColor: '#eee',
-        borderRadius: 25
+        height: 50
     },
     userAvatar: {
         width: 30.5,

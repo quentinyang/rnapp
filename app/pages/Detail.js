@@ -590,14 +590,11 @@ class UserInfo extends Component {
                 }>
                     <View>
                         <View style={[styles.row, styles.center]}>
-                            <View style={styles.avatarBox}>
-                                <View style={[styles.avatarBg, styles.center, styles.justifyContent]}>
-                                    <Image
-                                        style={styles.avatarImage}
-                                        source={require('../images/avatar_white.png')}
-                                    />
-                                </View>
-
+                            <View style={styles.avatarBox}>                                
+                                <Image
+                                    style={styles.avatarImage}
+                                    source={require('../images/avatar.png')}
+                                />
                                 <View style={[styles.levelBg, styles.center, styles.justifyContent]}>
                                     <Text style={[styles.levelText]}>V{userInfo.get('level')}</Text>
                                 </View>
@@ -1107,16 +1104,9 @@ var styles = StyleSheet.create({
         height: 50,
         marginHorizontal: 15
     },
-    avatarBg: {
-        marginRight: 15,
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        backgroundColor: '#04c1ae'
-    },
     avatarImage: {
-        width: 30,
-        height: 30
+        width: 50,
+        height: 50
     },
     levelBg: {
         position: 'absolute',

@@ -140,12 +140,10 @@ class UserSection extends Component {
         return (
             <View style={styles.basicBox}>
                 <View style={styles.center}>
-                    <View style={[styles.avatarBox, styles.center]}>
-                        <Image
-                            style={styles.avatarImage}
-                            source={require('../images/avatar_white.png')}
-                        />
-                    </View>
+                    <Image
+                        style={styles.avatarBox}
+                        source={require('../images/avatar.png')}
+                    />
                     <Text style={{fontSize: 17}}>{showMobile}</Text>
                     <View style={[styles.row, styles.resultList]}>
                         <View style={[styles.center, styles.resultItem]}>
@@ -239,9 +237,7 @@ const styles = StyleSheet.create({
     avatarBox: {
         marginBottom: 12,
         width: 60,
-        height: 60,
-        backgroundColor: '#04c1ae',
-        borderRadius: 30
+        height: 60
     },
     avatarImage: {
         width: 36,
