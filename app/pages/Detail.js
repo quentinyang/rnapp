@@ -430,7 +430,6 @@ class VoiceModal extends Component {
 
     render() {
         let {isVisible, voiceInfo, costScore, getSellerPhone, actions, navigator, propertyId} = this.props;
-
         let voiceList = voiceInfo.map((item, index) => {
             let time = item.get('record_time'), m = parseInt(time / 60), s = time % 60;
             let voiceIcon = this.state.playing == index ? require('../images/voice_anim.gif') : require('../images/voice.png');
@@ -459,7 +458,6 @@ class VoiceModal extends Component {
                             });
                             AudioPlayer.stop();
                             AudioPlayer.play(item.get('record_url'));
-                            //AudioPlayer.play('http://7xkjhw.dl1.z0.glb.clouddn.com/078977e9ea117fb8279afc6919f48736.mp3');
                             //listen voice stop: playing -> -1
                         }}
                     >
@@ -483,8 +481,11 @@ class VoiceModal extends Component {
                             style={[styles.closeBox, styles.center, styles.justifyContent]}
                             onPress={()=>{
                             ActionUtil.setAction(actionType.BA_DETAIL_TAPE_DELETE);
-                                actions.setVoiceVisible(false);
+                                this.setState({
+                                    playing: -1
+                                });
                                 AudioPlayer.stop();
+                                actions.setVoiceVisible(false);
                             }}
                             underlayColor="#fff"
                         >
@@ -500,7 +501,13 @@ class VoiceModal extends Component {
                         <TouchableHighlight
                             style={[styles.contactButton]}
                             underlayColor="#04C1AE"
-                            onPress={getSellerPhone}
+                            onPress={() => {
+                                this.setState({
+                                    playing: -1
+                                });
+                                AudioPlayer.stop();
+                                getSellerPhone();
+                            }}
                         >
                             <View style={[styles.justifyContent, styles.center]}>
                                 <Text style={styles.contactText}>
@@ -512,6 +519,30 @@ class VoiceModal extends Component {
                 </View>
             </Modal>
         );
+    }
+
+    componentDidMount() {
+        if(Platform.OS == "ios") {
+            this.audioListener = NativeAppEventEmitter.addListener('mediaCompletioned', () => {
+                this.setState({
+                    playing: -1
+                });
+            });
+        } else {
+            DeviceEventEmitter.addListener('mediaCompletioned', () => {
+                this.setState({
+                    playing: -1
+                });
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        if(Platform.OS == 'ios') {
+            this.audioListener.remove();
+        } else {
+            DeviceEventEmitter.removeAllListeners('mediaCompletioned');
+        }
     }
 }
 
