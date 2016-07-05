@@ -4,7 +4,7 @@ import * as types from '../constants/Home';
 import {fetchAttentionHouseListService, fetchAttentionAppendHouseListService, fetchAttentionPrependHouseListService, fetchHouseNewCountService} from '../service/houseListService';
 
 import {fetchAttentionBlockAndCommunityService,getAttentionStatus} from '../service/blockService';
-import {fetchScoreModalStatusService, getGiftInfo, fetchRuleStatusService} from '../service/userService'
+import {fetchScoreModalStatusService, getGiftInfo} from '../service/userService'
 import {fetchCouponStatusService} from '../service/cardService';
 import {fetchRuleStatusService} from '../service/configService';
 import {makeActionCreator, serviceAction} from './base';
