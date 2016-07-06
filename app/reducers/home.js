@@ -131,9 +131,15 @@ let initialBaseInfo = {
 };
 
 function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
+
     switch (action.type) {
         case types.CURRENT_MODAL_CHANGED:
-            return state.set('currentModal', Immutable.fromJS(action.modal));
+            let modalChanged = state.set('currentModal', Immutable.fromJS(action.modal));
+            return modalChanged.update('modals', (k) => {
+                return k.filter(m => {
+                    return m !== action.modal;
+                });
+            });
             break;
 
         case types.PUSH_SHOW_MODAL:

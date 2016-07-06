@@ -500,7 +500,7 @@ console.log('======storage get: ', value);
 
             setTimeout(()=> {
                 this._setCurrentModal(homeConst.SCORE);
-            }, 4000);
+            }, 3000);
         });
         AppState.addEventListener('change', this._dealGiftModal.bind(this));
     }
