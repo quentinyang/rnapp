@@ -178,6 +178,12 @@ class App extends Component {
                     </View>
                 </Modal> : null }
 
+                <Modal visible={appData.get('loadingVisible')} transparent={true}>
+                    <View style={[styles.flex, styles.alignItems, styles.justifyContent]}>
+                        <Image source={require('../images/loading.gif')} style={styles.loading} />
+                    </View>
+                </Modal>
+
                 {
                     hasSetRoute ?
                         <Navigator
@@ -596,6 +602,10 @@ let styles = StyleSheet.create({
         borderRadius: 5,
         padding: 20,
         backgroundColor: "#fff",
+    },
+    loading: {
+        width: 32,
+        height: 32
     }
 });
 

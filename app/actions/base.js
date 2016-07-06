@@ -12,14 +12,18 @@ export function makeActionCreator(type, ...argNames) {
 
 export function serviceAction(dispatch) {
     return function(options) {
-        let { service, data, success, error } = options
+        let { service, data, loading, success, error } = options;
+
+        loading && dispatch(actions.appLoadingChanged(true));
 
         let successFn = oData => {
+            loading && dispatch(actions.appLoadingChanged(false));
             console.log('[AjaxResponse]', oData)
             success(oData)
         }
 
         let errorFn = oData => {
+            loading && dispatch(actions.appLoadingChanged(false));
             if (oData && oData.codeStatus == 401) {
                 dispatch(actions.webAuthentication(false))
             }

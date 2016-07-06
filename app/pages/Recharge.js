@@ -130,6 +130,8 @@ export default class Recharge extends Component {
         if(!this.submitStatus) return;
         this.submitStatus = false;
         let self = this;
+        let {actionsApp} = this.props;
+        actionsApp.appLoadingChanged(true);
         ActionUtil.setAction(actionType.BA_DEPOSIT_GO);
         let data = {
             subject: '第一房源积分充值',
@@ -140,10 +142,12 @@ export default class Recharge extends Component {
 
         tradeService({body:data})
         .then((oData) => {
+            actionsApp.appLoadingChanged(false);
             self.tradeId = oData.out_trade_no;
             Alipay.addEvent(oData.data, 'Charge');
         })
         .catch((data) => {
+            actionsApp.appLoadingChanged(false);
             ToastAndroid.show('操作太频繁，请重试', ToastAndroid.LONG);
             this.submitStatus = true;
         })

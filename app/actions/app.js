@@ -22,6 +22,8 @@ export const clearInputSearchHistory = makeActionCreator(types.CLEAR_INPUT_SEARC
 
 export const clickTabChanged = makeActionCreator(types.FORBIDDEN_TAB_CHANGED, 'status');
 
+export const appLoadingChanged = makeActionCreator(types.APP_LOADING_CHANGED, 'visible');
+
 export function clickBack(name) {
     return dispatch => {
         dispatch(clickBackPage(name));

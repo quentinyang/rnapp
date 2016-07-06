@@ -86,13 +86,14 @@ export default class Withdraw extends Component {
     handleSubmit = () => {
         let self = this;
         ActionUtil.setAction(actionType.BA_MINE_CASH_SURE);
-        let {navigator, actions, actionsUser, withdrawInfo} = this.props,
+        let {navigator, actions, actionsApp, actionsUser, withdrawInfo} = this.props,
             data = {
                 money: withdrawInfo.get('price')
             };
-
+        actionsApp.appLoadingChanged(true);
         withdrawService({body: data})
         .then((oData) => {
+            actionsApp.appLoadingChanged(false);
             actions.withdrawErrMsg('');
             ActionUtil.setAction(actionType.BA_MINE_CASH_SUCCESS);
             Alert.alert('', '申请提现成功\n1个工作日内到账',
@@ -107,6 +108,7 @@ export default class Withdraw extends Component {
             );
         })
         .catch((error) => {
+            actionsApp.appLoadingChanged(false);
             actions.withdrawErrMsg(error.msg);
         })
     };

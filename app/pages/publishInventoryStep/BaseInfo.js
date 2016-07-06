@@ -65,7 +65,7 @@ export default class BaseInfoPage extends Component {
                             placeholder={controller.get('single')?'无':'输入楼/座号'}
                             editable={controller.get('single')? false: true}
                             underlineColorAndroid = 'transparent'
-                            maxLength={6}
+                            maxLength={5}
                             onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_BUILDING)}
                             onChangeText={(v) => {this.singleAction('buildingChanged', v.trim())}}
                         >
@@ -82,7 +82,7 @@ export default class BaseInfoPage extends Component {
                             placeholder={controller.get('villa')?'无':'输入房号'}
                             underlineColorAndroid = 'transparent'
                             editable={controller.get('villa')? false: true}
-                            maxLength={6}
+                            maxLength={5}
                             onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_ROOM)}
                             onChangeText={(v) => {this.singleAction('doorChanged', v.trim())}}
                         >
@@ -167,9 +167,11 @@ export default class BaseInfoPage extends Component {
     };
 
     submitSuccess(params) {
-        let {actions, navigator} = this.props;
+        let {actions, actionsApp, navigator} = this.props;
+        actionsApp.appLoadingChanged(true);
         basicInventoryDuplicateService({body:params})
         .then(() => {
+            actionsApp.appLoadingChanged(false);
             actions.error('');
             navigator.push({
                 component: PublishSecondStepContainer,
@@ -181,6 +183,7 @@ export default class BaseInfoPage extends Component {
             ActionUtil.setAction(actionType.BA_SENDONE_THREE_NEXT);
         })
         .catch((error) => {
+            actionsApp.appLoadingChanged(false);
             ActionUtil.setActionWithExtend(actionType.BA_SENDONE_THREE_NEXT, {"error_type": error.status || ""});
             actions.error(error.msg);
         })

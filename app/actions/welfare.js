@@ -15,6 +15,7 @@ export function fetchWelfareList(params) {
         serviceAction(dispatch)({
             service: getWelfareList,
             data: params,
+            loading: params.status == 1 && params.page == 1 ? true : false,
             success: function(oData) {
                 dispatch(welfareListFetched(oData, params.status || ''))
             },

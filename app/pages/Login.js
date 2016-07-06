@@ -230,6 +230,7 @@ class Login extends Component {
         if(msg) {
             actions.errMsg(errMsgs[msg]);
         } else {
+            actionsApp.appLoadingChanged(true);
             loginService(data)
             .then((oData) => {
                 AsyncStorageComponent.save(common.USER_TOKEN_KEY, oData.token);
@@ -238,7 +239,7 @@ class Login extends Component {
                 ActionUtil.setUid(oData.user_id || "");
                 setLoginDays();
                 actionsApp.setSearchHistory(oData.user_id || "0");
-
+                actionsApp.appLoadingChanged(false);
                 gtoken = oData.token;
                 guid = oData.user_id;
                 if(oData.is_enter_attention_page) {
@@ -265,6 +266,7 @@ class Login extends Component {
                 }
             })
             .catch((error) => {
+                actionsApp.appLoadingChanged(false);
                 actions.errMsg(error.msg);
             })
         }

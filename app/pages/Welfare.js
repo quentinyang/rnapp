@@ -46,7 +46,7 @@ export default class Welfare extends Component {
     }
 
     componentWillMount() {
-        let {actions, current} = this.props;
+        let {actions, actionsApp, current} = this.props;
         this.getWelfareList(1, 1);
         this.getWelfareList(1, 2);
         this.getWelfareList(1, 3);

@@ -97,10 +97,11 @@ export default class LandlordInfoPage extends Component {
     };
 
     submitSuccess(params) {
-        let {actions, navigator} = this.props;
-
+        let {actions, actionsApp, navigator} = this.props;
+        actionsApp.appLoadingChanged(true);
         inputHouseService({body:params})
         .then((oData) => {
+            actionsApp.appLoadingChanged(false);
             ActionUtil.setActionWithExtend(actionType.BA_SENDTHREE_THREE_RELEASE, {"vpid": oData.property_id});
             let routeStack = this.props.navigator.state.routeStack;
             let newStack = routeStack.slice(0, routeStack.length-2);
@@ -118,6 +119,7 @@ export default class LandlordInfoPage extends Component {
             actions.hiSearchCleared();
         })
         .catch((error) => {
+            actionsApp.appLoadingChanged(false);
             ActionUtil.setActionWithExtend(actionType.BA_SENDTHREE_THREE_RELEASE, {"error_type": error.status || ""});
             actions.error(error.msg);
         })
