@@ -20,12 +20,6 @@ export default class Welfare extends Component {
     constructor(props) {
         super(props);
 
-        if (this.props.route.callbackFun) {
-            this.props.route.callbackFun = () => {
-                this.props.navigator.pop();
-                this.props.homeActions.setRuleModalVisible(true);
-            }
-        }
         this.tabs = ['未使用', '已使用', '已过期'];
         this.status = [1, 2, 3];
 

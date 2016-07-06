@@ -100,27 +100,30 @@ let initialBaseInfo = {
     newCount: "",
     current: 0,
 
-    scoreVisible: true,
+    currentModal: '',
+    modals: [],   //['', '']
+
+    scoreFetched: false,
     scoreModal: {
+        fetched: false,
         visible: false,
         score: 8
     },
 
-    couponVisible: false,
+    couponFetched: false,
     couponModal: {
+        fetched: false,
         visible: false,
         score: 1
     },
 
-    ruleVisible: false,
-    ruleCanShow: false,
+    //ruleCanShow: false,
     ruleModal: {
         "input_points": 7, //发房积分
         "looked_points": 2 //房源被查看
     },
 
-    giftVisible: false,
-    giftCanShow: false,
+    //giftCanShow: false,
     giftModal: {
         "sign_in_days": "1",
         "experience": "0"
@@ -129,36 +132,40 @@ let initialBaseInfo = {
 
 function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
     switch (action.type) {
-        case types.SCORE_MODAL_VISIBLE_CHANGED:
-            return state.set('scoreVisible', Immutable.fromJS(action.visible));
+        case types.CURRENT_MODAL_CHANGED:
+            return state.set('currentModal', Immutable.fromJS(action.modal));
+            break;
+
+        case types.PUSH_SHOW_MODAL:
+            return state.update('modals', (k) => {
+                let temp = Immutable.fromJS(action.modal);
+                let t = k.push(Immutable.fromJS(action.modal));
+                return t;
+            });
             break;
         case types.SCORE_MODAL_STATUS:
-            return state.set('scoreModal', Immutable.fromJS(action.status));
+            let scoreChanged =  state.set('scoreModal', Immutable.fromJS(action.status));
+            return scoreChanged.set('scoreFetched', Immutable.fromJS(true));
             break;
-        case types.COUPON_MODAL_VISIBLE_CHANGED:
-            return state.set('couponVisible', Immutable.fromJS(action.visible));
-            break;
+
         case types.COUPON_MODAL_STATUS:
-            return state.set('couponModal', Immutable.fromJS(action.status));
+            let couponChanged = state.set('couponModal', Immutable.fromJS(action.status));
+            return couponChanged.set('couponFetched', Immutable.fromJS(true));
             break;
-        case types.RULE_MODAL_VISIBLE_CHANGED:
-            return state.set('ruleVisible', Immutable.fromJS(action.visible));
-            break;
+
         case types.RULE_MODAL_STATUS:
             return state.set('ruleModal', Immutable.fromJS(action.status));
             break;
-        case types.RULE_MODAL_SHOW:
-            return state.set('ruleCanShow', Immutable.fromJS(action.visible));
-            break;
-        case types.GIFT_MODAL_VISIBLE_CHANGED:
-            return state.set('giftVisible', Immutable.fromJS(action.visible));
-            break;
+        // case types.RULE_MODAL_SHOW:
+        //     return state.set('ruleCanShow', Immutable.fromJS(action.visible));
+        //     break;
+
         case types.GIFT_MODAL_STATUS:
             return state.set('giftModal', Immutable.fromJS(action.status));
             break;
-        case types.GIFT_MODAL_SHOW:
-            return state.set('giftCanShow', Immutable.fromJS(action.visible));
-            break;
+        // case types.GIFT_MODAL_SHOW:
+        //     return state.set('giftCanShow', Immutable.fromJS(action.visible));
+        //     break;
 
         case types.HOUSE_NEW_COUNT:
             return state.set('newCount', Immutable.fromJS(action.count));

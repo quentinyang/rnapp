@@ -21,13 +21,6 @@ export default class ScoreRule extends Component {
         super(props);
         this.pageId = actionType.BA_FIRSTOPEN;
         //ActionUtil.setActionWithExtend(actionType.BA_SEND_SUCCESS_ONVIEW, {"bp": this.props.route.bp});
-
-        if(this.props.route.callbackFun) {
-            this.props.route.callbackFun = () => {
-                this.props.navigator.pop();
-                this.props.route.actions.setCouponModalVisible(true);
-            }
-        }
     }
 
     render() {

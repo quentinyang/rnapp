@@ -15,11 +15,14 @@ let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import * as common from '../constants/Common';
+import * as homeConst from '../constants/Home';
 import {getAttentionStatus} from '../service/blockService';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
 });
+
+global.gmodal = [];
 
 class InputRuleModal extends Component {
     constructor(props) {
@@ -27,7 +30,7 @@ class InputRuleModal extends Component {
     }
 
     render() {
-        let {isVisible, modalInfo, actions} = this.props;
+        let {isVisible, modalInfo, actions, setCurrentModal} = this.props;
         return (
         <Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
             <View style={styles.bgWrap}>
@@ -37,8 +40,7 @@ class InputRuleModal extends Component {
                             style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
                             underlayColor="#fff"
                             onPress={() => { 
-                                actions.setRuleModalVisible(false);
-                                actions.setGiftModalVisible(true);
+                                setCurrentModal(homeConst.GIFT);
                             }}
                             >
                                 <Image
@@ -73,10 +75,10 @@ class CouponModal extends Component {
     }
 
     render() {
-        let {isVisible, modalInfo, actions} = this.props;
+        let {isVisible, modalInfo, actions, setCurrentModal} = this.props;
         let cardMsg = modalInfo.get('cost') == "0" ? "免费" : modalInfo.get('cost') + "积分";
         return (
-            <Modal visible={isVisible && modalInfo.get('visible')} transparent={true}
+            <Modal visible={isVisible} transparent={true}
                    onRequestClose={() => {}}>
                 <View style={styles.bgWrap}>
                     <View>
@@ -85,8 +87,7 @@ class CouponModal extends Component {
                                 style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
                                 underlayColor="#fff"
                                 onPress={() => {
-                                actions.setCouponModalVisible(false);
-                                actions.setRuleModalVisible(true);
+                                setCurrentModal(homeConst.RULE);
                             }}
                             >
                                 <Image
@@ -95,7 +96,6 @@ class CouponModal extends Component {
                                 />
                             </TouchableHighlight>
 
-
                             <Text style={[styles.h5, styles.giftDay]}>恭喜你获得1张</Text>
 
                             { modalInfo.get('type') == "1" ?
@@ -103,7 +103,6 @@ class CouponModal extends Component {
                                     style={[styles.h0, styles.scoreNum]}>{cardMsg}</Text>看房卡</Text>
                                 : <Text style={[styles.h0, styles.scoreNum]}>补签卡</Text>
                             }
-
 
                             <TouchableHighlight
                                 underlayColor='#fff'
@@ -126,9 +125,9 @@ class CouponModal extends Component {
     }
 
     _goCoupon() {
-        let {navigator, actions, log} = this.props;
+        let {navigator, actions, log, setCurrentModal} = this.props;
+        actions.currentModalChanged('');
 
-        actions.setCouponModalVisible(false);
         navigator.push({
             component: WelfareContainer,
             name: 'welfare',
@@ -137,6 +136,8 @@ class CouponModal extends Component {
             bp: log.pageId,
             backLog: log.pageId,
             callbackFun: () => {
+                navigator.pop();
+                setCurrentModal(homeConst.RULE);
             }
         });
     }
@@ -160,7 +161,7 @@ class GiftModal extends Component {
                                 underlayColor="#fff"
                                 onPress={() => {
                                 ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE); 
-                                actions.setGiftModalVisible(false);
+                                actions.currentModalChanged('');
                             }}
                             >
                                 <Image
@@ -218,7 +219,7 @@ class GiftModal extends Component {
     _goScore() {
         let {navigator, actions, modalInfo, log} = this.props;
 
-        actions.setGiftModalVisible(false);
+        actions.currentModalChanged('');
         navigator.push({
             component: SignInContainer,
             name: 'signIn',
@@ -239,10 +240,10 @@ class ScoreModal extends Component {
     }
 
     render() {
-        let {isVisible, modalInfo, actions} = this.props;
+        let {isVisible, modalInfo, actions, setCurrentModal} = this.props;
         return (
 
-            <Modal visible={isVisible && modalInfo.get('visible')} transparent={true}
+            <Modal visible={isVisible} transparent={true}
                    onRequestClose={() => {}}>
 
                 <View style={styles.bgWrap}>
@@ -252,9 +253,9 @@ class ScoreModal extends Component {
                             underlayColor="#fff"
                             onPress={() => {
                                 ActionUtil.setAction(actionType.BA_FIRSTOPEN_DELETE);
-                                actions.setScoreModalVisible(false);
-                                ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": this.props.modalInfo.points});
-                                actions.setCouponModalVisible(true);
+                                
+                                //ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": this.props.modalInfo.points});
+                                setCurrentModal(homeConst.COUPON);
                             }}
                         >
                             <Image
@@ -275,9 +276,9 @@ class ScoreModal extends Component {
     }
 
     _goScoreDetail() {
-        let {actions, navigator} = this.props;
-        actions.setScoreModalVisible(false);
+        let {actions, navigator, setCurrentModal} = this.props;
         ActionUtil.setAction(actionType.BA_FIRSTOPEN_GETSOON);
+        actions.currentModalChanged('');
 
         navigator.push({
             component: ScoreRule,
@@ -287,8 +288,9 @@ class ScoreModal extends Component {
             bp: actionType.BA_HOME_PAGE,
             backLog: actionType.BA_FIRSTOPEN_RETURN,
             score: this.props.modalInfo.get('score'),
-            actions: actions,
             callbackFun: () => {
+                navigator.pop();
+                setCurrentModal(homeConst.COUPON);
             }
         });
     }
@@ -298,6 +300,7 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         var self = this;
+        let hasGetModal = false;
 
         this.state = {
             isRefreshing: false
@@ -314,18 +317,18 @@ export default class Home extends Component {
         AsyncStorageComponent.get(key)
             .then((value) => {
                 let today = new Date().getDate().toString();
-
+console.log('======storage get: ', value);
                 if(!value) {
-                    actions.setRuleShowVisible(true);
+                    console.log('======rule');
+                    actions.pushShowModal(homeConst.RULE);
                     actions.fetchRuleModalStatus();
-                } else {
-                    actions.setGiftModalVisible(true)
                 }
 
                 if (value && value == today) { //不为空且 == today, 不显示
 
                 } else { //为空 或 != today, 则显示并更新
-                    actions.setGiftShowVisible(true);
+                    console.log('======gift');
+                    actions.pushShowModal(homeConst.GIFT);
                     actions.fetchGiftInfo();
                     AsyncStorageComponent.save(key, today);
                 }
@@ -335,35 +338,102 @@ export default class Home extends Component {
             });
     }
 
+    componentWillUpdate() {
+        // if(this.hasGetModal) {
+        //     return;
+        // }
+
+        // let {baseInfo} = this.props;
+        // if(baseInfo.get('scoreModal').get('fetched') && baseInfo.get('couponModal').get('fetched')) { 
+        //     console.log('========will update modals[]:', baseInfo.get('modals').toJS());
+        //     this._setCurrentModal(homeConst.SCORE); 
+        //     this.hasGetModal = true;
+        // }
+    }
+
+    _setCurrentModal(start) {
+        let {baseInfo, actions} = this.props;
+        let modals = baseInfo.get('modals');
+        let cur = '';
+
+        switch(start) {
+        case homeConst.SCORE:
+            if(modals.includes(homeConst.SCORE)) {
+                cur = homeConst.SCORE;
+
+            } else if(modals.includes(homeConst.COUPON)) {
+                cur = homeConst.COUPON;
+
+            } else if(modals.includes(homeConst.RULE)) {
+                cur = homeConst.RULE;
+
+            } else if(modals.includes(homeConst.GIFT)) {
+                cur = homeConst.GIFT;
+            }
+            break;
+        case homeConst.COUPON:
+            if(modals.includes(homeConst.COUPON)) {
+                cur = homeConst.COUPON;
+
+            } else if(modals.includes(homeConst.RULE)) {
+                cur = homeConst.RULE;
+
+            } else if(modals.includes(homeConst.GIFT)) {
+                cur = homeConst.GIFT;
+            }
+            break;
+        case homeConst.RULE:
+            if(modals.includes(homeConst.RULE)) {
+                cur = homeConst.RULE;
+
+            } else if(modals.includes(homeConst.GIFT)) {
+                cur = homeConst.GIFT;
+            }
+            break;
+        case homeConst.GIFT: 
+            if(modals.includes(homeConst.GIFT)) {
+                cur = homeConst.GIFT;
+            }
+            break;
+        default:        
+            break;
+        }
+
+        console.log('========set current modal:', cur);
+        actions.currentModalChanged(cur);
+    }
+
     render() {
         let {houseData, baseInfo, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
-        
-//console.log('Ajax baseInfo in render: ', baseInfo.toJS());
+    console.log('======baseInfo', baseInfo.toJS());
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
                 <ScoreModal
-                    isVisible={baseInfo.get('scoreVisible')}
+                    isVisible={baseInfo.get('currentModal') == homeConst.SCORE}
                     modalInfo={baseInfo.get('scoreModal')}
                     actions={actions}
                     navigator={navigator}
                     log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
+                    setCurrentModal={this._setCurrentModal.bind(this)}
                 />
                 <CouponModal
-                    isVisible={baseInfo.get('couponVisible')}
+                    isVisible={baseInfo.get('currentModal') == homeConst.COUPON}
                     modalInfo={baseInfo.get('couponModal')}
                     actions={actions}
                     navigator={navigator}
                     log={{pageId: this.pageId, back: actionType.BA_MINE_WELFARE_BACK}}
+                    setCurrentModal={this._setCurrentModal.bind(this)}
                 />
                 <InputRuleModal 
-                    isVisible={baseInfo.get('ruleVisible') && baseInfo.get('ruleCanShow')} 
+                    isVisible={baseInfo.get('currentModal') == homeConst.RULE} 
                     modalInfo={baseInfo.get('ruleModal')}
                     actions={actions}
+                    setCurrentModal={this._setCurrentModal.bind(this)}
                 />
 
                 <GiftModal
-                    isVisible={baseInfo.get('giftVisible') && baseInfo.get('giftCanShow')}
+                    isVisible={baseInfo.get('currentModal') == homeConst.GIFT}
                     modalInfo={baseInfo.get('giftModal')}
                     actions={actions}
                     navigator={navigator}
@@ -427,6 +497,10 @@ export default class Home extends Component {
             actions.fetchCouponModalStatus();
             actions.fetchRuleModalStatus();
             actions.fetchCurrentStatus();
+
+            setTimeout(()=> {
+                this._setCurrentModal(homeConst.SCORE);
+            }, 4000);
         });
         AppState.addEventListener('change', this._dealGiftModal.bind(this));
     }

@@ -25,6 +25,12 @@ export const setGiftModalVisible = makeActionCreator(types.GIFT_MODAL_VISIBLE_CH
 export const giftModalStatusFetched = makeActionCreator(types.GIFT_MODAL_STATUS, 'status');
 export const setGiftShowVisible = makeActionCreator(types.GIFT_MODAL_SHOW, 'visible');
 
+export const currentModalChanged = makeActionCreator(types.CURRENT_MODAL_CHANGED, 'modal');
+export const pushShowModal = makeActionCreator(types.PUSH_SHOW_MODAL, 'modal');
+
+
+
+
 export const attentionBlockAndCommunityFetched = makeActionCreator(types.ATTENTION_BLOCK_COMMUNITY_FETCHED, 'attentionList');
 export const HouseNewCount = makeActionCreator(types.HOUSE_NEW_COUNT, 'count');
 export const HouseCurrentStatus = makeActionCreator(types.HOUSE_CURRENT_STATUS, 'current');
@@ -99,12 +105,14 @@ export function fetchScoreModalStatus() {
             service: fetchScoreModalStatusService,
             success: function (oData) {
                 dispatch(scoreModalStatusFetched({
+                    fetched: true,
                     visible: Number(oData.is_notify) ? true : false,
                     score: oData.point || 8
                 }))
+console.log('======scroe fetched: ', oData);
 
-                if (!Number(oData.is_notify)) {
-                    dispatch(setCouponModalVisible(true));
+                if (Number(oData.is_notify)) {
+                    dispatch(pushShowModal(types.SCORE));
                 }
             },
             error: function (oData) {
@@ -119,10 +127,11 @@ export function fetchCouponModalStatus() {
             service: fetchCouponStatusService,
             success: function(oData) {
                 oData.visible = oData.id ? true : false;
+                oData.fetched = true;
                 dispatch(couponModalStatusFetched(oData))
-
-                if (!oData.visible) {
-                    dispatch(setRuleModalVisible(true));
+console.log('======coupon fetched: ', oData);
+                if (oData.visible) {
+                    dispatch(pushShowModal(types.COUPON));
                 }
             },
             error: function (oData) {

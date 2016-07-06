@@ -187,7 +187,7 @@ class UserSection extends Component {
                         <Text style={styles.font12}>看房：{userInfo.get('look_house_count')}套</Text>
                     </View>
                 </View>
-                <TouchableHighlight style={styles.levelBtn} underlayColor='transparent' onPress={() => this.navigatorPush({component: AboutEXPContainer, data: {level: userInfo.get('level'), exp: userInfo.get('user_experience')}, name: 'exp', title: 'TA的等级', bp:log})}>
+                <TouchableHighlight style={styles.levelBtn} underlayColor='transparent' onPress={() => this.navigatorPush({component: AboutEXPContainer, data: {level: userInfo.get('level'), exp: userInfo.get('user_experience')}, name: 'exp', title: 'TA的等级', bp:log, backLog: actionType.BA_MINE_GRADE_BACK})}>
                     <View style={[styles.level, styles.center]}><Text style={styles.whiteText}>V{userInfo.get('level')}会员</Text></View>
                 </TouchableHighlight>
             </View>
