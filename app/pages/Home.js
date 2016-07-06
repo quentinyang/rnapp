@@ -151,7 +151,6 @@ class GiftModal extends Component {
     render() {
         let {isVisible, modalInfo, actions} = this.props;
         return (
-
             <Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
                 <View style={styles.bgWrap}>
                     <View>
@@ -206,16 +205,6 @@ class GiftModal extends Component {
         );
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        if (nextProps.modalInfo.get('experience') != "0") {
-            if (nextProps.modalInfo.get('points')) {
-                ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_CREDIT_ONVIEW, {"points": nextProps.modalInfo.get('points')});
-            } else {
-                ActionUtil.setAction(actionType.BA_HOME_PAGE_EXPERIENCE_ONVIEW);
-            }
-        }
-    }
-
     _goScore() {
         let {navigator, actions, modalInfo, log} = this.props;
 
@@ -235,8 +224,7 @@ class GiftModal extends Component {
 
 class ScoreModal extends Component {
     constructor(props) {
-        super(props);
-        ActionUtil.setAction(actionType.BA_HOME_SENDRULE_ONVIEW);
+        super(props);        
     }
 
     render() {
@@ -252,9 +240,7 @@ class ScoreModal extends Component {
                             style={styles.closeBox}
                             underlayColor="#fff"
                             onPress={() => {
-                                ActionUtil.setAction(actionType.BA_FIRSTOPEN_DELETE);
-                                
-                                //ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": this.props.modalInfo.points});
+                                ActionUtil.setAction(actionType.BA_FIRSTOPEN_DELETE);                            
                                 setCurrentModal(homeConst.COUPON);
                             }}
                         >
@@ -299,7 +285,6 @@ class ScoreModal extends Component {
 export default class Home extends Component {
     constructor(props) {
         super(props);
-        var self = this;
         let hasGetModal = false;
 
         this.state = {
@@ -314,6 +299,7 @@ export default class Home extends Component {
     _setGiftModalStatus() {
         let {actions} = this.props;
         let key = common.APP_OPEN_DATE + guid;
+
         AsyncStorageComponent.get(key)
             .then((value) => {
                 let today = new Date().getDate().toString();
@@ -365,6 +351,7 @@ export default class Home extends Component {
 
             } else if(modals.includes(homeConst.GIFT)) {
                 cur = homeConst.GIFT;
+
             }
             break;
         case homeConst.COUPON:
@@ -393,6 +380,16 @@ export default class Home extends Component {
             break;
         default:        
             break;
+        }
+
+        if(cur == homeConst.COUPON) {
+            ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": baseInfo.get('couponModal').get('cost')});
+        } else if(cur == homeConst.RULE) {
+            ActionUtil.setAction(actionType.BA_HOME_SENDRULE_ONVIEW);
+        } else if(cur == homeConst.GIFT) {
+            baseInfo.get('giftModal').get('points') 
+                ? ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_CREDIT_ONVIEW, {"points": baseInfo.get('giftModal').get('points')})
+                : ActionUtil.setAction(actionType.BA_HOME_PAGE_EXPERIENCE_ONVIEW);
         }
 
         actions.currentModalChanged(cur);

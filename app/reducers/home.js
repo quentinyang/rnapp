@@ -103,14 +103,12 @@ let initialBaseInfo = {
     currentModal: '',
     modals: [],
 
-    scoreFetched: false,
     scoreModal: {
         fetched: false,
         visible: false,
         score: 8
     },
 
-    couponFetched: false,
     couponModal: {
         fetched: false,
         visible: false,
@@ -144,13 +142,11 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
             });
             break;
         case types.SCORE_MODAL_STATUS:
-            let scoreChanged =  state.set('scoreModal', Immutable.fromJS(action.status));
-            return scoreChanged.set('scoreFetched', Immutable.fromJS(true));
+            return state.set('scoreModal', Immutable.fromJS(action.status));            
             break;
 
         case types.COUPON_MODAL_STATUS:
-            let couponChanged = state.set('couponModal', Immutable.fromJS(action.status));
-            return couponChanged.set('couponFetched', Immutable.fromJS(true));
+            return state.set('couponModal', Immutable.fromJS(action.status));
             break;
 
         case types.RULE_MODAL_STATUS:

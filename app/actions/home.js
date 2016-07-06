@@ -95,15 +95,15 @@ export function fetchScoreModalStatus() {
         serviceAction(dispatch)({
             service: fetchScoreModalStatusService,
             success: function (oData) {
+                if (Number(oData.is_notify)) {
+                    dispatch(pushShowModal(types.SCORE));
+                }
+
                 dispatch(scoreModalStatusFetched({
                     fetched: true,
                     visible: Number(oData.is_notify) ? true : false,
                     score: oData.point || 8
                 }))
-
-                if (Number(oData.is_notify)) {
-                    dispatch(pushShowModal(types.SCORE));
-                }
             },
             error: function (oData) {
             }
@@ -118,11 +118,10 @@ export function fetchCouponModalStatus() {
             success: function(oData) {
                 oData.visible = oData.id ? true : false;
                 oData.fetched = true;
-                dispatch(couponModalStatusFetched(oData))
-
                 if (oData.visible) {
                     dispatch(pushShowModal(types.COUPON));
                 }
+                dispatch(couponModalStatusFetched(oData))                
             },
             error: function (oData) {
             }

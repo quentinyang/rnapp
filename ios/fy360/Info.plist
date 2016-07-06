@@ -66,6 +66,6 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>version</key>
-	<string>feature-bureau-20160705.dev</string>
+	<string>master</string>
 </dict>
 </plist>

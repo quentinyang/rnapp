@@ -67,6 +67,7 @@ export default class User extends Component {
                     </TouchableWithoutFeedback>
                 </Header>
                 <ScrollView
+                    bounces={false}
                     style={styles.scrollBox}
                     automaticallyAdjustContentInsets={false}
                 >

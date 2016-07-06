@@ -458,13 +458,12 @@ class VoiceModal extends Component {
                             });
                             AudioPlayer.stop();
                             AudioPlayer.play(item.get('record_url'));
-                            //listen voice stop: playing -> -1
                         }}
                     >
                         <View style={[styles.center, styles.justifyContent, styles.voiceBox]}>
                             <Image style={styles.voice} source={voiceIcon}/>
                             <Image style={styles.boxArrow} source={require('../images/arrow_left.png')}/>
-                            <Text style={styles.greenColor}>点击播放</Text>
+                            <Text style={styles.greenColor}>{this.state.playing == index ? '正在播放' : '点击播放'}</Text>
                         </View>
                     </TouchableHighlight>
                     <Text style={[styles.grayColor, styles.itemSize]}>{m}:{s}</Text>

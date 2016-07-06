@@ -197,6 +197,9 @@ export function fetchSellerPhone(data) {
                 }));
                 ActionUtil.setAction(actionType.BA_DETAIL_PHENO_ONVIEW);
                 dispatch(setSellerPhoneVisible(true));
+
+                dispatch(setHomeContactStatus({"property_id": data.property_id, "is_contact": "1"}));
+                dispatch(setContactStatus({"property_id": data.property_id, "is_contact": "1"}));
             },
             error: function (error) {
                 dispatch(callSellerFailed(error));
