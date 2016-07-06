@@ -237,7 +237,7 @@ class Login extends Component {
                 AsyncStorageComponent.save(common.USER_PHONE, data.phone);
                 AsyncStorageComponent.save(common.USER_ID, oData.user_id || "");
                 ActionUtil.setUid(oData.user_id || "");
-                setLoginDays();
+                setLoginDays(oData.user_id);
                 actionsApp.setSearchHistory(oData.user_id || "0");
                 actionsApp.appLoadingChanged(false);
                 gtoken = oData.token;

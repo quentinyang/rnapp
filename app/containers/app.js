@@ -78,7 +78,7 @@ class App extends Component {
                     });
                 }
 
-                setLoginDays();
+                setLoginDays(guid);
             }
         })
         .catch((error) => {
@@ -464,8 +464,8 @@ class App extends Component {
     };
 }
 
-export function setLoginDays() {
-    let key = "LOGIN_DAYS_" + guid;
+export function setLoginDays(uid) {
+    let key = "LOGIN_DAYS_" + uid;
 
     AsyncStorageComponent.get(key)
     .then((value) => {
