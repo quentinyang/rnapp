@@ -317,9 +317,7 @@ export default class Home extends Component {
         AsyncStorageComponent.get(key)
             .then((value) => {
                 let today = new Date().getDate().toString();
-console.log('======storage get: ', value);
                 if(!value) {
-                    console.log('======rule');
                     actions.pushShowModal(homeConst.RULE);
                     actions.fetchRuleModalStatus();
                 }
@@ -327,7 +325,6 @@ console.log('======storage get: ', value);
                 if (value && value == today) { //不为空且 == today, 不显示
 
                 } else { //为空 或 != today, 则显示并更新
-                    console.log('======gift');
                     actions.pushShowModal(homeConst.GIFT);
                     actions.fetchGiftInfo();
                     AsyncStorageComponent.save(key, today);
@@ -339,16 +336,15 @@ console.log('======storage get: ', value);
     }
 
     componentWillUpdate() {
-        // if(this.hasGetModal) {
-        //     return;
-        // }
+        if(this.hasGetModal) {
+            return;
+        }
 
-        // let {baseInfo} = this.props;
-        // if(baseInfo.get('scoreModal').get('fetched') && baseInfo.get('couponModal').get('fetched')) { 
-        //     console.log('========will update modals[]:', baseInfo.get('modals').toJS());
-        //     this._setCurrentModal(homeConst.SCORE); 
-        //     this.hasGetModal = true;
-        // }
+        let {baseInfo} = this.props;
+        if(baseInfo.get('scoreModal').get('fetched') && baseInfo.get('couponModal').get('fetched')) {
+            this._setCurrentModal(homeConst.SCORE); 
+            this.hasGetModal = true;
+        }
     }
 
     _setCurrentModal(start) {
@@ -399,14 +395,13 @@ console.log('======storage get: ', value);
             break;
         }
 
-        console.log('========set current modal:', cur);
         actions.currentModalChanged(cur);
     }
 
     render() {
         let {houseData, baseInfo, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
-    console.log('======baseInfo', baseInfo.toJS());
+
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
                 <ScoreModal
@@ -497,10 +492,6 @@ console.log('======storage get: ', value);
             actions.fetchCouponModalStatus();
             actions.fetchRuleModalStatus();
             actions.fetchCurrentStatus();
-
-            setTimeout(()=> {
-                this._setCurrentModal(homeConst.SCORE);
-            }, 3000);
         });
         AppState.addEventListener('change', this._dealGiftModal.bind(this));
     }

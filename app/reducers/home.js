@@ -101,7 +101,7 @@ let initialBaseInfo = {
     current: 0,
 
     currentModal: '',
-    modals: [],   //['', '']
+    modals: [],
 
     scoreFetched: false,
     scoreModal: {
@@ -117,13 +117,11 @@ let initialBaseInfo = {
         score: 1
     },
 
-    //ruleCanShow: false,
     ruleModal: {
         "input_points": 7, //发房积分
         "looked_points": 2 //房源被查看
     },
 
-    //giftCanShow: false,
     giftModal: {
         "sign_in_days": "1",
         "experience": "0"
@@ -131,7 +129,6 @@ let initialBaseInfo = {
 };
 
 function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
-
     switch (action.type) {
         case types.CURRENT_MODAL_CHANGED:
             let modalChanged = state.set('currentModal', Immutable.fromJS(action.modal));
@@ -141,12 +138,9 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
                 });
             });
             break;
-
         case types.PUSH_SHOW_MODAL:
-            return state.update('modals', (k) => {
-                let temp = Immutable.fromJS(action.modal);
-                let t = k.push(Immutable.fromJS(action.modal));
-                return t;
+            return state.update('modals', (k) => {               
+                return k.push(Immutable.fromJS(action.modal));
             });
             break;
         case types.SCORE_MODAL_STATUS:
@@ -162,22 +156,19 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
         case types.RULE_MODAL_STATUS:
             return state.set('ruleModal', Immutable.fromJS(action.status));
             break;
-        // case types.RULE_MODAL_SHOW:
-        //     return state.set('ruleCanShow', Immutable.fromJS(action.visible));
-        //     break;
 
         case types.GIFT_MODAL_STATUS:
             return state.set('giftModal', Immutable.fromJS(action.status));
             break;
-        // case types.GIFT_MODAL_SHOW:
-        //     return state.set('giftCanShow', Immutable.fromJS(action.visible));
-        //     break;
 
         case types.HOUSE_NEW_COUNT:
             return state.set('newCount', Immutable.fromJS(action.count));
             break;
         case types.HOUSE_CURRENT_STATUS:
             return state.set('current', Immutable.fromJS(action.current));
+            break;
+        case types.CLEAR_HOME_PAGE:
+            return Immutable.fromJS(initialBaseInfo);
             break;
         default:
             return state;

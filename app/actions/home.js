@@ -14,22 +14,13 @@ export const houseAttentionAppendFetched = makeActionCreator(types.HOUSE_ATTENTI
 export const houseAttentionPrependFetched = makeActionCreator(types.HOUSE_ATTENTION_PREPEND_FETCHED, 'houseList');
 export const clearHomePage = makeActionCreator(types.CLEAR_HOME_PAGE);
 
-export const setScoreModalVisible = makeActionCreator(types.SCORE_MODAL_VISIBLE_CHANGED, 'visible');
 export const scoreModalStatusFetched = makeActionCreator(types.SCORE_MODAL_STATUS, 'status');
-export const setCouponModalVisible = makeActionCreator(types.COUPON_MODAL_VISIBLE_CHANGED, 'visible');
 export const couponModalStatusFetched = makeActionCreator(types.COUPON_MODAL_STATUS, 'status');
-export const setRuleModalVisible = makeActionCreator(types.RULE_MODAL_VISIBLE_CHANGED, 'visible');
 export const ruleModalStatusFetched = makeActionCreator(types.RULE_MODAL_STATUS, 'status');
-export const setRuleShowVisible = makeActionCreator(types.RULE_MODAL_SHOW, 'visible');
-export const setGiftModalVisible = makeActionCreator(types.GIFT_MODAL_VISIBLE_CHANGED, 'visible');
 export const giftModalStatusFetched = makeActionCreator(types.GIFT_MODAL_STATUS, 'status');
-export const setGiftShowVisible = makeActionCreator(types.GIFT_MODAL_SHOW, 'visible');
 
 export const currentModalChanged = makeActionCreator(types.CURRENT_MODAL_CHANGED, 'modal');
 export const pushShowModal = makeActionCreator(types.PUSH_SHOW_MODAL, 'modal');
-
-
-
 
 export const attentionBlockAndCommunityFetched = makeActionCreator(types.ATTENTION_BLOCK_COMMUNITY_FETCHED, 'attentionList');
 export const HouseNewCount = makeActionCreator(types.HOUSE_NEW_COUNT, 'count');
@@ -109,7 +100,6 @@ export function fetchScoreModalStatus() {
                     visible: Number(oData.is_notify) ? true : false,
                     score: oData.point || 8
                 }))
-console.log('======scroe fetched: ', oData);
 
                 if (Number(oData.is_notify)) {
                     dispatch(pushShowModal(types.SCORE));
@@ -129,7 +119,7 @@ export function fetchCouponModalStatus() {
                 oData.visible = oData.id ? true : false;
                 oData.fetched = true;
                 dispatch(couponModalStatusFetched(oData))
-console.log('======coupon fetched: ', oData);
+
                 if (oData.visible) {
                     dispatch(pushShowModal(types.COUPON));
                 }

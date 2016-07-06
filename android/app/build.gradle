@@ -174,7 +174,7 @@ android {
 
     productFlavors {
         dev {
-            buildConfigField "String", "API_HOST", "\"http://360.feature-bureau-20160705.dev.angejia.com/service/\""
+            buildConfigField "String", "API_HOST", "\"http://360.feature-bureau-20160705.test.angejia.com/service/\""
         }
 
         //渠道
