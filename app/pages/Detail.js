@@ -294,7 +294,7 @@ export default class Detail extends Component {
 
                 <BaseInfo baseInfo={baseInfo.get('baseInfo')} route={route}/>
                 { userInfo.get('input_user_id') ?
-                    <UserInfo userInfo={userInfo} navigator={navigator} actionsNavigation={actionsNavigation} />
+                    <UserInfo userInfo={userInfo} navigator={navigator} actions={actions} actionsNavigation={actionsNavigation} />
                     : null
                 }
 
@@ -364,6 +364,7 @@ export default class Detail extends Component {
                 property_id: item.get('property_id')
             });
         }
+        actions.clearHouseDetailPage();
     };
 
     _handleMoreHouseList = () => {
@@ -638,7 +639,7 @@ class UserInfo extends Component {
     }
 
     render() {
-        let {userInfo, navigator, actionsNavigation} = this.props;
+        let {userInfo, navigator, actions, actionsNavigation} = this.props;
         let mobile = userInfo.get('mobile'),
             showMobile = mobile ? mobile.slice(0, 3) + '****' + mobile.slice(-4) : '';
         return (
@@ -659,6 +660,7 @@ class UserInfo extends Component {
                             bp: this.pageId,
                             userInfo
                         });
+                        actions.clearHouseDetailPage();
                     }
                 }>
                     <View>
