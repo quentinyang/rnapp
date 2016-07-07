@@ -17,6 +17,7 @@ import TitleBar from '../components/TitleBar';
 import WelfareCard from '../components/WelfareCard';
 import deviceInfo from '../utils/DeviceInfo';
 var AudioPlayer = require('react-native').NativeModules.RNAudioPlayer;
+var {RecyclerViewBackedScrollView} = require('react-native');
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -140,6 +141,7 @@ export default class Detail extends Component {
                     renderHeader={this._renderHeader}
                     style={styles.listView}
                     enableEmptySections={true}
+                    renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
                 />
             </View>
         );
@@ -592,6 +594,7 @@ class CouponModal extends Component {
                             renderFooter={this._renderFooter.bind(this)}
                             enableEmptySections={true}
                             showsVerticalScrollIndicator={false}
+                            renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
                         />
 
                     </View>
@@ -674,7 +677,9 @@ class UserInfo extends Component {
                                     <Text style={[styles.levelText]}>V{userInfo.get('level')}</Text>
                                 </View>
                             </View>
-                            <Text style={styles.subName}>{showMobile}</Text>
+                            <View>
+                                <Text style={styles.subName}>{showMobile}</Text>
+                            </View>
                         </View>
 
                         <View style={[styles.info, styles.row]}>
