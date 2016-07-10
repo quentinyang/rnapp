@@ -82,7 +82,7 @@ export default class AboutUser extends Component {
                 <View style={styles.houseItem}>
                     <Text style={{width: 80}}>{date.month}月{date.day}日</Text>
                     <View style={styles.flex}>
-                        <Text style={{fontWeight: '500'}} numberOfLines={1}>{rowData.get('community_name')} {rowData.get('building_num') + rowData.get('building_unit') + rowData.get('door_num')}室</Text>
+                        <Text style={{fontWeight: '500'}} numberOfLines={1}>{rowData.get('community_name')} {rowData.get('building_num') ? rowData.get('building_num') + rowData.get('building_unit') : null}{rowData.get('door_num') ? rowData.get('door_num') + '室' : null}</Text>
                         <Text style={{fontSize: 12, marginTop: 2}}>{rowData.get('bedrooms')}室{rowData.get('living_roooms')}厅{rowData.get('bathrooms')}卫 {rowData.get('area')}平 {rowData.get('price')}万</Text>
                         <Text style={{fontSize: 12, color: '#8d8c92', marginTop: 2}}>{rowData.get('district_name')}-{rowData.get('block_name')} {rowData.get('community_address')}</Text>
                     </View>
@@ -147,7 +147,7 @@ class UserSection extends Component {
     render() {
         let {userInfo, log} = this.props;
         let mobile = userInfo.get('mobile');
-        let showMobile = mobile ? mobile.slice(0, 3) + '****' + mobile.slice(-4) : '';
+        let showMobile = mobile ? mobile.slice(0, 2) + '********' + mobile.slice(-1) : '';
         let attentArr = userInfo.get('user_attention_block_list').size > 0 ? userInfo.get('user_attention_block_list').toJS() : userInfo.get('user_attention_community_list').size > 0 ? userInfo.get('user_attention_community_list').toJS() : null;
 
         return (

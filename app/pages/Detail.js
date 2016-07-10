@@ -644,7 +644,7 @@ class UserInfo extends Component {
     render() {
         let {userInfo, navigator, actions, actionsNavigation} = this.props;
         let mobile = userInfo.get('mobile'),
-            showMobile = mobile ? mobile.slice(0, 3) + '****' + mobile.slice(-4) : '';
+            showMobile = mobile ? mobile.slice(0, 2) + '********' + mobile.slice(-1) : '';
         return (
             <View>
                 <View style={styles.gap}></View>
