@@ -34,7 +34,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.4.0.1</string>
+	<string>1.4.0.0</string>
 	<key>ChannelID</key>
 	<string>AppStore</string>
 	<key>CodePushDeploymentKey</key>
