@@ -405,7 +405,7 @@ class PhoneModal extends Component {
                     <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
-                            underlayColor="#fff"
+                            underlayColor="transparent"
                             onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);actions.setSellerPhoneVisible(false);}}
                         >
                             <Image
@@ -489,7 +489,7 @@ class VoiceModal extends Component {
                                 AudioPlayer.stop();
                                 actions.setVoiceVisible(false);
                             }}
-                            underlayColor="#fff"
+                            underlayColor="transparent"
                         >
                             <Image style={styles.closeIcon} source={require('../images/close.png')}/>
                         </TouchableHighlight>
@@ -724,7 +724,7 @@ class ErrorTipModal extends Component {
                     <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
-                            underlayColor="#fff"
+                            underlayColor="transparent"
                             onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);actions.setErrorTipVisible(false)}}
                         >
                             <Image
@@ -808,7 +808,7 @@ class CostScoreModal extends Component {
                     <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
-                            underlayColor="#fff"
+                            underlayColor="transparent"
                             onPress={this._handlerFeedback.bind(this, actionType.BA_DETAIL_SPENDCANCEL)}
                         >
                             <Image

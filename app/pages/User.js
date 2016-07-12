@@ -27,6 +27,7 @@ import BindAlipayContainer from '../containers/BindAlipayContainer';
 import SettingContainer from '../containers/SettingContainer';
 import ScoreListContainer from '../containers/ScoreListContainer';
 import WelfareContainer from '../containers/WelfareContainer';
+import WelfareModal from '../components/WelfareModal';
 import Immutable from 'immutable';
 let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
@@ -54,9 +55,53 @@ export default class User extends Component {
             alipay_account: userProfile.get('alipay_account'),
             is_binding_alipay: userProfile.get('is_binding_alipay')
         };
-
+let welfare = Immutable.fromJS([
+    {
+            "id": "1", //用户福利卡id
+            "name": "看房卡", //福利卡名称
+            "brief": "获任意1套房源的房东电话花1积分", //福利卡描述
+            "type": "1", //1看房卡, 2补签卡
+            "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
+            "status": "1", //使用状态, 0不可用, 1可用, 2已用，3过期
+            "begin_at": "", //开始时间，空为获取时就开始
+            "end_at": "2016-07-16", //过期时间
+            "created_at": "2016-06-01", //获取时间
+            "used_at": "2016-06-05" //使用时间，未使用时为空
+        },
+        {
+            "id": "2", //用户福利卡id
+            "name": "看房卡", //福利卡名称
+            "brief": "获任意1套房源的房东电话花1积分", //福利卡描述
+            "type": "1", //1看房卡, 2补签卡
+            "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
+            "status": "1", //使用状态, 0不可用, 1可用, 2已用，3过期
+            "begin_at": "", //开始时间，空为获取时就开始
+            "end_at": "2016-07-16", //过期时间
+            "created_at": "2016-06-01", //获取时间
+            "used_at": "2016-06-05" //使用时间，未使用时为空
+        }
+        ]);
         return (
             <View style={styles.container}>
+
+                {/*<WelfareModal
+                    title="连续签到15天"
+                    icon={{url: require("../images/gift.png"), style: {width: 34, height: 34}}}
+                > 
+                    <Text style={[styles.h5, styles.modalContent]}>
+                        <Text style={[styles.h2, styles.addNum]}>+</Text>
+                        <Text style={[styles.h1, styles.scoreNum]}>{ 3}</Text>
+                        经验
+                    </Text>
+                </WelfareModal>*/}
+
+                <WelfareModal
+                    title="连续签到15天"
+                    subTitle="获得2张看房卡，+3经验"
+                    welfareData={welfare}
+                /> 
+
+
                 <Header title='我的' style={styles.bgHeader} fontStyle={styles.whiteText}>
                     <TouchableWithoutFeedback
                         onPress={() => this.navigatorPush({component: SettingContainer, name: 'settings', title: '设置', actionLog: actionType.BA_MINE_SET})}>
@@ -85,11 +130,17 @@ export default class User extends Component {
                         }}
                         onPress={() => this.navigatorPush({component: SignInContainer, signInfo: signInData, name: 'signin', title: '签到送积分', actionLog: actionType.BA_MINE_SIGN, bp: this.pageId, backLog: actionType.BA_MINE_CREDIT_BACK})}
                     >
-                        <View style={{flexDirection: 'column'}}>
+                        <View style={{flexDirection: 'column'}}> 
                             <Text style={{marginTop: 2}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
-                            <Text style={styles.signInPrompt}>继续签到{userProfile.get('go_on_sign_in_day')}天
-                                赚{userProfile.get('get_points')}积分</Text>
+                            <Text style={styles.signInPrompt}>再签到{userProfile.get('go_on_sign_in_day')}天
+                                领签到礼包</Text>
                         </View>
+                        <TouchableWithoutFeedback
+                            onPress={() => {}}
+                        >
+                            <View style={styles.signInWarp}><Text style={styles.signInBtn}>签到</Text></View>
+                        </TouchableWithoutFeedback>
+                        
                     </LinkSection>
 
                     <LinkSection
@@ -329,6 +380,20 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#8d8c92'
     },
+    signInWarp: {
+        position: 'absolute',
+        right: 0,
+        top: 3,
+        height: 35,
+        width: 140,
+        borderRadius: 17.5,
+        backgroundColor: '#FF6D4B',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    signInBtn: {
+        color: '#fff'
+    },
     accountSection: {
         paddingVertical: 17,
         paddingHorizontal: 15,
@@ -347,5 +412,24 @@ const styles = StyleSheet.create({
         borderWidth: 1 / PixelRatio.get(),
         borderColor: '#ff6d4b',
         borderRadius: 2
+    },
+    addNum: {
+        letterSpacing: 6,
+        marginTop: -3
+    },
+    scoreNum: {
+        letterSpacing: 1
+    },
+    h1: {
+        fontSize: 30
+    },
+    h2: {
+        fontSize: 27
+    },
+    h5: {
+        fontSize: 15
+    },
+    modalContent: {
+        marginTop: 8
     }
 });

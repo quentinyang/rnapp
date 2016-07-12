@@ -17,6 +17,7 @@ import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import * as common from '../constants/Common';
 import * as homeConst from '../constants/Home';
 import {getAttentionStatus} from '../service/blockService';
+import WelfareModal from '../components/WelfareModal'; 
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -38,7 +39,7 @@ class InputRuleModal extends Component {
                     <View style={[styles.contentContainer, {marginTop: 32}]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
-                            underlayColor="#fff"
+                            underlayColor="transparent"
                             onPress={() => { 
                                 setCurrentModal(homeConst.GIFT);
                             }}
@@ -85,7 +86,7 @@ class CouponModal extends Component {
                         <View style={[styles.contentContainer, {marginTop: 32}]}>
                             <TouchableHighlight
                                 style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
-                                underlayColor="#fff"
+                                underlayColor="transparent"
                                 onPress={() => {
                                 setCurrentModal(homeConst.RULE);
                             }}
@@ -157,7 +158,7 @@ class GiftModal extends Component {
                         <View style={[styles.contentContainer, {marginTop: 32}]}>
                             <TouchableHighlight
                                 style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
-                                underlayColor="#fff"
+                                underlayColor="transparent"
                                 onPress={() => {
                                 ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE); 
                                 actions.currentModalChanged('');
@@ -238,7 +239,7 @@ class ScoreModal extends Component {
                     <View style={styles.contentContainer}>
                         <TouchableHighlight
                             style={styles.closeBox}
-                            underlayColor="#fff"
+                            underlayColor="transparent"
                             onPress={() => {
                                 ActionUtil.setAction(actionType.BA_FIRSTOPEN_DELETE);                            
                                 setCurrentModal(homeConst.COUPON);
@@ -398,9 +399,65 @@ export default class Home extends Component {
     render() {
         let {houseData, baseInfo, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
+let welfare = Immutable.fromJS([
+    {
+            "id": "1", //用户福利卡id
+            "name": "看房卡", //福利卡名称
+            "brief": "获任意1套房源的房东电话花1积分", //福利卡描述
+            "type": "1", //1看房卡, 2补签卡
+            "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
+            "status": "1", //使用状态, 0不可用, 1可用, 2已用，3过期
+            "begin_at": "", //开始时间，空为获取时就开始
+            "end_at": "2016-07-16", //过期时间
+            "created_at": "2016-06-01", //获取时间
+            "used_at": "2016-06-05" //使用时间，未使用时为空
+        },
+        {
+            "id": "2", //用户福利卡id
+            "name": "看房卡", //福利卡名称
+            "brief": "获任意1套房源的房东电话花1积分", //福利卡描述
+            "type": "1", //1看房卡, 2补签卡
+            "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
+            "status": "1", //使用状态, 0不可用, 1可用, 2已用，3过期
+            "begin_at": "", //开始时间，空为获取时就开始
+            "end_at": "2016-07-16", //过期时间
+            "created_at": "2016-06-01", //获取时间
+            "used_at": "2016-06-05" //使用时间，未使用时为空
+        },
+        {
+            "id": "3", //用户福利卡id
+            "name": "看房卡", //福利卡名称
+            "brief": "获任意1套房源的房东电话花1积分", //福利卡描述
+            "type": "1", //1看房卡, 2补签卡
+            "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
+            "status": "1", //使用状态, 0不可用, 1可用, 2已用，3过期
+            "begin_at": "", //开始时间，空为获取时就开始
+            "end_at": "2016-07-16", //过期时间
+            "created_at": "2016-06-01", //获取时间
+            "used_at": "2016-06-05" //使用时间，未使用时为空
+        },
+        {
+            "id": "3", //用户福利卡id
+            "name": "看房卡", //福利卡名称
+            "brief": "获任意1套房源的房东电话花1积分", //福利卡描述
+            "type": "1", //1看房卡, 2补签卡
+            "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
+            "status": "1", //使用状态, 0不可用, 1可用, 2已用，3过期
+            "begin_at": "", //开始时间，空为获取时就开始
+            "end_at": "2016-07-16", //过期时间
+            "created_at": "2016-06-01", //获取时间
+            "used_at": "2016-06-05" //使用时间，未使用时为空
+        }
+        ]);
 
+/*<WelfareModal
+                    title="注册成功"
+                    subTitle="获得2张看房卡"
+                    welfareData={welfare}
+                />*/
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
+                
                 <ScoreModal
                     isVisible={baseInfo.get('currentModal') == homeConst.SCORE}
                     modalInfo={baseInfo.get('scoreModal')}

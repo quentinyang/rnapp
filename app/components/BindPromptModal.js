@@ -28,7 +28,7 @@ export default class BindPromptModal extends Component {
                     <View style={[styles.center, styles.contentContainer]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.closeBox]}
-                            underlayColor="#fff"
+                            underlayColor="transparent"
                             onPress={() => {actions.setBindPromptVisible(false); ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_BOXONVIEW_DELETE);}}
                         >
                             <Image
