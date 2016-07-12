@@ -1,5 +1,6 @@
 'use strict';
-import {Linking, Alert} from 'nuke'
+import {Linking, Alert} from 'nuke';
+import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 
 export function NaviGoBack(navigator) {
     if (navigator && navigator.getCurrentRoutes().length > 1) {

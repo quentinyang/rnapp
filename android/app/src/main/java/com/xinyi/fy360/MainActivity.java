@@ -87,6 +87,7 @@ public class MainActivity extends ReactActivity {
                 new ModulePackage(),
                 new GeTuiManager(),
                 new AliPackage(),
+                new RNAudioPlayer(),
                 new DeviceIDManager(),
                 this._codePush.getReactPackage()
         );

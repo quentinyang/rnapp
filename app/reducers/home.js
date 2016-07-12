@@ -16,7 +16,7 @@ let initialState = {
 };
 
 function houseData(state = Immutable.fromJS(initialState), action) {
-    switch(action.type) {
+    switch (action.type) {
         case types.HOUSE_ATTENTION_FETCHED:
             return Immutable.fromJS(action.houseList);
             break;
@@ -39,7 +39,7 @@ function houseData(state = Immutable.fromJS(initialState), action) {
             return state.updateIn(['properties'], (k) => {
                 let newArr = Immutable.List();
                 k.forEach((val, key) => {
-                    if(val.get('property_id') == action.contactStatus.property_id) {
+                    if (val.get('property_id') == action.contactStatus.property_id) {
                         let newVal = val.set('is_contact', Immutable.fromJS(true));
                         newArr = newArr.push(newVal);
                     } else {
@@ -53,7 +53,7 @@ function houseData(state = Immutable.fromJS(initialState), action) {
             return state.updateIn(['properties'], (k) => {
                 let newArr = Immutable.List();
                 k.forEach((val, key) => {
-                    if(val.get('property_id') == action.lookStatus.property_id) {
+                    if (val.get('property_id') == action.lookStatus.property_id) {
                         let newVal = val.set('is_click', Immutable.fromJS(true));
                         newArr = newArr.push(newVal);
                     } else {
@@ -74,7 +74,7 @@ let initialAttentionList = {
 };
 
 function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
-    switch(action.type) {
+    switch (action.type) {
         case types.ATTENTION_BLOCK_COMMUNITY_FETCHED:
             return Immutable.fromJS(action.attentionList);
             break;
@@ -97,11 +97,29 @@ function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
 }
 
 let initialBaseInfo = {
+    newCount: "",
+    current: 0,
+
+    currentModal: '',
+    modals: [],
+
     scoreModal: {
+        fetched: false,
         visible: false,
         score: 8
     },
-    newCount: "",
+
+    couponModal: {
+        fetched: false,
+        visible: false,
+        score: 1
+    },
+
+    ruleModal: {
+        "input_points": 7, //发房积分
+        "looked_points": 2 //房源被查看
+    },
+
     giftModal: {
         "sign_in_days": "1",
         "experience": "0"
@@ -110,17 +128,43 @@ let initialBaseInfo = {
 
 function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
     switch (action.type) {
-        case types.SCORE_MODAL_VISIBLE_CHANGED:
-            return state.setIn(['scoreModal','visible'], Immutable.fromJS(action.visible));
+        case types.CURRENT_MODAL_CHANGED:
+            let modalChanged = state.set('currentModal', Immutable.fromJS(action.modal));
+            return modalChanged.update('modals', (k) => {
+                return k.filter(m => {
+                    return m !== action.modal;
+                });
+            });
+            break;
+        case types.PUSH_SHOW_MODAL:
+            return state.update('modals', (k) => {               
+                return k.push(Immutable.fromJS(action.modal));
+            });
             break;
         case types.SCORE_MODAL_STATUS:
-            return state.set('scoreModal', Immutable.fromJS(action.status));
+            return state.set('scoreModal', Immutable.fromJS(action.status));            
             break;
+
+        case types.COUPON_MODAL_STATUS:
+            return state.set('couponModal', Immutable.fromJS(action.status));
+            break;
+
+        case types.RULE_MODAL_STATUS:
+            return state.set('ruleModal', Immutable.fromJS(action.status));
+            break;
+
+        case types.GIFT_MODAL_STATUS:
+            return state.set('giftModal', Immutable.fromJS(action.status));
+            break;
+
         case types.HOUSE_NEW_COUNT:
             return state.set('newCount', Immutable.fromJS(action.count));
             break;
-        case types.GIFT_INFO:
-            return state.set('giftModal', Immutable.fromJS(action.info));
+        case types.HOUSE_CURRENT_STATUS:
+            return state.set('current', Immutable.fromJS(action.current));
+            break;
+        case types.CLEAR_HOME_PAGE:
+            return Immutable.fromJS(initialBaseInfo);
             break;
         default:
             return state;

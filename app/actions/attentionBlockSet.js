@@ -19,7 +19,6 @@ export function fetchAttentionBlockSet() {
                 dispatch(attentionBlockSetFetched(oData))
             },
             error: function(oData) {
-
             }
         })
     }
@@ -33,6 +32,7 @@ export function enterAttentionBlockSet() {
                 dispatch(attentionBlockSetEntered(oData))
             },
             error: function(oData) {
+                console.log('put请求报错，不影响页面？', oData)
             }
         })
     }

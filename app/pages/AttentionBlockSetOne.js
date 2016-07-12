@@ -106,6 +106,7 @@ export default class AttentionBlockSetOne extends Component {
             .then((oData) => {
                 actions.attentionListOneCommunityChanged(communitySelect.toJS());
                 actionsHome.fetchAttentionHouseList();
+                actionsHome.fetchCurrentStatus();
                 navigator.pop();
             })
             .catch((oData) => {

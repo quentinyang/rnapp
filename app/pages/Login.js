@@ -25,6 +25,7 @@ import * as common from '../constants/Common';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import {routes} from '../config/route'
+import  {setLoginDays} from '../containers/app';
 
 class Login extends Component {
     constructor(props) {
@@ -229,15 +230,16 @@ class Login extends Component {
         if(msg) {
             actions.errMsg(errMsgs[msg]);
         } else {
+            actionsApp.appLoadingChanged(true);
             loginService(data)
             .then((oData) => {
                 AsyncStorageComponent.save(common.USER_TOKEN_KEY, oData.token);
                 AsyncStorageComponent.save(common.USER_PHONE, data.phone);
                 AsyncStorageComponent.save(common.USER_ID, oData.user_id || "");
                 ActionUtil.setUid(oData.user_id || "");
-
+                setLoginDays(oData.user_id);
                 actionsApp.setSearchHistory(oData.user_id || "0");
-
+                actionsApp.appLoadingChanged(false);
                 gtoken = oData.token;
                 guid = oData.user_id;
                 if(oData.is_enter_attention_page) {
@@ -264,6 +266,7 @@ class Login extends Component {
                 }
             })
             .catch((error) => {
+                actionsApp.appLoadingChanged(false);
                 actions.errMsg(error.msg);
             })
         }

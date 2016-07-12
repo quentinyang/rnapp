@@ -18,6 +18,7 @@
 #import "GeTui.h"
 
 #import "Alipay.h"
+#import "RNAudioPlayer.h"
 #import <AlipaySDK/AlipaySDK.h>
 
 #import "Utils.h"

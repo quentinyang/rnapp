@@ -3,6 +3,7 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import * as actionsApp from '../actions/app';
 import Recharge from '../pages/Recharge';
 
 class RechargeContainer extends Component {
@@ -25,6 +26,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        actionsApp: bindActionCreators(actionsApp, dispatch)
     }
 }
 

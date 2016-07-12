@@ -15,7 +15,9 @@ let urls = {
         status: HOST + 'property/log',
         call: HOST + 'wash/call',
         feedback: HOST + 'wash/status',
-        contactLog: HOST + 'property/contact/log'
+        contactLog: HOST + 'property/contact/log',
+        userInfo: HOST + 'property/input-user/info',
+        sellerPhone: HOST + 'wash/record/phone'
     },
     user: {
         sendCode: HOST + 'passport/login/sms',
@@ -30,7 +32,9 @@ let urls = {
         signIn: HOST + 'user/sign-in',
         signInStatus: HOST + 'user/sign-in/status',
 
-        expRule: HOST + 'user/level/rule'
+        expRule: HOST + 'user/level/rule',
+
+        inputList: HOST + 'user/house/checked/success/list'
     },
     house: {
         list: HOST + 'property-list',
@@ -56,7 +60,8 @@ let urls = {
     attention: {
         blockAndCommunity: HOST + 'get-attention-community-block',
         saveAttentionCommunity: HOST + 'set-attention-community',
-        enter: HOST + 'set-attention-enter'
+        enter: HOST + 'set-attention-enter',
+        status: HOST + 'set-attention-status'
     },
     community: {
         list: HOST + 'community/search/app'
@@ -68,32 +73,40 @@ let urls = {
     app: {
         config: HOST + 'update/push',
         deletePush: HOST + 'delete/push',
-        setConfig: HOST + 'configs'
+        setConfig: HOST + 'configs',
+        setLoginDay: HOST + 'user/login/days',
+        inputRule: HOST + 'property/rule'
     },
     pay: {
         order: HOST + 'recharge',
         result: HOST + 'recharge/notify',
         realName: HOST + 'user/info/edit',
         aliStatus: HOST + 'recharge/binding/alipay/status'
+    },
+    card: {
+        welfare: HOST + 'my-welfare-cards',
+        getNewWelfare: HOST + 'my-welfare-card/latest'
     }
 }
 
 gDebug && AsyncStorageComponent.get(common.API_HOST)
-.then((value) => {
-    if(value) {
-        if(value !== global.ghost) {
-            urls = replaceJSONContent(urls, ghost, value);
-            ghost = value;
+    .then((value) => {
+        if (value) {
+            if (value !== global.ghost) {
+                urls = replaceJSONContent(urls, ghost, value);
+                ghost = value;
+            }
         }
-    }
-})
-.catch((error) => {
-    console.log(error);
-});
+    })
+    .catch((error) => {
+        console.log(error);
+    });
 
 RCTDeviceEventEmitter.addListener(common.HOST_CHANGE, (newHost) => {
     urls = replaceJSONContent(urls, ghost, newHost);
     ghost = newHost;
 });
 
-module.exports = () => {return urls};
+module.exports = () => {
+    return urls
+};

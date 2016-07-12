@@ -14,6 +14,8 @@ let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import {routes} from '../config/route'
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
+import AppState from '../utils/AppState';
+import { setLoginDaysService } from '../service/configService';
 
 let _navigator;
 global.gtoken = '';
@@ -75,6 +77,8 @@ class App extends Component {
                         hasSetRoute: true
                     });
                 }
+
+                setLoginDays(guid);
             }
         })
         .catch((error) => {
@@ -173,6 +177,12 @@ class App extends Component {
                         </View>
                     </View>
                 </Modal> : null }
+
+                <Modal visible={appData.get('loadingVisible')} transparent={true}>
+                    <View style={[styles.flex, styles.alignItems, styles.justifyContent]}>
+                        <Image source={require('../images/loading.gif')} style={styles.loading} />
+                    </View>
+                </Modal>
 
                 {
                     hasSetRoute ?
@@ -286,6 +296,10 @@ class App extends Component {
                 gcid = storageId;
             }
         });
+
+        AppState.addEventListener(() => {
+            gtoken && setLoginDays();
+        });
     }
 
     componentWillUnmount() {
@@ -300,6 +314,7 @@ class App extends Component {
             DeviceEventEmitter.removeAllListeners('setGeTuiOpenAction');
             DeviceEventEmitter.removeAllListeners('goPage');
         }
+        AppState.removeEventListener();
     }
 
     _clientIdReceived = (cId) => {
@@ -449,6 +464,22 @@ class App extends Component {
     };
 }
 
+export function setLoginDays(uid) {
+    let key = "LOGIN_DAYS_" + uid;
+
+    AsyncStorageComponent.get(key)
+    .then((value) => {
+        let today = new Date().getDate().toString();
+        if(value && value == today) {
+        } else {
+            setLoginDaysService();
+            AsyncStorageComponent.save(key, today).catch((error) => {console.log(error);})
+        }
+    }).catch((error) => {
+        console.log(error);
+    })
+}
+
 let styles = StyleSheet.create({
     flex: {
         flex: 1
@@ -571,6 +602,10 @@ let styles = StyleSheet.create({
         borderRadius: 5,
         padding: 20,
         backgroundColor: "#fff",
+    },
+    loading: {
+        width: 32,
+        height: 32
     }
 });
 

@@ -15,6 +15,8 @@ let initialState = {
     auth: true,
     msg: '',
 
+    loadingVisible: false,
+
     listSearchHistoryKey: '',
     inputSearchHistoryKey: '',
     listSearchHistory: [],
@@ -99,6 +101,9 @@ function appData(state = Immutable.fromJS(initialState), action) {
             AsyncStorageComponent.remove(inputKey);
 
             return state.set('inputSearchHistory', Immutable.fromJS([]));
+            break;
+        case types.APP_LOADING_CHANGED:
+            return state.set('loadingVisible', action.visible);
             break;
         default:
             return state;

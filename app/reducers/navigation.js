@@ -13,23 +13,40 @@ export default function navAwarable(reducer, states, name) {
                     stateStack.push(state);
                 }
                 return state;
+                break;
             case types.DETAIL_PUSH_ROUTE:
                 if(name == 'houseDetail') {
                     stateStack.push(state);
                 }
                 return state;
+                break;
+            case types.ABOUT_USER_PUSH_ROUTE:
+                if(name == 'aboutUser') {
+                    stateStack.push(state);
+                }
+                return state;
+                break;
             case types.LIST_POP_ROUTE:
                 if(name == 'houseList') {
                     let originState = stateStack.pop();
                     return reducer(originState, action);
                 }
                 return state;
+                break;
             case types.DETAIL_POP_ROUTE:
                 if(name == 'houseDetail') {
                     let originState = stateStack.pop();
                     return reducer(originState, action);
                 }
                 return state;
+                break;
+            case types.ABOUT_USER_POP_ROUTE:
+                if(name == 'aboutUser') {
+                    let originState = stateStack.pop();
+                    return reducer(originState, action);
+                }
+                return state;
+                break;
             case types.SET_CONTACT_STATUS:
                 updateStateStack(action.contactStatus, "is_contact");
                 return state;

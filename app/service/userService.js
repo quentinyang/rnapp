@@ -51,6 +51,12 @@ module.exports=function(){
         return ajax.get(urls().user.expRule);
     }
 
+    function userInputListService(params) {
+        return ajax.get(urls().user.inputList, {
+            data: params
+        });
+    }
+
     return {
         sendCodeService: sendCodeService,
         loginService: loginService,
@@ -62,6 +68,7 @@ module.exports=function(){
         scoreListService: scoreListService,
         getGiftInfo: getGiftInfo,
         signInStatusService: signInStatusService,
-        expRuleService: expRuleService
+        expRuleService: expRuleService,
+        userInputListService: userInputListService
     };
 }();
