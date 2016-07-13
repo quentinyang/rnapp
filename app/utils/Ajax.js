@@ -7,6 +7,8 @@ function status(response, resolve, reject) {
     if((response.status >= 200 && response.status < 300) || response.status == 304) {
         if (response.status != 204) {
             resolve(response.json());
+        } else {
+            resolve(response);
         }
         console.log('[AjaxSuccess]', response.status, response.url);
     } else {

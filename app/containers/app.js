@@ -472,8 +472,11 @@ export function setLoginDays(uid) {
         let today = new Date().getDate().toString();
         if(value && value == today) {
         } else {
-            setLoginDaysService();
-            AsyncStorageComponent.save(key, today).catch((error) => {console.log(error);})
+            setLoginDaysService().then(() => {
+                AsyncStorageComponent.save(key, today).catch((error) => {console.log(error);})
+            }).catch((error) => {
+                console.log(error);
+            });
         }
     }).catch((error) => {
         console.log(error);
