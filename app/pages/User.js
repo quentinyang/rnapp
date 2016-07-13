@@ -87,6 +87,7 @@ let welfare = Immutable.fromJS([
                 {/*<WelfareModal
                     title="连续签到15天"
                     icon={{url: require("../images/gift.png"), style: {width: 34, height: 34}}}
+                    isVisible={false}
                 > 
                     <Text style={[styles.h5, styles.modalContent]}>
                         <Text style={[styles.h2, styles.addNum]}>+</Text>
@@ -98,7 +99,10 @@ let welfare = Immutable.fromJS([
                 <WelfareModal
                     title="连续签到15天"
                     subTitle="获得2张看房卡，+3经验"
+                    isVisible={false}
                     welfareData={welfare}
+                    closeModal={()=>{}}
+                    goPage={()=>{}}
                 /> 
 
 

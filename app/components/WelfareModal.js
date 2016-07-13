@@ -8,14 +8,14 @@ export default class WelfareModal extends Component {
 	}
 
 	render() {
-        let {isVisible, title, subTitle, welfareData, icon, children} = this.props;
+        let {isVisible, title, subTitle, welfareData, icon, children, closeModal, goPage} = this.props;
         let welfareList = welfareData && welfareData.map((item, index) => {
             return (
                 <View key={index} style={{flex: 1, height: 60, marginBottom: 15, backgroundColor: '#eee'}}><Text>{item.get('name')}</Text></View>
             );
         });
 		return (
-			<Modal visible={true} transparent={true} onRequestClose={() => {}}>
+			<Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
                 <View style={styles.bgWrap}>
                     <View>
                         <View style={[styles.contentContainer, {marginTop: 32}]}>
@@ -23,9 +23,7 @@ export default class WelfareModal extends Component {
                             <TouchableHighlight
                                 style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
                                 underlayColor="transparent"
-                                onPress={() => {
-                                    
-                                }}
+                                onPress={closeModal}
                             >
                                 <Image
                                     style={styles.closeIcon}
@@ -46,7 +44,7 @@ export default class WelfareModal extends Component {
                             {children}
                             <TouchableHighlight
                                 underlayColor='#fff'
-                                onPress={this._goCoupon.bind(this)}
+                                onPress={goPage}
                             >
                                 <View style={styles.flex}>
                                     <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
@@ -65,10 +63,6 @@ export default class WelfareModal extends Component {
             </Modal>
 		);
 	}
-
-    _goCoupon() {
-
-    }
 }
 
 let styles = StyleSheet.create({

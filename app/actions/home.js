@@ -4,7 +4,7 @@ import * as types from '../constants/Home';
 import {fetchAttentionHouseListService, fetchAttentionAppendHouseListService, fetchAttentionPrependHouseListService, fetchHouseNewCountService} from '../service/houseListService';
 
 import {fetchAttentionBlockAndCommunityService,getAttentionStatus} from '../service/blockService';
-import {fetchScoreModalStatusService, getGiftInfo} from '../service/userService'
+import {fetchScoreModalStatusService} from '../service/userService'
 import {fetchCouponStatusService} from '../service/cardService';
 import {fetchRuleStatusService} from '../service/configService';
 import {makeActionCreator, serviceAction} from './base';
@@ -17,7 +17,6 @@ export const clearHomePage = makeActionCreator(types.CLEAR_HOME_PAGE);
 export const scoreModalStatusFetched = makeActionCreator(types.SCORE_MODAL_STATUS, 'status');
 export const couponModalStatusFetched = makeActionCreator(types.COUPON_MODAL_STATUS, 'status');
 export const ruleModalStatusFetched = makeActionCreator(types.RULE_MODAL_STATUS, 'status');
-export const giftModalStatusFetched = makeActionCreator(types.GIFT_MODAL_STATUS, 'status');
 
 export const currentModalChanged = makeActionCreator(types.CURRENT_MODAL_CHANGED, 'modal');
 export const pushShowModal = makeActionCreator(types.PUSH_SHOW_MODAL, 'modal');
@@ -155,18 +154,6 @@ export function fetchHouseNewCount() {
     }
 }
 
-export function fetchGiftInfo() {
-    return dispatch => {
-        serviceAction(dispatch)({
-            service: getGiftInfo,
-            success: function (oData) {
-                dispatch(giftModalStatusFetched(oData));
-            },
-            error: function () {
-            }
-        })
-    }
-}
 export function fetchCurrentStatus() {
     return dispatch => {
         serviceAction(dispatch)({

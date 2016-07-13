@@ -119,11 +119,6 @@ let initialBaseInfo = {
         "input_points": 7, //发房积分
         "looked_points": 2 //房源被查看
     },
-
-    giftModal: {
-        "sign_in_days": "1",
-        "experience": "0"
-    }
 };
 
 function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
@@ -151,10 +146,6 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
 
         case types.RULE_MODAL_STATUS:
             return state.set('ruleModal', Immutable.fromJS(action.status));
-            break;
-
-        case types.GIFT_MODAL_STATUS:
-            return state.set('giftModal', Immutable.fromJS(action.status));
             break;
 
         case types.HOUSE_NEW_COUNT:

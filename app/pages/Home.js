@@ -1,7 +1,7 @@
 'use strict';
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio, Modal, Button, TouchableHighlight,
-    TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform, AppState} from 'nuke';
+    TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform} from 'nuke';
 
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
@@ -41,7 +41,7 @@ class InputRuleModal extends Component {
                             style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
                             underlayColor="transparent"
                             onPress={() => { 
-                                setCurrentModal(homeConst.GIFT);
+                                setCurrentModal('');
                             }}
                             >
                                 <Image
@@ -70,219 +70,6 @@ class InputRuleModal extends Component {
     }
 }
 
-class CouponModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let {isVisible, modalInfo, actions, setCurrentModal} = this.props;
-        let cardMsg = modalInfo.get('cost') == "0" ? "免费" : modalInfo.get('cost') + "积分";
-        return (
-            <Modal visible={isVisible} transparent={true}
-                   onRequestClose={() => {}}>
-                <View style={styles.bgWrap}>
-                    <View>
-                        <View style={[styles.contentContainer, {marginTop: 32}]}>
-                            <TouchableHighlight
-                                style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
-                                underlayColor="transparent"
-                                onPress={() => {
-                                setCurrentModal(homeConst.RULE);
-                            }}
-                            >
-                                <Image
-                                    style={styles.closeIcon}
-                                    source={require("../images/close.png")}
-                                />
-                            </TouchableHighlight>
-
-                            <Text style={[styles.h5, styles.giftDay]}>恭喜你获得1张</Text>
-
-                            { modalInfo.get('type') == "1" ?
-                                <Text style={styles.h5}><Text
-                                    style={[styles.h0, styles.scoreNum]}>{cardMsg}</Text>看房卡</Text>
-                                : <Text style={[styles.h0, styles.scoreNum]}>补签卡</Text>
-                            }
-
-                            <TouchableHighlight
-                                underlayColor='#fff'
-                                onPress={this._goCoupon.bind(this)}
-                            >
-                                <View style={styles.flex}>
-                                    <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
-                                </View>
-                            </TouchableHighlight>
-
-                        </View>
-
-                        <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
-                            <Image style={styles.coupon} source={require("../images/coupon_white.png")}/>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
-
-    _goCoupon() {
-        let {navigator, actions, log, setCurrentModal} = this.props;
-        actions.currentModalChanged('');
-
-        navigator.push({
-            component: WelfareContainer,
-            name: 'welfare',
-            title: '福利卡',
-            hideNavBar: false,
-            bp: log.pageId,
-            backLog: log.pageId,
-            callbackFun: () => {
-                navigator.pop();
-                setCurrentModal(homeConst.RULE);
-            }
-        });
-    }
-}
-
-class GiftModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let {isVisible, modalInfo, actions} = this.props;
-        return (
-            <Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
-                <View style={styles.bgWrap}>
-                    <View>
-                        <View style={[styles.contentContainer, {marginTop: 32}]}>
-                            <TouchableHighlight
-                                style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
-                                underlayColor="transparent"
-                                onPress={() => {
-                                ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE); 
-                                actions.currentModalChanged('');
-                            }}
-                            >
-                                <Image
-                                    style={styles.closeIcon}
-                                    source={require("../images/close.png")}
-                                />
-                            </TouchableHighlight>
-
-                            <Text style={[styles.h3, styles.giftDay]}>连续签到<Text
-                                style={[styles.h3, styles.mediumFont]}>{modalInfo.get('sign_in_days')}</Text>天</Text>
-                            <View style={[styles.row]}>
-                                <Text style={styles.h5}>
-                                    <Text style={[styles.h2, styles.addNum]}>+</Text>
-                                    <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('experience')}</Text>
-                                    经验</Text>
-                                { modalInfo.get('points') ?
-                                    <Text style={styles.scoreAdd}>
-                                        <Text style={[styles.h2, styles.addNum]}>+</Text>
-                                        <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('points')}</Text>
-                                        积分</Text>
-                                    : null
-                                }
-                            </View>
-
-                            <TouchableHighlight
-                                underlayColor='#fff'
-                                onPress={this._goScore.bind(this)}
-                            >
-                                <View style={styles.flex}>
-                                    <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
-                                </View>
-                            </TouchableHighlight>
-
-                        </View>
-
-                        <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
-                            <Image style={styles.gift} source={require("../images/gift.png")}/>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
-
-    _goScore() {
-        let {navigator, actions, modalInfo, log} = this.props;
-
-        actions.currentModalChanged('');
-        navigator.push({
-            component: SignInContainer,
-            name: 'signIn',
-            title: '签到送积分',
-            hideNavBar: false,
-            signInfo: modalInfo,
-            bp: log.pageId,
-            backLog: log.back
-        });
-        ActionUtil.setAction(actionType.BA_HOME_PAGE_FIND);
-    }
-}
-
-class ScoreModal extends Component {
-    constructor(props) {
-        super(props);        
-    }
-
-    render() {
-        let {isVisible, modalInfo, actions, setCurrentModal} = this.props;
-        return (
-
-            <Modal visible={isVisible} transparent={true}
-                   onRequestClose={() => {}}>
-
-                <View style={styles.bgWrap}>
-                    <View style={styles.contentContainer}>
-                        <TouchableHighlight
-                            style={styles.closeBox}
-                            underlayColor="transparent"
-                            onPress={() => {
-                                ActionUtil.setAction(actionType.BA_FIRSTOPEN_DELETE);                            
-                                setCurrentModal(homeConst.COUPON);
-                            }}
-                        >
-                            <Image
-                                style={styles.closeIcon}
-                                source={require("../images/close.png")}
-                            />
-                        </TouchableHighlight>
-
-                        <Text style={[styles.msgTip]}>领<Text style={styles.orange}>{modalInfo.get('score')}</Text>积分免费看房源</Text>
-                        <Button
-                            containerStyle={[styles.btn, styles.btnMarginBottom]}
-                            itemStyle={styles.btnSize} label="立即领取"
-                            onPress={this._goScoreDetail.bind(this)}/>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
-
-    _goScoreDetail() {
-        let {actions, navigator, setCurrentModal} = this.props;
-        ActionUtil.setAction(actionType.BA_FIRSTOPEN_GETSOON);
-        actions.currentModalChanged('');
-
-        navigator.push({
-            component: ScoreRule,
-            name: 'scoreRule',
-            title: '积分规则',
-            hideNavBar: false,
-            bp: actionType.BA_HOME_PAGE,
-            backLog: actionType.BA_FIRSTOPEN_RETURN,
-            score: this.props.modalInfo.get('score'),
-            callbackFun: () => {
-                navigator.pop();
-                setCurrentModal(homeConst.COUPON);
-            }
-        });
-    }
-}
-
 export default class Home extends Component {
     constructor(props) {
         super(props);
@@ -293,35 +80,27 @@ export default class Home extends Component {
         };
         this.pageId = actionType.BA_HOME_PAGE;
         ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_ONVIEW, {"bp": this.props.route.bp});
-
-        this._setGiftModalStatus();
+        this._ruleModalStatus();
     }
 
-    _setGiftModalStatus() {
+     _ruleModalStatus() {
         let {actions} = this.props;
-        let key = common.APP_OPEN_DATE + guid;
+        let key = common.APP_SHOW_RULE + guid;
 
         AsyncStorageComponent.get(key)
             .then((value) => {
                 let today = new Date().getDate().toString();
+
                 if(!value) {
                     actions.pushShowModal(homeConst.RULE);
                     actions.fetchRuleModalStatus();
-                }
-
-                if (value && value == today) { //不为空且 == today, 不显示
-
-                } else { //为空 或 != today, 则显示并更新
-                    actions.pushShowModal(homeConst.GIFT);
-                    actions.fetchGiftInfo();
-                    AsyncStorageComponent.save(key, today);
-                }
+                    AsyncStorageComponent.save(key, today).catch((error) => {console.log(error)});
+                }                
             })
             .catch((error) => {
                 console.log(error);
             });
     }
-
     componentWillUpdate() {
         if(this.hasGetModal) {
             return;
@@ -350,9 +129,6 @@ export default class Home extends Component {
             } else if(modals.includes(homeConst.RULE)) {
                 cur = homeConst.RULE;
 
-            } else if(modals.includes(homeConst.GIFT)) {
-                cur = homeConst.GIFT;
-
             }
             break;
         case homeConst.COUPON:
@@ -362,21 +138,12 @@ export default class Home extends Component {
             } else if(modals.includes(homeConst.RULE)) {
                 cur = homeConst.RULE;
 
-            } else if(modals.includes(homeConst.GIFT)) {
-                cur = homeConst.GIFT;
             }
             break;
         case homeConst.RULE:
             if(modals.includes(homeConst.RULE)) {
                 cur = homeConst.RULE;
 
-            } else if(modals.includes(homeConst.GIFT)) {
-                cur = homeConst.GIFT;
-            }
-            break;
-        case homeConst.GIFT: 
-            if(modals.includes(homeConst.GIFT)) {
-                cur = homeConst.GIFT;
             }
             break;
         default:        
@@ -387,10 +154,6 @@ export default class Home extends Component {
             ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": baseInfo.get('couponModal').get('cost')});
         } else if(cur == homeConst.RULE) {
             ActionUtil.setAction(actionType.BA_HOME_SENDRULE_ONVIEW);
-        } else if(cur == homeConst.GIFT) {
-            baseInfo.get('giftModal').get('points') 
-                ? ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_CREDIT_ONVIEW, {"points": baseInfo.get('giftModal').get('points')})
-                : ActionUtil.setAction(actionType.BA_HOME_PAGE_EXPERIENCE_ONVIEW);
         }
 
         actions.currentModalChanged(cur);
@@ -423,57 +186,28 @@ let welfare = Immutable.fromJS([
             "end_at": "2016-07-16", //过期时间
             "created_at": "2016-06-01", //获取时间
             "used_at": "2016-06-05" //使用时间，未使用时为空
-        },
-        {
-            "id": "3", //用户福利卡id
-            "name": "看房卡", //福利卡名称
-            "brief": "获任意1套房源的房东电话花1积分", //福利卡描述
-            "type": "1", //1看房卡, 2补签卡
-            "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
-            "status": "1", //使用状态, 0不可用, 1可用, 2已用，3过期
-            "begin_at": "", //开始时间，空为获取时就开始
-            "end_at": "2016-07-16", //过期时间
-            "created_at": "2016-06-01", //获取时间
-            "used_at": "2016-06-05" //使用时间，未使用时为空
-        },
-        {
-            "id": "3", //用户福利卡id
-            "name": "看房卡", //福利卡名称
-            "brief": "获任意1套房源的房东电话花1积分", //福利卡描述
-            "type": "1", //1看房卡, 2补签卡
-            "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
-            "status": "1", //使用状态, 0不可用, 1可用, 2已用，3过期
-            "begin_at": "", //开始时间，空为获取时就开始
-            "end_at": "2016-07-16", //过期时间
-            "created_at": "2016-06-01", //获取时间
-            "used_at": "2016-06-05" //使用时间，未使用时为空
         }
         ]);
 
-/*<WelfareModal
+        return (
+            <View style={[styles.flex, styles.pageBgColor]}>
+                <WelfareModal
+                    isVisible={baseInfo.get('currentModal') == homeConst.SCORE}
                     title="注册成功"
                     subTitle="获得2张看房卡"
                     welfareData={welfare}
-                />*/
-        return (
-            <View style={[styles.flex, styles.pageBgColor]}>
-                
-                <ScoreModal
-                    isVisible={baseInfo.get('currentModal') == homeConst.SCORE}
-                    modalInfo={baseInfo.get('scoreModal')}
-                    actions={actions}
-                    navigator={navigator}
-                    log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
-                    setCurrentModal={this._setCurrentModal.bind(this)}
+                    closeModal={this._closeModal.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_DELETE)}
+                    goPage={this._goCoupon.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_GETSOON, actionType.BA_FIRSTOPEN_RETURN)}
                 />
-                <CouponModal
+
+                <WelfareModal
                     isVisible={baseInfo.get('currentModal') == homeConst.COUPON}
-                    modalInfo={baseInfo.get('couponModal')}
-                    actions={actions}
-                    navigator={navigator}
-                    log={{pageId: this.pageId, back: actionType.BA_MINE_WELFARE_BACK}}
-                    setCurrentModal={this._setCurrentModal.bind(this)}
+                    title="恭喜您获得2张"
+                    welfareData={welfare}
+                    closeModal={this._closeModal.bind(this, homeConst.RULE, null)}
+                    goPage={this._goCoupon.bind(this, homeConst.RULE, null, actionType.BA_MINE_WELFARE_BACK)}   //?????  log: click 
                 />
+
                 <InputRuleModal 
                     isVisible={baseInfo.get('currentModal') == homeConst.RULE} 
                     modalInfo={baseInfo.get('ruleModal')}
@@ -481,13 +215,6 @@ let welfare = Immutable.fromJS([
                     setCurrentModal={this._setCurrentModal.bind(this)}
                 />
 
-                <GiftModal
-                    isVisible={baseInfo.get('currentModal') == homeConst.GIFT}
-                    modalInfo={baseInfo.get('giftModal')}
-                    actions={actions}
-                    navigator={navigator}
-                    log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
-                />
                 <View style={styles.searchWrap}>
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>
                         <Text style={[styles.searchText, styles.searchTextPadding]}>上海</Text>
@@ -547,18 +274,10 @@ let welfare = Immutable.fromJS([
             actions.fetchRuleModalStatus();
             actions.fetchCurrentStatus();
         });
-        AppState.addEventListener('change', this._dealGiftModal.bind(this));
-    }
-
-    _dealGiftModal(currentAppState) {
-        if (currentAppState == 'active') {
-            this._setGiftModalStatus();
-        }
     }
 
     componentWillUnmount() {
         this.props.actions.clearHomePage();
-        AppState.removeEventListener('change', this._dealGiftModal);
     }
 
     _renderRow = (rowData:any) => {
@@ -705,6 +424,28 @@ let welfare = Immutable.fromJS([
             attentionList
         });
     };
+    _goCoupon(modal, log, backLog) {
+        let {actions, navigator} = this.props;
+        log && ActionUtil.setAction(log);
+        actions.currentModalChanged('');
+
+        navigator.push({
+            component: WelfareContainer,
+            name: 'welfare',
+            title: '福利卡',
+            hideNavBar: false,
+            bp: this.pageId,
+            backLog: backLog || '',
+            callbackFun: () => {
+                navigator.pop();
+                this._setCurrentModal(modal);
+            }
+        });
+    }
+    _closeModal(modal, log, event) {
+        log && ActionUtil.setAction(log);
+        this._setCurrentModal(modal);
+    }
 }
 
 export class Attention extends Component {
@@ -992,29 +733,11 @@ const styles = StyleSheet.create({
         width: 15,
         height: 11
     },
-    msgTip: {
-        marginTop: 16,
-        marginBottom: 20,
-        textAlign: "center",
-        color: "#3E3E3E",
-        fontSize: 19
-    },
     orange: {
         color: "#FD9673"
     },
     grey: {
         color: '#8d8c92'
-    },
-    btn: {
-        width: 220,
-        justifyContent: "center",
-        borderRadius: 5
-    },
-    btnMarginBottom: {
-        marginBottom: 5
-    },
-    btnSize: {
-        fontSize: 18
     },
     giftBg: {
         position: 'absolute',
@@ -1027,32 +750,9 @@ const styles = StyleSheet.create({
         borderColor: '#fff',
         backgroundColor: "#04C1AE"
     },
-    gift: {
-        width: 34,
-        height: 34
-    },
     giftDay: {
         marginTop: 28,
         marginBottom: 4
-    },
-    scoreAdd: {
-        marginLeft: 30
-    },
-    addNum: {
-        letterSpacing: 6,
-        marginTop: -3
-    },
-    scoreNum: {
-        letterSpacing: 1
-    },
-    giftBtn: {
-        color: "#04c1ae",
-        fontSize: 12,
-        marginTop: 14
-    },
-    coupon: {
-        width: 37.5,
-        height: 25
     },
     horn: {
         width: 34,

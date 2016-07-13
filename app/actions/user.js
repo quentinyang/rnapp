@@ -1,7 +1,7 @@
 'use strict';
 
 import * as types from '../constants/User';
-import {profileService, scoreListService, expRuleService, userInputListService} from '../service/userService';
+import {profileService, scoreListService, expRuleService, userInputListService, getGiftInfo} from '../service/userService';
 import {makeActionCreator, serviceAction} from './base';
 
 export const userProfileFetched = makeActionCreator(types.USER_PROFILE, 'profile');
@@ -67,6 +67,19 @@ export function fetchUserInputHouse(params) {
                 dispatch(userInputHouseFetched(oData))
             },
             error: function() {
+            }
+        })
+    }
+}
+
+export function fetchGiftInfo() {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: getGiftInfo,
+            success: function (oData) {
+                dispatch(giftModalStatusFetched(oData));
+            },
+            error: function () {
             }
         })
     }
