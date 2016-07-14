@@ -2,7 +2,7 @@
 
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image, Alert, Modal, TouchableHighlight,
-    PixelRatio, TouchableWithoutFeedback, Linking, InteractionManager} from 'nuke';
+    PixelRatio, TouchableWithoutFeedback, Linking, InteractionManager, NetInfo} from 'nuke';
 import {navigationContext} from 'react-native'
 import {NaviGoBack, parseUrlParam} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
@@ -277,6 +277,12 @@ class App extends Component {
             });
         }
 
+
+
+        // NetInfo.fetch().done(
+        //     (data) => {console.log('------current netinfo--------', data)}
+        // );
+
         AsyncStorageComponent.get(common.GETUI_CLIENT_ID)
         .then((storageId) => {
             if (storageId) {
@@ -287,6 +293,11 @@ class App extends Component {
         AppState.addEventListener(() => {
             gtoken && setLoginDays();
         });
+
+        NetInfo.addEventListener(
+            'change',
+            this._handleConnectionInfoChange
+        );
     }
 
     componentWillUnmount() {
@@ -302,7 +313,16 @@ class App extends Component {
             DeviceEventEmitter.removeAllListeners('goPage');
         }
         AppState.removeEventListener();
+
+        NetInfo.removeEventListener(
+            'change',
+            this._handleConnectionInfoChange
+        );
     }
+
+    _handleConnectionInfoChange = (connection) => {
+        console.log('-----------netInfo--------------', connection);
+    };
 
     _logoutSure = () => {
         let {actionsApp} = this.props;

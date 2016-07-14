@@ -144,7 +144,7 @@ class NoCoupon extends Component {
     render() {
         return (
             <View style={[styles.noCouponBox, styles.center]}>
-                <Image source={require('../images/coupon.png')} style={styles.coupon}/>
+                <Image source={require('../images/welfare/coupon.png')} style={styles.coupon}/>
                 <Text>您当前没有{this.props.tabs[this.props.current]}的福利卡</Text>
             </View>
         );

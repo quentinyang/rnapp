@@ -18,7 +18,7 @@ export default class Card extends Component {
     render() {
         let {wrapStyle, errBoxStyle, errTextStyle, errText, item} = this.props;
         return (
-            <Image source={require('../images/membership.png')} style={[styles.wfCaSection, styles.center, wrapStyle]} resizeMode='stretch'>
+            <Image source={item.get('status') != 1 ? require('../images/welfare/welfare.png') : require('../images/welfare/welfare_available.png')} style={[styles.wfCaSection, styles.center, wrapStyle]} resizeMode='stretch'>
                 <View style={[styles.center, styles.wfCaLeft]}>
                     {item.get('type') == 2 ?
                     <Text style={[styles.highFont, {fontSize: 20}, item.get('status') != 1 ? styles.gray : null]}>补签</Text>:null}
@@ -28,7 +28,6 @@ export default class Card extends Component {
                         <Text><Text style={[styles.highFont, item.get('status') != 1 ? styles.gray : null]}>{item.get('cost')}</Text><Text style={[styles.font12, item.get('status') != 1 ? styles.gray : null]}>积分</Text></Text>
                     :null}
                 </View>
-                <View style={styles.wfSlice}></View>
                 <View style={styles.wfCaDesc}>
                     <Text style={[styles.fontBold, item.get('status') != 1 ? styles.gray : null]}>{item.get('name')}</Text>
                     <Text style={styles.descFont} numberOfLines={1}>· {item.get('brief')}</Text>
@@ -36,10 +35,10 @@ export default class Card extends Component {
                 </View>
                 <View style={styles.wfBadge}>
                     {item.get('status') == 2 ?
-                    <Image source={require('../images/used.png')} style={styles.wfBadgeImg} />
+                    <Image source={require('../images/welfare/used.png')} style={styles.wfBadgeImg} />
                     : (
                         item.get('status') == 3 ?
-                        <Image source={require('../images/expired.png')} style={styles.wfBadgeImg} />
+                        <Image source={require('../images/welfare/expired.png')} style={styles.wfBadgeImg} />
                         :null
                       )
                     }
@@ -74,13 +73,6 @@ const styles = StyleSheet.create({
     },
     font12: {
         fontSize: 12
-    },
-    wfSlice: {
-        width: 0,
-        height: 58,
-        borderWidth: 1/PixelRatio.get(),
-        borderStyle: 'dashed',
-        borderColor: '#dedede'
     },
     wfCaDesc: {
         flex: 1,
