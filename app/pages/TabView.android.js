@@ -66,6 +66,7 @@ export default class TabView extends Component {
                         navigator={_navigator}
                         tabIndex={this.state.tabIndex}
                         actionsUser={this.props.actionsUser}
+                        actionsHome={this.props.actionsHome}
                     />
                 }
                 onWillFocus={this._onWillFocus}
@@ -85,7 +86,7 @@ class TabBar extends Component {
     }
 
     render() {
-        let {tabIndex, navigator, actionsUser} = this.props;
+        let {tabIndex, navigator, actionsUser, actionsHome} = this.props;
         return (
             <View style={styles.tabbar}>
             {
@@ -101,6 +102,10 @@ class TabBar extends Component {
                                 onPress={()=>{
                                     if(tabIndex !== tabItem.key) {
                                         this.changeNavigatorItem(tabItem.key);
+                                    }
+                                    if (tabItem.key == 0) {
+                                        actionsHome.fetchAttentionPrependHouseList();
+                                        actionsHome.fetchHouseNewCount();
                                     }
                                     if (tabItem.key == 2) {
                                         actionsUser.fetchUserProfile({});

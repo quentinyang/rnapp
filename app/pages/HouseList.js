@@ -38,7 +38,7 @@ export default class HouseList extends Component {
     }
 
     render() {
-        let {houseData, filterData, uiData, queryParamsData, navigator, communityData, listSearchHistory} = this.props;
+        let {houseData, filterData, uiData, queryParamsData, navigator, route, communityData, listSearchHistory} = this.props;
         let houseList = houseData.get('properties');
         let pager = houseData.get('pager');
         let tabType = uiData.get('tabType');
@@ -53,6 +53,11 @@ export default class HouseList extends Component {
                     titleName={queryParamsData.get('community_name')}
                     backLog={actionType.BA_ALLHOUSE_LIST_RETURN}
                     onClearKeyword={this._onClearKeyword}
+                    onBack={() => {
+                        if(route.callbackFun) {
+                            route.callbackFun();
+                        }
+                    }}
                 />
                 <Filter
                     tabType={tabType}

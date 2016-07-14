@@ -18,6 +18,7 @@ import * as common from '../constants/Common';
 import * as homeConst from '../constants/Home';
 import {getAttentionStatus} from '../service/blockService';
 import WelfareModal from '../components/WelfareModal'; 
+import AppState from '../utils/AppState';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -274,10 +275,23 @@ let welfare = Immutable.fromJS([
             actions.fetchRuleModalStatus();
             actions.fetchCurrentStatus();
         });
+
+        AppState.addEventListener(() => {
+            this._refreshHouseData();
+        });
     }
 
     componentWillUnmount() {
         this.props.actions.clearHomePage();
+    }
+
+    _refreshHouseData = () => {
+        let {actions} = this.props;
+
+        InteractionManager.runAfterInteractions(() => {
+            actions.fetchAttentionPrependHouseList();
+            actions.fetchHouseNewCount();
+        });
     }
 
     _renderRow = (rowData:any) => {
@@ -342,7 +356,11 @@ let welfare = Immutable.fromJS([
                 name: 'houseList',
                 title: '全部房源',
                 hideNavBar: true,
-                bp: this.pageId
+                bp: this.pageId,
+                callbackFun: () => {
+                    this._refreshHouseData();
+                    navigator.pop();
+                }
             });
         }
     };

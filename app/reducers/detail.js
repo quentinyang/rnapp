@@ -87,7 +87,7 @@ let initParam = {
         msg: '拨打电话失败了,再试一下吧!'
     },
     errorTipVisible: false,
-    feedbackVisible: true,
+    feedbackVisible: false,
     washId: '',
 
     sellerPhone: {
