@@ -88,7 +88,7 @@ let welfare = Immutable.fromJS([
                     title="连续签到15天"
                     icon={{url: require("../images/gift.png"), style: {width: 34, height: 34}}}
                     isVisible={false}
-                > 
+                >
                     <Text style={[styles.h5, styles.modalContent]}>
                         <Text style={[styles.h2, styles.addNum]}>+</Text>
                         <Text style={[styles.h1, styles.scoreNum]}>{ 3}</Text>
@@ -103,7 +103,7 @@ let welfare = Immutable.fromJS([
                     welfareData={welfare}
                     closeModal={()=>{}}
                     goPage={()=>{}}
-                /> 
+                />
 
 
                 <Header title='我的' style={styles.bgHeader} fontStyle={styles.whiteText}>
@@ -134,7 +134,7 @@ let welfare = Immutable.fromJS([
                         }}
                         onPress={() => this.navigatorPush({component: SignInContainer, signInfo: signInData, name: 'signin', title: '签到送积分', actionLog: actionType.BA_MINE_SIGN, bp: this.pageId, backLog: actionType.BA_MINE_CREDIT_BACK})}
                     >
-                        <View style={{flexDirection: 'column'}}> 
+                        <View style={{flexDirection: 'column'}}>
                             <Text style={{marginTop: 2}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
                             <Text style={styles.signInPrompt}>再签到{userProfile.get('go_on_sign_in_day')}天
                                 领签到礼包</Text>
@@ -144,7 +144,7 @@ let welfare = Immutable.fromJS([
                         >
                             <View style={styles.signInWarp}><Text style={styles.signInBtn}>签到</Text></View>
                         </TouchableWithoutFeedback>
-                        
+
                     </LinkSection>
 
                     <LinkSection
@@ -220,11 +220,11 @@ class BasicInfo extends Component {
             showMobile = mobile ? mobile.slice(0, 3) + '****' + mobile.slice(-4) : '';
 
         return (
-            <View style={[styles.basicSection, styles.row]}>                
+            <View style={[styles.basicSection, styles.row]}>
                 <Image
                     style={styles.profileAvatar}
                     source={require('../images/avatar.png')}
-                />                
+                />
                 <View style={styles.flex}>
                     <Text style={[styles.mobileText, styles.whiteText]}>{showMobile}</Text>
                 </View>
@@ -309,6 +309,15 @@ class UserAccount extends Component {
                 backLog: actionType.BA_MINE_CASH_RETURN,
                 hideNavBar: false
             });
+        } else if (value.alipay_account) {
+            navigator.push({
+                component: BindAlipayContainer,
+                name: 'bindAlipay',
+                data: value,
+                title: '绑定支付宝',
+                hideNavBar: false,
+                backLog: actionType.BA_MINE_ZHIFUBAO_BACK
+            })
         } else {
             ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_BOXONVIEW);
             actions.setBindPromptVisible(true);

@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/bindAlipay';
 import * as actionsUser from '../actions/user';
+import * as actionsApp from '../actions/app';
 import BindAlipay from '../pages/BindAlipay';
 
 class BindAlipayContainer extends Component {
@@ -28,6 +29,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        actionsApp: bindActionCreators(actionsApp, dispatch),
         actionsUser: bindActionCreators(actionsUser, dispatch),
         actions: bindActionCreators(actions, dispatch)
     }

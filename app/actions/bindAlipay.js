@@ -5,6 +5,7 @@ import {makeActionCreator, serviceAction} from './base';
 import { getAlipayStatusService } from '../service/payService';
 
 export const alipayNameChanged = makeActionCreator(types.ALIPAY_NAME_CHANGED, 'name');
+export const alipayIDCardChanged = makeActionCreator(types.ALIPAY_IDCard_CHANGED, 'identity_card_number');
 export const alipayStatusFetched = makeActionCreator(types.ALIPAY_FETCHED, 'account', 'has_bound');
 export const alipayErrMsg = makeActionCreator(types.ALIPAY_ERR_MSG, 'err_msg');
 export const bindStepChanged = makeActionCreator(types.BIND_STEP_CHANGED, 'step');

@@ -13,6 +13,7 @@ import { NativeAppEventEmitter, DeviceEventEmitter, ToastAndroid } from 'react-n
 import WithdrawContainer from '../containers/WithdrawContainer';
 import PaySection from '../components/PaySection';
 import WithLabel from '../components/LabelTextInput';
+import CheckID from '../components/CheckID';
 import {tradeService, resultService, realNameService} from '../service/payService';
 import Toast from 'react-native-root-toast';
 
@@ -169,10 +170,13 @@ export default class BindAlipay extends Component {
 
     submitName = () => {
         this.submitStatus = false;
-        let {aliInfo, route, navigator, actions} = this.props;
-        if(this.verifyName(aliInfo.get('name'))) {
-            realNameService({body: {name: aliInfo.get('name')}})
+        let {aliInfo, route, navigator, actions, actionsApp} = this.props;
+
+        if(this.verifyName(aliInfo)) {
+            actionsApp.appLoadingChanged(true);
+            realNameService({body: {name: aliInfo.get('name'), identity_card_number: aliInfo.get('identity_card_number')}})
             .then(() => {
+                actionsApp.appLoadingChanged(false);
                 let data = {
                     alipay_account: aliInfo.get('alipay_account') || route.data.alipay_account,
                     min_price: route.data.min_price,
@@ -190,7 +194,9 @@ export default class BindAlipay extends Component {
                 });
             })
             .catch((data) => {
+                actionsApp.appLoadingChanged(false);
                 actions.alipayErrMsg(data.msg);
+                this.submitStatus = true;
             })
 
         } else {
@@ -205,8 +211,14 @@ export default class BindAlipay extends Component {
 
     verifyName(value) {
         let reg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
-        if(!reg.test(value)) {
-            this.props.actions.alipayErrMsg('请输入您的真实姓名');
+        let cardInfo = new CheckID(value.get('identity_card_number')).info.isTrue;
+        let {actions} = this.props;
+
+        if(!cardInfo) {
+            actions.alipayErrMsg('请输入正确的身份证号');
+            return false;
+        } else if(!reg.test(value.get('name'))) {
+            actions.alipayErrMsg('请输入您的真实姓名');
             return false;
         }
         return true;
@@ -242,27 +254,39 @@ class TypeName extends Component {
             <View>
                 <View style={{padding: 20, paddingTop: 0}}>
                     <Text style={styles.typeNamePrompt}>您已绑定支付宝账号: {this.props.account}</Text>
-                    <Text style={styles.instructFont}>请填写真实姓名以完成绑定</Text>
+                    <Text style={styles.instructFont}>请填写身份证和真实姓名</Text>
                 </View>
+                <WithLabel
+                    style={[styles.typeNameBox, {borderTopWidth: 1/PixelRatio.get()}]}
+                    label='身份证'
+                    defaultValue=''
+                    placeholder='请输入身份证号'
+                    underlineColorAndroid = 'transparent'
+                    maxLength={18}
+                    onFocus={() => {}}
+                    onChangeText={(v) => {this.changeAccount(v, 'alipayIDCardChanged')}}
+                />
                 <WithLabel
                     style={styles.typeNameBox}
                     label='真实姓名'
                     defaultValue=''
-                    placeholder='该账号对应的真实姓名'
+                    placeholder='请输入真实姓名'
                     underlineColorAndroid = 'transparent'
+                    maxLength={10}
                     onFocus={() => ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_NAMEINPUT)}
-                    onChangeText={(v) => {this.changeAccount(v)}}
+                    onChangeText={(v) => {this.changeAccount(v, 'alipayNameChanged')}}
                 />
+
                 <View style={styles.nameWarningBox}>
-                    <Text style={styles.typeNameWarning}>{this.props.error || '姓名和账户决定提现能否成功，提交后不可更改'}</Text>
+                    <Text style={styles.typeNameWarning}>{this.props.error || '填写真实的身份证和姓名才能提现成功，请谨慎填写'}</Text>
                 </View>
             </View>
         );
     }
 
-    changeAccount(value) {
+    changeAccount(value, action) {
         let {actions} = this.props;
-        actions.alipayNameChanged(value);
+        actions[action](value);
         actions.alipayErrMsg('');
     }
 }
@@ -322,7 +346,6 @@ const styles = StyleSheet.create({
     },
     typeNameBox: {
         backgroundColor:'#fff',
-        borderTopWidth: 1/PixelRatio.get(),
         borderTopColor: '#d9d9d9'
     },
     nameWarningBox: {

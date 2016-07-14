@@ -20,6 +20,7 @@ import * as actionType from '../constants/ActionLog'
 import Immutable, {List} from 'immutable';
 import RechargeContainer from '../containers/RechargeContainer'
 import WithdrawContainer from '../containers/WithdrawContainer'
+import BindAlipayContainer from '../containers/BindAlipayContainer';
 import BindPromptModal from '../components/BindPromptModal';
 
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => !immutable.is(r1, r2)});
@@ -183,7 +184,7 @@ class CashArea extends Component {
                 component: RechargeContainer,
                 name: 'recharge',
                 title: '充值',
-                bp: actionType.BA_MINE,
+                bp: this.pageId,
                 hideNavBar: false
             });
         } else {
@@ -203,10 +204,20 @@ class CashArea extends Component {
                 name: 'withdraw',
                 data: accountData,
                 title: '提现',
-                bp: actionType.BA_MINE,
+                bp: this.pageId,
                 backLog: actionType.BA_MINE_CASH_RETURN,
                 hideNavBar: false
             });
+        } else if (accountData.alipay_account) {
+            navigator.push({
+                component: BindAlipayContainer,
+                name: 'bindAlipay',
+                data: value,
+                title: '绑定支付宝',
+                hideNavBar: false,
+                bp: this.pageId,
+                backLog: actionType.BA_MINE_ZHIFUBAO_BACK
+            })
         } else {
             ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_BOXONVIEW);
             actions.setBindPromptVisible(true);

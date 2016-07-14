@@ -55,7 +55,7 @@ export default class SignIn extends Component {
 
                 <View style={[styles.row, styles.alignItems, styles.titleBox]}>
                     <View style={styles.bar}></View>
-                    <Text style={[styles.mediumFont]}>待领取积分</Text>
+                    <Text style={[styles.mediumFont]}>待领取礼包</Text>
                 </View>
 
                 <View style={styles.unsignList}>
@@ -65,12 +65,12 @@ export default class SignIn extends Component {
                 {signArr.size ?
                     <View style={[styles.row, styles.alignItems, styles.titleBox]}>
                         <View style={styles.bar}></View>
-                        <Text style={[styles.mediumFont]}>已领取积分</Text>
+                        <Text style={[styles.mediumFont]}>已领取礼包（共获{2}张）</Text>
                     </View>
                 : null }
 
                 <View>
-                    {signList}                   
+                    {signList}
                 </View>
             </ScrollView>
         )
