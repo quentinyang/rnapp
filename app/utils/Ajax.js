@@ -8,7 +8,7 @@ function status(response, resolve, reject) {
         if (response.status != 204) {
             resolve(response.json());
         } else {
-            resolve(response);
+            resolve();
         }
         console.log('[AjaxSuccess]', response.status, response.url);
     } else {
