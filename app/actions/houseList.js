@@ -1,5 +1,6 @@
 'use strict';
 
+import Toast from 'react-native-root-toast';
 import * as types from '../constants/HouseList';
 import * as homeTypes from '../constants/Home';
 import {fetchHouseListService, fetchAppendHouseListService, fetchPrependHouseListService, fetchHouseFilterService} from '../service/houseListService';
@@ -25,13 +26,20 @@ export const filterCommunityNameCleared = makeActionCreator(types.FILTER_COMMUNI
 
 export const houseListPageCleared = makeActionCreator(types.HOUSE_LIST_PAGE_CLEARED);
 
-export function fetchHouseList(params) {
+export function fetchHouseList(params, showResult) {
     return dispatch => {
         serviceAction(dispatch)({
             service: fetchHouseListService,
             data: params,
             success: function(oData) {
-                dispatch(houseFetched(oData))
+                dispatch(houseFetched(oData));
+
+                if(showResult && oData.pager.total) {
+                    Toast.show('找到' + oData.pager.total + '套房源', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER
+                    });
+                }
             },
             error: function(oData) {
 

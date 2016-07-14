@@ -12,7 +12,12 @@ let initialState = {
         isCidLogin: false,
         isEnforceUpdate: false
     },
-    auth: true,
+    auth: {
+        visible: false,
+        msg: '的积分卡对方',
+        subMsg: '大概是发发'
+    },
+
     msg: '',
 
     loadingVisible: false,
@@ -29,7 +34,7 @@ function appData(state = Immutable.fromJS(initialState), action) {
 
     switch(action.type) {
         case types.WEB_AUTHENTICATION:
-            return state.set('auth', action.auth);
+            return state.set('auth', Immutable.fromJS(action.auth));
             break;
         case types.WEB_NETWORK_ERROR:
             return state.set('msg', action.msg);

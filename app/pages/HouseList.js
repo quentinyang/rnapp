@@ -34,6 +34,7 @@ export default class HouseList extends Component {
             isShowSearchHistory: true
         };
         this.keyword = "";
+        this.showResult = true;
     }
 
     render() {
@@ -278,7 +279,7 @@ export default class HouseList extends Component {
         }
     };
 
-    // 过滤只看认证
+    // 过滤只看最新
     _onlyNewChanged = (onlyNew) => {
         ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_FILTERCERTIFY);
         let {actions, queryParamsData} = this.props;
@@ -288,7 +289,7 @@ export default class HouseList extends Component {
         actions.fetchHouseList({
             page: 1,
             ...queryParamsDataJs
-        });
+        }, this.showResult);
 
         actions.onlyNewChanged(onlyNew)
     };
@@ -304,7 +305,7 @@ export default class HouseList extends Component {
         actions.fetchHouseList({
             page: 1,
             ...queryParamsDataJs
-        });
+        }, this.showResult);
 
         actions.blockFilterChanged(districtId, blockId, areaName);
         this._hideMask();
@@ -323,7 +324,7 @@ export default class HouseList extends Component {
             actions.fetchHouseList({
                 page: 1,
                 ...queryParamsDataJs
-            });
+            }, this.showResult);
             actions.filterTabPriceChanged(min, max, title);
         } else {
             ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_FILTERSTYLE);
@@ -333,7 +334,7 @@ export default class HouseList extends Component {
             actions.fetchHouseList({
                 page: 1,
                 ...queryParamsDataJs
-            });
+            }, this.showResult);
             actions.filterTabBedroomsChanged(min, max, title);
         }
 

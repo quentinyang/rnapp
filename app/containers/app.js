@@ -127,6 +127,10 @@ class App extends Component {
         // (isAndroid && appData.get('config').get('isCidLogin'))
         return (
             <View style={styles.flex}>
+                <LogoutModal
+                    logoutInfo={appData.get('auth')}
+                    logoutSure={this._logoutSure}
+                />
                 <Modal visible={this.state.showModal} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.contentContainer}>
@@ -227,23 +231,6 @@ class App extends Component {
 
     componentDidUpdate() {
         let {appData, actionsApp} = this.props;
-        if (!appData.get('auth')) {
-            Alert.alert('提示', '请重新登录', [
-                {
-                    text: '确定',
-                    onPress: () => {
-                        _navigator.resetTo({
-                            component: LoginContainer,
-                            name: 'login',
-                            title: '登录',
-                            hideNavBar: true,
-                            bp: actionType.BA_LOGIN
-                        });
-                        actionsApp.webAuthentication(true);
-                    }
-                }
-            ])
-        }
 
         if (appData.get('msg') !== '') {
             Alert.alert('提示', appData.get('msg'), [
@@ -315,6 +302,23 @@ class App extends Component {
             DeviceEventEmitter.removeAllListeners('goPage');
         }
         AppState.removeEventListener();
+    }
+
+    _logoutSure = () => {
+        let {actionsApp} = this.props;
+        actionsApp.deletePush(); // 解绑个推
+        AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
+        ActionUtil.setUid("");
+        gtoken = '';
+
+        _navigator.resetTo({
+            component: LoginContainer,
+            name: 'login',
+            title: '登录',
+            hideNavBar: true,
+            bp: actionType.BA_LOGIN
+        });
+        actionsApp.webAuthentication({visible: false});
     }
 
     _clientIdReceived = (cId) => {
@@ -463,6 +467,33 @@ class App extends Component {
         })
     };
 }
+class LogoutModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        let {logoutInfo, logoutSure} = this.props;
+        return (
+            <Modal visible={logoutInfo.get('visible')} transparent={true} onRequestClose={() => {}}>
+                <View style={styles.bgWrap}>
+                    <View style={styles.contentContainer}>
+                        <Text>{logoutInfo.get('msg')}</Text>
+                        {logoutInfo.get('subMsg') ? <Text>{logoutInfo.get('subMsg')}</Text> : null}
+
+                        <TouchableHighlight
+                            onPress={logoutSure}
+                            underlayColor='#04C1AE'
+                        >
+                            <View style={[styles.logoutSure, styles.alignItems, styles.justifyContent]}>
+                                <Text style={[styles.updateBtnRightText]}>确认</Text>
+                            </View>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+}
 
 export function setLoginDays(uid) {
     let key = "LOGIN_DAYS_" + uid;
@@ -609,6 +640,13 @@ let styles = StyleSheet.create({
     loading: {
         width: 32,
         height: 32
+    },
+    logoutSure: {
+        width: 170,
+        height: 30,
+        borderRadius: 5,
+        backgroundColor: '#04c1ae',
+        marginTop: 20
     }
 });
 
