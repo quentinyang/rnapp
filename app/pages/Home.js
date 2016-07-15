@@ -163,48 +163,24 @@ export default class Home extends Component {
     render() {
         let {houseData, baseInfo, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
-let welfare = Immutable.fromJS([
-    {
-            "id": "1", //用户福利卡id
-            "name": "看房卡", //福利卡名称
-            "brief": "获任意1套房源的房东电话花1积分", //福利卡描述
-            "type": "1", //1看房卡, 2补签卡
-            "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
-            "status": "1", //使用状态, 0不可用, 1可用, 2已用，3过期
-            "begin_at": "", //开始时间，空为获取时就开始
-            "end_at": "2016-07-16", //过期时间
-            "created_at": "2016-06-01", //获取时间
-            "used_at": "2016-06-05" //使用时间，未使用时为空
-        },
-        {
-            "id": "2", //用户福利卡id
-            "name": "看房卡", //福利卡名称
-            "brief": "获任意1套房源的房东电话花1积分", //福利卡描述
-            "type": "1", //1看房卡, 2补签卡
-            "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
-            "status": "1", //使用状态, 0不可用, 1可用, 2已用，3过期
-            "begin_at": "", //开始时间，空为获取时就开始
-            "end_at": "2016-07-16", //过期时间
-            "created_at": "2016-06-01", //获取时间
-            "used_at": "2016-06-05" //使用时间，未使用时为空
-        }
-        ]);
+        let registerMoalInfo = baseInfo.get('scoreModal');
+        let couponModalInfo = baseInfo.get('couponModal');
 
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
                 <WelfareModal
                     isVisible={baseInfo.get('currentModal') == homeConst.SCORE}
                     title="注册成功"
-                    subTitle="获得2张看房卡"
-                    welfareData={welfare}
+                    subTitle={"获得" + registerMoalInfo.get('welfareArr').size + "张看房卡"}
+                    welfareData={registerMoalInfo.get('welfareArr')}
                     closeModal={this._closeModal.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_DELETE)}
                     goPage={this._goCoupon.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_GETSOON, actionType.BA_FIRSTOPEN_RETURN)}
                 />
 
                 <WelfareModal
                     isVisible={baseInfo.get('currentModal') == homeConst.COUPON}
-                    title="恭喜您获得2张"
-                    welfareData={welfare}
+                    title={"恭喜您获得" + couponModalInfo.get('welfareArr').size + "张"}
+                    welfareData={couponModalInfo.get('welfareArr')}
                     closeModal={this._closeModal.bind(this, homeConst.RULE, null)}
                     goPage={this._goCoupon.bind(this, homeConst.RULE, null, actionType.BA_MINE_WELFARE_BACK)}   //?????  log: click 
                 />

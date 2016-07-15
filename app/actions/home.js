@@ -88,7 +88,7 @@ export function fetchAttentionBlockAndCommunity(params) {
 
     }
 }
-//注册领积分
+//注册领福利卡
 export function fetchScoreModalStatus() {
     return dispatch => {
         serviceAction(dispatch)({
@@ -101,7 +101,7 @@ export function fetchScoreModalStatus() {
                 dispatch(scoreModalStatusFetched({
                     fetched: true,
                     visible: Number(oData.is_notify) ? true : false,
-                    welfareArr: oData.point || []
+                    welfareArr: oData.welfare_cards || []
                 }))
             },
             error: function (oData) {
@@ -115,12 +115,14 @@ export function fetchCouponModalStatus() {
         serviceAction(dispatch)({
             service: fetchCouponStatusService,
             success: function(oData) {
-                oData.visible = oData.id ? true : false;
-                oData.fetched = true;
-                if (oData.visible) {
+                let rs = {};
+                rs.visible = oData.length ? true : false;
+                rs.fetched = true;
+                rs.welfareArr = oData;
+                if (rs.visible) {
                     dispatch(pushShowModal(types.COUPON));
                 }
-                dispatch(couponModalStatusFetched(oData))                
+                dispatch(couponModalStatusFetched(rs));
             },
             error: function (oData) {
             }

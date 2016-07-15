@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
         right: 0,
         top: 3,
         height: 35,
-        width: 140,
+        width: 100,
         borderRadius: 17.5,
         backgroundColor: '#FF6D4B',
         alignItems: 'center',
