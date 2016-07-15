@@ -332,9 +332,9 @@ class App extends Component {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.CENTER
             });
-            //actionsApp.netWorkChanged('no');
+            actionsApp.netWorkChanged('no');
         } else {
-            //actionsApp.netWorkChanged('yes');
+            actionsApp.netWorkChanged('yes');
         }
     };
 
