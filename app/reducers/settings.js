@@ -8,7 +8,7 @@ let initialState = {
     contactHouse: {
         properties: [],
         pager: {
-            'total': 1,
+            'total': '',
             'per_page': 10,
             'current_page': 0,
             'last_page': 2,
@@ -17,7 +17,7 @@ let initialState = {
     inputHouse: {
         properties: [],
         pager: {
-            'total': 1,
+            'total': '',
             'per_page': 10,
             'current_page': 0,
             'last_page': 2,

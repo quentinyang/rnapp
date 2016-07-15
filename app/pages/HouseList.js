@@ -70,7 +70,7 @@ export default class HouseList extends Component {
                     onlyNewChanged={this._onlyNewChanged}
                 />
                 {
-                    netWork == 'no' ?
+                    netWork == 'no' && !pager.get('total') ?
                     <NoNetwork onPress={() => {}} />
                     :
                     (Number(pager.get('current_page')) == 1 && houseList.size == 0) ?

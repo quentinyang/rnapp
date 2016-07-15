@@ -5,6 +5,7 @@ import {React, Component, Text, View, ListView, StyleSheet, Image,
 
 import InputItem from '../components/InputItem';
 import DetailContainer from '../containers/DetailContainer';
+import NoNetwork from '../components/NoNetwork';
 import Immutable, {List} from 'immutable';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
@@ -27,11 +28,14 @@ export default class InputHouse extends Component {
     }
 
     render() {
-        let { houseList, pager } = this.props;
+        let { houseList, pager, netWork } = this.props;
         return (
             <View style={[styles.flex, {backgroundColor: "#eee"}]}>
                 {
-                    Number(pager.get('total')) > 0 ?
+                    netWork == 'no' && !pager.get('total') ?
+                    <NoNetwork onPress={() => {}} />
+                    :
+                    (Number(pager.get('total')) > 0 ?
                         <ListView
                             style={styles.listViewWrap}
                             dataSource={ds.cloneWithRows(houseList.toArray())}
@@ -61,7 +65,7 @@ export default class InputHouse extends Component {
                                 style={styles.noHouseList}
                             />
                             <Text style={styles.noHouseListMsg}>暂无数据~~~</Text>
-                        </View>
+                        </View>)
                 }
             </View>
         )

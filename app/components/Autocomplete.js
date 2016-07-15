@@ -15,6 +15,7 @@ import {
 } from 'nuke'
 
 import FormContainer from './FormContainer'
+import NoNetwork from './NoNetwork'
 let ActionUtil = require( '../utils/ActionLog');
 
 export default class Autocomplete extends Component {
@@ -60,7 +61,11 @@ export default class Autocomplete extends Component {
                 <FormContainer
                     style={[styles.list]}
                 >
-                    {items}
+                    {this.props.net == 'no' ?
+                    <NoNetwork style={{marginTop: 100}} />
+                    :
+                    items
+                    }
                 </FormContainer>
             </View>
         );

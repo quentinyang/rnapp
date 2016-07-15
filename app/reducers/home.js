@@ -8,7 +8,7 @@ import Immutable from 'immutable';
 let initialState = {
     properties: [],
     pager: {
-        'total': 1,
+        'total': '',
         'per_page': 10,
         'current_page': 0,
         'last_page': 2,
@@ -132,12 +132,12 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
             });
             break;
         case types.PUSH_SHOW_MODAL:
-            return state.update('modals', (k) => {               
+            return state.update('modals', (k) => {
                 return k.push(Immutable.fromJS(action.modal));
             });
             break;
         case types.SCORE_MODAL_STATUS:
-            return state.set('scoreModal', Immutable.fromJS(action.status));            
+            return state.set('scoreModal', Immutable.fromJS(action.status));
             break;
 
         case types.COUPON_MODAL_STATUS:

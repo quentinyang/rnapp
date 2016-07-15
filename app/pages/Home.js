@@ -17,7 +17,8 @@ import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import * as common from '../constants/Common';
 import * as homeConst from '../constants/Home';
 import {getAttentionStatus} from '../service/blockService';
-import WelfareModal from '../components/WelfareModal'; 
+import WelfareModal from '../components/WelfareModal';
+import NoNetwork from '../components/NoNetwork';
 import AppState from '../utils/AppState';
 
 let ds = new ListView.DataSource({
@@ -41,7 +42,7 @@ class InputRuleModal extends Component {
                         <TouchableHighlight
                             style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
                             underlayColor="transparent"
-                            onPress={() => { 
+                            onPress={() => {
                                 setCurrentModal('');
                             }}
                             >
@@ -96,7 +97,7 @@ export default class Home extends Component {
                     actions.pushShowModal(homeConst.RULE);
                     actions.fetchRuleModalStatus();
                     AsyncStorageComponent.save(key, today).catch((error) => {console.log(error)});
-                }                
+                }
             })
             .catch((error) => {
                 console.log(error);
@@ -109,7 +110,7 @@ export default class Home extends Component {
 
         let {baseInfo} = this.props;
         if(baseInfo.get('scoreModal').get('fetched') && baseInfo.get('couponModal').get('fetched')) {
-            this._setCurrentModal(homeConst.SCORE); 
+            this._setCurrentModal(homeConst.SCORE);
             this.hasGetModal = true;
         }
     }
@@ -147,7 +148,7 @@ export default class Home extends Component {
 
             }
             break;
-        default:        
+        default:
             break;
         }
 
@@ -182,11 +183,11 @@ export default class Home extends Component {
                     title={"恭喜您获得" + couponModalInfo.get('welfareArr').size + "张"}
                     welfareData={couponModalInfo.get('welfareArr')}
                     closeModal={this._closeModal.bind(this, homeConst.RULE, null)}
-                    goPage={this._goCoupon.bind(this, homeConst.RULE, null, actionType.BA_MINE_WELFARE_BACK)}   //?????  log: click 
+                    goPage={this._goCoupon.bind(this, homeConst.RULE, null, actionType.BA_MINE_WELFARE_BACK)}   //?????  log: click
                 />
 
-                <InputRuleModal 
-                    isVisible={baseInfo.get('currentModal') == homeConst.RULE} 
+                <InputRuleModal
+                    isVisible={baseInfo.get('currentModal') == homeConst.RULE}
                     modalInfo={baseInfo.get('ruleModal')}
                     actions={actions}
                     setCurrentModal={this._setCurrentModal.bind(this)}
@@ -384,11 +385,13 @@ export default class Home extends Component {
     };
 
     _renderFooter = () => {
-        let {houseData, attentionList, navigator, baseInfo} = this.props;
+        let {houseData, attentionList, navigator, baseInfo, netWork} = this.props;
         let pager = houseData.get('pager');
         let footerView = null;
 
-        if (Number(pager.get('current_page')) == Number(pager.get('last_page')) && Number(pager.get('total')) != 0) {
+        if(netWork == 'no' && !pager.get('total')) {
+            footerView = <NoNetwork style={{marginTop: 20}} />
+        } else if (Number(pager.get('current_page')) == Number(pager.get('last_page')) && Number(pager.get('total')) != 0) {
             footerView = <View style={styles.listFooter}>
                 <Text style={styles.noData}>已经没有数据了！</Text>
             </View>
