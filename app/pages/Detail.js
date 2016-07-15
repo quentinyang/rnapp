@@ -547,7 +547,7 @@ class CouponModal extends Component {
             <Modal visible={isVisible} transparent={true} onRequestClose={actions.setCouponVisible}>
                 <View style={[styles.flex, styles.bgWrap]}>
                     <View style={styles.flex}></View>
-                    <View style={[styles.flex, styles.cwhiteBg]}>
+                    <View style={[styles.flex, styles.whiteBg]}>
                         <View style={styles.couponHeader}>
                             <TouchableWithoutFeedback onPress={()=>{
                             ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_DELETE);

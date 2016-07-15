@@ -16,9 +16,16 @@ export default class Card extends Component {
     }
 
     render() {
-        let {wrapStyle, errBoxStyle, errTextStyle, errText, item} = this.props;
+        let {wrapStyle, icon, errBoxStyle, errTextStyle, errText, item} = this.props;
+        let welfareBg;
+
+        if(icon) {
+            welfareBg = icon;
+        } else {
+            welfareBg = item.get('status') != 1 ? require('../images/welfare/welfare.png') : require('../images/welfare/welfare_available.png');
+        }
         return (
-            <Image source={item.get('status') != 1 ? require('../images/welfare/welfare.png') : require('../images/welfare/welfare_available.png')} style={[styles.wfCaSection, styles.center, wrapStyle]} resizeMode='stretch'>
+            <Image source={welfareBg} style={[styles.wfCaSection, styles.center, wrapStyle]} resizeMode='stretch'>
                 <View style={[styles.center, styles.wfCaLeft]}>
                     {item.get('type') == 2 ?
                     <Text style={[styles.highFont, {fontSize: 20}, item.get('status') != 1 ? styles.gray : null]}>补签</Text>:null}
@@ -30,8 +37,8 @@ export default class Card extends Component {
                 </View>
                 <View style={styles.wfCaDesc}>
                     <Text style={[styles.fontBold, item.get('status') != 1 ? styles.gray : null]}>{item.get('name')}</Text>
-                    <Text style={styles.descFont} numberOfLines={1}>· {item.get('brief')}</Text>
-                    <Text style={styles.descFont} numberOfLines={1}>· 有效期至{item.get('end_at').substring(0, 10)}</Text>
+                    <Text style={styles.descFont} numberOfLines={1}>· {item.get('brief') || '全平台通用'}</Text>
+                    {item.get('end_at') ? <Text style={styles.descFont} numberOfLines={1}>· 有效期至{item.get('end_at').substring(0, 10)}</Text> : null}
                 </View>
                 <View style={styles.wfBadge}>
                     {item.get('status') == 2 ?

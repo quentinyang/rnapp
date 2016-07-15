@@ -143,7 +143,7 @@ export default class User extends Component {
                                 领签到礼包</Text>
                         </View>
                         {
-                            userProfile.get('hasSignIn') ? 
+                            userProfile.get('is_signed_in') ? 
                                 <TouchableWithoutFeedback
                                     onPress={() => {actions.fetchSignInInfo()}}
                                 >

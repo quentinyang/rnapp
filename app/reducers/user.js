@@ -11,7 +11,7 @@ let initialState = {
     contacted: 0,
     published: 0,
     portrait: '',
-    hasSignIn: false, //今天是否签到过：按钮是否显示
+    is_signed_in: false, //今天是否签到过：按钮是否显示
 }
 
 function userProfile(state = Immutable.fromJS(initialState), action) {
@@ -20,7 +20,7 @@ function userProfile(state = Immutable.fromJS(initialState), action) {
             return Immutable.fromJS(action.profile);
             break;
         case types.SIGN_IN_BUTTON_VISIBLE_CHANGED:
-            return state.set('hasSignIn', Immutable.fromJS(action.visible));
+            return state.set('is_signed_in', Immutable.fromJS(action.visible));
             break;
         default:
             return state;
@@ -109,6 +109,13 @@ let initSignIn = {
             {
                 "name": "看房卡",  // 福利卡名称
                 "type": "1", //1看房卡, 2补签卡
+                "status": 1,
+                "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
+            },
+            {
+                "name": "看房卡",  // 福利卡名称
+                "type": "1", //1看房卡, 2补签卡
+                "status": 1,
                 "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
             }
         ]
@@ -118,7 +125,7 @@ let initSignIn = {
 function signInInfo(state = Immutable.fromJS(initSignIn), action) {
     switch(action.type) {
         case types.SIGN_IN_FETCHED:
-            return state.set('signInResult', Immutable.fromJS(action.info));
+            return state.set('sign_in_result', Immutable.fromJS(action.info));
             break;
         case types.SIGN_IN_VISIBLE_CHANGED:
             return state.set('visible', Immutable.fromJS(action.visible));

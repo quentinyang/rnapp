@@ -1,6 +1,7 @@
 'use strict';
 
 import {React, Component, Modal, View, Image, Text, TouchableHighlight, ScrollView, StyleSheet} from 'nuke';
+import WelfareCard from './WelfareCard';
 
 export default class WelfareModal extends Component {
 	constructor(props){
@@ -9,9 +10,15 @@ export default class WelfareModal extends Component {
 
 	render() {
         let {isVisible, title, subTitle, welfareData, icon, children, closeModal, goPage} = this.props;
+
         let welfareList = welfareData && welfareData.map((item, index) => {
             return (
-                <View key={index} style={{flex: 1, height: 60, marginBottom: 15, backgroundColor: '#eee'}}><Text>{item.get('name')}</Text></View>
+                <WelfareCard 
+                    key={index} 
+                    icon={require('../images/welfare_short.png')}
+                    item={item} 
+                    wrapStyle={{width: 230, height: 60, marginBottom: 10}}
+                />
             );
         });
 		return (
@@ -37,7 +44,7 @@ export default class WelfareModal extends Component {
 
 
                             {welfareData && welfareData.size > 3 ?
-                                <ScrollView style={{height: 170}}>{welfareList}</ScrollView>
+                                <ScrollView style={{height: 230, marginBottom: 14}}>{welfareList}</ScrollView>
                                 : welfareList
                             }
 
@@ -104,11 +111,11 @@ let styles = StyleSheet.create({
         height: 11
     },
     title: {
-        marginTop: 28
+        marginTop: 28,
+        marginBottom: 10
     },
     subTitle: {
         width: 230,
-        marginTop: 10,
         marginBottom: 10
     },
     giftBg: {
@@ -124,8 +131,7 @@ let styles = StyleSheet.create({
     },
     giftBtn: {
         color: "#04c1ae",
-        fontSize: 12,
-        marginTop: 14
+        fontSize: 12
     },
     coupon: {
         width: 37.5,
