@@ -498,7 +498,6 @@ class LogoutModal extends Component {
                 <View style={styles.bgWrap}>
                     <View style={styles.contentContainer}>
                         <Text>{logoutInfo.get('msg')}</Text>
-                        {logoutInfo.get('subMsg') ? <Text>{logoutInfo.get('subMsg')}</Text> : null}
 
                         <TouchableHighlight
                             onPress={logoutSure}

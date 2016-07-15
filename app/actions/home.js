@@ -101,7 +101,7 @@ export function fetchScoreModalStatus() {
                 dispatch(scoreModalStatusFetched({
                     fetched: true,
                     visible: Number(oData.is_notify) ? true : false,
-                    score: oData.point || 8
+                    welfareArr: oData.point || []
                 }))
             },
             error: function (oData) {

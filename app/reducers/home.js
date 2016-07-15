@@ -103,16 +103,16 @@ let initialBaseInfo = {
     currentModal: '',
     modals: [],
 
-    scoreModal: {
+    scoreModal: {       //注册送福利卡
         fetched: false,
         visible: false,
-        score: 8
+        welfareArr: []
     },
 
-    couponModal: {
+    couponModal: {        //打开App送福利卡
         fetched: false,
         visible: false,
-        score: 1
+        welfareArr: []
     },
 
     ruleModal: {

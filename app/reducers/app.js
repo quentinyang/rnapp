@@ -14,8 +14,7 @@ let initialState = {
     },
     auth: {
         visible: false,
-        msg: '的积分卡对方',
-        subMsg: '大概是发发'
+        msg: '的积分卡对\n方附近开发'
     },
 
     msg: '',
