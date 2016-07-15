@@ -25,7 +25,7 @@ export function fetchUserProfile(params) {
             service: profileService,
             data: params,
             success: function(oData) {
-                oData.is_signed_in = true;    //???????????????????????
+                //oData.is_signed_in = true;
                 dispatch(userProfileFetched(oData))
             },
             error: function(oData) {
@@ -83,7 +83,7 @@ export function fetchSignInInfo() {
         serviceAction(dispatch)({
             service: getSignInInfo,
             success: function (oData) {
-                oData = {
+                /*oData = {
                     "sign_in_days" :  7, // 签到天数
                     "experience" :  4, // 经验
                     "welfare_cards" : [ // 福利卡，如果多张则多个数据
@@ -102,7 +102,7 @@ export function fetchSignInInfo() {
                             "quentity": "2" // 数量
                         }
                     ]
-                };
+                };*/
                 dispatch(signInFetched(oData));
                 dispatch(signInVisibleChanged(true));
             },

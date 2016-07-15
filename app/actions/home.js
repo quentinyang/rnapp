@@ -94,7 +94,7 @@ export function fetchScoreModalStatus() {
         serviceAction(dispatch)({
             service: fetchScoreModalStatusService,
             success: function (oData) {
-                oData = {
+               /*oData = {
                     "is_notify": true, //true:提示  false：不提示
                     "welfare_cards" : [ // 福利卡，如果多张则多个数据
                         {
@@ -112,7 +112,7 @@ export function fetchScoreModalStatus() {
                             "quentity": "2" // 数量
                         }
                     ]
-                };
+                };*/
                 if (Number(oData.is_notify)) {
                     dispatch(pushShowModal(types.SCORE));
                 }
@@ -134,7 +134,7 @@ export function fetchCouponModalStatus() {
         serviceAction(dispatch)({
             service: fetchCouponStatusService,
             success: function(oData) {
-                oData = [ // 福利卡，如果多张则多个数据
+                /*oData = [ // 福利卡，如果多张则多个数据
                     {
                         "name": "看房卡",  // 福利卡名称
                         "type": "1", // 1看房卡, 2补签卡
@@ -163,7 +163,7 @@ export function fetchCouponModalStatus() {
                         "cost": "1", // 花费积分，0积分为免费。补签卡则另外说明
                         "quentity": "2" // 数量
                     }
-                ];
+                ];*/
 
                 let rs = {};
                 rs.visible = oData.length ? true : false;

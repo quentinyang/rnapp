@@ -57,7 +57,7 @@ export default class User extends Component {
         };
         let welfareCards = signInInfo.get('sign_in_result').get('welfare_cards');
         let welfareModal = null;
-        if(welfareCards.size) {
+        if(welfareCards) {
             welfareModal = 
                 <WelfareModal
                     title={"连续签到" + signInInfo.get('sign_in_result').get('sign_in_days') + "天"}
@@ -76,6 +76,7 @@ export default class User extends Component {
                             backLog: actionType.BA_MINE_CREDIT_BACK
                         });
                         actions.signInVisibleChanged(false);
+                        actions.signInBtnVisibleChanged(false);
                     }}
                 />
         } else {
@@ -96,6 +97,7 @@ export default class User extends Component {
                             ackLog: actionType.BA_MINE_CREDIT_BACK
                         });
                         actions.signInVisibleChanged(false);
+                        actions.signInBtnVisibleChanged(false);
                     }}
                 > 
                     <Text style={[styles.h5, styles.modalContent]}>
@@ -449,6 +451,7 @@ const styles = StyleSheet.create({
         fontSize: 15
     },
     modalContent: {
-        marginTop: 8
+        marginTop: -5,
+        marginBottom: 20
     }
 });
