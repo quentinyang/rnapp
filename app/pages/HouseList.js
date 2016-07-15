@@ -11,6 +11,7 @@ import Area from '../components/Area';
 import SearchNavigator from '../components/SearchNavigator';
 import Autocomplete from '../components/Autocomplete'
 import AutocompleteItem from '../components/AutocompleteItem'
+import NoNetwork from '../components/NoNetwork'
 import {SearchHistory, SearchHistoryItem} from '../components/SearchHistory';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
@@ -38,7 +39,7 @@ export default class HouseList extends Component {
     }
 
     render() {
-        let {houseData, filterData, uiData, queryParamsData, navigator, route, communityData, listSearchHistory} = this.props;
+        let {houseData, filterData, uiData, queryParamsData, navigator, route, communityData, listSearchHistory, netWork} = this.props;
         let houseList = houseData.get('properties');
         let pager = houseData.get('pager');
         let tabType = uiData.get('tabType');
@@ -69,14 +70,17 @@ export default class HouseList extends Component {
                     onlyNewChanged={this._onlyNewChanged}
                 />
                 {
-                    (Number(pager.get('current_page')) == 1 && houseList.size == 0) ? 
+                    netWork == 'no' ?
+                    <NoNetwork onPress={() => {}} />
+                    :
+                    (Number(pager.get('current_page')) == 1 && houseList.size == 0) ?
                      <View style={[styles.flex, styles.center]}>
                         <Image
                             source={require('../images/no_house_list.png')}
                             style={styles.noHouseList}
                         />
                         <Text style={styles.noHouseListMsg}>没有找到符合要求的结果</Text>
-                    </View> 
+                    </View>
                     :
                     <ListView
                         dataSource={ds.cloneWithRows(houseList.toArray())}

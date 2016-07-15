@@ -24,7 +24,9 @@ let initialState = {
     listSearchHistoryKey: '',
     inputSearchHistoryKey: '',
     listSearchHistory: [],
-    inputSearchHistory: []
+    inputSearchHistory: [],
+
+    net: 'yes',  //yes有网，no无网
 };
 
 function appData(state = Immutable.fromJS(initialState), action) {
@@ -109,6 +111,8 @@ function appData(state = Immutable.fromJS(initialState), action) {
         case types.APP_LOADING_CHANGED:
             return state.set('loadingVisible', action.visible);
             break;
+        case types.APP_NETWORK_CHANGED:
+            return state.set('net', action.net);
         default:
             return state;
     }

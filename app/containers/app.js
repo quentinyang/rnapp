@@ -16,6 +16,7 @@ import {routes} from '../config/route'
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 import AppState from '../utils/AppState';
 import { setLoginDaysService } from '../service/configService';
+import Toast from 'react-native-root-toast';
 
 let _navigator;
 global.gtoken = '';
@@ -277,12 +278,6 @@ class App extends Component {
             });
         }
 
-
-
-        // NetInfo.fetch().done(
-        //     (data) => {console.log('------current netinfo--------', data)}
-        // );
-
         AsyncStorageComponent.get(common.GETUI_CLIENT_ID)
         .then((storageId) => {
             if (storageId) {
@@ -293,6 +288,16 @@ class App extends Component {
         AppState.addEventListener(() => {
             gtoken && setLoginDays();
         });
+
+        NetInfo.fetch().done(
+            (data) => {
+                if(data == 'none') {
+                    actionsApp.netWorkChanged('no');
+                } else {
+                    actionsApp.netWorkChanged('yes');
+                }
+            }
+        );
 
         NetInfo.addEventListener(
             'change',
@@ -321,7 +326,16 @@ class App extends Component {
     }
 
     _handleConnectionInfoChange = (connection) => {
-        console.log('-----------netInfo--------------', connection);
+        let {actionsApp} = this.props;
+        if(connection == 'none') {
+            Toast.show('暂无网络', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER
+            });
+            actionsApp.netWorkChanged('no');
+        } else {
+            actionsApp.netWorkChanged('yes');
+        }
     };
 
     _logoutSure = () => {
