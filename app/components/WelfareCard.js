@@ -16,7 +16,7 @@ export default class Card extends Component {
     }
 
     render() {
-        let {wrapStyle, icon, errBoxStyle, errTextStyle, errText, item} = this.props;
+        let {wrapStyle, icon, errBoxStyle, errTextStyle, errText, item, source} = this.props;
         let welfareBg;
 
         if(icon) {
@@ -32,7 +32,7 @@ export default class Card extends Component {
                     {item.get('type') == 1 ?
                         item.get('cost') == 0 ?
                         <Text style={[styles.highFont, {fontSize: 20}, item.get('status') != 1 ? styles.gray : null]}>免费</Text>:
-                        <Text><Text style={[styles.highFont, item.get('status') != 1 ? styles.gray : null]}>{item.get('cost')}</Text><Text style={[styles.font12, item.get('status') != 1 ? styles.gray : null]}>积分</Text></Text>
+                        <Text><Text style={[styles.highFont, item.get('status') != 1 ? styles.gray : null]}>{item.get('cost')}</Text><Text style={[styles.font12, {color: '#ff6d4b'}, item.get('status') != 1 ? styles.gray : null]}>积分</Text></Text>
                     :null}
                 </View>
                 <View style={styles.wfCaDesc}>
@@ -41,13 +41,16 @@ export default class Card extends Component {
                     {item.get('end_at') ? <Text style={styles.descFont} numberOfLines={1}>· 有效期至{item.get('end_at').substring(0, 10)}</Text> : null}
                 </View>
                 <View style={styles.wfBadge}>
-                    {item.get('status') == 2 ?
-                    <Image source={require('../images/welfare/used.png')} style={styles.wfBadgeImg} />
+                    {source ?
+                        <Image source={source} style={styles.wfBadgeImg} />
+                        :
+                    (item.get('status') == 2 ?
+                    <Image source={source ? source: require('../images/welfare/used.png')} style={styles.wfBadgeImg} />
                     : (
                         item.get('status') == 3 ?
                         <Image source={require('../images/welfare/expired.png')} style={styles.wfBadgeImg} />
                         :null
-                      )
+                      ))
                     }
                 </View>
             </Image>
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
     wfBadgeImg: {
         width: 40,
         height: 40,
-        backgroundColor: '#f8f8f8'
+        backgroundColor: 'transparent'
     },
     gray: {
         color: '#8d8c92'

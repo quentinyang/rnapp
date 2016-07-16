@@ -16,9 +16,9 @@ export default class SignIn extends Component {
         let unsignList = unsignArr.map((item, index) => {
             return (
                 <View key={index}>
-                    <Text>连续签到{item.get('sign_in_days')}天获{item.get('total')}张</Text>
+                    <Text style={{marginBottom: 10}}>连续签到{item.get('sign_in_days')}天获{item.get('total')}张</Text>
                     {item.get('welfare_cards').map((card, ins) => {
-                        return <WelfareCard item={card} key={ins} />
+                        return <WelfareCard item={card} key={ins} wrapStyle={{marginBottom: 10}} />
                     })}
                 </View>
             );
@@ -26,7 +26,7 @@ export default class SignIn extends Component {
 
         let signList = signArr.get('welfare_cards') && signArr.get('welfare_cards').map((item, index) => {
             return (
-                <WelfareCard  item={item} key={index} />
+                <WelfareCard  item={item} key={index} source={require('../images/welfare/got.png')} />
             );
         });
 
@@ -37,11 +37,10 @@ export default class SignIn extends Component {
             >
                 <View style={[styles.alignItems, styles.justifyContent, styles.box]}>
                     <Text style={[styles.topTip]}>已连续签到</Text>
-                    <View>
-                        <Image source={require("../images/calendar_panel.png")} style={styles.panel} />
-                        <Text style={[styles.h5, styles.days]}><Text style={styles.h1}>{signInfo.get('sign_in_days')}</Text>天</Text>
+                    <View style={[styles.panel, styles.alignItems, styles.justifyContent]}>
+                        <Text style={[styles.h5]}><Text style={styles.h1}>{signInfo.get('sign_in_days')}</Text>天</Text>
                     </View>
-                    <Text style={[styles.bottomTip]}>每天签到 经验<Text style={[styles.green, styles.add]}> + </Text><Text style={styles.green}>{signInfo.get('experience')}</Text></Text>
+                    <Text style={[styles.bottomTip]}>每天签到 经验<Text style={[styles.orange, styles.add]}> + </Text><Text style={styles.orange}>{signInfo.get('experience')}</Text></Text>
                 </View>
 
                 <View style={[styles.row, styles.alignItems, styles.titleBox]}>
@@ -56,11 +55,11 @@ export default class SignIn extends Component {
                 {signArr.size ?
                     <View style={[styles.row, styles.alignItems, styles.titleBox]}>
                         <View style={styles.bar}></View>
-                        <Text style={[styles.mediumFont]}>已领取礼包（共获{signArr.get('total')}张）</Text>
+                        <Text style={[styles.mediumFont]}>已领取礼包<Text style={styles.h5}>（共获{signArr.get('total')}张）</Text></Text>
                     </View>
                 : null }
 
-                <View>
+                <View style={styles.unsignList}>
                     {signList}
                 </View>
             </ScrollView>
@@ -90,13 +89,14 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        marginBottom: 10,
         backgroundColor: '#fff'
     },
     mediumFont: {
         fontWeight: '500'
     },
     h1: {
-        fontSize: 30
+        fontSize: 40
     },
     h2: {
         fontSize: 20
@@ -124,11 +124,10 @@ const styles = StyleSheet.create({
     },
     topTip: {
         marginTop: 17,
-        marginBottom: 12
     },
     panel: {
         width: 93,
-        height: 81
+        height: 75
     },
     days: {
         position: 'absolute',
@@ -141,7 +140,6 @@ const styles = StyleSheet.create({
         textAlignVertical: 'top'
     },
     bottomTip: {
-        marginTop: 15,
         marginBottom: 22
     },
     titleBox: {
