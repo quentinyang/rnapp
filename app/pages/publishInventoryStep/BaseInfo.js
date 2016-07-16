@@ -123,7 +123,7 @@ export default class BaseInfoPage extends Component {
                 }
             })
             .catch((error) => {
-                Alert.alert('', error.msg || '');
+                Alert.alert('', error.msg || '网络不太顺畅');
             })
         });
 

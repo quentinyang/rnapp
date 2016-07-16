@@ -59,13 +59,14 @@ export default class ContactHouse extends Component {
                         }
                         />
                         :
+                        pager.get('total') == 0 ?
                         <View style={[styles.flex, styles.center]}>
                             <Image
                                 source={require('../images/no_house_list.png')}
                                 style={styles.noHouseList}
                             />
                             <Text style={styles.noHouseListMsg}>暂无数据~~~</Text>
-                        </View>)
+                        </View>:null)
                 }
             </View>
         )

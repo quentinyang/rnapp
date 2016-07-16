@@ -291,7 +291,7 @@ class App extends Component {
 
         NetInfo.fetch().done(
             (data) => {
-                if(data == 'none') {
+                if(data.toLowerCase() == 'none') {
                     actionsApp.netWorkChanged('no');
                 } else {
                     actionsApp.netWorkChanged('yes');
@@ -327,7 +327,7 @@ class App extends Component {
 
     _handleConnectionInfoChange = (connection) => {
         let {actionsApp} = this.props;
-        if(connection == 'none') {
+        if(connection.toLowerCase() == 'none') {
             Toast.show('暂无网络', {
                 duration: Toast.durations.SHORT,
                 position: Toast.positions.CENTER
