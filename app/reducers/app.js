@@ -14,7 +14,7 @@ let initialState = {
     },
     auth: {
         visible: false,
-        msg: '的积分卡对\n方附近开发'
+        msg: ''
     },
 
     msg: '',
@@ -59,8 +59,10 @@ function appData(state = Immutable.fromJS(initialState), action) {
             break;
         case types.ADD_LIST_SEARCH_HISTORY:
             let tempListSearchHistory = state.get('listSearchHistory'), newListId = action.addItem.id, hasList = false;
-            tempListSearchHistory.forEach((val) => {
+            tempListSearchHistory.forEach((val, index) => {
                 if(val.get('id') == newListId) {
+                    let newListSearchHistory = tempListSearchHistory.delete(index);
+                    state = state.set('listSearchHistory', newListSearchHistory.unshift(Immutable.fromJS(action.addItem)));
                     hasList = true;
                 }
             });
@@ -79,8 +81,10 @@ function appData(state = Immutable.fromJS(initialState), action) {
             break;
         case types.ADD_INPUT_SEARCH_HISTORY:
             let tempInputSearchHistory = state.get('inputSearchHistory'), newInputId = action.addItem.id, hasInput = false;
-            tempInputSearchHistory.forEach((val) => {
+            tempInputSearchHistory.forEach((val, index) => {
                 if(val.get('id') == newInputId) {
+                    let newInputSearchHistory = tempInputSearchHistory.delete(index);
+                    state = state.set('inputSearchHistory', newInputSearchHistory.unshift(Immutable.fromJS(action.addItem)));
                     hasInput = true;
                 }
             });

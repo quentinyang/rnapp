@@ -267,7 +267,13 @@ class Login extends Component {
             })
             .catch((error) => {
                 actionsApp.appLoadingChanged(false);
-                actions.errMsg(error.msg);
+                //let msg = error.msg, rs = msg.includes('\n') ? msg.replace('\n', ',') ? msg;
+
+                let msg = error.msg;
+                if(msg.includes('\n')) {
+                    msg = msg.replace('\n', ',');
+                }
+                actions.errMsg(msg);
             })
         }
     };

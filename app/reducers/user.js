@@ -11,7 +11,7 @@ let initialState = {
     contacted: 0,
     published: 0,
     portrait: '',
-    is_signed_in: false, //今天是否签到过：按钮是否显示
+    is_signed_in: "1", //今天是否签到过：按钮是否显示
 }
 
 function userProfile(state = Immutable.fromJS(initialState), action) {
@@ -105,20 +105,7 @@ let initSignIn = {
     sign_in_result: {
         "sign_in_days":  1, // 签到天数
         "experience":  3, // 经验
-        "welfare_cards": [ // 福利卡，如果多张则多个数据
-            {
-                "name": "看房卡",  // 福利卡名称
-                "type": "1", //1看房卡, 2补签卡
-                "status": 1,
-                "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
-            },
-            {
-                "name": "看房卡",  // 福利卡名称
-                "type": "1", //1看房卡, 2补签卡
-                "status": 1,
-                "cost": "1", //花费积分，0积分为免费。补签卡则另外说明
-            }
-        ]
+        "welfare_cards": [] // 福利卡，如果多张则多个数据
     }
 }
 

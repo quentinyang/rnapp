@@ -435,13 +435,14 @@ export default class HouseList extends Component {
     };
 
     _searchHistoryRowPress = (item) => {
-        let {actions} = this.props;
+        let {actions, actionsApp} = this.props;
         ActionUtil.setAction(actionType.BA_LOOK_HOME_SEARCH_CLICKHISTORY);
         actions.fetchHouseList({
             page: 1,
             community_id: item.get('id'),
             community_name: item.get('name')
         });
+        actionsApp.addListSearchHistory(item.toJS());
         actions.filterCommunityNameChanged(item.get('id'), item.get('name'));
         actions.autocompleteViewShowed(false);
     };

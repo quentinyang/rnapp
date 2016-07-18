@@ -65,7 +65,7 @@ export default class User extends Component {
                     subTitle={"获得" + welfareCards.size + "张看房卡，+" + signInInfo.get('sign_in_result').get('experience') + "经验"}
                     isVisible={signInInfo.get('visible')}
                     welfareData={welfareCards}
-                    closeModal={()=>{actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged(false);}}
+                    closeModal={()=>{actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged("1");}}
                     goPage={() => {
                         this.navigatorPush({
                             component: SignInContainer,
@@ -77,7 +77,7 @@ export default class User extends Component {
                             backLog: actionType.BA_MINE_CREDIT_BACK
                         });
                         actions.signInVisibleChanged(false);
-                        actions.signInBtnVisibleChanged(false);
+                        actions.signInBtnVisibleChanged("1");
                     }}
                 />
         } else {
@@ -86,7 +86,7 @@ export default class User extends Component {
                     title={"连续签到" + signInInfo.get('sign_in_result').get('sign_in_days') + "天"}
                     icon={{url: require("../images/gift.png"), style: {width: 34, height: 34}}}
                     isVisible={signInInfo.get('visible')}
-                    closeModal={()=>{actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged(false);}}
+                    closeModal={()=>{actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged("1");}}
                     goPage={() => {
                         this.navigatorPush({
                             component: SignInContainer,
@@ -98,7 +98,7 @@ export default class User extends Component {
                             ackLog: actionType.BA_MINE_CREDIT_BACK
                         });
                         actions.signInVisibleChanged(false);
-                        actions.signInBtnVisibleChanged(false);
+                        actions.signInBtnVisibleChanged("1");
                     }}
                 >
                     <Text style={[styles.h5, styles.modalContent]}>
@@ -146,7 +146,7 @@ export default class User extends Component {
                                 领签到礼包</Text>
                         </View>
                         {
-                            userProfile.get('is_signed_in') ?
+                            userProfile.get('is_signed_in') == "0" ? 
                                 <TouchableWithoutFeedback
                                     onPress={() => {actions.fetchSignInInfo()}}
                                 >

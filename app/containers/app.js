@@ -511,7 +511,7 @@ class LogoutModal extends Component {
             <Modal visible={logoutInfo.get('visible')} transparent={true} onRequestClose={() => {}}>
                 <View style={styles.bgWrap}>
                     <View style={styles.contentContainer}>
-                        <Text>{logoutInfo.get('msg')}</Text>
+                        <Text style={styles.textCenter}>{logoutInfo.get('msg')}</Text>
 
                         <TouchableHighlight
                             onPress={logoutSure}
@@ -559,6 +559,9 @@ let styles = StyleSheet.create({
     },
     justifyContent: {
         justifyContent: 'center'
+    },
+    textCenter: {
+        textAlign: "center"
     },
     baseColor: {
         color: "#3e3e3e"
