@@ -65,7 +65,7 @@ export default class Welfare extends Component {
     _renderRow = (rowData, secId, rowId, highlightRow) => {
         return (
             <View style={styles.cardSection}>
-                <Card item={rowData}/>
+                <Card item={rowData} leftFlex={3} />
             </View>
         );
     };

@@ -13,10 +13,11 @@ export default class WelfareModal extends Component {
 
         let welfareList = welfareData && welfareData.map((item, index) => {
             return (
-                <WelfareCard 
-                    key={index} 
+                <WelfareCard
+                    key={index}
                     icon={require('../images/welfare_short.png')}
-                    item={item} 
+                    item={item}
+                    leftFlex={6}
                     wrapStyle={{width: 230, height: 60, marginBottom: 10}}
                 />
             );
@@ -63,7 +64,7 @@ export default class WelfareModal extends Component {
                         <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
                             <Image style={icon ? icon.style : styles.coupon} source={icon ? icon.url : require("../images/coupon_white.png")}/>
                         </View>
-                    
+
                     </View>
 
                 </View>

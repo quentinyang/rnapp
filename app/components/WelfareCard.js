@@ -16,7 +16,7 @@ export default class Card extends Component {
     }
 
     render() {
-        let {wrapStyle, icon, errBoxStyle, errTextStyle, errText, item, source} = this.props;
+        let {wrapStyle, leftFlex, icon, errBoxStyle, errTextStyle, errText, item, source} = this.props;
         let welfareBg;
 
         if(icon) {
@@ -26,7 +26,7 @@ export default class Card extends Component {
         }
         return (
             <Image source={welfareBg} style={[styles.wfCaSection, styles.center, wrapStyle]} resizeMode='stretch'>
-                <View style={[styles.center, styles.wfCaLeft]}>
+                <View style={[styles.center, styles.wfCaLeft, {flex: leftFlex || 3}]}>
                     {item.get('type') == 2 ?
                     <Text style={[styles.highFont, {fontSize: 20}, item.get('status') != 1 ? styles.gray : null]}>补签</Text>:null}
                     {item.get('type') == 1 ?
@@ -35,6 +35,7 @@ export default class Card extends Component {
                         <Text><Text style={[styles.highFont, item.get('status') != 1 ? styles.gray : null]}>{item.get('cost')}</Text><Text style={[styles.font12, {color: '#ff6d4b'}, item.get('status') != 1 ? styles.gray : null]}>积分</Text></Text>
                     :null}
                 </View>
+                <View style={{flex: 10}}>
                 <View style={styles.wfCaDesc}>
                     <Text style={[styles.fontBold, item.get('status') != 1 ? styles.gray : null]}>{item.get('name')}</Text>
                     <Text style={styles.descFont} numberOfLines={1}>· {item.get('brief') || '全平台通用'}</Text>
@@ -52,6 +53,7 @@ export default class Card extends Component {
                         :null
                       ))
                     }
+                </View>
                 </View>
             </Image>
         )
@@ -75,7 +77,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-end',
         marginLeft: -5,
-        width: 70
     },
     highFont: {
         fontSize: 25,
