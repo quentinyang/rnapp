@@ -156,18 +156,23 @@ export default class BindAlipay extends Component {
             total_fee: this.bindPrice,
             pay_type: 1
         };
-
+        let {actionsApp} = this.props;
         tradeService({body:data})
         .then((oData) => {
             this.tradeId = oData.out_trade_no;
             Alipay.addEvent(oData.data, 'Bind');
         })
         .catch((data) => {
-            Toast.show(data.msg, {
-                duration: Toast.durations.SHORT,
-                position: Toast.positions.CENTER
-            });
-            this.submitStatus = true;
+            if (data && data.codeStatus == 401) {
+                data.visible = true;
+                actionsApp.webAuthentication(data);
+            } else {
+                Toast.show(data.msg, {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER
+                });
+                this.submitStatus = true;
+            }
         })
     };
 

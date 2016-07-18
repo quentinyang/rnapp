@@ -52,6 +52,7 @@ class HouseInputEnter extends Component {
 
     gotoInput = () => {
         ActionUtil.setAction(actionType.BA_SEND_SENDBUTTON);
+        let {actionsApp} = this.props;
         allowToInputService()
         .then((data) => {
             if(data.is_can_input) {
@@ -73,7 +74,12 @@ class HouseInputEnter extends Component {
             }
         })
         .catch((error) => {
-            Alert.alert('', error.msg);
+            if (error && error.codeStatus == 401) {
+                error.visible = true;
+                actionsApp.webAuthentication(error);
+            } else {
+                Alert.alert('', error.msg);
+            }
         })
     };
 

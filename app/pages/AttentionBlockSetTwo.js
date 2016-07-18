@@ -67,7 +67,7 @@ export default class AttentionBlockSetTwo extends Component {
     };
 
     _conformBlockSet = () => {
-        let {attentionBlockSet, actionsOne, actionsHome, navigator} = this.props;
+        let {attentionBlockSet, actionsOne, actionsHome, actionsApp, navigator} = this.props;
         let districtBlockSelect = attentionBlockSet.get('district_block_select');
 
         let params = districtBlockSelect.map((v) => {
@@ -83,7 +83,12 @@ export default class AttentionBlockSetTwo extends Component {
                 navigator.pop();
             })
             .catch((oData) => {
-                Alert.alert('提示', oData.msg, [{text: '确定'}]);
+                if (oData && oData.codeStatus == 401) {
+                    oData.visible = true;
+                    actionsApp.webAuthentication(oData);
+                } else {
+                    Alert.alert('提示', oData.msg, [{text: '确定'}]);
+                }
             });
         });
     };

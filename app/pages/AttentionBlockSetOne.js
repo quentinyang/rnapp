@@ -96,7 +96,7 @@ export default class AttentionBlockSetOne extends Component {
 
     _conformCommunitySet = () => {
         ActionUtil.setAction(actionType.BA_SETFOCUS_SAVE);
-        let {attentionList, actions, actionsHome, navigator} = this.props;
+        let {attentionList, actions, actionsHome, actionsApp, navigator} = this.props;
         let communitySelect = attentionList.get('community_select');
         let params = communitySelect.map((v) => {
             return v.get('id')
@@ -110,7 +110,12 @@ export default class AttentionBlockSetOne extends Component {
                 navigator.pop();
             })
             .catch((oData) => {
-                Alert.alert('提示', oData.msg, [{text: '确定'}]);
+                if (oData && oData.codeStatus == 401) {
+                    oData.visible = true;
+                    actionsApp.webAuthentication(oData);
+                } else {
+                    Alert.alert('提示', oData.msg, [{text: '确定'}]);
+                }                
             });
         })
     };

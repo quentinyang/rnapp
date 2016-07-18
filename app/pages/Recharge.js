@@ -147,9 +147,14 @@ export default class Recharge extends Component {
             Alipay.addEvent(oData.data, 'Charge');
         })
         .catch((data) => {
-            actionsApp.appLoadingChanged(false);
-            ToastAndroid.show('操作太频繁，请重试', ToastAndroid.LONG);
-            this.submitStatus = true;
+            if (data && data.codeStatus == 401) {
+                data.visible = true;
+                actionsApp.webAuthentication(data);
+            } else {
+                actionsApp.appLoadingChanged(false);
+                ToastAndroid.show('操作太频繁，请重试', ToastAndroid.LONG);
+                this.submitStatus = true;
+            }
         })
 
     };

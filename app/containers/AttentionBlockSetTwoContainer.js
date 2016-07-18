@@ -6,6 +6,7 @@ import {bindActionCreators} from 'redux';
 import * as actions from '../actions/attentionBlockSet';
 import * as actionsOne from '../actions/attentionBlockSetOne';
 import * as actionsHome from '../actions/home';
+import * as actionsApp from '../actions/app';
 import AttentionBlockSetTwo from '../pages/AttentionBlockSetTwo';
 
 class AttentionBlockSetTwoContainer extends Component {
@@ -32,6 +33,7 @@ function mapDispatchToProps(dispatch) {
         actions: bindActionCreators(actions, dispatch),
         actionsOne: bindActionCreators(actionsOne, dispatch),
         actionsHome: bindActionCreators(actionsHome, dispatch),
+        actionsApp: bindActionCreators(actionsApp, dispatch)
     }
 }
 
