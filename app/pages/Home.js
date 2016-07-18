@@ -150,9 +150,26 @@ export default class Home extends Component {
         default:
             break;
         }
+        if(cur == homeConst.SCORE) {
+            let scoreWelfare = baseInfo.get('scoreModal').get('welfareArr');
+            if(scoreWelfare.size) {
+                let scorePoints = [];
+                scoreWelfare.map((item) => {
+                    scorePoints.push(item.cost);
+                });
 
-        if(cur == homeConst.COUPON) {
-            ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": baseInfo.get('couponModal').get('cost')});
+                ActionUtil.setActionWithExtend(actionType.BA_FIRSTOPEN_WELFARE, {"points": scorePoints.join(",")});
+            }
+        } else if(cur == homeConst.COUPON) {
+            let couponWelfare = baseInfo.get('couponModal').get('welfareArr');
+            if(couponWelfare.size) {
+                let couponPoints = [];
+                couponWelfare.map((item) => {
+                    couponPoints.push(item.cost);
+                });
+
+                ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": couponPoints.join(",")});
+            }
         } else if(cur == homeConst.RULE) {
             ActionUtil.setAction(actionType.BA_HOME_SENDRULE_ONVIEW);
         }
@@ -182,7 +199,7 @@ export default class Home extends Component {
                     title={"恭喜您获得" + couponModalInfo.get('welfareArr').size + "张"}
                     welfareData={couponModalInfo.get('welfareArr')}
                     closeModal={this._closeModal.bind(this, homeConst.RULE, null)}
-                    goPage={this._goCoupon.bind(this, homeConst.RULE, null, actionType.BA_MINE_WELFARE_BACK)}   //?????  log: click
+                    goPage={this._goCoupon.bind(this, homeConst.RULE, null, actionType.BA_MINE_WELFARE_BACK)}
                 />
 
                 <InputRuleModal

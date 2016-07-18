@@ -65,7 +65,7 @@ export default class User extends Component {
                     subTitle={"获得" + welfareCards.size + "张看房卡，+" + signInInfo.get('sign_in_result').get('experience') + "经验"}
                     isVisible={signInInfo.get('visible')}
                     welfareData={welfareCards}
-                    closeModal={()=>{actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged("1");}}
+                    closeModal={()=>{ActionUtil.setAction(actionType.BA_MINE_SIGN_DELETE);actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged("1");}}
                     goPage={() => {
                         this.navigatorPush({
                             component: SignInContainer,
@@ -78,6 +78,7 @@ export default class User extends Component {
                         });
                         actions.signInVisibleChanged(false);
                         actions.signInBtnVisibleChanged("1");
+                        ActionUtil.setAction(actionType.BA_MINE_SIGN_FIND);
                     }}
                 />
         } else {
@@ -86,7 +87,7 @@ export default class User extends Component {
                     title={"连续签到" + signInInfo.get('sign_in_result').get('sign_in_days') + "天"}
                     icon={{url: require("../images/gift.png"), style: {width: 34, height: 34}}}
                     isVisible={signInInfo.get('visible')}
-                    closeModal={()=>{actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged("1");}}
+                    closeModal={()=>{ActionUtil.setAction(actionType.BA_MINE_SIGN_DELETE);actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged("1");}}
                     goPage={() => {
                         this.navigatorPush({
                             component: SignInContainer,
@@ -99,6 +100,7 @@ export default class User extends Component {
                         });
                         actions.signInVisibleChanged(false);
                         actions.signInBtnVisibleChanged("1");
+                        ActionUtil.setAction(actionType.BA_MINE_SIGN_FIND);
                     }}
                 >
                     <Text style={[styles.h5, styles.modalContent]}>
@@ -148,7 +150,7 @@ export default class User extends Component {
                         {
                             userProfile.get('is_signed_in') == "0" ? 
                                 <TouchableWithoutFeedback
-                                    onPress={() => {actions.fetchSignInInfo()}}
+                                    onPress={() => {ActionUtil.setAction(actionType.BA_MINE_SIGN_INPUT);actions.fetchSignInInfo()}}
                                 >
                                     <View style={styles.signInWarp}><Text style={styles.signInBtn}>签到</Text></View>
                                 </TouchableWithoutFeedback>

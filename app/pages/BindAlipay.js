@@ -267,7 +267,7 @@ class TypeName extends Component {
                     placeholder='请输入身份证号'
                     underlineColorAndroid = 'transparent'
                     maxLength={18}
-                    onFocus={() => {}}
+                    onFocus={() => {ActionUtil.setAction(actionType.BA_MINE_IDENTITY)}}
                     onChangeText={(v) => {this.changeAccount(v, 'alipayIDCardChanged')}}
                 />
                 <WithLabel
