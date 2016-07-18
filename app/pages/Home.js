@@ -344,7 +344,11 @@ export default class Home extends Component {
                 title: '全部房源',
                 from: 'homeSearch',
                 hideNavBar: true,
-                bp: this.pageId
+                bp: this.pageId,
+                callbackFun: () => {
+                    this._refreshHouseData();
+                    navigator.pop();
+                }
             });
         } else {
             ActionUtil.setAction(actionType.BA_HOME_PAGE_ALLHOUSELIST);
