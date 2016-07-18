@@ -18,7 +18,7 @@ export function setConfigService() {
 }
 
 export function setLoginDaysService() {
-    return ajax.get(urls().app.setLoginDay);
+    return ajax.put(urls().app.setLoginDay);
 }
 
 export function fetchRuleStatusService() {
