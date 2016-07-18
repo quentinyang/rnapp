@@ -53,12 +53,13 @@ export default class User extends Component {
             max_day_price: userProfile.get('max_withdrawals_money'),
             name: userProfile.get('name'),
             alipay_account: userProfile.get('alipay_account'),
+            identity_card_number: userProfile.get('identity_card_number'),
             is_binding_alipay: userProfile.get('is_binding_alipay')
         };
         let welfareCards = signInInfo.get('sign_in_result').get('welfare_cards');
         let welfareModal = null;
         if(welfareCards) {
-            welfareModal = 
+            welfareModal =
                 <WelfareModal
                     title={"连续签到" + signInInfo.get('sign_in_result').get('sign_in_days') + "天"}
                     subTitle={"获得" + welfareCards.size + "张看房卡，+" + signInInfo.get('sign_in_result').get('experience') + "经验"}
@@ -67,12 +68,12 @@ export default class User extends Component {
                     closeModal={()=>{actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged(false);}}
                     goPage={() => {
                         this.navigatorPush({
-                            component: SignInContainer, 
-                            signInfo: signInData, 
-                            name: 'signin', 
-                            title: '签到礼包', 
-                            actionLog: actionType.BA_MINE_SIGN, 
-                            bp: this.pageId, 
+                            component: SignInContainer,
+                            signInfo: signInData,
+                            name: 'signin',
+                            title: '签到礼包',
+                            actionLog: actionType.BA_MINE_SIGN,
+                            bp: this.pageId,
                             backLog: actionType.BA_MINE_CREDIT_BACK
                         });
                         actions.signInVisibleChanged(false);
@@ -80,7 +81,7 @@ export default class User extends Component {
                     }}
                 />
         } else {
-            welfareModal = 
+            welfareModal =
                 <WelfareModal
                     title={"连续签到" + signInInfo.get('sign_in_result').get('sign_in_days') + "天"}
                     icon={{url: require("../images/gift.png"), style: {width: 34, height: 34}}}
@@ -88,18 +89,18 @@ export default class User extends Component {
                     closeModal={()=>{actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged(false);}}
                     goPage={() => {
                         this.navigatorPush({
-                            component: SignInContainer, 
-                            signInfo: signInData, 
-                            name: 'signin', 
-                            title: '签到礼包', 
-                            actionLog: actionType.BA_MINE_SIGN, 
-                            bp: this.pageId, 
+                            component: SignInContainer,
+                            signInfo: signInData,
+                            name: 'signin',
+                            title: '签到礼包',
+                            actionLog: actionType.BA_MINE_SIGN,
+                            bp: this.pageId,
                             ackLog: actionType.BA_MINE_CREDIT_BACK
                         });
                         actions.signInVisibleChanged(false);
                         actions.signInBtnVisibleChanged(false);
                     }}
-                > 
+                >
                     <Text style={[styles.h5, styles.modalContent]}>
                         <Text style={[styles.h2, styles.addNum]}>+</Text>
                         <Text style={[styles.h1, styles.scoreNum]}>{ signInInfo.get('sign_in_result').get('experience')}</Text>
@@ -145,14 +146,14 @@ export default class User extends Component {
                                 领签到礼包</Text>
                         </View>
                         {
-                            userProfile.get('is_signed_in') ? 
+                            userProfile.get('is_signed_in') ?
                                 <TouchableWithoutFeedback
                                     onPress={() => {actions.fetchSignInInfo()}}
                                 >
                                     <View style={styles.signInWarp}><Text style={styles.signInBtn}>签到</Text></View>
                                 </TouchableWithoutFeedback>
                                 : null
-                        }                        
+                        }
                     </LinkSection>
 
                     <LinkSection
@@ -307,7 +308,7 @@ class UserAccount extends Component {
 
         if (parseInt(value.score) < parseInt(value.min_price)) {
             Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);
-        } else if (value.name && value.alipay_account) {
+        } else if (value.name && value.alipay_account && value.identity_card_number) {
             navigator.push({
                 component: WithdrawContainer,
                 name: 'withdraw',

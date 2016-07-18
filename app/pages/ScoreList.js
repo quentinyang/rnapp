@@ -41,6 +41,7 @@ export default class ScoreList extends Component {
             max_day_price: userProfile.get('max_withdrawals_money'),
             name: userProfile.get('name'),
             alipay_account: userProfile.get('alipay_account'),
+            identity_card_number: userProfile.get('identity_card_number'),
             is_binding_alipay: userProfile.get('is_binding_alipay')
         };
         return (
@@ -198,7 +199,7 @@ class CashArea extends Component {
 
         if(parseInt(accountData.score) < parseInt(accountData.min_price)) {
             Alert.alert('', '余额超过' + accountData.min_price + '元才能提现哦', [{text: '知道了'}]);
-        } else if(accountData.name && accountData.alipay_account){
+        } else if(accountData.name && accountData.alipay_account && accountData.identity_card_number){
             navigator.push({
                 component: WithdrawContainer,
                 name: 'withdraw',
@@ -212,11 +213,11 @@ class CashArea extends Component {
             navigator.push({
                 component: BindAlipayContainer,
                 name: 'bindAlipay',
-                data: value,
+                data: accountData,
                 title: '绑定支付宝',
                 hideNavBar: false,
                 bp: this.pageId,
-                backLog: actionType.BA_MINE_ZHIFUBAO_BACK
+                backLog: actionType.BA_MINE_CASH_RETURN
             })
         } else {
             ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_BOXONVIEW);

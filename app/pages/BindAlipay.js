@@ -45,7 +45,7 @@ export default class BindAlipay extends Component {
                 {
                     aliInfo.get('step') == 2 ?
                     <TypeName
-                        name={aliInfo.get('name')}
+                        route={route}
                         account={aliInfo.get('alipay_account') || route.data.alipay_account}
                         actions={actions}
                         error={aliInfo.get('err_msg')}
@@ -112,7 +112,10 @@ export default class BindAlipay extends Component {
             }
         );
         if(route.data.alipay_account) {
+            let {name, identity_card_number} = route.data;
             actions.bindStepChanged(2);
+            name && actions.alipayNameChanged(name);
+            identity_card_number && actions.alipayIDCardChanged(identity_card_number);
             ActionUtil.setActionWithExtend(actionType.BA_MINE_ZHIFUBAO_NAMEONVIEW, {"bp": this.props.route.bp});
         } else {
             actions.bindStepChanged(1);
@@ -250,6 +253,7 @@ class TypeName extends Component {
     }
 
     render() {
+        let {data} = this.props.route;
         return (
             <View>
                 <View style={{padding: 20, paddingTop: 0}}>
@@ -259,7 +263,7 @@ class TypeName extends Component {
                 <WithLabel
                     style={[styles.typeNameBox, {borderTopWidth: 1/PixelRatio.get()}]}
                     label='身份证'
-                    defaultValue=''
+                    defaultValue={data.identity_card_number}
                     placeholder='请输入身份证号'
                     underlineColorAndroid = 'transparent'
                     maxLength={18}
@@ -269,7 +273,7 @@ class TypeName extends Component {
                 <WithLabel
                     style={styles.typeNameBox}
                     label='真实姓名'
-                    defaultValue=''
+                    defaultValue={data.name}
                     placeholder='请输入真实姓名'
                     underlineColorAndroid = 'transparent'
                     maxLength={10}
