@@ -305,6 +305,7 @@ export default class Home extends Component {
         })
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionPrependHouseList({});
+            actions.fetchAttentionBlockAndCommunity();
             actions.fetchHouseNewCount();
             actions.fetchCurrentStatus();
         });

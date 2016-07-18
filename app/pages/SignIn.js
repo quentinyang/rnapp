@@ -52,7 +52,7 @@ export default class SignIn extends Component {
                     {unsignList}
                 </View>
 
-                {signArr.size ?
+                {signArr.get('welfare_cards') && signArr.get('welfare_cards').size ?
                     <View style={[styles.row, styles.alignItems, styles.titleBox]}>
                         <View style={styles.bar}></View>
                         <Text style={[styles.mediumFont]}>已领取礼包<Text style={styles.h5}>（共获{signArr.get('total')}张）</Text></Text>
