@@ -2,7 +2,7 @@
 
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image, Alert, Modal, TouchableHighlight,
-    PixelRatio, TouchableWithoutFeedback, Linking, InteractionManager, NetInfo} from 'nuke';
+    PixelRatio, TouchableWithoutFeedback, Linking, InteractionManager, NetInfo, AppState} from 'nuke';
 import {navigationContext} from 'react-native'
 import {NaviGoBack, parseUrlParam} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
@@ -14,7 +14,6 @@ let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import {routes} from '../config/route'
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
-import AppState from '../utils/AppState';
 import { setLoginDaysService } from '../service/configService';
 import Toast from 'react-native-root-toast';
 
@@ -285,9 +284,7 @@ class App extends Component {
             }
         });
 
-        AppState.addEventListener(() => {
-            gtoken && setLoginDays();
-        });
+        AppState.addEventListener('change', this._setLoginDays);
 
         NetInfo.fetch().done(
             (data) => {
@@ -317,7 +314,8 @@ class App extends Component {
             DeviceEventEmitter.removeAllListeners('setGeTuiOpenAction');
             DeviceEventEmitter.removeAllListeners('goPage');
         }
-        AppState.removeEventListener();
+
+        AppState.removeEventListener('change', this._setLoginDays);
 
         NetInfo.removeEventListener(
             'change',
@@ -325,6 +323,9 @@ class App extends Component {
         );
     }
 
+    _setLoginDays = (currentAppState) => {
+        gtoken && (currentAppState == 'active') && setLoginDays();
+    }
     _handleConnectionInfoChange = (connection) => {
         let {actionsApp} = this.props;
         if(connection.toLowerCase() == 'none') {

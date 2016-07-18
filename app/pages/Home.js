@@ -1,7 +1,7 @@
 'use strict';
 
 import {React, Component, Text, View, ScrollView, StyleSheet, ListView, Image, PixelRatio, Modal, Button, TouchableHighlight,
-    TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform} from 'nuke';
+    TouchableWithoutFeedback, RefreshControl, InteractionManager, ActivityIndicator, Platform, AppState} from 'nuke';
 
 import HouseListContainer from '../containers/HouseListContainer';
 import AttentionBlockSetOneContainer from '../containers/AttentionBlockSetOneContainer';
@@ -19,7 +19,6 @@ import * as homeConst from '../constants/Home';
 import {getAttentionStatus} from '../service/blockService';
 import WelfareModal from '../components/WelfareModal';
 import NoNetwork from '../components/NoNetwork';
-import AppState from '../utils/AppState';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -244,7 +243,7 @@ export default class Home extends Component {
         let {actions} = this.props;
 
         InteractionManager.runAfterInteractions(() => {
-            // actions.fetchAttentionHouseList({});
+            actions.fetchAttentionHouseList({});
             actions.fetchAttentionBlockAndCommunity({});
             actions.fetchScoreModalStatus();
             actions.fetchHouseNewCount();
@@ -253,22 +252,25 @@ export default class Home extends Component {
             actions.fetchCurrentStatus();
         });
 
-        AppState.addEventListener(() => {
-            this._refreshHouseData();
-        });
+        AppState.addEventListener('change', this._refreshHouseData);
     }
 
     componentWillUnmount() {
         this.props.actions.clearHomePage();
+        AppState.removeEventListener('change', this._refreshHouseData);
     }
 
-    _refreshHouseData = () => {
-        let {actions} = this.props;
-
-        InteractionManager.runAfterInteractions(() => {
-            actions.fetchAttentionPrependHouseList();
-            actions.fetchHouseNewCount();
-        });
+    _refreshHouseData = (currentAppState) => {
+        if(!gtoken) {
+            return;
+        }
+        if(currentAppState == 'active') {
+            let {actions} = this.props;
+            InteractionManager.runAfterInteractions(() => {
+                actions.fetchAttentionPrependHouseList();
+                actions.fetchHouseNewCount();
+            });
+        }
     }
 
     _renderRow = (rowData:any) => {
@@ -348,7 +350,7 @@ export default class Home extends Component {
         let {actions, houseData} = this.props;
         let pager = houseData.get('pager');
 
-        if (Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
+        if (Number(pager.get('current_page')) != 0 && Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
             InteractionManager.runAfterInteractions(() => {
                 actions.fetchAttentionAppendHouseList({
                     page: Number(pager.get('current_page')) + 1
