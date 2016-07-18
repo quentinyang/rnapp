@@ -237,6 +237,7 @@ export const BA_FIRSTOPEN_DELETE = "101-111003"
 export const BA_FIRSTOPEN_FIND = "101-111004"
 export const BA_FIRSTOPEN_SEND = "101-111005"
 export const BA_FIRSTOPEN_RETURN = "101-111006"
+export const BA_FIRSTOPEN_WELFARE = "3-111007"
 
 //用户单页
 export const BA_USER = "3-112000"

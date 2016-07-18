@@ -18,6 +18,7 @@ export const userInputHouseCleared = makeActionCreator(types.USER_INPUT_HOUSE_CL
 export const signInFetched = makeActionCreator(types.SIGN_IN_FETCHED, 'info');
 export const signInVisibleChanged = makeActionCreator(types.SIGN_IN_VISIBLE_CHANGED, 'visible');
 export const signInBtnVisibleChanged = makeActionCreator(types.SIGN_IN_BUTTON_VISIBLE_CHANGED, 'visible');
+export const signInDaysChanged = makeActionCreator(types.SIGN_IN_DAYS_CHANGED, 'days');
 
 export function fetchUserProfile(params) {
     return dispatch => {
@@ -83,6 +84,7 @@ export function fetchSignInInfo() {
             service: getSignInInfo,
             success: function (oData) {
                 dispatch(signInFetched(oData));
+                dispatch(signInDaysChanged(oData.sign_in_days || 0));
                 dispatch(signInVisibleChanged(true));
             },
             error: function () {

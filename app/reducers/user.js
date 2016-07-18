@@ -11,6 +11,7 @@ let initialState = {
     contacted: 0,
     published: 0,
     portrait: '',
+    sign_in_days: 0,
     is_signed_in: "1", //今天是否签到过：按钮是否显示
 }
 
@@ -21,6 +22,9 @@ function userProfile(state = Immutable.fromJS(initialState), action) {
             break;
         case types.SIGN_IN_BUTTON_VISIBLE_CHANGED:
             return state.set('is_signed_in', Immutable.fromJS(action.visible));
+            break;
+        case types.SIGN_IN_DAYS_CHANGED:
+            return state.set('sign_in_days', Immutable.fromJS(action.days));
             break;
         default:
             return state;
