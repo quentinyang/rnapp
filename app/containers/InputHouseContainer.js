@@ -20,9 +20,11 @@ class InputHouseContainer extends Component {
 
 function mapStateToProps(state) {
     let inputHouse = state.settings.houseData.get('inputHouse');
+    let netWork = state.app.appData.get('net');
     return {
         houseList: inputHouse.get('properties'),
-        pager: inputHouse.get('pager')
+        pager: inputHouse.get('pager'),
+        netWork
     }
 }
 

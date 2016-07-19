@@ -5,8 +5,8 @@ import * as types from '../constants/SignIn';
 import Immutable from 'immutable';
 
 let initialState = {
-    "have_not_get_points": [],
-    "have_been_get_points": []
+    "collected_welfare_cards": [],
+    "future_welfare_cards": []
 };
 
 function signIn(state = Immutable.fromJS(initialState), action) {

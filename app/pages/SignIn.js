@@ -1,4 +1,5 @@
 import {React, Component, Text, View, ScrollView, StyleSheet, Image, PixelRatio, InteractionManager} from 'nuke';
+import WelfareCard from '../components/WelfareCard';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
 
@@ -10,32 +11,22 @@ export default class SignIn extends Component {
 
     render() {
         let {signIn, route} = this.props;
-        let signInfo = route.signInfo, unsignArr = signIn.get('have_not_get_points'), signArr = signIn.get('have_been_get_points');
+        let signInfo = route.signInfo, unsignArr = signIn.get('future_welfare_cards'), signArr = signIn.get('collected_welfare_cards');
 
         let unsignList = unsignArr.map((item, index) => {
             return (
-                <View key={index} style={[styles.row, styles.alignItems, styles.unsignItem, index ? {} : styles.unsignFirst]} elevation={1}>
-                    <View>
-                        <Image source={require('../images/s_calendar_panel.png')} style={styles.sPanel} />
-                        <Text style={styles.totalDays}>{item.get('sign_in_days')}</Text>
-                    </View>
-                    <Text style={[styles.flex, styles.unsignTip]}>连续签到{item.get('sign_in_days')}天</Text>
-                    <Text>积分<Text style={styles.orange}> + </Text><Text style={[styles.h2, styles.orange]}>{item.get('points')}</Text></Text>
-                    <View style={styles.vline}></View>
-                    <Text style={[styles.grey, styles.undone]}>未达成</Text>
+                <View key={index}>
+                    <Text style={{marginBottom: 10}}>连续签到{item.get('sign_in_days')}天获{item.get('total')}张</Text>
+                    {item.get('welfare_cards').map((card, ins) => {
+                        return <WelfareCard item={card} key={ins} wrapStyle={{marginBottom: 10}} />
+                    })}
                 </View>
             );
         });
 
-        let signList = signArr.map((item, index) => {
+        let signList = signArr.get('welfare_cards') && signArr.get('welfare_cards').map((item, index) => {
             return (
-                <View key={index} style={[styles.row, styles.alignItems, styles.signItem, index ? {} : styles.signFirst]}>
-                    <View>
-                        <Text>{item.get('method')}</Text>
-                        <Text style={[styles.grey, styles.h6]}>{item.get('time')}</Text>
-                    </View>
-                    <Text style={styles.h3}>{item.get('money_change')} {item.get('money')}</Text>
-                </View>
+                <WelfareCard  item={item} key={index} source={require('../images/welfare/got.png')} />
             );
         });
 
@@ -46,31 +37,30 @@ export default class SignIn extends Component {
             >
                 <View style={[styles.alignItems, styles.justifyContent, styles.box]}>
                     <Text style={[styles.topTip]}>已连续签到</Text>
-                    <View>
-                        <Image source={require("../images/calendar_panel.png")} style={styles.panel} />
-                        <Text style={[styles.h5, styles.days]}><Text style={styles.h1}>{signInfo.get('sign_in_days')}</Text>天</Text>
+                    <View style={[styles.panel, styles.alignItems, styles.justifyContent]}>
+                        <Text style={[styles.h5]}><Text style={styles.h1}>{signInfo.get('sign_in_days')}</Text>天</Text>
                     </View>
-                    <Text style={[styles.bottomTip]}>每天签到 经验<Text style={[styles.green, styles.add]}> + </Text><Text style={styles.green}>{signInfo.get('experience')}</Text></Text>
+                    <Text style={[styles.bottomTip]}>每天签到 经验<Text style={[styles.orange, styles.add]}> + </Text><Text style={styles.orange}>{signInfo.get('experience')}</Text></Text>
                 </View>
 
                 <View style={[styles.row, styles.alignItems, styles.titleBox]}>
                     <View style={styles.bar}></View>
-                    <Text style={[styles.mediumFont]}>待领取积分</Text>
+                    <Text style={[styles.mediumFont]}>待领取礼包</Text>
                 </View>
 
                 <View style={styles.unsignList}>
                     {unsignList}
                 </View>
 
-                {signArr.size ?
+                {signArr.get('welfare_cards') && signArr.get('welfare_cards').size ?
                     <View style={[styles.row, styles.alignItems, styles.titleBox]}>
                         <View style={styles.bar}></View>
-                        <Text style={[styles.mediumFont]}>已领取积分</Text>
+                        <Text style={[styles.mediumFont]}>已领取礼包<Text style={styles.h5}>（共获{signArr.get('total')}张）</Text></Text>
                     </View>
                 : null }
 
-                <View>
-                    {signList}                   
+                <View style={styles.unsignList}>
+                    {signList}
                 </View>
             </ScrollView>
         )
@@ -99,13 +89,14 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        marginBottom: 10,
         backgroundColor: '#fff'
     },
     mediumFont: {
         fontWeight: '500'
     },
     h1: {
-        fontSize: 30
+        fontSize: 40
     },
     h2: {
         fontSize: 20
@@ -133,11 +124,10 @@ const styles = StyleSheet.create({
     },
     topTip: {
         marginTop: 17,
-        marginBottom: 12
     },
     panel: {
         width: 93,
-        height: 81
+        height: 75
     },
     days: {
         position: 'absolute',
@@ -150,7 +140,6 @@ const styles = StyleSheet.create({
         textAlignVertical: 'top'
     },
     bottomTip: {
-        marginTop: 15,
         marginBottom: 22
     },
     titleBox: {

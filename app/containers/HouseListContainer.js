@@ -25,10 +25,11 @@ class HouseListContainer extends Component {
 function mapStateToProps(state) {
     const {houseData, filterData, uiData, queryParamsData, communityData} = state.houseList;
     let {appData} = state.app;
-    let listSearchHistory = appData.get('listSearchHistory');
+    let listSearchHistory = appData.get('listSearchHistory'),
+        netWork = appData.get('net');
 
     return {
-        houseData, filterData, uiData, queryParamsData, communityData, listSearchHistory
+        houseData, filterData, uiData, queryParamsData, communityData, listSearchHistory, netWork
     }
 }
 

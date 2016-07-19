@@ -15,6 +15,7 @@ import {
 } from 'nuke'
 
 import FormContainer from './FormContainer'
+import NoNetwork from './NoNetwork'
 let ActionUtil = require( '../utils/ActionLog');
 
 export default class Autocomplete extends Component {
@@ -49,7 +50,7 @@ export default class Autocomplete extends Component {
                             />
                         </View>
 
-                        <TouchableHighlight style={styles.cancelBtnBox} underlayColor="#fff" onPress={this.props.onCancelSearch}>
+                        <TouchableHighlight style={styles.cancelBtnBox} underlayColor="transparent" onPress={this.props.onCancelSearch}>
                             <View style={styles.cancelBox}>
                                 <Text style={styles.cancelBtn}>取消</Text>
                             </View>
@@ -60,7 +61,11 @@ export default class Autocomplete extends Component {
                 <FormContainer
                     style={[styles.list]}
                 >
-                    {items}
+                    {this.props.net == 'no' ?
+                    <NoNetwork style={{marginTop: 100}} />
+                    :
+                    items
+                    }
                 </FormContainer>
             </View>
         );

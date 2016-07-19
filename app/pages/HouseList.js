@@ -11,10 +11,10 @@ import Area from '../components/Area';
 import SearchNavigator from '../components/SearchNavigator';
 import Autocomplete from '../components/Autocomplete'
 import AutocompleteItem from '../components/AutocompleteItem'
+import NoNetwork from '../components/NoNetwork'
 import {SearchHistory, SearchHistoryItem} from '../components/SearchHistory';
 let ActionUtil = require( '../utils/ActionLog');
-import * as actionType from '../constants/ActionLog'
-
+import * as actionType from '../constants/ActionLog' 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
 });
@@ -34,10 +34,11 @@ export default class HouseList extends Component {
             isShowSearchHistory: true
         };
         this.keyword = "";
+        this.showResult = true;
     }
 
     render() {
-        let {houseData, filterData, uiData, queryParamsData, navigator, communityData, listSearchHistory} = this.props;
+        let {houseData, filterData, uiData, queryParamsData, navigator, route, communityData, listSearchHistory, netWork} = this.props;
         let houseList = houseData.get('properties');
         let pager = houseData.get('pager');
         let tabType = uiData.get('tabType');
@@ -52,6 +53,11 @@ export default class HouseList extends Component {
                     titleName={queryParamsData.get('community_name')}
                     backLog={actionType.BA_ALLHOUSE_LIST_RETURN}
                     onClearKeyword={this._onClearKeyword}
+                    onBack={() => {
+                        if(route.callbackFun) {
+                            route.callbackFun();
+                        }
+                    }}
                 />
                 <Filter
                     tabType={tabType}
@@ -63,14 +69,17 @@ export default class HouseList extends Component {
                     onlyNewChanged={this._onlyNewChanged}
                 />
                 {
-                    (Number(pager.get('current_page')) == 1 && houseList.size == 0) ? 
+                    netWork == 'no' && !pager.get('total') ?
+                    <NoNetwork onPress={() => {}} />
+                    :
+                    (Number(pager.get('current_page')) == 1 && houseList.size == 0) ?
                      <View style={[styles.flex, styles.center]}>
                         <Image
                             source={require('../images/no_house_list.png')}
                             style={styles.noHouseList}
                         />
                         <Text style={styles.noHouseListMsg}>没有找到符合要求的结果</Text>
-                    </View> 
+                    </View>
                     :
                     <ListView
                         dataSource={ds.cloneWithRows(houseList.toArray())}
@@ -278,7 +287,7 @@ export default class HouseList extends Component {
         }
     };
 
-    // 过滤只看认证
+    // 过滤只看最新
     _onlyNewChanged = (onlyNew) => {
         ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_FILTERCERTIFY);
         let {actions, queryParamsData} = this.props;
@@ -288,7 +297,7 @@ export default class HouseList extends Component {
         actions.fetchHouseList({
             page: 1,
             ...queryParamsDataJs
-        });
+        }, this.showResult);
 
         actions.onlyNewChanged(onlyNew)
     };
@@ -304,7 +313,7 @@ export default class HouseList extends Component {
         actions.fetchHouseList({
             page: 1,
             ...queryParamsDataJs
-        });
+        }, this.showResult);
 
         actions.blockFilterChanged(districtId, blockId, areaName);
         this._hideMask();
@@ -323,7 +332,7 @@ export default class HouseList extends Component {
             actions.fetchHouseList({
                 page: 1,
                 ...queryParamsDataJs
-            });
+            }, this.showResult);
             actions.filterTabPriceChanged(min, max, title);
         } else {
             ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_FILTERSTYLE);
@@ -333,7 +342,7 @@ export default class HouseList extends Component {
             actions.fetchHouseList({
                 page: 1,
                 ...queryParamsDataJs
-            });
+            }, this.showResult);
             actions.filterTabBedroomsChanged(min, max, title);
         }
 
@@ -425,13 +434,14 @@ export default class HouseList extends Component {
     };
 
     _searchHistoryRowPress = (item) => {
-        let {actions} = this.props;
+        let {actions, actionsApp} = this.props;
         ActionUtil.setAction(actionType.BA_LOOK_HOME_SEARCH_CLICKHISTORY);
         actions.fetchHouseList({
             page: 1,
             community_id: item.get('id'),
             community_name: item.get('name')
         });
+        actionsApp.addListSearchHistory(item.toJS());
         actions.filterCommunityNameChanged(item.get('id'), item.get('name'));
         actions.autocompleteViewShowed(false);
     };

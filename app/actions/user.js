@@ -1,7 +1,9 @@
 'use strict';
 
 import * as types from '../constants/User';
-import {profileService, scoreListService, expRuleService, userInputListService} from '../service/userService';
+let ActionUtil = require('../utils/ActionLog');
+import * as actionType from '../constants/ActionLog';
+import {profileService, scoreListService, expRuleService, userInputListService, getSignInInfo} from '../service/userService';
 import {makeActionCreator, serviceAction} from './base';
 
 export const userProfileFetched = makeActionCreator(types.USER_PROFILE, 'profile');
@@ -13,6 +15,12 @@ export const expRuleFetched = makeActionCreator(types.EXP_RULE, 'expRule');
 
 export const userInputHouseFetched = makeActionCreator(types.USER_INPUT_HOUSE_FETCHED, 'data');
 export const userInputHouseCleared = makeActionCreator(types.USER_INPUT_HOUSE_CLEARED);
+
+//签到
+export const signInFetched = makeActionCreator(types.SIGN_IN_FETCHED, 'info');
+export const signInVisibleChanged = makeActionCreator(types.SIGN_IN_VISIBLE_CHANGED, 'visible');
+export const signInBtnVisibleChanged = makeActionCreator(types.SIGN_IN_BUTTON_VISIBLE_CHANGED, 'visible');
+export const signInDaysChanged = makeActionCreator(types.SIGN_IN_DAYS_CHANGED, 'days', 'goOnDays');
 
 export function fetchUserProfile(params) {
     return dispatch => {
@@ -67,6 +75,30 @@ export function fetchUserInputHouse(params) {
                 dispatch(userInputHouseFetched(oData))
             },
             error: function() {
+            }
+        })
+    }
+}
+
+export function fetchSignInInfo() {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: getSignInInfo,
+            success: function (oData) {
+                dispatch(signInFetched(oData));
+                dispatch(signInDaysChanged(oData.sign_in_days || '', oData.go_on_sign_in_day || ''));
+                dispatch(signInVisibleChanged(true));
+                if(oData.welfare_cards && oData.welfare_cards.length) {
+                    let points = [];
+                    oData.welfare_cards.map((item) => {
+                        points.push(item.cost);
+                    });
+                    ActionUtil.setActionWithExtend(actionType.BA_MINE_SIGN_CREDIT_ONVIEW, {"points": points.join(",")});
+                } else {
+                    ActionUtil.setAction(actionType.BA_MINE_SIGN_EXPERIENCE_ONVIEW);
+                }
+            },
+            error: function () {
             }
         })
     }

@@ -202,6 +202,11 @@ export const BA_MINE_SET = "101-400007"
 export const BA_MINE_MEMBER = "3-400008"
 export const BA_MINE_SIGN = "3-400009"
 export const BA_MINE_WELFARE_INPUT = "3-400010"
+export const BA_MINE_SIGN_INPUT = "3-400011"
+export const BA_MINE_SIGN_EXPERIENCE_ONVIEW = "3-400012"
+export const BA_MINE_SIGN_CREDIT_ONVIEW = "3-400013"
+export const BA_MINE_SIGN_DELETE = "3-400014"
+export const BA_MINE_SIGN_FIND = "3-400015"
 
 //联系过的房源列表
 export const BA_MINE_CONTACT = "101-450000"
@@ -237,6 +242,7 @@ export const BA_FIRSTOPEN_DELETE = "101-111003"
 export const BA_FIRSTOPEN_FIND = "101-111004"
 export const BA_FIRSTOPEN_SEND = "101-111005"
 export const BA_FIRSTOPEN_RETURN = "101-111006"
+export const BA_FIRSTOPEN_WELFARE = "3-111007"
 
 //用户单页
 export const BA_USER = "3-112000"
@@ -286,6 +292,8 @@ export const BA_MINE_CASH_NAME = "3-440000-7"
 export const BA_MINE_CASH_MONEY = "3-440000-8"
 export const BA_MINE_CASH_SURE = "3-440000-9"
 export const BA_MINE_CASH_SUCCESS = "3-440000-10"
+export const BA_MINE_IDENTITY = "3-440000-11"
+export const BA_MINE_IDENTITY_NAME = "3-440000-12"
 
 //积分详情页
 export const BA_MINE_POINTS = "101-410000"

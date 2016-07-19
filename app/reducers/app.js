@@ -12,7 +12,11 @@ let initialState = {
         isCidLogin: false,
         isEnforceUpdate: false
     },
-    auth: true,
+    auth: {
+        visible: false,
+        msg: ''
+    },
+
     msg: '',
 
     loadingVisible: false,
@@ -20,7 +24,9 @@ let initialState = {
     listSearchHistoryKey: '',
     inputSearchHistoryKey: '',
     listSearchHistory: [],
-    inputSearchHistory: []
+    inputSearchHistory: [],
+
+    net: 'yes',  //yes有网，no无网
 };
 
 function appData(state = Immutable.fromJS(initialState), action) {
@@ -29,7 +35,7 @@ function appData(state = Immutable.fromJS(initialState), action) {
 
     switch(action.type) {
         case types.WEB_AUTHENTICATION:
-            return state.set('auth', action.auth);
+            return state.set('auth', Immutable.fromJS(action.auth));
             break;
         case types.WEB_NETWORK_ERROR:
             return state.set('msg', action.msg);
@@ -53,8 +59,10 @@ function appData(state = Immutable.fromJS(initialState), action) {
             break;
         case types.ADD_LIST_SEARCH_HISTORY:
             let tempListSearchHistory = state.get('listSearchHistory'), newListId = action.addItem.id, hasList = false;
-            tempListSearchHistory.forEach((val) => {
+            tempListSearchHistory.forEach((val, index) => {
                 if(val.get('id') == newListId) {
+                    let newListSearchHistory = tempListSearchHistory.delete(index);
+                    state = state.set('listSearchHistory', newListSearchHistory.unshift(Immutable.fromJS(action.addItem)));
                     hasList = true;
                 }
             });
@@ -73,8 +81,10 @@ function appData(state = Immutable.fromJS(initialState), action) {
             break;
         case types.ADD_INPUT_SEARCH_HISTORY:
             let tempInputSearchHistory = state.get('inputSearchHistory'), newInputId = action.addItem.id, hasInput = false;
-            tempInputSearchHistory.forEach((val) => {
+            tempInputSearchHistory.forEach((val, index) => {
                 if(val.get('id') == newInputId) {
+                    let newInputSearchHistory = tempInputSearchHistory.delete(index);
+                    state = state.set('inputSearchHistory', newInputSearchHistory.unshift(Immutable.fromJS(action.addItem)));
                     hasInput = true;
                 }
             });
@@ -105,6 +115,8 @@ function appData(state = Immutable.fromJS(initialState), action) {
         case types.APP_LOADING_CHANGED:
             return state.set('loadingVisible', action.visible);
             break;
+        case types.APP_NETWORK_CHANGED:
+            return state.set('net', action.net);
         default:
             return state;
     }

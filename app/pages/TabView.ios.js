@@ -18,7 +18,7 @@ export default class TabView extends Component {
     }
 
     render() {
-        let {actionsUser, route, navigator} = this.props;
+        let {actionsUser, actionsHome, route, navigator} = this.props;
         return (
             <View style={styles.container}>
                 <TabBar
@@ -39,7 +39,11 @@ export default class TabView extends Component {
                                             this.setState({
                                                 tabIndex: val.key
                                             });
-                                            if (val.key == 2) {
+                                            if(val.key == 0) {
+                                                actionsHome.fetchAttentionPrependHouseList();
+                                                actionsHome.fetchHouseNewCount();
+                                            }
+                                            if(val.key == 2) {
                                                 actionsUser.fetchUserProfile({});
                                             }
                                         }}>

@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/attentionBlockSetOne';
 import * as actionsHome from '../actions/home';
+import * as actionsApp from '../actions/app';
 import AttentionBlockSetOne from '../pages/AttentionBlockSetOne';
 
 class AttentionBlockSetOneContainer extends Component {
@@ -29,7 +30,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(actions, dispatch),
-        actionsHome: bindActionCreators(actionsHome, dispatch)
+        actionsHome: bindActionCreators(actionsHome, dispatch),
+        actionsApp: bindActionCreators(actionsApp, dispatch)
     }
 }
 

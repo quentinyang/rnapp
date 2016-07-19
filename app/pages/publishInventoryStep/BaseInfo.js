@@ -123,7 +123,12 @@ export default class BaseInfoPage extends Component {
                 }
             })
             .catch((error) => {
-                Alert.alert('', error.msg || '');
+                if (error && error.codeStatus == 401) {
+                    error.visible = true;
+                    actionsApp.webAuthentication(error);
+                } else {
+                    Alert.alert('', error.msg || '网络不太顺畅');
+                }                
             })
         });
 

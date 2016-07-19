@@ -9,7 +9,7 @@ import navigation from './navigation';
 let initialState = {
     properties: [],
     pager: {
-        'total': 1,
+        'total': '',
         'per_page': 10,
         'current_page': 0,
         'last_page': 2,

@@ -22,10 +22,12 @@ class HomeContainer extends Component {
 
 function mapStateToProps(state) {
     const {houseData, attentionList, baseInfo} = state.home;
+    let netWork = state.app.appData.get('net');
     return {
         houseData,
         attentionList,
-        baseInfo
+        baseInfo,
+        netWork
     }
 }
 

@@ -20,9 +20,11 @@ class ContactHouseContainer extends Component {
 
 function mapStateToProps(state) {
     let contactHouse = state.settings.houseData.get('contactHouse');
+    let netWork = state.app.appData.get('net');
     return {
         houseList: contactHouse.get('properties'),
-        pager: contactHouse.get('pager')
+        pager: contactHouse.get('pager'),
+        netWork
     }
 }
 

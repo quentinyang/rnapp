@@ -39,7 +39,7 @@ module.exports=function(){
         });
     }
 
-    function getGiftInfo() {
+    function getSignInInfo() {
         return ajax.get(urls().user.signIn)
     }
 
@@ -66,7 +66,7 @@ module.exports=function(){
         withdrawService: withdrawService,
         alipayLoginService: alipayLoginService,
         scoreListService: scoreListService,
-        getGiftInfo: getGiftInfo,
+        getSignInInfo: getSignInInfo,
         signInStatusService: signInStatusService,
         expRuleService: expRuleService,
         userInputListService: userInputListService

@@ -321,23 +321,7 @@ export default class Detail extends Component {
     };
 
     _renderFooter = () => {
-        let {sameCommunityList} = this.props;
-        return (
-            sameCommunityList.get('total') > 5 ?
-                <View style={[styles.padding]}>
-                    <TouchableHighlight
-                        style={styles.moreButton}
-                        underlayColor="#fff"
-                        onPress={this._handleMoreHouseList}
-                    >
-                        <View><Text style={styles.moreText}>
-                            查看更多
-                        </Text></View>
-                    </TouchableHighlight>
-                </View>
-                :
-                null
-        )
+        return null;
     };
 
     _onItemPress = (item) => {
@@ -405,7 +389,7 @@ class PhoneModal extends Component {
                     <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
-                            underlayColor="#fff"
+                            underlayColor="transparent"
                             onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);actions.setSellerPhoneVisible(false);}}
                         >
                             <Image
@@ -478,7 +462,7 @@ class VoiceModal extends Component {
                    onRequestClose={actions.setVoiceVisible}>
                 <View style={[styles.flex, styles.bgWrap]}>
                     <View style={styles.flex}></View>
-                    <View style={[styles.flex, styles.justifyBetween, styles.couponWrap, styles.voiceWrap]}>
+                    <View style={[styles.flex, styles.justifyBetween, styles.whiteBg, styles.voiceWrap]}>
                         <TouchableHighlight
                             style={[styles.closeBox, styles.center, styles.justifyContent]}
                             onPress={()=>{
@@ -489,7 +473,7 @@ class VoiceModal extends Component {
                                 AudioPlayer.stop();
                                 actions.setVoiceVisible(false);
                             }}
-                            underlayColor="#fff"
+                            underlayColor="transparent"
                         >
                             <Image style={styles.closeIcon} source={require('../images/close.png')}/>
                         </TouchableHighlight>
@@ -563,7 +547,7 @@ class CouponModal extends Component {
             <Modal visible={isVisible} transparent={true} onRequestClose={actions.setCouponVisible}>
                 <View style={[styles.flex, styles.bgWrap]}>
                     <View style={styles.flex}></View>
-                    <View style={[styles.flex, styles.couponWrap]}>
+                    <View style={[styles.flex, styles.whiteBg]}>
                         <View style={styles.couponHeader}>
                             <TouchableWithoutFeedback onPress={()=>{
                             ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_DELETE);
@@ -724,7 +708,7 @@ class ErrorTipModal extends Component {
                     <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
-                            underlayColor="#fff"
+                            underlayColor="transparent"
                             onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);actions.setErrorTipVisible(false)}}
                         >
                             <Image
@@ -804,11 +788,11 @@ class CostScoreModal extends Component {
         return (
             <Modal visible={callInfo.get('feedbackVisible')} transparent={true}
                    onModalVisibilityChanged={actions.setErrorTipVisible}>
-                <View style={[styles.flex, styles.center, styles.justifyContent, styles.bgWrap]}>
-                    <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
+                <View style={[styles.flex, styles.justifyEnd, styles.bgWrap]}>
+                    <View style={[styles.whiteBg, styles.feedbackBox]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
-                            underlayColor="#fff"
+                            underlayColor="transparent"
                             onPress={this._handlerFeedback.bind(this, actionType.BA_DETAIL_SPENDCANCEL)}
                         >
                             <Image
@@ -817,22 +801,21 @@ class CostScoreModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={[styles.msgTip, styles.baseColor]}>本次通话花费了您{score}积分</Text>
+                        <Text style={styles.scoreTip}>本次通话花费了您{score}积分</Text>
 
                         <TouchableHighlight
-                            style={[styles.btn, styles.sureBtn]}
                             underlayColor="#04c1ae"
                             onPress={this._handlerFeedback.bind(this, actionType.BA_DETAIL_SPENDENSURE)}
                         >
-                            <View>
-                                <Text style={[styles.baseSize, {color: "#fff", textAlign: "center"}]}>确认</Text>
+                            <View style={styles.feedbackSureBtn}>
+                                <Text style={styles.contactText}>确认</Text>
                             </View>
                         </TouchableHighlight>
 
                         <TouchableWithoutFeedback
                             onPress={this._goBackScore.bind(this)}
                         >
-                            <View><Text style={styles.backScore}>退还积分</Text></View>
+                            <View style={[styles.feedbackSureBtn, styles.feedbackBorderButton]}><Text style={[styles.contactText, styles.greenColor]}>退还积分</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
@@ -983,6 +966,9 @@ var styles = StyleSheet.create({
     },
     justifyBetween: {
         justifyContent: 'space-between'
+    },
+    justifyEnd: {
+        justifyContent: 'flex-end'
     },
     baseColor: {
         color: "#3e3e3e"
@@ -1158,6 +1144,16 @@ var styles = StyleSheet.create({
         textAlign: "center",
         fontSize: 16
     },
+    feedbackBox: {
+        paddingHorizontal: 37
+    },
+    scoreTip: {
+        flex: 1,
+        textAlign: 'center',
+        fontSize: 19,
+        marginTop: 35,
+        marginBottom: 40
+    },
     btn: {
         width: 170,
         height: 30,
@@ -1170,13 +1166,19 @@ var styles = StyleSheet.create({
         backgroundColor: '#04c1ae',
         marginBottom: 20
     },
-    moreButton: {
-        justifyContent: 'center',
+    feedbackSureBtn: {
         height: 40,
+        backgroundColor: '#04c1ae',
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20
+    },
+    feedbackBorderButton: {
+        backgroundColor: 'transparent',
         borderColor: '#04c1ae',
         borderWidth: 2 / PixelRatio.get(),
         borderStyle: 'solid',
-        borderRadius: 5,
     },
     moreText: {
         fontSize: 16,
@@ -1226,7 +1228,7 @@ var styles = StyleSheet.create({
         marginTop: 4,
         marginBottom: 6
     },
-    couponWrap: {
+    whiteBg: {
         backgroundColor: '#fff'
     },
     couponHeader: {

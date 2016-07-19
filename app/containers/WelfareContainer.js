@@ -21,6 +21,7 @@ class WelfareContainer extends Component {
 
 function mapStateToProps(state) {
     let {welfareInfo} = state.card;
+    let netWork = state.app.appData.get('net');
     return {
         list1: welfareInfo.get('list1'),
         pager1: welfareInfo.get('pager1'),
@@ -28,7 +29,8 @@ function mapStateToProps(state) {
         pager2: welfareInfo.get('pager2'),
         list3: welfareInfo.get('list3'),
         pager3: welfareInfo.get('pager3'),
-        current: welfareInfo.get('current')
+        current: welfareInfo.get('current'),
+        netWork
     }
 }
 

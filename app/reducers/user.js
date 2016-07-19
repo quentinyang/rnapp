@@ -10,13 +10,23 @@ let initialState = {
     score: 0,
     contacted: 0,
     published: 0,
-    portrait: ''
+    portrait: '',
+    sign_in_days: '',
+    go_on_sign_in_day: '',
+    is_signed_in: "1", //今天是否签到过：按钮是否显示
 }
 
 function userProfile(state = Immutable.fromJS(initialState), action) {
     switch(action.type) {
         case types.USER_PROFILE:
             return Immutable.fromJS(action.profile);
+            break;
+        case types.SIGN_IN_BUTTON_VISIBLE_CHANGED:
+            return state.set('is_signed_in', Immutable.fromJS(action.visible));
+            break;
+        case types.SIGN_IN_DAYS_CHANGED:
+            state = state.set('sign_in_days', Immutable.fromJS(action.days));
+            return state.set('go_on_sign_in_day', Immutable.fromJS(action.goOnDays));
             break;
         default:
             return state;
@@ -96,10 +106,33 @@ function userHouseData(state = Immutable.fromJS(initUserInputHouse), action) {
     }
 }
 
+let initSignIn = {
+    visible: false,
+    sign_in_result: {
+        "sign_in_days":  1, // 签到天数
+        "experience":  3, // 经验
+        "welfare_cards": [] // 福利卡，如果多张则多个数据
+    }
+}
+
+function signInInfo(state = Immutable.fromJS(initSignIn), action) {
+    switch(action.type) {
+        case types.SIGN_IN_FETCHED:
+            return state.set('sign_in_result', Immutable.fromJS(action.info));
+            break;
+        case types.SIGN_IN_VISIBLE_CHANGED:
+            return state.set('visible', Immutable.fromJS(action.visible));
+        default:
+            return state;
+            break;
+    }
+}
+
 export default combineReducers({
     userProfile,
     userControlData,
     scoreData,
     expLevel,
+    signInInfo,
     userHouseData: navigation(userHouseData, Immutable.fromJS(initUserInputHouse), 'aboutUser')
 });

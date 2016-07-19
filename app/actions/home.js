@@ -4,7 +4,7 @@ import * as types from '../constants/Home';
 import {fetchAttentionHouseListService, fetchAttentionAppendHouseListService, fetchAttentionPrependHouseListService, fetchHouseNewCountService} from '../service/houseListService';
 
 import {fetchAttentionBlockAndCommunityService,getAttentionStatus} from '../service/blockService';
-import {fetchScoreModalStatusService, getGiftInfo} from '../service/userService'
+import {fetchScoreModalStatusService} from '../service/userService'
 import {fetchCouponStatusService} from '../service/cardService';
 import {fetchRuleStatusService} from '../service/configService';
 import {makeActionCreator, serviceAction} from './base';
@@ -17,7 +17,6 @@ export const clearHomePage = makeActionCreator(types.CLEAR_HOME_PAGE);
 export const scoreModalStatusFetched = makeActionCreator(types.SCORE_MODAL_STATUS, 'status');
 export const couponModalStatusFetched = makeActionCreator(types.COUPON_MODAL_STATUS, 'status');
 export const ruleModalStatusFetched = makeActionCreator(types.RULE_MODAL_STATUS, 'status');
-export const giftModalStatusFetched = makeActionCreator(types.GIFT_MODAL_STATUS, 'status');
 
 export const currentModalChanged = makeActionCreator(types.CURRENT_MODAL_CHANGED, 'modal');
 export const pushShowModal = makeActionCreator(types.PUSH_SHOW_MODAL, 'modal');
@@ -89,7 +88,7 @@ export function fetchAttentionBlockAndCommunity(params) {
 
     }
 }
-//注册领积分
+//注册领福利卡
 export function fetchScoreModalStatus() {
     return dispatch => {
         serviceAction(dispatch)({
@@ -102,7 +101,7 @@ export function fetchScoreModalStatus() {
                 dispatch(scoreModalStatusFetched({
                     fetched: true,
                     visible: Number(oData.is_notify) ? true : false,
-                    score: oData.point || 8
+                    welfareArr: oData.welfare_cards || []
                 }))
             },
             error: function (oData) {
@@ -116,12 +115,14 @@ export function fetchCouponModalStatus() {
         serviceAction(dispatch)({
             service: fetchCouponStatusService,
             success: function(oData) {
-                oData.visible = oData.id ? true : false;
-                oData.fetched = true;
-                if (oData.visible) {
+                let rs = {};
+                rs.visible = oData.length ? true : false;
+                rs.fetched = true;
+                rs.welfareArr = oData;
+                if (rs.visible) {
                     dispatch(pushShowModal(types.COUPON));
                 }
-                dispatch(couponModalStatusFetched(oData))                
+                dispatch(couponModalStatusFetched(rs));
             },
             error: function (oData) {
             }
@@ -155,18 +156,6 @@ export function fetchHouseNewCount() {
     }
 }
 
-export function fetchGiftInfo() {
-    return dispatch => {
-        serviceAction(dispatch)({
-            service: getGiftInfo,
-            success: function (oData) {
-                dispatch(giftModalStatusFetched(oData));
-            },
-            error: function () {
-            }
-        })
-    }
-}
 export function fetchCurrentStatus() {
     return dispatch => {
         serviceAction(dispatch)({

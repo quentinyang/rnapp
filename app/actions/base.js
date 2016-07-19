@@ -25,7 +25,8 @@ export function serviceAction(dispatch) {
         let errorFn = oData => {
             loading && dispatch(actions.appLoadingChanged(false));
             if (oData && oData.codeStatus == 401) {
-                dispatch(actions.webAuthentication(false))
+                oData.visible = true;
+                dispatch(actions.webAuthentication(oData));
             }
 
             if (oData && oData.codeStatus != 401) {

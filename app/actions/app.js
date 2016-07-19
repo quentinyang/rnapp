@@ -24,6 +24,8 @@ export const clickTabChanged = makeActionCreator(types.FORBIDDEN_TAB_CHANGED, 's
 
 export const appLoadingChanged = makeActionCreator(types.APP_LOADING_CHANGED, 'visible');
 
+export const netWorkChanged = makeActionCreator(types.APP_NETWORK_CHANGED, 'net');  //网络状况改变
+
 export function clickBack(name) {
     return dispatch => {
         dispatch(clickBackPage(name));

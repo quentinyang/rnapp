@@ -12,6 +12,11 @@ export function fetchSignInfo() {
         serviceAction(dispatch)({
             service: signInStatusService,
             success: function(oData) {
+                for(var i = 0; i < oData.future_welfare_cards.length; i++) {
+                    for(var j = 0; j < oData.future_welfare_cards[i].welfare_cards.length; j++) {
+                        oData.future_welfare_cards[i].welfare_cards[j].status = 1;
+                    }
+                }
                 dispatch(signInfoFetched(oData))
             },
             error: function(oData) {

@@ -11,6 +11,7 @@ import {
 } from 'nuke';
 
 import Card from '../components/WelfareCard';
+import NoNetwork from '../components/NoNetwork';
 let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 
@@ -29,9 +30,13 @@ export default class Welfare extends Component {
     render() {
         let list = 'list' + this.status[this.props.current];
         let dsRow = ds.cloneWithRows(this.props[list].toArray());
+        let {current, pager1, pager2, pager3, netWork} = this.props;
         return (
-            <View>
-                <Wtabs current={this.props.current} tabs={this.tabs} onPress={this.tabClick}/>
+            <View style={{flex: 1}}>
+                <Wtabs current={current} tabs={this.tabs} onPress={this.tabClick}/>
+                {netWork == 'no' && !(pager1.get('total') || pager2.get('total') || pager3.get('total')) ?
+                <NoNetwork />
+                :
                 <ListView
                     style={styles.container}
                     dataSource={dsRow}
@@ -41,6 +46,7 @@ export default class Welfare extends Component {
                     onEndReachedThreshold={50}
                     enableEmptySections={true}
                 />
+                }
             </View>
         );
     }
@@ -59,7 +65,7 @@ export default class Welfare extends Component {
     _renderRow = (rowData, secId, rowId, highlightRow) => {
         return (
             <View style={styles.cardSection}>
-                <Card item={rowData}/>
+                <Card item={rowData} leftFlex={3} />
             </View>
         );
     };
@@ -144,7 +150,7 @@ class NoCoupon extends Component {
     render() {
         return (
             <View style={[styles.noCouponBox, styles.center]}>
-                <Image source={require('../images/coupon.png')} style={styles.coupon}/>
+                <Image source={require('../images/welfare/coupon.png')} style={styles.coupon}/>
                 <Text>您当前没有{this.props.tabs[this.props.current]}的福利卡</Text>
             </View>
         );
@@ -165,7 +171,6 @@ const styles = StyleSheet.create({
         paddingBottom: 19
     },
     tabSection: {
-        flex: 1,
         flexDirection: 'row',
         marginBottom: 20,
         paddingHorizontal: 25,

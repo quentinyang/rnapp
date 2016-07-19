@@ -17,6 +17,8 @@ import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import * as common from '../constants/Common';
 import * as homeConst from '../constants/Home';
 import {getAttentionStatus} from '../service/blockService';
+import WelfareModal from '../components/WelfareModal';
+import NoNetwork from '../components/NoNetwork';
 
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
@@ -38,9 +40,9 @@ class InputRuleModal extends Component {
                     <View style={[styles.contentContainer, {marginTop: 32}]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
-                            underlayColor="#fff"
-                            onPress={() => { 
-                                setCurrentModal(homeConst.GIFT);
+                            underlayColor="transparent"
+                            onPress={() => {
+                                setCurrentModal('');
                             }}
                             >
                                 <Image
@@ -69,219 +71,6 @@ class InputRuleModal extends Component {
     }
 }
 
-class CouponModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let {isVisible, modalInfo, actions, setCurrentModal} = this.props;
-        let cardMsg = modalInfo.get('cost') == "0" ? "免费" : modalInfo.get('cost') + "积分";
-        return (
-            <Modal visible={isVisible} transparent={true}
-                   onRequestClose={() => {}}>
-                <View style={styles.bgWrap}>
-                    <View>
-                        <View style={[styles.contentContainer, {marginTop: 32}]}>
-                            <TouchableHighlight
-                                style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
-                                underlayColor="#fff"
-                                onPress={() => {
-                                setCurrentModal(homeConst.RULE);
-                            }}
-                            >
-                                <Image
-                                    style={styles.closeIcon}
-                                    source={require("../images/close.png")}
-                                />
-                            </TouchableHighlight>
-
-                            <Text style={[styles.h5, styles.giftDay]}>恭喜你获得1张</Text>
-
-                            { modalInfo.get('type') == "1" ?
-                                <Text style={styles.h5}><Text
-                                    style={[styles.h0, styles.scoreNum]}>{cardMsg}</Text>看房卡</Text>
-                                : <Text style={[styles.h0, styles.scoreNum]}>补签卡</Text>
-                            }
-
-                            <TouchableHighlight
-                                underlayColor='#fff'
-                                onPress={this._goCoupon.bind(this)}
-                            >
-                                <View style={styles.flex}>
-                                    <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
-                                </View>
-                            </TouchableHighlight>
-
-                        </View>
-
-                        <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
-                            <Image style={styles.coupon} source={require("../images/coupon_white.png")}/>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
-
-    _goCoupon() {
-        let {navigator, actions, log, setCurrentModal} = this.props;
-        actions.currentModalChanged('');
-
-        navigator.push({
-            component: WelfareContainer,
-            name: 'welfare',
-            title: '福利卡',
-            hideNavBar: false,
-            bp: log.pageId,
-            backLog: log.pageId,
-            callbackFun: () => {
-                navigator.pop();
-                setCurrentModal(homeConst.RULE);
-            }
-        });
-    }
-}
-
-class GiftModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        let {isVisible, modalInfo, actions} = this.props;
-        return (
-            <Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
-                <View style={styles.bgWrap}>
-                    <View>
-                        <View style={[styles.contentContainer, {marginTop: 32}]}>
-                            <TouchableHighlight
-                                style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
-                                underlayColor="#fff"
-                                onPress={() => {
-                                ActionUtil.setAction(actionType.BA_HOME_PAGE_DELETE); 
-                                actions.currentModalChanged('');
-                            }}
-                            >
-                                <Image
-                                    style={styles.closeIcon}
-                                    source={require("../images/close.png")}
-                                />
-                            </TouchableHighlight>
-
-                            <Text style={[styles.h3, styles.giftDay]}>连续签到<Text
-                                style={[styles.h3, styles.mediumFont]}>{modalInfo.get('sign_in_days')}</Text>天</Text>
-                            <View style={[styles.row]}>
-                                <Text style={styles.h5}>
-                                    <Text style={[styles.h2, styles.addNum]}>+</Text>
-                                    <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('experience')}</Text>
-                                    经验</Text>
-                                { modalInfo.get('points') ?
-                                    <Text style={styles.scoreAdd}>
-                                        <Text style={[styles.h2, styles.addNum]}>+</Text>
-                                        <Text style={[styles.h1, styles.scoreNum]}>{modalInfo.get('points')}</Text>
-                                        积分</Text>
-                                    : null
-                                }
-                            </View>
-
-                            <TouchableHighlight
-                                underlayColor='#fff'
-                                onPress={this._goScore.bind(this)}
-                            >
-                                <View style={styles.flex}>
-                                    <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
-                                </View>
-                            </TouchableHighlight>
-
-                        </View>
-
-                        <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
-                            <Image style={styles.gift} source={require("../images/gift.png")}/>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
-
-    _goScore() {
-        let {navigator, actions, modalInfo, log} = this.props;
-
-        actions.currentModalChanged('');
-        navigator.push({
-            component: SignInContainer,
-            name: 'signIn',
-            title: '签到送积分',
-            hideNavBar: false,
-            signInfo: modalInfo,
-            bp: log.pageId,
-            backLog: log.back
-        });
-        ActionUtil.setAction(actionType.BA_HOME_PAGE_FIND);
-    }
-}
-
-class ScoreModal extends Component {
-    constructor(props) {
-        super(props);        
-    }
-
-    render() {
-        let {isVisible, modalInfo, actions, setCurrentModal} = this.props;
-        return (
-
-            <Modal visible={isVisible} transparent={true}
-                   onRequestClose={() => {}}>
-
-                <View style={styles.bgWrap}>
-                    <View style={styles.contentContainer}>
-                        <TouchableHighlight
-                            style={styles.closeBox}
-                            underlayColor="#fff"
-                            onPress={() => {
-                                ActionUtil.setAction(actionType.BA_FIRSTOPEN_DELETE);                            
-                                setCurrentModal(homeConst.COUPON);
-                            }}
-                        >
-                            <Image
-                                style={styles.closeIcon}
-                                source={require("../images/close.png")}
-                            />
-                        </TouchableHighlight>
-
-                        <Text style={[styles.msgTip]}>领<Text style={styles.orange}>{modalInfo.get('score')}</Text>积分免费看房源</Text>
-                        <Button
-                            containerStyle={[styles.btn, styles.btnMarginBottom]}
-                            itemStyle={styles.btnSize} label="立即领取"
-                            onPress={this._goScoreDetail.bind(this)}/>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
-
-    _goScoreDetail() {
-        let {actions, navigator, setCurrentModal} = this.props;
-        ActionUtil.setAction(actionType.BA_FIRSTOPEN_GETSOON);
-        actions.currentModalChanged('');
-
-        navigator.push({
-            component: ScoreRule,
-            name: 'scoreRule',
-            title: '积分规则',
-            hideNavBar: false,
-            bp: actionType.BA_HOME_PAGE,
-            backLog: actionType.BA_FIRSTOPEN_RETURN,
-            score: this.props.modalInfo.get('score'),
-            callbackFun: () => {
-                navigator.pop();
-                setCurrentModal(homeConst.COUPON);
-            }
-        });
-    }
-}
-
 export default class Home extends Component {
     constructor(props) {
         super(props);
@@ -292,35 +81,27 @@ export default class Home extends Component {
         };
         this.pageId = actionType.BA_HOME_PAGE;
         ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_ONVIEW, {"bp": this.props.route.bp});
-
-        this._setGiftModalStatus();
+        this._ruleModalStatus();
     }
 
-    _setGiftModalStatus() {
+     _ruleModalStatus() {
         let {actions} = this.props;
-        let key = common.APP_OPEN_DATE + guid;
+        let key = common.APP_SHOW_RULE + guid;
 
         AsyncStorageComponent.get(key)
             .then((value) => {
                 let today = new Date().getDate().toString();
+
                 if(!value) {
                     actions.pushShowModal(homeConst.RULE);
                     actions.fetchRuleModalStatus();
-                }
-
-                if (value && value == today) { //不为空且 == today, 不显示
-
-                } else { //为空 或 != today, 则显示并更新
-                    actions.pushShowModal(homeConst.GIFT);
-                    actions.fetchGiftInfo();
-                    AsyncStorageComponent.save(key, today);
+                    AsyncStorageComponent.save(key, today).catch((error) => {console.log(error)});
                 }
             })
             .catch((error) => {
                 console.log(error);
             });
     }
-
     componentWillUpdate() {
         if(this.hasGetModal) {
             return;
@@ -328,7 +109,7 @@ export default class Home extends Component {
 
         let {baseInfo} = this.props;
         if(baseInfo.get('scoreModal').get('fetched') && baseInfo.get('couponModal').get('fetched')) {
-            this._setCurrentModal(homeConst.SCORE); 
+            this._setCurrentModal(homeConst.SCORE);
             this.hasGetModal = true;
         }
     }
@@ -349,9 +130,6 @@ export default class Home extends Component {
             } else if(modals.includes(homeConst.RULE)) {
                 cur = homeConst.RULE;
 
-            } else if(modals.includes(homeConst.GIFT)) {
-                cur = homeConst.GIFT;
-
             }
             break;
         case homeConst.COUPON:
@@ -361,35 +139,39 @@ export default class Home extends Component {
             } else if(modals.includes(homeConst.RULE)) {
                 cur = homeConst.RULE;
 
-            } else if(modals.includes(homeConst.GIFT)) {
-                cur = homeConst.GIFT;
             }
             break;
         case homeConst.RULE:
             if(modals.includes(homeConst.RULE)) {
                 cur = homeConst.RULE;
 
-            } else if(modals.includes(homeConst.GIFT)) {
-                cur = homeConst.GIFT;
             }
             break;
-        case homeConst.GIFT: 
-            if(modals.includes(homeConst.GIFT)) {
-                cur = homeConst.GIFT;
-            }
-            break;
-        default:        
+        default:
             break;
         }
+        if(cur == homeConst.SCORE) {
+            let scoreWelfare = baseInfo.get('scoreModal').get('welfareArr');
+            if(scoreWelfare.size) {
+                let scorePoints = [];
+                scoreWelfare.map((item) => {
+                    scorePoints.push(item.cost);
+                });
 
-        if(cur == homeConst.COUPON) {
-            ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": baseInfo.get('couponModal').get('cost')});
+                ActionUtil.setActionWithExtend(actionType.BA_FIRSTOPEN_WELFARE, {"points": scorePoints.join(",")});
+            }
+        } else if(cur == homeConst.COUPON) {
+            let couponWelfare = baseInfo.get('couponModal').get('welfareArr');
+            if(couponWelfare.size) {
+                let couponPoints = [];
+                couponWelfare.map((item) => {
+                    couponPoints.push(item.cost);
+                });
+
+                ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGEWELFARECARD_ONVIEW, {"points": couponPoints.join(",")});
+            }
         } else if(cur == homeConst.RULE) {
             ActionUtil.setAction(actionType.BA_HOME_SENDRULE_ONVIEW);
-        } else if(cur == homeConst.GIFT) {
-            baseInfo.get('giftModal').get('points') 
-                ? ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_CREDIT_ONVIEW, {"points": baseInfo.get('giftModal').get('points')})
-                : ActionUtil.setAction(actionType.BA_HOME_PAGE_EXPERIENCE_ONVIEW);
         }
 
         actions.currentModalChanged(cur);
@@ -398,39 +180,35 @@ export default class Home extends Component {
     render() {
         let {houseData, baseInfo, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
+        let registerMoalInfo = baseInfo.get('scoreModal');
+        let couponModalInfo = baseInfo.get('couponModal');
 
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
-                <ScoreModal
+                <WelfareModal
                     isVisible={baseInfo.get('currentModal') == homeConst.SCORE}
-                    modalInfo={baseInfo.get('scoreModal')}
-                    actions={actions}
-                    navigator={navigator}
-                    log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
-                    setCurrentModal={this._setCurrentModal.bind(this)}
+                    title="注册成功"
+                    subTitle={"获得" + registerMoalInfo.get('welfareArr').size + "张看房卡"}
+                    welfareData={registerMoalInfo.get('welfareArr')}
+                    closeModal={this._closeModal.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_DELETE)}
+                    goPage={this._goCoupon.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_GETSOON, actionType.BA_FIRSTOPEN_RETURN)}
                 />
-                <CouponModal
+
+                <WelfareModal
                     isVisible={baseInfo.get('currentModal') == homeConst.COUPON}
-                    modalInfo={baseInfo.get('couponModal')}
-                    actions={actions}
-                    navigator={navigator}
-                    log={{pageId: this.pageId, back: actionType.BA_MINE_WELFARE_BACK}}
-                    setCurrentModal={this._setCurrentModal.bind(this)}
+                    title={"恭喜您获得" + couponModalInfo.get('welfareArr').size + "张"}
+                    welfareData={couponModalInfo.get('welfareArr')}
+                    closeModal={this._closeModal.bind(this, homeConst.RULE, null)}
+                    goPage={this._goCoupon.bind(this, homeConst.RULE, null, actionType.BA_MINE_WELFARE_BACK)}
                 />
-                <InputRuleModal 
-                    isVisible={baseInfo.get('currentModal') == homeConst.RULE} 
+
+                <InputRuleModal
+                    isVisible={baseInfo.get('currentModal') == homeConst.RULE}
                     modalInfo={baseInfo.get('ruleModal')}
                     actions={actions}
                     setCurrentModal={this._setCurrentModal.bind(this)}
                 />
 
-                <GiftModal
-                    isVisible={baseInfo.get('currentModal') == homeConst.GIFT}
-                    modalInfo={baseInfo.get('giftModal')}
-                    actions={actions}
-                    navigator={navigator}
-                    log={{pageId: this.pageId, back: actionType.BA_MINE_CREDIT_BACK}}
-                />
                 <View style={styles.searchWrap}>
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>
                         <Text style={[styles.searchText, styles.searchTextPadding]}>上海</Text>
@@ -482,7 +260,7 @@ export default class Home extends Component {
         let {actions} = this.props;
 
         InteractionManager.runAfterInteractions(() => {
-            // actions.fetchAttentionHouseList({});
+            actions.fetchAttentionHouseList({});
             actions.fetchAttentionBlockAndCommunity({});
             actions.fetchScoreModalStatus();
             actions.fetchHouseNewCount();
@@ -490,18 +268,26 @@ export default class Home extends Component {
             actions.fetchRuleModalStatus();
             actions.fetchCurrentStatus();
         });
-        AppState.addEventListener('change', this._dealGiftModal.bind(this));
-    }
 
-    _dealGiftModal(currentAppState) {
-        if (currentAppState == 'active') {
-            this._setGiftModalStatus();
-        }
+        AppState.addEventListener('change', this._refreshHouseData);
     }
 
     componentWillUnmount() {
         this.props.actions.clearHomePage();
-        AppState.removeEventListener('change', this._dealGiftModal);
+        AppState.removeEventListener('change', this._refreshHouseData);
+    }
+
+    _refreshHouseData = (currentAppState) => {
+        if(!gtoken) {
+            return;
+        }
+        if(currentAppState == 'active') {
+            let {actions} = this.props;
+            InteractionManager.runAfterInteractions(() => {
+                actions.fetchAttentionPrependHouseList();
+                actions.fetchHouseNewCount();
+            });
+        }
     }
 
     _renderRow = (rowData:any) => {
@@ -538,6 +324,7 @@ export default class Home extends Component {
         })
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionPrependHouseList({});
+            actions.fetchAttentionBlockAndCommunity();
             actions.fetchHouseNewCount();
             actions.fetchCurrentStatus();
         });
@@ -557,7 +344,11 @@ export default class Home extends Component {
                 title: '全部房源',
                 from: 'homeSearch',
                 hideNavBar: true,
-                bp: this.pageId
+                bp: this.pageId,
+                callbackFun: () => {
+                    this._refreshHouseData();
+                    navigator.pop();
+                }
             });
         } else {
             ActionUtil.setAction(actionType.BA_HOME_PAGE_ALLHOUSELIST);
@@ -566,7 +357,11 @@ export default class Home extends Component {
                 name: 'houseList',
                 title: '全部房源',
                 hideNavBar: true,
-                bp: this.pageId
+                bp: this.pageId,
+                callbackFun: () => {
+                    this._refreshHouseData();
+                    navigator.pop();
+                }
             });
         }
     };
@@ -576,7 +371,7 @@ export default class Home extends Component {
         let {actions, houseData} = this.props;
         let pager = houseData.get('pager');
 
-        if (Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
+        if (Number(pager.get('current_page')) != 0 && Number(pager.get('current_page')) != Number(pager.get('last_page'))) {
             InteractionManager.runAfterInteractions(() => {
                 actions.fetchAttentionAppendHouseList({
                     page: Number(pager.get('current_page')) + 1
@@ -614,11 +409,13 @@ export default class Home extends Component {
     };
 
     _renderFooter = () => {
-        let {houseData, attentionList, navigator, baseInfo} = this.props;
+        let {houseData, attentionList, navigator, baseInfo, netWork} = this.props;
         let pager = houseData.get('pager');
         let footerView = null;
 
-        if (Number(pager.get('current_page')) == Number(pager.get('last_page')) && Number(pager.get('total')) != 0) {
+        if(netWork == 'no' && !pager.get('total')) {
+            footerView = <NoNetwork style={{marginTop: 20}} />
+        } else if (Number(pager.get('current_page')) == Number(pager.get('last_page')) && Number(pager.get('total')) != 0) {
             footerView = <View style={styles.listFooter}>
                 <Text style={styles.noData}>已经没有数据了！</Text>
             </View>
@@ -626,6 +423,8 @@ export default class Home extends Component {
             footerView = <View style={styles.listFooter}>
                 <ActivityIndicator color={'#ccc'} styleAttr="Small"/>
             </View>
+        } else if(Number(pager.get('current_page')) == 0) {
+            footerView = null;
         } else {
             footerView = <NoData attentionList={attentionList} navigator={navigator}
                                  onAttentionBlockSet={this._onAttentionBlockSet}
@@ -648,6 +447,28 @@ export default class Home extends Component {
             attentionList
         });
     };
+    _goCoupon(modal, log, backLog) {
+        let {actions, navigator} = this.props;
+        log && ActionUtil.setAction(log);
+        actions.currentModalChanged('');
+
+        navigator.push({
+            component: WelfareContainer,
+            name: 'welfare',
+            title: '福利卡',
+            hideNavBar: false,
+            bp: this.pageId,
+            backLog: backLog || '',
+            callbackFun: () => {
+                navigator.pop();
+                this._setCurrentModal(modal);
+            }
+        });
+    }
+    _closeModal(modal, log, event) {
+        log && ActionUtil.setAction(log);
+        this._setCurrentModal(modal);
+    }
 }
 
 export class Attention extends Component {
@@ -935,29 +756,11 @@ const styles = StyleSheet.create({
         width: 15,
         height: 11
     },
-    msgTip: {
-        marginTop: 16,
-        marginBottom: 20,
-        textAlign: "center",
-        color: "#3E3E3E",
-        fontSize: 19
-    },
     orange: {
         color: "#FD9673"
     },
     grey: {
         color: '#8d8c92'
-    },
-    btn: {
-        width: 220,
-        justifyContent: "center",
-        borderRadius: 5
-    },
-    btnMarginBottom: {
-        marginBottom: 5
-    },
-    btnSize: {
-        fontSize: 18
     },
     giftBg: {
         position: 'absolute',
@@ -970,32 +773,9 @@ const styles = StyleSheet.create({
         borderColor: '#fff',
         backgroundColor: "#04C1AE"
     },
-    gift: {
-        width: 34,
-        height: 34
-    },
     giftDay: {
         marginTop: 28,
         marginBottom: 4
-    },
-    scoreAdd: {
-        marginLeft: 30
-    },
-    addNum: {
-        letterSpacing: 6,
-        marginTop: -3
-    },
-    scoreNum: {
-        letterSpacing: 1
-    },
-    giftBtn: {
-        color: "#04c1ae",
-        fontSize: 12,
-        marginTop: 14
-    },
-    coupon: {
-        width: 37.5,
-        height: 25
     },
     horn: {
         width: 34,

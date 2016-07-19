@@ -2,7 +2,7 @@
 
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, TouchableOpacity, Text, View, Image, Alert, Modal, TouchableHighlight,
-    PixelRatio, TouchableWithoutFeedback, Linking, InteractionManager} from 'nuke';
+    PixelRatio, TouchableWithoutFeedback, Linking, InteractionManager, NetInfo, AppState} from 'nuke';
 import {navigationContext} from 'react-native'
 import {NaviGoBack, parseUrlParam} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
@@ -14,8 +14,8 @@ let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import {routes} from '../config/route'
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
-import AppState from '../utils/AppState';
 import { setLoginDaysService } from '../service/configService';
+import Toast from 'react-native-root-toast';
 
 let _navigator;
 global.gtoken = '';
@@ -127,6 +127,10 @@ class App extends Component {
         // (isAndroid && appData.get('config').get('isCidLogin'))
         return (
             <View style={styles.flex}>
+                <LogoutModal
+                    logoutInfo={appData.get('auth')}
+                    logoutSure={this._logoutSure}
+                />
                 <Modal visible={this.state.showModal} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.contentContainer}>
@@ -227,23 +231,6 @@ class App extends Component {
 
     componentDidUpdate() {
         let {appData, actionsApp} = this.props;
-        if (!appData.get('auth')) {
-            Alert.alert('提示', '请重新登录', [
-                {
-                    text: '确定',
-                    onPress: () => {
-                        _navigator.resetTo({
-                            component: LoginContainer,
-                            name: 'login',
-                            title: '登录',
-                            hideNavBar: true,
-                            bp: actionType.BA_LOGIN
-                        });
-                        actionsApp.webAuthentication(true);
-                    }
-                }
-            ])
-        }
 
         if (appData.get('msg') !== '') {
             Alert.alert('提示', appData.get('msg'), [
@@ -297,9 +284,22 @@ class App extends Component {
             }
         });
 
-        AppState.addEventListener(() => {
-            gtoken && setLoginDays();
-        });
+        AppState.addEventListener('change', this._setLoginDays);
+
+        NetInfo.fetch().done(
+            (data) => {
+                if(data.toLowerCase() == 'none') {
+                    actionsApp.netWorkChanged('no');
+                } else {
+                    actionsApp.netWorkChanged('yes');
+                }
+            }
+        );
+
+        NetInfo.addEventListener(
+            'change',
+            this._handleConnectionInfoChange
+        );
     }
 
     componentWillUnmount() {
@@ -314,7 +314,46 @@ class App extends Component {
             DeviceEventEmitter.removeAllListeners('setGeTuiOpenAction');
             DeviceEventEmitter.removeAllListeners('goPage');
         }
-        AppState.removeEventListener();
+
+        AppState.removeEventListener('change', this._setLoginDays);
+
+        NetInfo.removeEventListener(
+            'change',
+            this._handleConnectionInfoChange
+        );
+    }
+
+    _setLoginDays = (currentAppState) => {
+        gtoken && (currentAppState == 'active') && setLoginDays();
+    }
+    _handleConnectionInfoChange = (connection) => {
+        let {actionsApp} = this.props;
+        if(connection.toLowerCase() == 'none') {
+            Toast.show('暂无网络', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.CENTER
+            });
+            actionsApp.netWorkChanged('no');
+        } else {
+            actionsApp.netWorkChanged('yes');
+        }
+    };
+
+    _logoutSure = () => {
+        let {actionsApp} = this.props;
+        actionsApp.deletePush(); // 解绑个推
+        AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
+        ActionUtil.setUid("");
+        gtoken = '';
+
+        _navigator.resetTo({
+            component: LoginContainer,
+            name: 'login',
+            title: '登录',
+            hideNavBar: true,
+            bp: actionType.BA_LOGIN
+        });
+        actionsApp.webAuthentication({visible: false});
     }
 
     _clientIdReceived = (cId) => {
@@ -463,6 +502,32 @@ class App extends Component {
         })
     };
 }
+class LogoutModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        let {logoutInfo, logoutSure} = this.props;
+        return (
+            <Modal visible={logoutInfo.get('visible')} transparent={true} onRequestClose={() => {}}>
+                <View style={styles.bgWrap}>
+                    <View style={styles.contentContainer}>
+                        <Text style={styles.textCenter}>{logoutInfo.get('msg')}</Text>
+
+                        <TouchableHighlight
+                            onPress={logoutSure}
+                            underlayColor='#04C1AE'
+                        >
+                            <View style={[styles.logoutSure, styles.alignItems, styles.justifyContent]}>
+                                <Text style={[styles.updateBtnRightText]}>确认</Text>
+                            </View>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+}
 
 export function setLoginDays(uid) {
     let key = "LOGIN_DAYS_" + uid;
@@ -495,6 +560,9 @@ let styles = StyleSheet.create({
     },
     justifyContent: {
         justifyContent: 'center'
+    },
+    textCenter: {
+        textAlign: "center"
     },
     baseColor: {
         color: "#3e3e3e"
@@ -609,6 +677,13 @@ let styles = StyleSheet.create({
     loading: {
         width: 32,
         height: 32
+    },
+    logoutSure: {
+        width: 170,
+        height: 30,
+        borderRadius: 5,
+        backgroundColor: '#04c1ae',
+        marginTop: 20
     }
 });
 

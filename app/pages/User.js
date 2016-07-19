@@ -27,6 +27,7 @@ import BindAlipayContainer from '../containers/BindAlipayContainer';
 import SettingContainer from '../containers/SettingContainer';
 import ScoreListContainer from '../containers/ScoreListContainer';
 import WelfareContainer from '../containers/WelfareContainer';
+import WelfareModal from '../components/WelfareModal';
 import Immutable from 'immutable';
 let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
@@ -40,7 +41,7 @@ export default class User extends Component {
     }
 
     render() {
-        let {userProfile, userControlData, navigator, actions} = this.props;
+        let {userProfile, userControlData, signInInfo, navigator, actions} = this.props;
         let signInData = Immutable.fromJS({
             sign_in_days: userProfile.get('sign_in_days'),
             experience: userProfile.get('sign_in_experience')
@@ -52,11 +53,67 @@ export default class User extends Component {
             max_day_price: userProfile.get('max_withdrawals_money'),
             name: userProfile.get('name'),
             alipay_account: userProfile.get('alipay_account'),
+            identity_card_number: userProfile.get('identity_card_number'),
             is_binding_alipay: userProfile.get('is_binding_alipay')
         };
-
+        let welfareCards = signInInfo.get('sign_in_result').get('welfare_cards');
+        let welfareModal = null;
+        if(welfareCards) {
+            welfareModal =
+                <WelfareModal
+                    title={"连续签到" + signInInfo.get('sign_in_result').get('sign_in_days') + "天"}
+                    subTitle={"获得" + welfareCards.size + "张看房卡，+" + signInInfo.get('sign_in_result').get('experience') + "经验"}
+                    isVisible={signInInfo.get('visible')}
+                    welfareData={welfareCards}
+                    closeModal={()=>{ActionUtil.setAction(actionType.BA_MINE_SIGN_DELETE);actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged("1");}}
+                    goPage={() => {
+                        this.navigatorPush({
+                            component: SignInContainer,
+                            signInfo: signInData,
+                            name: 'signin',
+                            title: '签到礼包',
+                            actionLog: actionType.BA_MINE_SIGN,
+                            bp: this.pageId,
+                            backLog: actionType.BA_MINE_CREDIT_BACK
+                        });
+                        actions.signInVisibleChanged(false);
+                        actions.signInBtnVisibleChanged("1");
+                        ActionUtil.setAction(actionType.BA_MINE_SIGN_FIND);
+                    }}
+                />
+        } else {
+            welfareModal =
+                <WelfareModal
+                    title={"连续签到" + signInInfo.get('sign_in_result').get('sign_in_days') + "天"}
+                    icon={{url: require("../images/gift.png"), style: {width: 34, height: 34}}}
+                    isVisible={signInInfo.get('visible')}
+                    closeModal={()=>{ActionUtil.setAction(actionType.BA_MINE_SIGN_DELETE);actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged("1");}}
+                    goPage={() => {
+                        this.navigatorPush({
+                            component: SignInContainer,
+                            signInfo: signInData,
+                            name: 'signin',
+                            title: '签到礼包',
+                            actionLog: actionType.BA_MINE_SIGN,
+                            bp: this.pageId,
+                            ackLog: actionType.BA_MINE_CREDIT_BACK
+                        });
+                        actions.signInVisibleChanged(false);
+                        actions.signInBtnVisibleChanged("1");
+                        ActionUtil.setAction(actionType.BA_MINE_SIGN_FIND);
+                    }}
+                >
+                    <Text style={[styles.h5, styles.modalContent]}>
+                        <Text style={[styles.h2, styles.addNum]}>+</Text>
+                        <Text style={[styles.h1, styles.scoreNum]}>{ signInInfo.get('sign_in_result').get('experience')}</Text>
+                        经验
+                    </Text>
+                </WelfareModal>
+        }
         return (
             <View style={styles.container}>
+                {welfareModal}
+
                 <Header title='我的' style={styles.bgHeader} fontStyle={styles.whiteText}>
                     <TouchableWithoutFeedback
                         onPress={() => this.navigatorPush({component: SettingContainer, name: 'settings', title: '设置', actionLog: actionType.BA_MINE_SET})}>
@@ -83,13 +140,22 @@ export default class User extends Component {
                             style: {width: 12, height: 12},
                             bgColor: '#d883aa'
                         }}
-                        onPress={() => this.navigatorPush({component: SignInContainer, signInfo: signInData, name: 'signin', title: '签到送积分', actionLog: actionType.BA_MINE_SIGN, bp: this.pageId, backLog: actionType.BA_MINE_CREDIT_BACK})}
+                        onPress={() => this.navigatorPush({component: SignInContainer, signInfo: signInData, name: 'signin', title: '签到礼包', actionLog: actionType.BA_MINE_SIGN, bp: this.pageId, backLog: actionType.BA_MINE_CREDIT_BACK})}
                     >
                         <View style={{flexDirection: 'column'}}>
                             <Text style={{marginTop: 2}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
-                            <Text style={styles.signInPrompt}>继续签到{userProfile.get('go_on_sign_in_day')}天
-                                赚{userProfile.get('get_points')}积分</Text>
+                            <Text style={styles.signInPrompt}>再签到{userProfile.get('go_on_sign_in_day')}天
+                                领签到礼包</Text>
                         </View>
+                        {
+                            userProfile.get('is_signed_in') == "0" ? 
+                                <TouchableWithoutFeedback
+                                    onPress={() => {ActionUtil.setAction(actionType.BA_MINE_SIGN_INPUT);actions.fetchSignInInfo()}}
+                                >
+                                    <View style={styles.signInWarp}><Text style={styles.signInBtn}>签到</Text></View>
+                                </TouchableWithoutFeedback>
+                                : null
+                        }
                     </LinkSection>
 
                     <LinkSection
@@ -165,11 +231,11 @@ class BasicInfo extends Component {
             showMobile = mobile ? mobile.slice(0, 3) + '****' + mobile.slice(-4) : '';
 
         return (
-            <View style={[styles.basicSection, styles.row]}>                
+            <View style={[styles.basicSection, styles.row]}>
                 <Image
                     style={styles.profileAvatar}
                     source={require('../images/avatar.png')}
-                />                
+                />
                 <View style={styles.flex}>
                     <Text style={[styles.mobileText, styles.whiteText]}>{showMobile}</Text>
                 </View>
@@ -244,7 +310,7 @@ class UserAccount extends Component {
 
         if (parseInt(value.score) < parseInt(value.min_price)) {
             Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);
-        } else if (value.name && value.alipay_account) {
+        } else if (value.name && value.alipay_account && value.identity_card_number) {
             navigator.push({
                 component: WithdrawContainer,
                 name: 'withdraw',
@@ -254,6 +320,15 @@ class UserAccount extends Component {
                 backLog: actionType.BA_MINE_CASH_RETURN,
                 hideNavBar: false
             });
+        } else if (value.alipay_account) {
+            navigator.push({
+                component: BindAlipayContainer,
+                name: 'bindAlipay',
+                data: value,
+                title: '绑定支付宝',
+                hideNavBar: false,
+                backLog: actionType.BA_MINE_ZHIFUBAO_BACK
+            })
         } else {
             ActionUtil.setAction(actionType.BA_MINE_ZHIFUBAO_BOXONVIEW);
             actions.setBindPromptVisible(true);
@@ -329,6 +404,20 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#8d8c92'
     },
+    signInWarp: {
+        position: 'absolute',
+        right: 0,
+        top: 3,
+        height: 35,
+        width: 100,
+        borderRadius: 17.5,
+        backgroundColor: '#FF6D4B',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    signInBtn: {
+        color: '#fff'
+    },
     accountSection: {
         paddingVertical: 17,
         paddingHorizontal: 15,
@@ -347,5 +436,25 @@ const styles = StyleSheet.create({
         borderWidth: 1 / PixelRatio.get(),
         borderColor: '#ff6d4b',
         borderRadius: 2
+    },
+    addNum: {
+        letterSpacing: 6,
+        marginTop: -3
+    },
+    scoreNum: {
+        letterSpacing: 1
+    },
+    h1: {
+        fontSize: 30
+    },
+    h2: {
+        fontSize: 27
+    },
+    h5: {
+        fontSize: 15
+    },
+    modalContent: {
+        marginTop: -5,
+        marginBottom: 20
     }
 });
