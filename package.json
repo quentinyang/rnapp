@@ -10,7 +10,7 @@
     "immutable": "^3.7.6",
     "react": "15.0.2",
     "react-addons-pure-render-mixin": "^0.14.6",
-    "react-native": "^0.26.x",
+    "react-native": "~0.29.0",
     "react-native-code-push": "^1.9.0-beta",
     "react-native-device-info": "^0.9.1",
     "react-native-root-toast": "^1.0.3",
