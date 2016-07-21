@@ -703,7 +703,7 @@ class ErrorTipModal extends Component {
         let { callInfo, actions } = this.props;
         return (
             <Modal visible={callInfo.get('errorTipVisible')} transparent={true}
-                   onModalVisibilityChanged={actions.setErrorTipVisible}>
+                   onRequestClose={actions.setErrorTipVisible}>
                 <View style={[styles.flex, styles.center, styles.justifyContent, styles.bgWrap]}>
                     <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
                         <TouchableHighlight
@@ -787,7 +787,7 @@ class CostScoreModal extends Component {
         let {callInfo, actions, score} = this.props;
         return (
             <Modal visible={callInfo.get('feedbackVisible')} transparent={true}
-                   onModalVisibilityChanged={actions.setErrorTipVisible}>
+                   onRequestClose={actions.setErrorTipVisible}>
                 <View style={[styles.flex, styles.justifyEnd, styles.bgWrap]}>
                     <View style={[styles.whiteBg, styles.feedbackBox]}>
                         <TouchableHighlight

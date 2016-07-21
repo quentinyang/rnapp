@@ -182,7 +182,7 @@ class App extends Component {
                     </View>
                 </Modal> : null }
 
-                <Modal visible={appData.get('loadingVisible')} transparent={true}>
+                <Modal visible={appData.get('loadingVisible')} transparent={true} onRequestClose={() => {}}>
                     <View style={[styles.flex, styles.alignItems, styles.justifyContent]}>
                         <Image source={require('../images/loading.gif')} style={styles.loading} />
                     </View>
