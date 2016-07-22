@@ -40,6 +40,7 @@ class Login extends Component {
 
         return (
             <FormContainer ref="formContainer" scrollViewRef="scrollView">
+             <KeyboardAvoidingView behavior={"position"} >
                 <View style={styles.imgRightBox}>
                     <Image
                         style={styles.fyImage}
@@ -52,42 +53,40 @@ class Login extends Component {
 
                 <Text style={styles.fysubtitle}>房源信息共享平台</Text>
                 <View style={styles.layout}>
-                    <KeyboardAvoidingView behavior={"position"} >
-                        <View style={styles.phoneBox}>
-                            <TextInput
-                                ref='phone'
-                                style={styles.fiPhone}
-                                onChangeText={(phone) => this.inputPhone(phone)}
-                                keyboardType='numeric'
-                                placeholder='手机号'
-                                placeholderTextColor=''
-                                maxLength={11}
-                                underlineColorAndroid='transparent'
-                                value={formInfo.get('phone')}
-                                onFocus={this.inputFocused.bind(this, 'phone', actionType.BA_LOGIN_PHONENUM)}
-                            />
-                            <Countdown
-                                num={controllerInfo.get('num')}
-                                code_send={controllerInfo.get('code_send')}
-                                code_status={controllerInfo.get('code_status')}
-                                sendCode={this.sendCode}
-                                actions={this.props.actions}
-                            />
-                        </View>
-                        <View style={styles.codeBox}>
-                            <TextInput
-                                ref='code'
-                                style={styles.fiPhone}
-                                onChangeText={(code) => this.singleAction('codeChanged', code)}
-                                keyboardType='numeric'
-                                placeholder='验证码'
-                                maxLength={4}
-                                underlineColorAndroid='transparent'
-                                value={formInfo.get('code')}
-                                onFocus={this.inputFocused.bind(this, 'code', actionType.BA_LOGIN_INPUTCODE)}
-                            />
-                        </View>
-                    </KeyboardAvoidingView>
+                    <View style={styles.phoneBox}>
+                        <TextInput
+                            ref='phone'
+                            style={styles.fiPhone}
+                            onChangeText={(phone) => this.inputPhone(phone)}
+                            keyboardType='numeric'
+                            placeholder='手机号'
+                            placeholderTextColor=''
+                            maxLength={11}
+                            underlineColorAndroid='transparent'
+                            value={formInfo.get('phone')}
+                            onFocus={this.inputFocused.bind(this, 'phone', actionType.BA_LOGIN_PHONENUM)}
+                        />
+                        <Countdown
+                            num={controllerInfo.get('num')}
+                            code_send={controllerInfo.get('code_send')}
+                            code_status={controllerInfo.get('code_status')}
+                            sendCode={this.sendCode}
+                            actions={this.props.actions}
+                        />
+                    </View>
+                    <View style={styles.codeBox}>
+                        <TextInput
+                            ref='code'
+                            style={styles.fiPhone}
+                            onChangeText={(code) => this.singleAction('codeChanged', code)}
+                            keyboardType='numeric'
+                            placeholder='验证码'
+                            maxLength={4}
+                            underlineColorAndroid='transparent'
+                            value={formInfo.get('code')}
+                            onFocus={this.inputFocused.bind(this, 'code', actionType.BA_LOGIN_INPUTCODE)}
+                        />
+                    </View>
                     <View style={styles.errMsgBox}>
                         <Text style={styles.errMsgText}>{controllerInfo.get('err_msg')}</Text>
                     </View>
@@ -99,6 +98,7 @@ class Login extends Component {
                         <View><Text style={styles.submitText}>登录</Text></View>
                     </TouchableHighlight>
                 </View>
+            </KeyboardAvoidingView>
             </FormContainer>
         );
     }
