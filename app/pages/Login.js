@@ -5,6 +5,7 @@ import {
     Text,
     StyleSheet,
     Image,
+    KeyboardAvoidingView,
     TextInput,
     TouchableHighlight,
     PixelRatio,
@@ -51,40 +52,42 @@ class Login extends Component {
 
                 <Text style={styles.fysubtitle}>房源信息共享平台</Text>
                 <View style={styles.layout}>
-                    <View style={styles.phoneBox}>
-                        <TextInput
-                            ref='phone'
-                            style={styles.fiPhone}
-                            onChangeText={(phone) => this.inputPhone(phone)}
-                            keyboardType='numeric'
-                            placeholder='手机号'
-                            placeholderTextColor=''
-                            maxLength={11}
-                            underlineColorAndroid='transparent'
-                            value={formInfo.get('phone')}
-                            onFocus={this.inputFocused.bind(this, 'phone', actionType.BA_LOGIN_PHONENUM)}
-                        />
-                        <Countdown
-                            num={controllerInfo.get('num')}
-                            code_send={controllerInfo.get('code_send')}
-                            code_status={controllerInfo.get('code_status')}
-                            sendCode={this.sendCode}
-                            actions={this.props.actions}
-                        />
-                    </View>
-                    <View style={styles.codeBox}>
-                        <TextInput
-                            ref='code'
-                            style={styles.fiPhone}
-                            onChangeText={(code) => this.singleAction('codeChanged', code)}
-                            keyboardType='numeric'
-                            placeholder='验证码'
-                            maxLength={4}
-                            underlineColorAndroid='transparent'
-                            value={formInfo.get('code')}
-                            onFocus={this.inputFocused.bind(this, 'code', actionType.BA_LOGIN_INPUTCODE)}
-                        />
-                    </View>
+                    <KeyboardAvoidingView behavior={"position"} >
+                        <View style={styles.phoneBox}>
+                            <TextInput
+                                ref='phone'
+                                style={styles.fiPhone}
+                                onChangeText={(phone) => this.inputPhone(phone)}
+                                keyboardType='numeric'
+                                placeholder='手机号'
+                                placeholderTextColor=''
+                                maxLength={11}
+                                underlineColorAndroid='transparent'
+                                value={formInfo.get('phone')}
+                                onFocus={this.inputFocused.bind(this, 'phone', actionType.BA_LOGIN_PHONENUM)}
+                            />
+                            <Countdown
+                                num={controllerInfo.get('num')}
+                                code_send={controllerInfo.get('code_send')}
+                                code_status={controllerInfo.get('code_status')}
+                                sendCode={this.sendCode}
+                                actions={this.props.actions}
+                            />
+                        </View>
+                        <View style={styles.codeBox}>
+                            <TextInput
+                                ref='code'
+                                style={styles.fiPhone}
+                                onChangeText={(code) => this.singleAction('codeChanged', code)}
+                                keyboardType='numeric'
+                                placeholder='验证码'
+                                maxLength={4}
+                                underlineColorAndroid='transparent'
+                                value={formInfo.get('code')}
+                                onFocus={this.inputFocused.bind(this, 'code', actionType.BA_LOGIN_INPUTCODE)}
+                            />
+                        </View>
+                    </KeyboardAvoidingView>
                     <View style={styles.errMsgBox}>
                         <Text style={styles.errMsgText}>{controllerInfo.get('err_msg')}</Text>
                     </View>
@@ -107,16 +110,6 @@ class Login extends Component {
 
     inputFocused (refName, actionLog) {
         ActionUtil.setAction(actionLog);
-
-        setTimeout(() => {
-            let scrollResponder = this.refs.formContainer.refs.scrollView.getScrollResponder();
-
-            scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-              ReactNative.findNodeHandle(this.refs[refName]),
-              120, //additionalOffset
-              true
-            );
-        }, 50);
     }
 
     singleAction(action, value) {
