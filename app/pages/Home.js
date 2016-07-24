@@ -54,10 +54,7 @@ class InputRuleModal extends Component {
 
                             <Text style={[styles.h5, styles.giftDay, styles.grey]}>发房新规则</Text>
 
-                            <Text>1、发布一套房源审核通过后获得<Text
-                                style={styles.orange}>{modalInfo.get('input_points')}</Text>积分</Text>
-                            <Text>2、房源的电话每被查看1次获得<Text
-                                style={styles.orange}>{modalInfo.get('looked_points')}</Text>积分</Text>
+                            <Text>发布一套房源审核通过后获得<Text style={styles.orange}>{modalInfo.get('input_points')}</Text>积分</Text>
                         </View>
 
 

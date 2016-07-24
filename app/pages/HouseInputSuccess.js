@@ -30,10 +30,7 @@ export default class HouseInputSuccess extends Component {
             <View style={styles.container}>
                 <Image source={require('../images/success.png')} style={[styles.sucImg]}/>
 
-                <View style={{marginHorizontal: 45}}>
-                    <Text style={styles.promptTitle}>1、审核通过可获<Text style={styles.promptColor}>{data.money}</Text>积分和<Text style={styles.promptColor}>{data.experience}</Text>个经验</Text>
-                    <Text style={styles.promptTitle}>2、该房源的电话每被查看1次获得<Text style={styles.promptColor}>{data.looked_points}</Text>积分</Text>
-                </View>
+                <Text style={styles.promptTitle}>审核通过可获<Text style={styles.promptColor}>{data.money}</Text>积分和<Text style={styles.promptColor}>{data.experience}</Text>个经验</Text>
                 {data.is_special ? <Text style={[styles.promptTitle, styles.fontOrange]}>{data.msg}</Text>:null}
                 {data.is_can_input ?
                 <TouchableHighlight
