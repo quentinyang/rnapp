@@ -199,13 +199,6 @@ export default class Home extends Component {
                     goPage={this._goCoupon.bind(this, homeConst.RULE, null, actionType.BA_MINE_WELFARE_BACK)}
                 />
 
-                <InputRuleModal
-                    isVisible={baseInfo.get('currentModal') == homeConst.RULE}
-                    modalInfo={baseInfo.get('ruleModal')}
-                    actions={actions}
-                    setCurrentModal={this._setCurrentModal.bind(this)}
-                />
-
                 <View style={styles.searchWrap}>
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>
                         <Text style={[styles.searchText, styles.searchTextPadding]}>上海</Text>
