@@ -30,8 +30,7 @@ export default class AttentionBlockSet extends Component {
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={styles.topMsg}>
-                    <Text style={styles.topHeader}>设置关注的区域得<Text style={[styles.topHeader, styles.orange, styles.fontMedium]}>8</Text>积分</Text>
-                    <Text style={styles.topSubHeader}>最多免费看<Text style={[styles.topSubHeader, styles.orange, styles.fontMedium]}>4</Text>套房源</Text>
+                    <Text style={styles.topHeader}>设置关注的区域</Text>
                 </View>
                 {
                     districtBlockList && districtBlockList.toJS().length > 0 ?
@@ -127,7 +126,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     topMsg: {
-        height: 100,
+        height: 30,
+        marginBottom: 10,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -175,11 +175,5 @@ const styles = StyleSheet.create({
     },
     pageMarginBottom: {
         marginBottom: 60
-    },
-    orange: {
-        color: '#FF6D4B'
-    },
-    fontMedium: {
-        fontWeight: '500'
     }
 });

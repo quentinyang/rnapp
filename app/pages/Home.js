@@ -519,22 +519,13 @@ class NoData extends Component {
             <View style={[styles.alignItems]}>
                 <Image
                     source={require('../images/no_house_list.png')}
-                    style={styles.noAttention}/>
+                    style={styles.noAttention} />
                 {
-                    districtBlockSelect.size == 0 && communitySelect.size == 0 ?
-                        (baseInfo.get('current') == 0 ?
-                            <View style={[styles.alignItems]}>
-                                <Text style={[styles.noAttentionText]}>设置关注的区域得<Text
-                                    style={[styles.orange, styles.mediumFont]}>8</Text>积分</Text>
-                                <Text style={[styles.noAttentionText]}>最多免费看<Text
-                                    style={[styles.orange, styles.mediumFont]}>4</Text>套房源</Text>
-                            </View>
-                            : (baseInfo.get('current') == 1 ?
-                            <View style={[styles.alignItems]}>
-                                <Text style={[styles.noAttentionText]}>关注的房源会出现在这里</Text>
-                            </View> :
-                            null)) :
-                        <Text style={[styles.noAttentionText]}>关注的板块和小区没有房源</Text>
+                    districtBlockSelect.size == 0 && communitySelect.size == 0 ?                        
+                        <View style={[styles.alignItems]}>
+                            <Text style={[styles.noAttentionText]}>关注的房源会出现在这里</Text>
+                        </View>
+                        : <Text style={[styles.noAttentionText]}>关注的板块和小区没有房源</Text>
                 }
 
                 {
