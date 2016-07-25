@@ -54,10 +54,7 @@ class InputRuleModal extends Component {
 
                             <Text style={[styles.h5, styles.giftDay, styles.grey]}>发房新规则</Text>
 
-                            <Text>1、发布一套房源审核通过后获得<Text
-                                style={styles.orange}>{modalInfo.get('input_points')}</Text>积分</Text>
-                            <Text>2、房源的电话每被查看1次获得<Text
-                                style={styles.orange}>{modalInfo.get('looked_points')}</Text>积分</Text>
+                            <Text>发布一套房源审核通过后获得<Text style={styles.orange}>{modalInfo.get('input_points')}</Text>积分</Text>
                         </View>
 
 
@@ -200,13 +197,6 @@ export default class Home extends Component {
                     welfareData={couponModalInfo.get('welfareArr')}
                     closeModal={this._closeModal.bind(this, homeConst.RULE, null)}
                     goPage={this._goCoupon.bind(this, homeConst.RULE, null, actionType.BA_MINE_WELFARE_BACK)}
-                />
-
-                <InputRuleModal
-                    isVisible={baseInfo.get('currentModal') == homeConst.RULE}
-                    modalInfo={baseInfo.get('ruleModal')}
-                    actions={actions}
-                    setCurrentModal={this._setCurrentModal.bind(this)}
                 />
 
                 <View style={styles.searchWrap}>
@@ -529,22 +519,13 @@ class NoData extends Component {
             <View style={[styles.alignItems]}>
                 <Image
                     source={require('../images/no_house_list.png')}
-                    style={styles.noAttention}/>
+                    style={styles.noAttention} />
                 {
-                    districtBlockSelect.size == 0 && communitySelect.size == 0 ?
-                        (baseInfo.get('current') == 0 ?
-                            <View style={[styles.alignItems]}>
-                                <Text style={[styles.noAttentionText]}>设置关注的区域得<Text
-                                    style={[styles.orange, styles.mediumFont]}>8</Text>积分</Text>
-                                <Text style={[styles.noAttentionText]}>最多免费看<Text
-                                    style={[styles.orange, styles.mediumFont]}>4</Text>套房源</Text>
-                            </View>
-                            : (baseInfo.get('current') == 1 ?
-                            <View style={[styles.alignItems]}>
-                                <Text style={[styles.noAttentionText]}>关注的房源会出现在这里</Text>
-                            </View> :
-                            null)) :
-                        <Text style={[styles.noAttentionText]}>关注的板块和小区没有房源</Text>
+                    districtBlockSelect.size == 0 && communitySelect.size == 0 ?                        
+                        <View style={[styles.alignItems]}>
+                            <Text style={[styles.noAttentionText]}>关注的房源会出现在这里</Text>
+                        </View>
+                        : <Text style={[styles.noAttentionText]}>关注的板块和小区没有房源</Text>
                 }
 
                 {
