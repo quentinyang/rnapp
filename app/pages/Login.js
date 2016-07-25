@@ -5,6 +5,7 @@ import {
     Text,
     StyleSheet,
     Image,
+    KeyboardAvoidingView,
     TextInput,
     TouchableHighlight,
     PixelRatio,
@@ -39,6 +40,7 @@ class Login extends Component {
 
         return (
             <FormContainer ref="formContainer" scrollViewRef="scrollView">
+             <KeyboardAvoidingView behavior={"position"} >
                 <View style={styles.imgRightBox}>
                     <Image
                         style={styles.fyImage}
@@ -96,6 +98,7 @@ class Login extends Component {
                         <View><Text style={styles.submitText}>登录</Text></View>
                     </TouchableHighlight>
                 </View>
+            </KeyboardAvoidingView>
             </FormContainer>
         );
     }
@@ -107,16 +110,6 @@ class Login extends Component {
 
     inputFocused (refName, actionLog) {
         ActionUtil.setAction(actionLog);
-
-        setTimeout(() => {
-            let scrollResponder = this.refs.formContainer.refs.scrollView.getScrollResponder();
-
-            scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
-              ReactNative.findNodeHandle(this.refs[refName]),
-              120, //additionalOffset
-              true
-            );
-        }, 50);
     }
 
     singleAction(action, value) {

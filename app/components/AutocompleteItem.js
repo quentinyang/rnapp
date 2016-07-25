@@ -8,10 +8,9 @@ export default class AutocompleteItem extends Component {
     }
 
     render() {
-        let {item, index} = this.props;
+        let {item} = this.props;
         return (
             <TouchableHighlight
-                key={index}
                 underlayColor="#fff"
                 onPress={this.props.onPress.bind(null, item)}
             >

@@ -39,7 +39,7 @@ export default class BackScore extends Component {
 
         return (
             <View style={[styles.flex, styles.wrapper]}>
-                <Modal visible={pageInfo.get('visible')} transparent={true} onModalVisibilityChanged={actions.changeSuccessModalVisible}>
+                <Modal visible={pageInfo.get('visible')} transparent={true}  onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.contentContainer}>
                             <Image

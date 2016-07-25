@@ -3,6 +3,7 @@
 import {React, Component, AppRegistry, StyleSheet} from 'nuke';
 import Root from './app/root';
 import codePush from "react-native-code-push";
+var RCTLog = require('RCTLog');
 
 // disable Yellow Box
 console.disableYellowBox = true;

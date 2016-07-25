@@ -23,7 +23,8 @@ export default class Pickers extends Component {
             <Modal
                 animated={true}
                 transparent={true}
-                visible={this.state.modalVisible}>
+                visible={this.state.modalVisible}
+                onRequestClose={() => {}}>
 
                 <View style={styles.basicContainer}>
                     <View style={styles.modalContainer}>

@@ -23,7 +23,7 @@ export default class BindPromptModal extends Component {
     render() {
         let {controller, actions} = this.props;
         return (
-            <Modal visible={controller.get('visible')} transparent={true}>
+            <Modal visible={controller.get('visible')} transparent={true} onRequestClose={() => {}}>
                 <View style={[styles.flex, styles.center, styles.bgWrap]}>
                     <View style={[styles.center, styles.contentContainer]}>
                         <TouchableHighlight

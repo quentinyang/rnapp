@@ -703,7 +703,7 @@ class ErrorTipModal extends Component {
         let { callInfo, actions } = this.props;
         return (
             <Modal visible={callInfo.get('errorTipVisible')} transparent={true}
-                   onModalVisibilityChanged={actions.setErrorTipVisible}>
+                   onRequestClose={actions.setErrorTipVisible}>
                 <View style={[styles.flex, styles.center, styles.justifyContent, styles.bgWrap]}>
                     <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
                         <TouchableHighlight
@@ -787,7 +787,7 @@ class CostScoreModal extends Component {
         let {callInfo, actions, score} = this.props;
         return (
             <Modal visible={callInfo.get('feedbackVisible')} transparent={true}
-                   onModalVisibilityChanged={actions.setErrorTipVisible}>
+                   onRequestClose={actions.setErrorTipVisible}>
                 <View style={[styles.flex, styles.justifyEnd, styles.bgWrap]}>
                     <View style={[styles.whiteBg, styles.feedbackBox]}>
                         <TouchableHighlight
@@ -866,9 +866,9 @@ class BaseInfo extends Component {
                     <Text style={[styles.name, styles.baseColor]}>{houseInfo.get('community_name') || ''}</Text>
                     <View style={[styles.row, styles.justifyContent]}>
                         <Text
-                            style={[styles.subName, styles.flex, styles.baseColor]}>{houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}{houseInfo.get('door_num') && '室'}</Text>
+                            style={[styles.subName, styles.baseColor]}>{houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}{houseInfo.get('door_num') && '室'}</Text>
                         {
-                            houseInfo.get('is_new') ? <Text style={[styles.tagNew, styles.flex]}>新</Text> : null
+                            houseInfo.get('is_new') ? <Text style={styles.tagNew}>新</Text> : null
                         }
                     </View>
                 </View>

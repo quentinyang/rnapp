@@ -14,7 +14,7 @@ import AutocompleteItem from '../components/AutocompleteItem'
 import NoNetwork from '../components/NoNetwork'
 import {SearchHistory, SearchHistoryItem} from '../components/SearchHistory';
 let ActionUtil = require( '../utils/ActionLog');
-import * as actionType from '../constants/ActionLog' 
+import * as actionType from '../constants/ActionLog'
 let ds = new ListView.DataSource({
     rowHasChanged: (r1, r2) => !immutable.is(r1, r2)
 });
@@ -462,7 +462,8 @@ const styles = StyleSheet.create({
     listFooter: {
         height: 40,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#fff'
     },
     noData: {
         color: '#8d8c92',
