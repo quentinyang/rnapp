@@ -212,8 +212,8 @@ class HouseSection extends Component {
                 <TitleBar title="Ta发的房源" />
                 {userInfo.get('input_house_count') != 0 ?
                 <View style={styles.inputResult}>
-                    <Text>累计发房：{userInfo.get('input_house_count')}</Text>
-                    <Text>发房在卖率：{userInfo.get('input_house_selling_rate')}</Text>
+                    <Text>发房认证：{userInfo.get('input_house_count')}</Text>
+                    <Text>发房认证率：{userInfo.get('input_house_selling_rate')}</Text>
                 </View>
                 : null}
             </View>

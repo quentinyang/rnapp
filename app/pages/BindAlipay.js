@@ -243,7 +243,7 @@ class ChargeToBind extends Component {
             <View>
                 <View style={[styles.bindInstruction, styles.center]}>
                     <Text style={styles.instructFont}>充值<Text style={[styles.instructFont, styles.colorOrange]}>{this.props.price}</Text>积分</Text>
-                    <Text style={styles.instructFont}>已绑定提现支付宝账号</Text>
+                    <Text style={styles.instructFont}>以绑定提现支付宝账号</Text>
                 </View>
 
                 <PaySection price={this.props.price} style={{marginBottom: 35}} />
