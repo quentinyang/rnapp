@@ -5,7 +5,9 @@ import {React, Component, Text, View, ListView, StyleSheet, Image,
 
 import ContactItem from '../components/ContactItem';
 import DetailContainer from '../containers/DetailContainer';
+import BackScoreContainer from '../containers/BackScoreContainer';
 import NoNetwork from '../components/NoNetwork';
+import Toast from 'react-native-root-toast';
 import Immutable, {List} from 'immutable';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
@@ -27,7 +29,7 @@ export default class ContactHouse extends Component {
     }
 
     render() {
-        let { houseList, pager, netWork } = this.props;
+        let { houseList, pager, netWork, timeVisible } = this.props;
 
         return (
             <View style={[styles.flex, styles.bgColor]}>
@@ -68,7 +70,7 @@ export default class ContactHouse extends Component {
                             <Text style={styles.noHouseListMsg}>暂无数据~~~</Text>
                         </View>:null)
                 }
-                <TooEarlyModal isVisible={false} />
+                <TooEarlyModal isVisible={timeVisible} actions={this.props.actions} />
             </View>
         )
     }
@@ -94,7 +96,7 @@ export default class ContactHouse extends Component {
         return (
             <View key={rowID}>
                 <ContactItem item={rowData} onItemPress={this._onItemPress}/>
-                <TouchableHighlight onPress={() => {this._applyToRefund}} underlayColor="transparent">
+                <TouchableHighlight onPress={() => {this._applyToRefund(1)}} underlayColor="transparent">
                     <View style={[styles.applyBtn, styles.center]}>
                         <Text style={[styles.fontSmall, styles.greenColor]}>申请退积分</Text>
                     </View>
@@ -143,9 +145,38 @@ export default class ContactHouse extends Component {
         });
     };
 
-    _applyToRefund = (status) => {
+    _applyToRefund = (status, id = '') => {
+        let {actions, navigator} = this.props;
         switch(status) {
-
+            case 1:
+                actions.tooEarlyVisibleChanged(true);
+                break;
+            case 2:
+                Toast.show('客服已再次确认房源在卖\n不可再退积分', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER
+                });
+                break;
+            case 3:
+                Toast.show('查看房源10天后\n不可再申请退积分', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER
+                });
+                break;
+            case 4:
+                navigator.push({
+                    component: BackScoreContainer,
+                    name: 'backScore',
+                    title: '申请退积分',
+                    hideHeader: false,
+                    hideNavBar: false,
+                    bp: this.pageId,
+                    washId: id,
+                    propertyId: ''
+                });
+                break;
+            default:
+                console.log('error');
         }
     }
 }
@@ -169,7 +200,7 @@ class TooEarlyModal extends Component {
 
                         <TouchableHighlight
                                 underlayColor="transparent"
-                                onPress={() => {}}
+                                onPress={() => {actions.tooEarlyVisibleChanged(false)}}
                             >
                             <View style={[styles.knowBtn, styles.center, styles.greenBgColor]}>
                                 <Text style={styles.whiteColor}>好的</Text>
