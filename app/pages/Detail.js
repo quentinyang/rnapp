@@ -54,40 +54,15 @@ export default class Detail extends Component {
 
         return (
             <View style={styles.flex}>
-                <View style={[styles.contactWrap, styles.row, styles.center]}>
-                    {
-                        (status || !status && phone) ?
-                            null :
-                            <Image
-                                style={styles.moneyIcon}
-                                source={require("../images/money.png")}
-                            />
-                    }
-                    {
-                        (status || !status && phone) ?
-                            null :
-                            <Text
-                                style={[styles.greenColor, styles.baseSize]}>{route.item.get('unlock_phone_cost') || 0}积分</Text>
-                    }
-
-                    <TouchableHighlight
-                        style={[styles.flex, styles.contactButton]}
-                        underlayColor="#04c1ae"
-                        onPress={this._clickPhoneBtn.bind(this, status, info.get('seller_phone'), phone)}
-                    >
-                        <View style={[styles.row, styles.justifyContent, styles.center]}>
-                            <Image
-                                style={styles.phoneIcon}
-                                source={require("../images/phone.png")}
-                            />
-                            <Text style={styles.contactText}>
-                                {phoneStr}
-                            </Text>
-                        </View>
-                    </TouchableHighlight>
-                </View>
+                {
+                    0 ? <VerifyBtn /> : <UnVerifyBtn />
+                }
 
                 <GuideModal />
+
+                <VoiceModal />
+
+                <CallTipModal />
 
                 { couponArr.size ?
                     <CouponModal
@@ -334,6 +309,84 @@ export default class Detail extends Component {
     };
 }
 
+class VerifyBtn extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() { 
+        return (
+            <View style={[styles.contactWrap, styles.row, styles.center]}>
+                <TouchableHighlight
+                    style={[styles.voiceBtn, styles.contactButton]}
+                    underlayColor="#04c1ae"
+                    onPress={() => {}}
+                >
+                    <View style={[styles.justifyContent, styles.center]}>
+                        <Text style={styles.whiteColor}>免费听录音</Text>
+                    </View>
+                </TouchableHighlight>
+
+                <TouchableHighlight
+                    style={[styles.flex, styles.contactButton]}
+                    underlayColor="#04c1ae"
+                    onPress={() => {}}
+                >
+                    {
+                        0 ?
+                        <View style={[styles.row, styles.justifyContent, styles.center]}>                            
+                            <Text style={styles.whiteColor}>
+                                <Text style={[styles.fontMedium, styles.whiteColor]}>4</Text>积分看房东电话
+                            </Text>
+                        </View>
+                        : 
+                        <View style={[styles.row, styles.justifyContent, styles.center]}>
+                            <Image
+                                style={styles.phoneIcon}
+                                source={require("../images/phone.png")}
+                            />
+                            <Text style={styles.whiteColor}>联系房东</Text>
+                            <Text style={[styles.sellerPhone, styles.whiteColor]}>(12345678963)</Text>
+                        </View>
+                    }                    
+                </TouchableHighlight>
+            </View>
+        );
+    }
+}
+
+class UnVerifyBtn extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <View style={[styles.contactWrap, styles.row, styles.center]}>
+                <Image
+                    style={styles.moneyIcon}
+                    source={require("../images/money.png")}
+                />
+                <Text style={[styles.orangeColor, styles.scoreVal]}><Text style={[styles.orangeColor, styles.fontMedium]}>4</Text>积分</Text>
+
+                <TouchableHighlight
+                    style={[styles.flex, styles.contactButton, styles.orangeBg]}
+                    underlayColor="#04c1ae"
+                    onPress={() => {}}
+                >
+                    <View style={[styles.row, styles.justifyContent, styles.center]}>
+                        <Image
+                            style={[styles.phoneIcon, styles.mPhoneIcon]}
+                            source={require("../images/phone.png")}
+                        />
+                        <Text style={styles.contactText}>联系房东</Text>
+                    </View>
+                </TouchableHighlight>
+            </View>
+        );
+    }
+}
+
 class GuideModal extends Component {
     constructor(props) {
         super(props);
@@ -343,32 +396,27 @@ class GuideModal extends Component {
         return (
             <Modal visible={false} transparent={true} onRequestClose={() => {}}>
                 <View style={[styles.flex, styles.justifyEnd, styles.bgWrap]}>
-                    <View style={styles.padding}>
-                         <Text style={[styles.whiteColor, styles.name, styles.padding]}>这都是房子确认在卖的录音哦</Text>
+                    <View style={styles.guideContent}>
+                        <Text style={[styles.whiteColor, styles.guideTip]}>这都是房子确认在卖的录音哦</Text>
                          
 
                         <View style={styles.row}>
-
                             <Image
                                 style={styles.arrow}
                                 source={require('../images/arrow.png')}
                              />
 
                             <TouchableHighlight
-                                style={styles.whiteBorder}
                                 underlayColor="transparent"
                                 onPress={() => {}}
                             >
-                                <View style={[styles.knowBtn, styles.whiteBorder]}>
+                                <View style={[styles.knowBtn, styles.whiteBorder, styles.center, styles.justifyContent]}>
                                     <Text style={styles.whiteColor}>我知道了</Text>
                                 </View>
                             </TouchableHighlight>
-
-                            
-
                         </View>
 
-                        <View style={[styles.whiteBorder, styles.contactButton]}>
+                        <View style={[styles.whiteBorder, styles.contactButton, styles.voiceBtn, styles.center]}>
                             <Text style={styles.whiteColor}>免费听录音</Text>
                         </View>
                     </View>
@@ -378,18 +426,55 @@ class GuideModal extends Component {
     }
 }
 
-class PhoneModal extends Component {
+class CallTipModal extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        let {isVisible, phoneInfo, actions} = this.props;
+        let { callInfo, actions } = this.props;
         return (
-            <Modal visible={isVisible} transparent={true}
-                   onRequestClose={actions.setSellerPhoneVisible}>
+            <Modal visible={false} transparent={true}
+                   onRequestClose={() => {}}>
                 <View style={[styles.flex, styles.center, styles.justifyContent, styles.bgWrap]}>
                     <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
+                        <TouchableHighlight
+                            style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
+                            underlayColor="transparent"
+                            onPress={() => {}}
+                        >
+                            <Image
+                                style={styles.closeIcon}
+                                source={require("../images/close.png")}
+                            />
+                        </TouchableHighlight>
+
+                        <Text style={[styles.msgTip, styles.baseColor]}>消耗4积分即可获得房东电话</Text>
+
+                        <TouchableHighlight
+                            style={[styles.btn, styles.greenBg, {marginBottom: 18}]}
+                            underlayColor="#fff"
+                            onPress={() => {}}
+                        >
+                            <View style={styles.center}><Text style={styles.whiteColor}>确认</Text></View>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+}
+
+class VoiceModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() { 
+        return (
+            <Modal visible={false} transparent={true} onRequestClose={() => {}}>
+                <View style={[styles.flex, styles.center, styles.justifyContent, styles.voiceBg]}>
+                    <View style={[styles.voiceContent, styles.bgWrap, styles.center]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
                             underlayColor="transparent"
@@ -401,8 +486,11 @@ class PhoneModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={styles.saleTel}>房东电话：{phoneInfo.get('phone')}</Text>
-                        <Text style={styles.expMsg}>同时您获得了{phoneInfo.get('exp')}经验</Text>
+                        <Image
+                            style={styles.voiceIcon}
+                            source={require('./../images/wifi.png')}
+                        />
+                        <Text style={styles.whiteColor}>01:11</Text>
                     </View>
                 </View>
             </Modal>
@@ -494,6 +582,50 @@ class CouponModal extends Component {
                 </TouchableWithoutFeedback>
                 <WelfareCard item={rowData}/>
             </View>
+        );
+    }
+}
+
+class PhoneModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {isVisible, phoneInfo, actions} = this.props;
+        return (
+            <Modal visible={isVisible} transparent={true}
+                   onRequestClose={actions.setSellerPhoneVisible}>
+                <View style={[styles.flex, styles.justifyEnd, styles.bgWrap]}>
+                    <View style={[styles.whiteBg]}>
+                        <TouchableHighlight
+                            style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
+                            underlayColor="transparent"
+                            onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);actions.setSellerPhoneVisible(false);}}
+                        >
+                            <Image
+                                style={styles.closeIcon}
+                                source={require("../images/close.png")}
+                            />
+                        </TouchableHighlight>
+
+                        <Text style={styles.phoneVal}>房东电话：<Text style={[styles.phoneVal, styles.fontMedium]}>12345678963{phoneInfo.get('phone')}</Text></Text>
+                        <Text style={[styles.more, styles.grayColor, {textAlign: 'center'}]}>您可以在 [我查看的房源] 中查看房东电话</Text>
+
+                        <TouchableHighlight
+                            style={[styles.flex, styles.contactButton, styles.phoneSure]}
+                            underlayColor="#04c1ae"
+                            onPress={() => {}}
+                        >
+                            <View>
+                                <Text style={styles.contactText}>确定</Text>
+                            </View>
+                        </TouchableHighlight>
+
+                        
+                    </View>
+                </View>
+            </Modal>
         );
     }
 }
@@ -685,14 +817,14 @@ class CostScoreModal extends Component {
                             onPress={this._handlerFeedback.bind(this, actionType.BA_DETAIL_SPENDENSURE)}
                         >
                             <View style={styles.feedbackSureBtn}>
-                                <Text style={styles.contactText}>确认</Text>
+                                <Text style={styles.contactText}>房源在卖</Text>
                             </View>
                         </TouchableHighlight>
 
                         <TouchableWithoutFeedback
                             onPress={this._goBackScore.bind(this)}
                         >
-                            <View style={[styles.feedbackSureBtn, styles.feedbackBorderButton]}><Text style={[styles.contactText, styles.greenColor]}>退还积分</Text></View>
+                            <View style={[styles.feedbackSureBtn, styles.feedbackBorderButton]}><Text style={[styles.userName, styles.greenColor]}>房源无效退还积分</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
@@ -860,6 +992,9 @@ var styles = StyleSheet.create({
     whiteColor: {
         color: '#fff'
     },
+    orangeColor: {
+        color: '#FF6D4B'
+    },
     fontMedium: {
         fontWeight: '600'
     },
@@ -970,25 +1105,27 @@ var styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        height: 60,
+        height: 55,
         borderTopWidth: 1 / PixelRatio.get(),
         borderStyle: 'solid',
         borderTopColor: '#d9d9d9',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        paddingHorizontal: 15
     },
     moneyIcon: {
         width: 11,
         height: 15,
         marginRight: 4,
-        marginLeft: 13
+        marginLeft: 4
+    },
+    scoreVal: {
+        marginRight: 18
     },
     contactButton: {
-        marginLeft: 12,
         justifyContent: 'center',
         height: 40,
         backgroundColor: '#04c1ae',
-        borderRadius: 5,
-        marginRight: 15
+        borderRadius: 5
     },
     contactText: {
         fontSize: 19,
@@ -996,12 +1133,19 @@ var styles = StyleSheet.create({
         textAlign: 'center'
     },
     phoneIcon: {
+        width: 18,
+        height: 18,
+        marginRight: 7,
+        transform: [
+            {rotate: '10deg'}
+        ]
+    },
+    mPhoneIcon: {
         width: 20,
         height: 20,
-        marginRight: 7
     },
     bgWrap: {
-        backgroundColor: "rgba(0, 0, 0, 0.5)"
+        backgroundColor: "rgba(0, 0, 0, 0.6)"
     },
     contentContainer: {
         width: 270,
@@ -1117,6 +1261,9 @@ var styles = StyleSheet.create({
     whiteBg: {
         backgroundColor: '#fff'
     },
+    orangeBg: {
+        backgroundColor: '#FF6D4B'
+    },
     couponHeader: {
         flexDirection: 'row',
         alignItems: 'flex-start',
@@ -1152,20 +1299,62 @@ var styles = StyleSheet.create({
     greenBg: {
         backgroundColor: '#04C1AE'
     },
-    saleTel: {
-        marginTop: 14,
-        marginBottom: 6
-    },
-    expMsg: {
-        marginBottom: 12
+    guideContent: {
+        paddingHorizontal: 15,
+        marginBottom: 7
     },
     whiteBorder: {
         borderColor: '#fff',
-        borderWidth: 1 / PixelRatio.get()
+        borderWidth: 3 / PixelRatio.get()
+    },
+    guideTip: {
+        fontSize: 21,
+        paddingLeft: 15
     },
     arrow: {
-        width: 48,
-        height: 64,
-        marginLeft: 40 
+        width: 40,
+        height: 56,
+        marginLeft: 50,
+        marginVertical: 10,
+        marginRight: 70
+    },
+    knowBtn: {
+        width: 100,
+        height: 30,
+        borderRadius: 2,
+        marginTop: 20
+    },
+    voiceBtn: {
+        width: 106,
+        marginRight: 9
+    },
+    sellerPhone: {
+        fontSize: 12,
+        marginLeft: 8
+    },
+    phoneVal: {
+        fontSize: 21,
+        marginBottom: 32,
+        marginTop: 48,
+        textAlign: 'center'
+    },
+    phoneSure: {
+        marginHorizontal: 37,
+        marginBottom: 30,
+        marginTop: 15
+    },
+    voiceBg: {
+        backgroundColor: 'transparent'
+    },
+    voiceContent: {
+        width: 140,
+        height: 140,
+        borderRadius: 3
+    },
+    voiceIcon: {
+        width: 40,
+        height: 53,
+        marginTop: 35,
+        marginBottom: 18
     }
 });

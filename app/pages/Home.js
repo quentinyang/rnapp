@@ -255,7 +255,7 @@ export default class Home extends Component {
             actions.fetchScoreModalStatus();
             actions.fetchHouseNewCount();
             actions.fetchCouponModalStatus();
-            actions.fetchRuleModalStatus();
+            //actions.fetchRuleModalStatus();
         });
 
         AppState.addEventListener('change', this._refreshHouseData);
