@@ -1,7 +1,7 @@
 'use strict';
 
 import {React, Component, Text, View, ListView, StyleSheet, Image,
-    TouchableWithoutFeedback, RefreshControl, ActivityIndicator, InteractionManager} from 'nuke';
+    TouchableHighlight, Modal, RefreshControl, ActivityIndicator, InteractionManager} from 'nuke';
 
 import ContactItem from '../components/ContactItem';
 import DetailContainer from '../containers/DetailContainer';
@@ -68,6 +68,7 @@ export default class ContactHouse extends Component {
                             <Text style={styles.noHouseListMsg}>暂无数据~~~</Text>
                         </View>:null)
                 }
+                <TooEarlyModal isVisible={false} />
             </View>
         )
     }
@@ -91,7 +92,14 @@ export default class ContactHouse extends Component {
 
     _renderRow = (rowData: any, sectionID: number, rowID: number) => {
         return (
-            <ContactItem item={rowData} onItemPress={this._onItemPress}/>
+            <View key={rowID}>
+                <ContactItem item={rowData} onItemPress={this._onItemPress}/>
+                <TouchableHighlight onPress={() => {this._applyToRefund}} underlayColor="transparent">
+                    <View style={[styles.applyBtn, styles.center]}>
+                        <Text style={[styles.fontSmall, styles.greenColor]}>申请退积分</Text>
+                    </View>
+                </TouchableHighlight>
+            </View>
         )
     };
 
@@ -134,7 +142,46 @@ export default class ContactHouse extends Component {
             item
         });
     };
+
+    _applyToRefund = (status) => {
+        switch(status) {
+
+        }
+    }
 }
+
+class TooEarlyModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {isVisible, actions} = this.props;
+        return (
+            <Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
+                <View style={[styles.flex, styles.center, styles.bgWrap]}>
+                    <View style={[styles.contentContainer]}>
+                        <View style={styles.center}>
+                            <Text style={styles.modalContentWord}>客服已确认房子在卖哦</Text>
+                            <Text style={styles.modalContentWord}>再试试联系房东吧</Text>
+                            <Text style={styles.modalContentWord}>{3}天后再来申请退积分</Text>
+                        </View>
+
+                        <TouchableHighlight
+                                underlayColor="transparent"
+                                onPress={() => {}}
+                            >
+                            <View style={[styles.knowBtn, styles.center, styles.greenBgColor]}>
+                                <Text style={styles.whiteColor}>好的</Text>
+                            </View>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+}
+
 
 const styles = StyleSheet.create({
     flex: {
@@ -145,6 +192,18 @@ const styles = StyleSheet.create({
     },
     bgColor: {
         backgroundColor: "#eee"
+    },
+    fontSmall: {
+        fontSize: 12
+    },
+    whiteColor: {
+        color: '#fff'
+    },
+    greenColor: {
+        color: '#04c1ae'
+    },
+    greenBgColor: {
+        backgroundColor: '#04c1ae'
     },
     noHouseList: {
         width: 100,
@@ -158,6 +217,34 @@ const styles = StyleSheet.create({
     center: {
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    applyBtn: {
+        position: 'absolute',
+        right: 15,
+        bottom: 20,
+        width: 75,
+        height: 30,
+        borderWidth: 1,
+        borderColor: '#04c1ae',
+        textAlign: 'center'
+    },
+    knowBtn: {
+        marginTop: 15,
+        height: 30,
+        borderRadius: 5
+    },
+    bgWrap: {
+        backgroundColor: "rgba(0, 0, 0, 0.5)"
+    },
+    contentContainer: {
+        width: 270,
+        borderRadius: 5,
+        padding: 20,
+        backgroundColor: "#fff"
+    },
+    modalContentWord: {
+        fontSize: 15,
+        marginTop: 5
     }
 });
 

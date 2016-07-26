@@ -11,7 +11,8 @@ let initialState = {
             'per_page': 10,
             'current_page': 0,
             'last_page': 2,
-        }
+        },
+        timeVisible: false
     },
     inputHouse: {
         properties: [],

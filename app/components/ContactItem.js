@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     item: {
-        marginBottom: 5
+        marginBottom: 10
     },
     status: {
         padding: 15,
