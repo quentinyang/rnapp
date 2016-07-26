@@ -96,7 +96,6 @@ let initParam = {
     },
 
     couponVisible: false,
-    voiceVisible: false,
     sellerPhoneVisible: false
 };
 
@@ -128,9 +127,6 @@ function callInfo(state, action) {
             break;
         case types.COUPON_VISIBLE_CHANGED:
             return state.set('couponVisible', Immutable.fromJS(action.visible));
-            break;
-        case types.VOICE_VISIBLE_CHANGED:
-            return state.set('voiceVisible', Immutable.fromJS(action.visible));
             break;
         case types.SELLERPHONE_VISIBLE_CHANGED:
             return state.set('sellerPhoneVisible', Immutable.fromJS(action.visible));

@@ -256,7 +256,6 @@ export default class Home extends Component {
             actions.fetchHouseNewCount();
             actions.fetchCouponModalStatus();
             actions.fetchRuleModalStatus();
-            actions.fetchCurrentStatus();
         });
 
         AppState.addEventListener('change', this._refreshHouseData);
@@ -316,7 +315,6 @@ export default class Home extends Component {
             actions.fetchAttentionPrependHouseList({});
             actions.fetchAttentionBlockAndCommunity();
             actions.fetchHouseNewCount();
-            actions.fetchCurrentStatus();
         });
         this.setState({
             isRefreshing: false

@@ -27,7 +27,6 @@ export default class Detail extends Component {
     constructor(props) {
         super(props);
         this.isGetCall = false;
-        this.isVoiceGetCall = false;
         this.couponObj;
         this.pageId = actionType.BA_DETAIL;
         ActionUtil.setActionWithExtend(actionType.BA_DETAIL_ONVIEW, {
@@ -88,6 +87,8 @@ export default class Detail extends Component {
                     </TouchableHighlight>
                 </View>
 
+                <GuideModal />
+
                 { couponArr.size ?
                     <CouponModal
                         isVisible={callInfo.get('couponVisible')}
@@ -95,21 +96,6 @@ export default class Detail extends Component {
                         couponArr={couponArr}
                         actions={actions}
                     />
-                    : null
-                }
-
-
-                {
-                    info.get('record_url') && info.get('record_url').size ?
-                        <VoiceModal
-                            isVisible={callInfo.get('voiceVisible')}
-                            voiceInfo={info.get('record_url')}
-                            costScore={cost== "0" ? "免费" : cost + "积分"}
-                            getSellerPhone={this._getSellerPhone.bind(this)}
-                            actions={actions}
-                            navigator={navigator}
-                            propertyId={route.item.get('property_id')}
-                        />
                     : null
                 }
 
@@ -226,14 +212,9 @@ export default class Detail extends Component {
         if (status || hasPhone) { //1: 已解锁 或 已反馈在卖
             callUp(phone);
         } else {   //0: 未解锁
-            let voice = baseInfo.get('baseInfo').get('record_url');
-
             if (baseInfo.get('couponArr').size) {  //是否有看房卡
                 ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_ONVIEW);
                 actions.setCouponVisible(true);
-            } else if (voice && voice.size) {     //是否有录音
-                ActionUtil.setAction(actionType.BA_DETAIL_TAPE_ONVIEW);
-                actions.setVoiceVisible(true);
             } else {                             //获取短号拨打
                 this.isGetCall = true;
                 actions.callSeller({
@@ -247,37 +228,15 @@ export default class Detail extends Component {
     _useCoupon(coupon) {
         let {baseInfo, route, actions} = this.props;
         let propertyId = route.item.get("property_id");
-        let voice = baseInfo.get('baseInfo').get('record_url');
 
         this.couponObj = coupon;
         actions.setCouponVisible(false);
-        if (voice && voice.size) {     //是否有录音
-            ActionUtil.setAction(actionType.BA_DETAIL_TAPE_ONVIEW);
-            actions.setVoiceVisible(true);
-        } else {                             //获取短号拨打
-            actions.callSeller({
-                property_id: propertyId,
-                card_id: this.couponObj ? this.couponObj.get('id') : null
-            });
-        }
-    }
-
-    _getSellerPhone() {
-        if (this.isVoiceGetCall) {
-            return;
-        }
-        let {actions, route} = this.props;
-        ActionUtil.setAction(actionType.BA_DETAIL_TAPE_SURE);
-        actions.setVoiceVisible(false);
-        actions.fetchSellerPhone({
-            property_id: route.item.get('property_id'),
+        //获取短号拨打
+        actions.callSeller({
+            property_id: propertyId,
             card_id: this.couponObj ? this.couponObj.get('id') : null
         });
-        this.isVoiceGetCall = true;
-
-        setTimeout(() => {
-            this.isVoiceGetCall = false;
-        }, 10000);
+        
     }
 
     _renderRow = (rowData:any) => {
@@ -375,6 +334,50 @@ export default class Detail extends Component {
     };
 }
 
+class GuideModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <Modal visible={false} transparent={true} onRequestClose={() => {}}>
+                <View style={[styles.flex, styles.justifyEnd, styles.bgWrap]}>
+                    <View style={styles.padding}>
+                         <Text style={[styles.whiteColor, styles.name, styles.padding]}>这都是房子确认在卖的录音哦</Text>
+                         
+
+                        <View style={styles.row}>
+
+                            <Image
+                                style={styles.arrow}
+                                source={require('../images/arrow.png')}
+                             />
+
+                            <TouchableHighlight
+                                style={styles.whiteBorder}
+                                underlayColor="transparent"
+                                onPress={() => {}}
+                            >
+                                <View style={[styles.knowBtn, styles.whiteBorder]}>
+                                    <Text style={styles.whiteColor}>我知道了</Text>
+                                </View>
+                            </TouchableHighlight>
+
+                            
+
+                        </View>
+
+                        <View style={[styles.whiteBorder, styles.contactButton]}>
+                            <Text style={styles.whiteColor}>免费听录音</Text>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+}
+
 class PhoneModal extends Component {
     constructor(props) {
         super(props);
@@ -404,131 +407,6 @@ class PhoneModal extends Component {
                 </View>
             </Modal>
         );
-    }
-}
-
-class VoiceModal extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            playing: -1
-        };
-    }
-
-    render() {
-        let {isVisible, voiceInfo, costScore, getSellerPhone, actions, navigator, propertyId} = this.props;
-        let voiceList = voiceInfo.map((item, index) => {
-            let time = item.get('record_time'), m = parseInt(time / 60), s = time % 60;
-            let voiceIcon = this.state.playing == index ? require('../images/voice_anim.gif') : require('../images/voice.png');
-            return (
-                <View key={index} style={[styles.row, styles.justifyContent, styles.center, {marginBottom: 28}]}>
-                    <Text>通话{index + 1}</Text>
-                    <TouchableHighlight
-                        style={styles.flex}
-                        underlayColor="#F8F8F8"
-                        onPress={() => {
-                            if(index == 0){
-                            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_TAPE_ONE, {
-                                "vpid": propertyId,
-                                "time": time.toString()
-
-                            });
-                            }else if(index == 1){
-                            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_TAPE_TWO, {
-                                "vpid": propertyId,
-                                "time": time.toString()
-                            });
-                            }
-
-                            this.setState({
-                                playing: index
-                            });
-                            AudioPlayer.stop();
-                            AudioPlayer.play(item.get('record_url'));
-                        }}
-                    >
-                        <View style={[styles.center, styles.justifyContent, styles.voiceBox]}>
-                            <Image style={styles.voice} source={voiceIcon}/>
-                            <Image style={styles.boxArrow} source={require('../images/arrow_left.png')}/>
-                            <Text style={styles.greenColor}>{this.state.playing == index ? '正在播放' : '点击播放'}</Text>
-                        </View>
-                    </TouchableHighlight>
-                    <Text style={[styles.grayColor, styles.itemSize]}>{m}:{s}</Text>
-                </View>
-            );
-        });
-        return (
-            <Modal visible={isVisible && deviceInfo.version >= "1.4.0"} transparent={true}
-                   onRequestClose={actions.setVoiceVisible}>
-                <View style={[styles.flex, styles.bgWrap]}>
-                    <View style={styles.flex}></View>
-                    <View style={[styles.flex, styles.justifyBetween, styles.whiteBg, styles.voiceWrap]}>
-                        <TouchableHighlight
-                            style={[styles.closeBox, styles.center, styles.justifyContent]}
-                            onPress={()=>{
-                            ActionUtil.setAction(actionType.BA_DETAIL_TAPE_DELETE);
-                                this.setState({
-                                    playing: -1
-                                });
-                                AudioPlayer.stop();
-                                actions.setVoiceVisible(false);
-                            }}
-                            underlayColor="transparent"
-                        >
-                            <Image style={styles.closeIcon} source={require('../images/close.png')}/>
-                        </TouchableHighlight>
-                        <View style={[styles.justifyContent, styles.center]}>
-                            <Text style={[styles.subName]}>今日已有2通电话确认房子在卖</Text>
-                            <Text style={styles.subName}>请听通话录音</Text>
-                        </View>
-
-                        <View>{voiceList}</View>
-
-                        <TouchableHighlight
-                            style={[styles.contactButton]}
-                            underlayColor="#04C1AE"
-                            onPress={() => {
-                                this.setState({
-                                    playing: -1
-                                });
-                                AudioPlayer.stop();
-                                getSellerPhone();
-                            }}
-                        >
-                            <View style={[styles.justifyContent, styles.center]}>
-                                <Text style={styles.contactText}>
-                                    {costScore} 获取房东电话
-                                </Text>
-                            </View>
-                        </TouchableHighlight>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
-
-    componentDidMount() {
-        if(Platform.OS == "ios") {
-            this.audioListener = NativeAppEventEmitter.addListener('mediaCompletioned', () => {
-                this.setState({
-                    playing: -1
-                });
-            });
-        } else {
-            DeviceEventEmitter.addListener('mediaCompletioned', () => {
-                this.setState({
-                    playing: -1
-                });
-            });
-        }
-    }
-
-    componentWillUnmount() {
-        if(Platform.OS == 'ios') {
-            this.audioListener.remove();
-        } else {
-            DeviceEventEmitter.removeAllListeners('mediaCompletioned');
-        }
     }
 }
 
@@ -627,8 +505,7 @@ class UserInfo extends Component {
 
     render() {
         let {userInfo, navigator, actions, actionsNavigation} = this.props;
-        let mobile = userInfo.get('mobile'),
-            showMobile = mobile ? mobile.slice(0, 2) + '********' + mobile.slice(-1) : '';
+
         return (
             <View>
                 <View style={styles.gap}></View>
@@ -662,7 +539,7 @@ class UserInfo extends Component {
                                 </View>
                             </View>
                             <View>
-                                <Text style={styles.subName}>{showMobile}</Text>
+                                <Text style={styles.userName}>用户{userInfo.get('input_user_id')}</Text>
                             </View>
                         </View>
 
@@ -679,7 +556,7 @@ class UserInfo extends Component {
                             <View style={styles.vline}></View>
                             <View style={[styles.flex, styles.center, styles.justifyContent]}>
                                 <Text style={styles.userVal}>{userInfo.get('input_house_count')}</Text>
-                                <Text style={[styles.grayColor, styles.more]}>发房</Text>
+                                <Text style={[styles.grayColor, styles.more]}>发房认证</Text>
                             </View>
                             <View style={styles.vline}></View>
                             <View style={[styles.flex, styles.center, styles.justifyContent]}>
@@ -894,6 +771,10 @@ class BaseInfo extends Component {
                     <Text style={[styles.baseSize, styles.baseColor]}
                           numberOfLines={1}>地址: {houseInfo.get('district_name') || baseInfo.get('district_name') || ''}{houseInfo.get('block_name') || baseInfo.get('block_name') || ''} {houseInfo.get('community_address') || baseInfo.get('community_address') || ''}</Text>
                 </View>
+                <View style={[styles.justifyContent, styles.address]}>
+                    <Text style={[styles.baseSize, styles.baseColor]}
+                          numberOfLines={1}>发布时间：7月8日</Text>
+                </View>
             </View>
         );
     }
@@ -918,7 +799,7 @@ class ContactList extends Component {
         return (
             <View>
                 <View style={styles.gap}></View>
-                <TitleBar title={"联系房东记录 (" + contact.get('total') + "次)"} />
+                <TitleBar title={"房源查看记录 (" + contact.get('total') + "次)"} />
                 <View style={[styles.contactBox]}>
                     {contactList}
                 </View>
@@ -964,9 +845,6 @@ var styles = StyleSheet.create({
     justifyContent: {
         justifyContent: 'center'
     },
-    justifyBetween: {
-        justifyContent: 'space-between'
-    },
     justifyEnd: {
         justifyContent: 'flex-end'
     },
@@ -978,6 +856,9 @@ var styles = StyleSheet.create({
     },
     greenColor: {
         color: '#04C1AE'
+    },
+    whiteColor: {
+        color: '#fff'
     },
     fontMedium: {
         fontWeight: '600'
@@ -1001,10 +882,12 @@ var styles = StyleSheet.create({
         borderBottomColor: '#d9d9d9',
     },
     name: {
+        fontWeight: '500',
         fontSize: 22,
         marginBottom: 10
     },
     subName: {
+        fontWeight: '500',
         fontSize: 19
     },
     tagNew: {
@@ -1228,6 +1111,9 @@ var styles = StyleSheet.create({
         marginTop: 4,
         marginBottom: 6
     },
+    userName: {
+        fontSize: 17
+    },
     whiteBg: {
         backgroundColor: '#fff'
     },
@@ -1266,26 +1152,6 @@ var styles = StyleSheet.create({
     greenBg: {
         backgroundColor: '#04C1AE'
     },
-    voiceWrap: {
-        paddingHorizontal: 20,
-        paddingVertical: 25
-    },
-    voiceBox: {
-        height: 44,
-        borderColor: '#D9D9D9',
-        borderWidth: 1 / PixelRatio.get(),
-        borderRadius: 3,
-        backgroundColor: '#F8F8F8',
-        marginLeft: 15,
-        marginRight: 10
-    },
-    voice: {
-        height: 17,
-        width: 12,
-        position: 'absolute',
-        left: 17,
-        top: 13,
-    },
     saleTel: {
         marginTop: 14,
         marginBottom: 6
@@ -1293,12 +1159,13 @@ var styles = StyleSheet.create({
     expMsg: {
         marginBottom: 12
     },
-    boxArrow: {
-        position: 'absolute',
-        top: 17,
-        left: -4,
-        width: 5,
-        height: 10,
-        backgroundColor: '#F8F8F8'
+    whiteBorder: {
+        borderColor: '#fff',
+        borderWidth: 1 / PixelRatio.get()
     },
+    arrow: {
+        width: 48,
+        height: 64,
+        marginLeft: 40 
+    }
 });

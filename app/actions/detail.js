@@ -36,7 +36,6 @@ export const userInfoFetched = makeActionCreator(types.USER_INFO_FETCHED, 'userI
 export const couponFetched = makeActionCreator(types.COUPON_FETCHED, 'coupon');
 
 export const setCouponVisible = makeActionCreator(types.COUPON_VISIBLE_CHANGED, 'visible');
-export const setVoiceVisible = makeActionCreator(types.VOICE_VISIBLE_CHANGED, 'visible');
 export const setSellerPhoneVisible = makeActionCreator(types.SELLERPHONE_VISIBLE_CHANGED, 'visible');
 
 export function fetchBaseInfo(data) {
