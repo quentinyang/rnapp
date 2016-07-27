@@ -35,7 +35,7 @@ export default class Setting extends Component {
                     <LinkBox
                         navigator={this.props.navigator}
                         data={{
-                            url:'http://www.fangyuan360.cn/agreement/',
+                            url:'https://mp.weixin.qq.com/s?__biz=MzAxNDYyMTA0NQ==&mid=505710246&idx=1&sn=f5df3a0827688930a98b625bdf772f54&scene=0&uin=OTA2NDQ0MzAx&key=77421cf58af4a6530c369d591633f60ffb6af03c88c1247f6a13933258c27d3b7348336897a5c57d11143bdf395983c2&devicetype=iMac+MacBookPro11%2C1+OSX+OSX+10.10.5+build(14F1713)&version=11020201&lang=zh_CN&pass_ticket=jnN7tPBr%2BOSovurKr9I8a1x%2Fc5UqzoOKQ7Vj96YVWw1Q2%2B5KjRdwHbMDFuohSHZY',
                             title: '第一房源用户协议',
                             name: 'user rule',
                             component: TouchWebContainer
