@@ -257,7 +257,6 @@ const styles = StyleSheet.create({
         height: 30,
         borderWidth: 1,
         borderColor: '#04c1ae',
-        textAlign: 'center'
     },
     knowBtn: {
         marginTop: 15,

@@ -41,6 +41,7 @@ export default class Card extends Component {
                     <Text style={styles.descFont} numberOfLines={1}>· {item.get('brief') || '全平台通用'}</Text>
                     {item.get('end_at') ? <Text style={styles.descFont} numberOfLines={1}>· 有效期至{item.get('end_at').substring(0, 10)}</Text> : null}
                 </View>
+                </View>
                 <View style={styles.wfBadge}>
                     {source ?
                         <Image source={source} style={styles.wfBadgeImg} />
@@ -53,7 +54,6 @@ export default class Card extends Component {
                         :null
                       ))
                     }
-                </View>
                 </View>
             </Image>
         )
