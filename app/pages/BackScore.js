@@ -12,7 +12,7 @@ export default class BackScore extends Component {
             cur: -1
         };
         this.submitFlag = false;
-        this.reasons = [{select: false, val: "联系不上"}, {select: false, val: "虚假房源"}, {select: false, val: "房东不卖"}, {select: false, val: "房源已卖"}, {select: false, val: "按错了"}];
+        this.reasons = [{select: false, val: "联系不上"}, {select: false, val: "虚假房源"}, {select: false, val: "房东不卖"}, {select: false, val: "房源已卖"}];
 
         ActionUtil.setActionWithExtend(actionType.BA_DETAIL_SPENDRECALLONSHOUW, {"bp": this.props.route.bp});
     }
@@ -51,7 +51,7 @@ export default class BackScore extends Component {
                 </Modal>
 
                 <View style={[styles.titleBox]}>
-                    <Text style={styles.title}>请选择原因</Text>
+                    <Text style={styles.title}>请选择原因（请真实反馈）</Text>
                 </View>
                 {reasonsList}
 
