@@ -23,12 +23,16 @@ export default class HouseItem extends Component {
                         null
                     }
 
-                    <View> 
-                        <Text style={[styles.flex, styles.row, styles.center, styles.justifyContent, styles.headerMsg, item.get('is_click') ? styles.gray : {}]} numberOfLines={1}> 
+                    <View>
+                        <Text style={[styles.flex, styles.row, styles.justifyContent, styles.headerMsg, item.get('is_click') ? styles.gray : {}]} numberOfLines={1}>
                             {item.get('community_name') + "  "}
-                            {item.get('building_num') + (item.get('building_num') && item.get('building_unit')) + item.get('door_num') + (item.get('door_num') && '室 ')}
-                            {item.get('is_new') ? <Image style={[styles.tagNew]} source={require("../images/new_tag.png")} /> : null}                                
+                            {item.get('building_num') + (item.get('building_num') && item.get('building_unit')) + item.get('door_num') + (item.get('door_num') && '室')}
+                            {item.get('is_new') && ' '}
+                            {item.get('is_new') ? <Image style={[styles.tagNew]} source={require("../images/new_tag.png")} />: null}
+                            {item.get('is_verify') && ' '}
+                            {item.get('is_verify') ? <Image style={[styles.tagVerify]} source={require("../images/verify_tag.png")} />: null}
                         </Text>
+
                     </View>
                     <View style={[styles.row, styles.bedroomsWrap]}>
                         <Text style={[styles.bedrooms, styles.bedroomsPadding, item.get('is_click') ? styles.gray : {}]}>{item.get('bedrooms') + '室' + item.get('living_rooms') + '厅' + item.get('bathrooms') + '卫'}</Text>
@@ -83,8 +87,12 @@ const styles = StyleSheet.create({
         paddingRight: 12
     },
     tagNew: {
-        width: 17,
-        height: 17
+        width: 15,
+        height: 15
+    },
+    tagVerify: {
+        width: 27,
+        height: 15
     },
     updatedAt: {
         textAlign: 'right'
