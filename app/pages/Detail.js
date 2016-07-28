@@ -2,6 +2,7 @@
 
 import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, TouchableWithoutFeedback, Alert, Modal, Button, Linking, Platform } from 'nuke'
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
+import Toast from 'react-native-root-toast';
 import HouseItem from '../components/HouseItem';
 import HouseListContainer from '../containers/HouseListContainer';
 import DetailContainer from '../containers/DetailContainer';
@@ -41,28 +42,44 @@ export default class Detail extends Component {
         let info = baseInfo.get("baseInfo");
         let couponArr = baseInfo.get('couponArr');
         let status = Number(info.get('phone_lock_status'));
-        let phone = callInfo.get('sellerPhone').get('phone');
-
-        let phoneStr = '';
-        if (status || phone) {
-            phoneStr = "联系房东(" + (status ? info.get('seller_phone') : phone ) + ")";
-        } else {
-            phoneStr = "获取房东电话";
-        }
+        let phone = status ? info.get('seller_phone') : callInfo.get('sellerPhone').get('seller_phone');
+        
+        
 
         let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');
 
         return (
             <View style={styles.flex}>
                 {
-                    0 ? <VerifyBtn /> : <UnVerifyBtn />
+                    info.get('record_url') == null ? null : 
+                    info.get('record_url').size ? 
+                    <VerifyBtn
+                        phone={phone}
+                        playRecord={this._playRecord}
+                        getSellerPhone={this._clickGetSellerPhoneBtn.bind(this, status, phone)}
+                    /> : 
+                    <UnVerifyBtn
+                        contactSeller={this._contactSeller}
+                    />
                 }
 
-                <GuideModal />
+                <GuideModal
+                    isVisible={info.get('is_enter_detail') == "0"}
+                    actions={actions}
+                />
 
-                <VoiceModal />
+                <VoiceModal
+                    isVisible={callInfo.get('voiceVisible')}
+                    time={info.get('record_url').get('record_time') || "00:00"}
+                    actions={actions}
+                />
 
-                <CallTipModal />
+                <CallTipModal
+                    isVisible={callInfo.get('callTipVisible')}
+                    score={info.get('unlock_phone_cost')}
+                    callSellerPhone={this._callSellerPhone}
+                    actions={actions}
+                />
 
                 { couponArr.size ?
                     <CouponModal
@@ -149,7 +166,7 @@ export default class Detail extends Component {
         let info = baseInfo.get("baseInfo");
         let status = Number(info.get('phone_lock_status'));
 
-        if (status || !status && callInfo.get('sellerPhone').get('phone')) {
+        if (status || !status && callInfo.get('sellerPhone').get('seller_phone')) {
         } else {
             ActionUtil.setAction(actionType.BA_DETAIL_SPEND);
             actions.setFeedbackVisible(true);
@@ -175,7 +192,7 @@ export default class Detail extends Component {
         }
     }
 
-    _clickPhoneBtn(status, phone, hasPhone) {
+    _clickGetSellerPhoneBtn(status, phone) {
         if (this.isGetCall) {
             return;
         }
@@ -184,20 +201,24 @@ export default class Detail extends Component {
         let propertyId = route.item.get("property_id");
 
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
-        if (status || hasPhone) { //1: 已解锁 或 已反馈在卖
+        if (phone) { // 已买 或 已获取房东电话
             callUp(phone);
-        } else {   //0: 未解锁
+        } else {   // 未买在卖状态的房源
             if (baseInfo.get('couponArr').size) {  //是否有看房卡
                 ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_ONVIEW);
                 actions.setCouponVisible(true);
-            } else {                             //获取短号拨打
-                this.isGetCall = true;
-                actions.callSeller({
-                    property_id: propertyId,
-                    card_id: this.couponObj ? this.couponObj.get('id') : null
-                });
+            } else {
+                this._getSellerPhone();
             }
         }
+    }
+
+    _getSellerPhone() {
+        let {actions} = this.props;
+        actions.fetchSellerPhone({
+            property_id: this.props.route.item.get('property_id'),
+            card_id: this.couponObj ? this.couponObj.get('id') : null
+        });
     }
 
     _useCoupon(coupon) {
@@ -206,12 +227,12 @@ export default class Detail extends Component {
 
         this.couponObj = coupon;
         actions.setCouponVisible(false);
-        //获取短号拨打
-        actions.callSeller({
-            property_id: propertyId,
-            card_id: this.couponObj ? this.couponObj.get('id') : null
-        });
-        
+
+        if(baseInfo.get('baseInfo').get('status') == "1") {
+            this._getSellerPhone();
+        } else {
+            this._callSellerPhone();
+        }        
     }
 
     _renderRow = (rowData:any) => {
@@ -287,26 +308,34 @@ export default class Detail extends Component {
         actions.clearHouseDetailPage();
     };
 
-    _handleMoreHouseList = () => {
-        ActionUtil.setAction(actionType.BA_DETAIL_COMMUNITYHOUSE);
-        let {route, navigator, actionsHouseList, actionsNavigation} = this.props,
-            {item} = route;
+    _playRecord = () => {
+        let {baseInfo, actions} = this.props;
+        let info = baseInfo.get('baseInfo');
+        let record = info.get('record_url');
 
-        actionsHouseList.houseListPageCleared();
-        actionsHouseList.filterCommunityNameChanged(item.get('community_id'), item.get('community_name'));
+        if(record.get('record_url')) { //是否有录音
+            actions.setVoiceVisible(true);
+            AudioPlayer.play(record.get('record_url'));
+        }
+    }
 
-        actionsNavigation.detailPushRoute();
-        navigator.push({
-            component: HouseListContainer,
-            name: 'houseList',
-            from: 'houseDetail',
-            title: '房源列表',
-            hideNavBar: true,
-            communityName: item.get('community_name'),
-            communityId: item.get('community_id'),
-            bp: this.pageId
+    _contactSeller = () => {
+        let {baseInfo, actions} = this.props;
+        if (baseInfo.get('couponArr').size) {  //是否有看房卡
+            ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_ONVIEW);
+            actions.setCouponVisible(true);
+        } else { 
+            actions.setCallTipVisibel(true);
+        }
+    }
+    _callSellerPhone = () => {  //获取短号拨打
+        let {actions, route} = this.props;
+
+        actions.callSeller({
+            property_id: route.item.get("property_id"),
+            card_id: this.couponObj ? this.couponObj.get('id') : null
         });
-    };
+    }
 }
 
 class VerifyBtn extends Component {
@@ -314,13 +343,14 @@ class VerifyBtn extends Component {
         super(props);
     }
 
-    render() { 
+    render() {
+        let {phone, playRecord, getSellerPhone} = this.props;
         return (
             <View style={[styles.contactWrap, styles.row, styles.center]}>
                 <TouchableHighlight
                     style={[styles.voiceBtn, styles.contactButton]}
                     underlayColor="#04c1ae"
-                    onPress={() => {}}
+                    onPress={playRecord}
                 >
                     <View style={[styles.justifyContent, styles.center]}>
                         <Text style={styles.whiteColor}>免费听录音</Text>
@@ -330,25 +360,25 @@ class VerifyBtn extends Component {
                 <TouchableHighlight
                     style={[styles.flex, styles.contactButton]}
                     underlayColor="#04c1ae"
-                    onPress={() => {}}
+                    onPress={getSellerPhone}
                 >
                     {
-                        0 ?
-                        <View style={[styles.row, styles.justifyContent, styles.center]}>                            
-                            <Text style={styles.whiteColor}>
-                                <Text style={[styles.fontMedium, styles.whiteColor]}>4</Text>积分看房东电话
-                            </Text>
-                        </View>
-                        : 
+                        phone ?
                         <View style={[styles.row, styles.justifyContent, styles.center]}>
                             <Image
                                 style={styles.phoneIcon}
                                 source={require("../images/phone.png")}
                             />
                             <Text style={styles.whiteColor}>联系房东</Text>
-                            <Text style={[styles.sellerPhone, styles.whiteColor]}>(12345678963)</Text>
+                            <Text style={[styles.sellerPhone, styles.whiteColor]}>({phone})</Text>
                         </View>
-                    }                    
+                        :  
+                        <View style={[styles.row, styles.justifyContent, styles.center]}>                            
+                            <Text style={styles.whiteColor}>
+                                <Text style={[styles.fontMedium, styles.whiteColor]}>4</Text>积分看房东电话
+                            </Text>
+                        </View>
+                    }
                 </TouchableHighlight>
             </View>
         );
@@ -371,8 +401,8 @@ class UnVerifyBtn extends Component {
 
                 <TouchableHighlight
                     style={[styles.flex, styles.contactButton, styles.orangeBg]}
-                    underlayColor="#04c1ae"
-                    onPress={() => {}}
+                    underlayColor="#FF6D4B"
+                    onPress={this.props.contactSeller}
                 >
                     <View style={[styles.row, styles.justifyContent, styles.center]}>
                         <Image
@@ -393,12 +423,12 @@ class GuideModal extends Component {
     }
 
     render() {
+        let {isVisible, actions} = this.props;
         return (
-            <Modal visible={false} transparent={true} onRequestClose={() => {}}>
+            <Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
                 <View style={[styles.flex, styles.justifyEnd, styles.bgWrap]}>
                     <View style={styles.guideContent}>
                         <Text style={[styles.whiteColor, styles.guideTip]}>这都是房子确认在卖的录音哦</Text>
-                         
 
                         <View style={styles.row}>
                             <Image
@@ -408,7 +438,7 @@ class GuideModal extends Component {
 
                             <TouchableHighlight
                                 underlayColor="transparent"
-                                onPress={() => {}}
+                                onPress={() => {actions.setEnterStatus("1");}}
                             >
                                 <View style={[styles.knowBtn, styles.whiteBorder, styles.center, styles.justifyContent]}>
                                     <Text style={styles.whiteColor}>我知道了</Text>
@@ -432,16 +462,16 @@ class CallTipModal extends Component {
     }
 
     render() {
-        let { callInfo, actions } = this.props;
+        let { isVisible, score, callSellerPhone, actions } = this.props;
         return (
-            <Modal visible={false} transparent={true}
+            <Modal visible={isVisible} transparent={true}
                    onRequestClose={() => {}}>
                 <View style={[styles.flex, styles.center, styles.justifyContent, styles.bgWrap]}>
                     <View style={[styles.center, styles.justifyContent, styles.contentContainer]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
                             underlayColor="transparent"
-                            onPress={() => {}}
+                            onPress={() => actions.setCallTipVisibel(false)}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -449,12 +479,12 @@ class CallTipModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={[styles.msgTip, styles.baseColor]}>消耗4积分即可获得房东电话</Text>
+                        <Text style={[styles.msgTip, styles.baseColor]}>消耗{score}积分即可获得房东电话</Text>
 
                         <TouchableHighlight
                             style={[styles.btn, styles.greenBg, {marginBottom: 18}]}
                             underlayColor="#fff"
-                            onPress={() => {}}
+                            onPress={() => { actions.setCallTipVisibel(false); callSellerPhone();}}
                         >
                             <View style={styles.center}><Text style={styles.whiteColor}>确认</Text></View>
                         </TouchableHighlight>
@@ -468,17 +498,29 @@ class CallTipModal extends Component {
 class VoiceModal extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            playing: 1
+        };
     }
 
-    render() { 
+    render() {
+        let {isVisible, time, actions} = this.props;
+        let voiceIcon = this.state.playing == 1 ? require('../images/voice_anim.gif') : require('../images/voice.png');
         return (
-            <Modal visible={false} transparent={true} onRequestClose={() => {}}>
+            <Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
                 <View style={[styles.flex, styles.center, styles.justifyContent, styles.voiceBg]}>
                     <View style={[styles.voiceContent, styles.bgWrap, styles.center]}>
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
                             underlayColor="transparent"
-                            onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);actions.setSellerPhoneVisible(false);}}
+                            onPress={() => {
+                                this.setState({
+                                    playing: -1
+                                });
+                                AudioPlayer.stop();
+                                actions.setVoiceVisible(false);
+                            }}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -488,13 +530,37 @@ class VoiceModal extends Component {
 
                         <Image
                             style={styles.voiceIcon}
-                            source={require('./../images/wifi.png')}
+                            source={voiceIcon}
                         />
-                        <Text style={styles.whiteColor}>01:11</Text>
+                        
+                        <Text style={styles.whiteColor}>{time}</Text>
                     </View>
                 </View>
             </Modal>
         );
+    }
+    componentDidMount() {
+        if(Platform.OS == "ios") {
+            this.audioListener = NativeAppEventEmitter.addListener('mediaCompletioned', () => {
+                this.setState({
+                    playing: -1
+                });
+            });
+        } else {
+            DeviceEventEmitter.addListener('mediaCompletioned', () => {
+                this.setState({
+                    playing: -1
+                });
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        if(Platform.OS == 'ios') {
+            this.audioListener.remove();
+        } else {
+            DeviceEventEmitter.removeAllListeners('mediaCompletioned');
+        }
     }
 }
 
@@ -515,22 +581,28 @@ class CouponModal extends Component {
                     <View style={styles.flex}></View>
                     <View style={[styles.flex, styles.whiteBg]}>
                         <View style={styles.couponHeader}>
-                            <TouchableWithoutFeedback onPress={()=>{
-                            ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_DELETE);
-                            actions.setCouponVisible(false)}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{
+                                    ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_DELETE);
+                                    actions.setCouponVisible(false)
+                                }}
+                            >
                                 <View style={styles.touchBox}>
                                     <Image style={styles.closeIcon} source={require('../images/close.png')}/>
                                 </View>
                             </TouchableWithoutFeedback>
                             <View style={styles.center}>
                                 <Text style={styles.subName}>是否要使用看房卡</Text>
-                                <Text style={[styles.itemSize, styles.grayColor]}>未成功卡可退回</Text>
+                                <Text style={[styles.itemSize, styles.grayColor]}>房源无效可退回卡</Text>
                             </View>
-                            <TouchableWithoutFeedback onPress={()=>{
-                            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_WELFARECARD_SURE, {
-                                "card_type": this.state.curCoupon.get('type')
-                            });
-                            useCoupon(this.state.curCoupon)}}>
+                            <TouchableWithoutFeedback
+                                onPress={()=>{
+                                    ActionUtil.setActionWithExtend(actionType.BA_DETAIL_WELFARECARD_SURE, {
+                                        "card_type": this.state.curCoupon.get('type')
+                                    });
+                                    useCoupon(this.state.curCoupon)
+                                }}
+                            >
                                 <View style={styles.touchBox}>
                                     <Text style={[styles.greenColor, styles.couponSure]}>确定</Text>
                                 </View>
@@ -555,9 +627,12 @@ class CouponModal extends Component {
 
     _renderFooter() {
         return (
-            <TouchableWithoutFeedback onPress={()=> {
-                ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_NOUSE);
-                this.props.useCoupon()}}>
+            <TouchableWithoutFeedback
+                onPress={()=> {
+                        ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_NOUSE);
+                        this.props.useCoupon()
+                    }}
+                >
                 <View style={[styles.center, styles.justifyContent, styles.couponFooter]}>
                     <Text style={[styles.greenColor, styles.more]}>不使用看房卡</Text>
                 </View>
@@ -601,7 +676,7 @@ class PhoneModal extends Component {
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
                             underlayColor="transparent"
-                            onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_CASHRECHACLOSE);actions.setSellerPhoneVisible(false);}}
+                            onPress={this._closeModal.bind(this, actionType.BA_DETAIL_CASHRECHACLOSE)}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -609,24 +684,33 @@ class PhoneModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={styles.phoneVal}>房东电话：<Text style={[styles.phoneVal, styles.fontMedium]}>12345678963{phoneInfo.get('phone')}</Text></Text>
+                        <Text style={styles.phoneVal}>房东电话：<Text style={[styles.phoneVal, styles.fontMedium]}>{phoneInfo.get('seller_phone')}</Text></Text>
                         <Text style={[styles.more, styles.grayColor, {textAlign: 'center'}]}>您可以在 [我查看的房源] 中查看房东电话</Text>
 
                         <TouchableHighlight
                             style={[styles.flex, styles.contactButton, styles.phoneSure]}
                             underlayColor="#04c1ae"
-                            onPress={() => {}}
+                            onPress={this._closeModal.bind(this, '')}
                         >
                             <View>
                                 <Text style={styles.contactText}>确定</Text>
                             </View>
-                        </TouchableHighlight>
-
-                        
+                        </TouchableHighlight>                        
                     </View>
                 </View>
             </Modal>
         );
+    }
+    _closeModal(actionLog) {
+        let {phoneInfo, actions} = this.props;
+
+        actionLog && ActionUtil.setAction(actionLog);
+
+        actions.setSellerPhoneVisible(false);
+        Toast.show('看房获得' + phoneInfo.get('experience') + '个经验', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.CENTER
+        });
     }
 }
 
@@ -835,10 +919,9 @@ class CostScoreModal extends Component {
     _handlerFeedback(actionLog) {
         let {callInfo, actions, propertyId} = this.props;
 
-        ActionUtil.setActionWithExtend(actionLog, {"vpid": propertyId});
-        actions.setFeedbackVisible(false);
+        ActionUtil.setActionWithExtend(actionLog, {"vpid": propertyId});        
         actions.callFeedback({
-            wash_id: callInfo.get('washId'),
+            order_id: callInfo.get('orderId'),
             status: 1 //在卖
         }, propertyId);
     }
@@ -854,7 +937,6 @@ class CostScoreModal extends Component {
             hideHeader: false,
             hideNavBar: false,
             bp: this.pageId,
-            washId: callInfo.get('washId'),
             propertyId: propertyId
         });
     }
@@ -868,7 +950,13 @@ class BaseInfo extends Component {
     render() {
         let {baseInfo, route} = this.props;
         let houseInfo = route.item;
-
+console.log("========houseInfo.get('is_verify')", houseInfo.get('is_verify'));
+console.log("========baseInfo.get('is_verify')", baseInfo.get('is_verify'));  
+      
+console.log("========houseInfo.get('verify_at')", houseInfo.get('verify_at'));
+console.log("========baseInfo.get('verify_at')", baseInfo.get('verify_at'));
+console.log("========houseInfo.get('created_at')", houseInfo.get('created_at'));
+console.log("========baseInfo.get('created_at')", baseInfo.get('created_at'));
         return (
             <View>
                 <View style={[styles.center, styles.justifyContent, styles.nameBox]}>
@@ -878,6 +966,9 @@ class BaseInfo extends Component {
                             style={[styles.subName, styles.baseColor]}>{houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}{houseInfo.get('door_num') && '室'}</Text>
                         {
                             houseInfo.get('is_new') ? <Text style={styles.tagNew}>新</Text> : null
+                        }
+                        {
+                            houseInfo.get('is_verify') ? <Text style={styles.tagNew}>认证</Text> : null
                         }
                     </View>
                 </View>
@@ -905,7 +996,10 @@ class BaseInfo extends Component {
                 </View>
                 <View style={[styles.justifyContent, styles.address]}>
                     <Text style={[styles.baseSize, styles.baseColor]}
-                          numberOfLines={1}>发布时间：7月8日</Text>
+                          numberOfLines={1}>{(houseInfo.get('is_verify') || baseInfo.get('is_verify')) ? 
+                          "认证时间：" + (houseInfo.get('verify_at') || baseInfo.get('verify_at') || '') : 
+                          "发布时间：" + (houseInfo.get('created_at') || baseInfo.get('created_at') || '')}
+                    </Text>
                 </View>
             </View>
         );
@@ -924,7 +1018,7 @@ class ContactList extends Component {
             return (
                 <View key={index} style={[styles.row, styles.contactItem, styles.center]}>
                     <Text style={[styles.grayColor, styles.date]}>{item.get('time')}</Text><Text
-                    style={[styles.baseColor, styles.itemSize]}>{item.get('phone')}联系了房东</Text>
+                    style={[styles.baseColor, styles.itemSize]}>{item.get('phone')}查看房东电话</Text>
                 </View>
             );
         });

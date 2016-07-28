@@ -30,7 +30,6 @@ export const callSellerFailed = makeActionCreator(types.CALL_SELLER_FAILED, 'cal
 export const houseContactLogFetched = makeActionCreator(types.HOSUE_CONTACT_LOG, 'contact');
 export const contactLogAppendFetched = makeActionCreator(types.APPEND_HOUSE_CONTACT_LOG, 'contact');
 export const changeCurrentContactLog = makeActionCreator(types.CHANGE_CURRENT_CONTACT_LOG);
-export const setWashId = makeActionCreator(types.SET_WASH_ID, 'washId');
 
 export const userInfoFetched = makeActionCreator(types.USER_INFO_FETCHED, 'userInfo');
 export const couponFetched = makeActionCreator(types.COUPON_FETCHED, 'coupon');
@@ -38,18 +37,35 @@ export const couponFetched = makeActionCreator(types.COUPON_FETCHED, 'coupon');
 export const setCouponVisible = makeActionCreator(types.COUPON_VISIBLE_CHANGED, 'visible');
 export const setSellerPhoneVisible = makeActionCreator(types.SELLERPHONE_VISIBLE_CHANGED, 'visible');
 
+export const setEnterStatus = makeActionCreator(types.ENTER_STATUS_CHANGED, 'status');
+export const setVoiceVisible = makeActionCreator(types.VOICE_VISIBLE_CHANGED, 'visible');
+export const setOrderId = makeActionCreator(types.SET_ORDER_ID, 'id');
+export const setCallTipVisibel = makeActionCreator(types.CALL_TIP_VISIBLE_CHANGED, 'visible');
+
 export function fetchBaseInfo(data) {
     return dispatch => {
         serviceAction(dispatch)({
             service: getBaseInfoService,
             data: data,
             success: function(oData) {
+                oData.status = 0;
+                oData.is_enter_detail = "0";
+                oData.is_verify = true;
+                oData.created_at = '7月18日';
+                oData.verify_at = '7月28日';
+                oData.record_url = {};
+                // {
+                //     "record_url": "http://xxxxxx.mp3",
+                //     "record_time": 37, //录音时长，秒
+                // };
+
+
+
                 dispatch(houseBaseFetched(oData));
 
                 if (!Number(oData.is_reply)) {
                     ActionUtil.setAction(actionType.BA_DETAIL_SPEND_ONVIEW);
                     dispatch(setFeedbackVisible(true));
-                    dispatch(setWashId(oData.log_id));
                 }
             },
             error: function (oData) {
@@ -80,8 +96,10 @@ export function callSeller(params) {
             service: callSellerPhone,
             data: params,
             success: function (oData) {
-                dispatch(setWashId(oData.log_id));
+                oData.order_id = 5;        //?????
 
+
+                dispatch(setOrderId(oData.order_id));
                 dispatch(setHomeContactStatus({"property_id": params.property_id, "is_contact": "1"}));
                 dispatch(setContactStatus({"property_id": params.property_id, "is_contact": "1"}));
 
@@ -106,19 +124,28 @@ export function callFeedback(params, propertyId) {
             service: postFeedback,
             data: params,
             success: function (oData) {
-                dispatch(setSellerPhone({
-                    phone: oData.seller_phone || '',
-                    exp: oData.experience || 5
-                }));
+                oData = {
+                    "seller_phone": 1231232313, //当反馈为在卖时，返回值有此字段
+                    "experience": 5 //看房经验值
+                };
 
-                Toast.show('看房获得' + (oData.experience || 5) + '个经验', {
+                dispatch(setFeedbackVisible(false));
+                dispatch(setSellerPhone(oData));
+
+                Toast.show('看房获得' + (oData.experience || 10) + '个经验', {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER
                 });
                 ActionUtil.setActionWithExtend(actionType.BA_DETAIL_EXPERIENCE_ONVIEW, {"vpid": propertyId});
             },
-            error: function (oData) {
-
+            error: function (error) {
+                error = {
+                    "status": 3,
+                    "msg": "3天后再申请退积分"
+                };
+                dispatch(setFeedbackVisible(false));
+                dispatch(callSellerFailed(error));
+                dispatch(setErrorTipVisible(true));
             }
         })
     }
@@ -190,10 +217,12 @@ export function fetchSellerPhone(data) {
             service: getSellerPhoneService,
             data: data,
             success: function (oData) {
-                dispatch(setSellerPhone({
-                    phone: oData.seller_phone,
-                    exp: oData.experience || 5
-                }));
+                oData = {
+                    "seller_phone": 12345678963,
+                    "experience": 10 //获取经验
+                };
+
+                dispatch(setSellerPhone(oData));
                 ActionUtil.setAction(actionType.BA_DETAIL_PHENO_ONVIEW);
                 dispatch(setSellerPhoneVisible(true));
 

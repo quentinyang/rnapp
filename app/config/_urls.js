@@ -12,12 +12,11 @@ let HOST = global.ghost = NativeModules.Utils.host;
 let urls = {
     detail: {
         baseInfo: HOST + 'property/detail',
-        status: HOST + 'property/log',
         call: HOST + 'wash/call',
         feedback: HOST + 'property/feedback',
         contactLog: HOST + 'property/contact/log',
         userInfo: HOST + 'property/input-user/info',
-        sellerPhone: HOST + 'wash/record/phone'
+        sellerPhone: HOST + 'wash/seller-phone'
     },
     user: {
         sendCode: HOST + 'passport/login/sms',

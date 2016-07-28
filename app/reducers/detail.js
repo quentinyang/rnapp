@@ -25,7 +25,9 @@ function houseData(state, action) {
 }
 
 let initialBaseInfo = {
-    baseInfo: {},
+    baseInfo: {
+        record_url: {}
+    },
 
     curLogs: [],
     contact: {
@@ -77,6 +79,9 @@ function baseInfo(state, action) {
         case types.COUPON_FETCHED:
             return state.set('couponArr', Immutable.fromJS(action.coupon));
             break;
+        case types.ENTER_STATUS_CHANGED:
+            return state.setIn(['baseInfo', 'is_enter_detail'], Immutable.fromJS(action.status));  //关闭
+            break;
         default:
             return state;
     }
@@ -87,22 +92,28 @@ let initParam = {
         msg: '拨打电话失败了,再试一下吧!'
     },
     errorTipVisible: false,
+    callTipVisible: false,
     feedbackVisible: false,
-    washId: '',
 
+    sellerPhoneVisible: false,
     sellerPhone: {
-        phone: '',
-        exp: 0
+        seller_phone: '',
+        experience: 10
     },
 
     couponVisible: false,
-    sellerPhoneVisible: false
+    voiceVisible: false,
+
+    orderId: ''
 };
 
 function callInfo(state, action) {
     switch(action.type) {
         case types.ERROR_TIP_VISIBLE_CHANGED:
             return state.set('errorTipVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.CALL_TIP_VISIBLE_CHANGED:
+            return state.set('callTipVisible', Immutable.fromJS(action.visible));
             break;
         case types.FEEDBACK_VISIBLE_CHANGED:
             return state.set('feedbackVisible', Immutable.fromJS(action.visible));
@@ -116,9 +127,6 @@ function callInfo(state, action) {
         case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initParam);
             break;
-        case types.SET_WASH_ID:
-            return state.set('washId', Immutable.fromJS(action.washId));
-            break;
         case appTypes.CLICK_BACK_PAGE:
             if(action.pageName == "backScore") {
                 return state.set('feedbackVisible', Immutable.fromJS(true));
@@ -130,6 +138,12 @@ function callInfo(state, action) {
             break;
         case types.SELLERPHONE_VISIBLE_CHANGED:
             return state.set('sellerPhoneVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.VOICE_VISIBLE_CHANGED:
+            return state.set('voiceVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.SET_ORDER_ID:
+            return state.set('orderId', Immutable.fromJS(action.id));
             break;
         default:
             return state;
