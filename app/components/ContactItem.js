@@ -11,8 +11,9 @@ export default class ContactItem extends Component {
     }
 
     render() {
-        let {item} = this.props;
+        let {item, current} = this.props;
         let statusStr = ['未反馈', '确认在卖', '反馈虚假', '联系不上', '反馈虚假', '确认不卖', '确认已卖', '按错了'];
+
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
@@ -24,7 +25,7 @@ export default class ContactItem extends Component {
                     />
 
 
-                    {item.get('reply_status') == 1 ?
+                    {current == 'tel' ?
                         <View style={[styles.status, styles.row, styles.center]}>
                             <Text style={styles.bottomMsg}>电话:</Text>
 
@@ -41,7 +42,7 @@ export default class ContactItem extends Component {
                         </View>
                             :
                         <View style={[styles.status, styles.row, styles.center]}>
-                            <Text style={styles.bottomMsg}>{item.get('unlock_phone_cost')}积分已返还</Text>
+                            <Text style={styles.bottomMsg}>{current == 'score' ? item.get('unlock_phone_cost') + '积分已返还' : '客服审核中'}</Text>
                         </View>
                     }
                 </View>

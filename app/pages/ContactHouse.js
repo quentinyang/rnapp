@@ -93,14 +93,56 @@ export default class ContactHouse extends Component {
     }
 
     _renderRow = (rowData: any, sectionID: number, rowID: number) => {
+        let checkStatus = rowData.get('check_status'),
+            replyStatus = rowData.get('reply_status'),
+            past = rowData.get('past'),
+            btn,  //'green', 'gray'
+            handleBtn,  //'less', 'normal', 'more', 'sell'  'less'小于申诉时间, 'normal'正常, 'more'超时, 'sell'再次确认在卖
+            currentStatus;  //'tel', 'score', 'check'
+
+        if(checkStatus == 1) {  //审核通过，1.隐藏按钮 2.底部显示积分退还
+            currentStatus = 'score';
+        } else if(checkStatus == 2) {  //审核驳回，1.按钮变灰，弹层提示客服仍确认在卖 2.底部显示手机号
+            btn = 'gray';
+            handleBtn = 'sell';
+            currentStatus = 'tel';
+        } else {  //未审核：未提交审核/审核中...，按钮和底部文案需要分开判断
+            //按钮
+            if(replyStatus != 1) {  //只要没有反馈在卖（包括反馈非在卖状态或者未反馈），申诉按钮都隐藏
+
+            } else {  //反馈在卖
+                if(past <= 3) {  //小于申诉时间，按钮绿色，弹层提示小于3天
+                    btn = 'green';
+                    handleBtn = 'less';
+                } else if(past > 10) {  //超过申诉时间，按钮灰色，弹层提示超过申诉时间
+                    btn = 'gray';
+                    handleBtn = 'more';
+                } else {  //在申诉时间内，按钮绿色，点击跳转
+                    btn = 'green';
+                    handleBtn = 'normal';
+                }
+            }
+
+            //底部文案
+            if(replyStatus == 0 || replyStatus == 1) {  //底部显示手机号
+                currentStatus = 'tel';
+            } else {  //底部显示客服审核中
+                currentStatus = 'check';
+            }
+        }
+
+        //房源是否可点
+
         return (
             <View key={rowID}>
-                <ContactItem item={rowData} onItemPress={this._onItemPress}/>
-                <TouchableHighlight onPress={() => {this._applyToRefund(1)}} underlayColor="transparent">
-                    <View style={[styles.applyBtn, styles.center]}>
-                        <Text style={[styles.fontSmall, styles.greenColor]}>申请退积分</Text>
+                <ContactItem item={rowData} current={currentStatus} onItemPress={this._onItemPress}/>
+                {btn == 'green' || btn == 'gray' ?
+                <TouchableHighlight onPress={() => {this._applyToRefund(handleBtn)}} underlayColor="transparent">
+                    <View style={[styles.applyBtn, styles.center, btn == 'green' ? styles.greenBorder: styles.grayBorder]}>
+                        <Text style={[styles.fontSmall, btn == 'green' ? styles.greenColor : styles.grayColor]}>申请退积分</Text>
                     </View>
                 </TouchableHighlight>
+                :null}
             </View>
         )
     };
@@ -148,22 +190,22 @@ export default class ContactHouse extends Component {
     _applyToRefund = (status, id = '') => {
         let {actions, navigator} = this.props;
         switch(status) {
-            case 1:
+            case 'less':
                 actions.tooEarlyVisibleChanged(true);
                 break;
-            case 2:
+            case 'sell':
                 Toast.show('客服已再次确认房源在卖\n不可再退积分', {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER
                 });
                 break;
-            case 3:
+            case 'more':
                 Toast.show('查看房源10天后\n不可再申请退积分', {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER
                 });
                 break;
-            case 4:
+            case 'normal':
                 navigator.push({
                     component: BackScoreContainer,
                     name: 'backScore',
@@ -236,6 +278,15 @@ const styles = StyleSheet.create({
     greenBgColor: {
         backgroundColor: '#04c1ae'
     },
+    greenBorder: {
+        borderColor: '#04c1ae'
+    },
+    grayColor: {
+        color: '#ccc'
+    },
+    grayBorder: {
+        borderColor: '#ccc'
+    },
     noHouseList: {
         width: 100,
         height: 100,
@@ -255,8 +306,7 @@ const styles = StyleSheet.create({
         bottom: 20,
         width: 75,
         height: 30,
-        borderWidth: 1,
-        borderColor: '#04c1ae',
+        borderWidth: 1
     },
     knowBtn: {
         marginTop: 15,
