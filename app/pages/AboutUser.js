@@ -146,8 +146,6 @@ class UserSection extends Component {
 
     render() {
         let {userInfo, log} = this.props;
-        let mobile = userInfo.get('mobile');
-        let showMobile = mobile ? mobile.slice(0, 2) + '********' + mobile.slice(-1) : '';
         let attentArr = userInfo.get('user_attention_block_list').size > 0 ? userInfo.get('user_attention_block_list').toJS() : userInfo.get('user_attention_community_list').size > 0 ? userInfo.get('user_attention_community_list').toJS() : null;
 
         return (
@@ -157,7 +155,7 @@ class UserSection extends Component {
                         style={styles.avatarBox}
                         source={require('../images/avatar.png')}
                     />
-                    <Text style={{fontSize: 17}}>{showMobile}</Text>
+                    <Text style={{fontSize: 17}}>用户{userInfo.get('input_user_id')}</Text>
                     <View style={[styles.row, styles.resultList]}>
                         <View style={[styles.center, styles.resultItem]}>
                             <Text style={[styles.resultNum]}>{userInfo.get('login_days')}</Text>

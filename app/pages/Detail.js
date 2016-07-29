@@ -43,21 +43,21 @@ export default class Detail extends Component {
         let couponArr = baseInfo.get('couponArr');
         let status = Number(info.get('phone_lock_status'));
         let phone = status ? info.get('seller_phone') : callInfo.get('sellerPhone').get('seller_phone');
-        
-        
+
+
 
         let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');
 
         return (
             <View style={styles.flex}>
                 {
-                    info.get('record_url') == null ? null : 
-                    info.get('record_url').size ? 
+                    info.get('record_url') == null ? null :
+                    info.get('record_url').size ?
                     <VerifyBtn
                         phone={phone}
                         playRecord={this._playRecord}
                         getSellerPhone={this._clickGetSellerPhoneBtn.bind(this, status, phone)}
-                    /> : 
+                    /> :
                     <UnVerifyBtn
                         contactSeller={this._contactSeller}
                     />
@@ -232,7 +232,7 @@ export default class Detail extends Component {
             this._getSellerPhone();
         } else {
             this._callSellerPhone();
-        }        
+        }
     }
 
     _renderRow = (rowData:any) => {
@@ -324,7 +324,7 @@ export default class Detail extends Component {
         if (baseInfo.get('couponArr').size) {  //是否有看房卡
             ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_ONVIEW);
             actions.setCouponVisible(true);
-        } else { 
+        } else {
             actions.setCallTipVisibel(true);
         }
     }
@@ -372,8 +372,8 @@ class VerifyBtn extends Component {
                             <Text style={styles.whiteColor}>联系房东</Text>
                             <Text style={[styles.sellerPhone, styles.whiteColor]}>({phone})</Text>
                         </View>
-                        :  
-                        <View style={[styles.row, styles.justifyContent, styles.center]}>                            
+                        :
+                        <View style={[styles.row, styles.justifyContent, styles.center]}>
                             <Text style={styles.whiteColor}>
                                 <Text style={[styles.fontMedium, styles.whiteColor]}>4</Text>积分看房东电话
                             </Text>
@@ -532,7 +532,7 @@ class VoiceModal extends Component {
                             style={styles.voiceIcon}
                             source={voiceIcon}
                         />
-                        
+
                         <Text style={styles.whiteColor}>{time}</Text>
                     </View>
                 </View>
@@ -695,7 +695,7 @@ class PhoneModal extends Component {
                             <View>
                                 <Text style={styles.contactText}>确定</Text>
                             </View>
-                        </TouchableHighlight>                        
+                        </TouchableHighlight>
                     </View>
                 </View>
             </Modal>
@@ -733,7 +733,7 @@ class UserInfo extends Component {
                         ActionUtil.setAction(actionType.BA_DETAIL_USER);
                         navigator.push({
                             component: AboutUserContainer,
-                            title: '用户' + showMobile,
+                            title: '用户' + userInfo.get('input_user_id'),
                             from: 'houseDetail',
                             name: 'aboutUser',
                             backLog: actionType.BA_USER_RETURN,
@@ -919,7 +919,7 @@ class CostScoreModal extends Component {
     _handlerFeedback(actionLog) {
         let {callInfo, actions, propertyId} = this.props;
 
-        ActionUtil.setActionWithExtend(actionLog, {"vpid": propertyId});        
+        ActionUtil.setActionWithExtend(actionLog, {"vpid": propertyId});
         actions.callFeedback({
             order_id: callInfo.get('orderId'),
             status: 1 //在卖
@@ -951,8 +951,8 @@ class BaseInfo extends Component {
         let {baseInfo, route} = this.props;
         let houseInfo = route.item;
 console.log("========houseInfo.get('is_verify')", houseInfo.get('is_verify'));
-console.log("========baseInfo.get('is_verify')", baseInfo.get('is_verify'));  
-      
+console.log("========baseInfo.get('is_verify')", baseInfo.get('is_verify'));
+
 console.log("========houseInfo.get('verify_at')", houseInfo.get('verify_at'));
 console.log("========baseInfo.get('verify_at')", baseInfo.get('verify_at'));
 console.log("========houseInfo.get('created_at')", houseInfo.get('created_at'));
@@ -996,8 +996,8 @@ console.log("========baseInfo.get('created_at')", baseInfo.get('created_at'));
                 </View>
                 <View style={[styles.justifyContent, styles.address]}>
                     <Text style={[styles.baseSize, styles.baseColor]}
-                          numberOfLines={1}>{(houseInfo.get('is_verify') || baseInfo.get('is_verify')) ? 
-                          "认证时间：" + (houseInfo.get('verify_at') || baseInfo.get('verify_at') || '') : 
+                          numberOfLines={1}>{(houseInfo.get('is_verify') || baseInfo.get('is_verify')) ?
+                          "认证时间：" + (houseInfo.get('verify_at') || baseInfo.get('verify_at') || '') :
                           "发布时间：" + (houseInfo.get('created_at') || baseInfo.get('created_at') || '')}
                     </Text>
                 </View>
