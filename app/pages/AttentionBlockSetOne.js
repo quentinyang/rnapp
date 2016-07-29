@@ -106,7 +106,6 @@ export default class AttentionBlockSetOne extends Component {
             .then((oData) => {
                 actions.attentionListOneCommunityChanged(communitySelect.toJS());
                 actionsHome.fetchAttentionHouseList();
-                actionsHome.fetchCurrentStatus();
                 navigator.pop();
             })
             .catch((oData) => {
@@ -115,7 +114,7 @@ export default class AttentionBlockSetOne extends Component {
                     actionsApp.webAuthentication(oData);
                 } else {
                     Alert.alert('提示', oData.msg, [{text: '确定'}]);
-                }                
+                }
             });
         })
     };
