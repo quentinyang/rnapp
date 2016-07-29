@@ -14,6 +14,7 @@ let urls = {
         baseInfo: HOST + 'property/detail',
         call: HOST + 'wash/call',
         feedback: HOST + 'property/feedback',
+        refund: HOST + 'appeal/refund',
         contactLog: HOST + 'property/contact/log',
         userInfo: HOST + 'property/input-user/info',
         sellerPhone: HOST + 'wash/seller-phone'

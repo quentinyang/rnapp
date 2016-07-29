@@ -13,8 +13,13 @@ export function callSellerPhone(params) {
     });
 }
 
-export function postFeedback(params) {
+export function postFeedback(params) {  //单页去反馈
     return ajax.post(urls().detail.feedback, {
+        body: params
+    });
+}
+export function postRefund(params) {  //联系的房源申请退积分
+    return ajax.post(urls().detail.refund, {
         body: params
     });
 }

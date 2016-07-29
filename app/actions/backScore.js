@@ -2,14 +2,14 @@
 import {InteractionManager} from 'nuke'
 import * as types from '../constants/BackScore';
 import {makeActionCreator, serviceAction} from './base';
-import {postFeedback} from '../service/detailService';
+import {postFeedback, postRefund} from '../service/detailService';
 import {setFeedbackVisible} from './detail'
 export const changeSuccessModalVisible = makeActionCreator(types.SUCCESS_MODAL_VISIBLE_CHANGE, 'visible');
 
-export function submitReason(params, nav) {
+export function submitReason(params, nav, origin) {
     return dispatch => {
         serviceAction(dispatch)({
-            service: postFeedback,
+            service: origin == 'ContactHouse' ? postRefund : postFeedback,
             data: params,
             success: function() {
                 dispatch(changeSuccessModalVisible(true));

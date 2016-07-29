@@ -20,7 +20,7 @@ export default class ContactItem extends Component {
                     <HouseItem
                         item={item}
                         dateKey="reply_at"
-                        operator={statusStr[item.get('reply_status')]}
+                        operator={item.get('check_status') == 2 ? '客服确认在卖' : statusStr[item.get('reply_status')]}
                         onItemPress={this._onHandlePress}
                     />
 

@@ -137,7 +137,7 @@ export default class ContactHouse extends Component {
             <View key={rowID}>
                 <ContactItem item={rowData} current={currentStatus} onItemPress={this._onItemPress}/>
                 {btn == 'green' || btn == 'gray' ?
-                <TouchableHighlight onPress={() => {this._applyToRefund(handleBtn)}} underlayColor="transparent">
+                <TouchableHighlight onPress={() => {this._applyToRefund(handleBtn, rowData)}} underlayColor="transparent">
                     <View style={[styles.applyBtn, styles.center, btn == 'green' ? styles.greenBorder: styles.grayBorder]}>
                         <Text style={[styles.fontSmall, btn == 'green' ? styles.greenColor : styles.grayColor]}>申请退积分</Text>
                     </View>
@@ -187,7 +187,7 @@ export default class ContactHouse extends Component {
         });
     };
 
-    _applyToRefund = (status, id = '') => {
+    _applyToRefund = (status, data) => {
         let {actions, navigator} = this.props;
         switch(status) {
             case 'less':
@@ -210,11 +210,12 @@ export default class ContactHouse extends Component {
                     component: BackScoreContainer,
                     name: 'backScore',
                     title: '申请退积分',
+                    from: 'ContactHouse',
                     hideHeader: false,
                     hideNavBar: false,
                     bp: this.pageId,
-                    washId: id,
-                    propertyId: ''
+                    washId: data.get('order_id'),
+                    propertyId: data.get('property_id')
                 });
                 break;
             default:
