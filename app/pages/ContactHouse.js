@@ -134,10 +134,10 @@ export default class ContactHouse extends Component {
         //房源是否可点
 
         return (
-            <View key={rowID}>
+            <View key={rowID} style={styles.flex}>
                 <ContactItem item={rowData} current={currentStatus} onItemPress={this._onItemPress}/>
                 {btn == 'green' || btn == 'gray' ?
-                <TouchableHighlight onPress={() => {this._applyToRefund(handleBtn, rowData)}} underlayColor="transparent">
+                <TouchableHighlight style={styles.absolute} onPress={() => {this._applyToRefund(handleBtn, rowData)}} underlayColor="transparent">
                     <View style={[styles.applyBtn, styles.center, btn == 'green' ? styles.greenBorder: styles.grayBorder]}>
                         <Text style={[styles.fontSmall, btn == 'green' ? styles.greenColor : styles.grayColor]}>申请退积分</Text>
                     </View>
@@ -305,10 +305,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    applyBtn: {
+    absolute: {
         position: 'absolute',
         right: 15,
         bottom: 20,
+    },
+    applyBtn: {
         width: 75,
         height: 30,
         borderWidth: 1
