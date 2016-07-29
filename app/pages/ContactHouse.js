@@ -188,18 +188,22 @@ export default class ContactHouse extends Component {
     };
 
     _applyToRefund = (status, data) => {
+        ActionUtil.setAction(actionType.BA_MINE_CONTACT_CREDIT_BACK);
         let {actions, navigator} = this.props;
         switch(status) {
             case 'less':
+                ActionUtil.setAction(actionType.BA_MINE_CONTACT_BOXONVIEW);
                 actions.tooEarlyVisibleChanged(true);
                 break;
             case 'sell':
+                ActionUtil.setAction(actionType.BA_MINE_CONTACT_TOAST_ONE);
                 Toast.show('客服已再次确认房源在卖\n不可再退积分', {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER
                 });
                 break;
             case 'more':
+                ActionUtil.setAction(actionType.BA_MINE_CONTACT_TOAST_TWO);
                 Toast.show('查看房源10天后\n不可再申请退积分', {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER
