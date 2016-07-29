@@ -96,7 +96,7 @@ export default class BackScore extends Component {
 
             this.submitFlag = true;
             this.props.actions.submitReason({
-                wash_id: this.props.route.washId,
+                order_id: this.props.route.washId,
                 status: this.state.cur + 3
             }, navigator, route.from);
         }
