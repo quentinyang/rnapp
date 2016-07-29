@@ -10,6 +10,8 @@ import * as homeTypes from '../constants/Home';
 import * as types from '../constants/DetailType';
 
 import { InteractionManager } from 'nuke'
+import AsyncStorageComponent from '../utils/AsyncStorageComponent';
+import * as common from '../constants/Common';
 import { getBaseInfoService, callSellerPhone, postFeedback, getContactLogService, getUserInfoService, getSellerPhoneService, getPropertyRecordService } from '../service/detailService';
 import { fetchSimilarHouseListService } from '../service/houseListService';
 import { getWelfareList }  from '../service/cardService';
@@ -56,6 +58,19 @@ export function fetchBaseInfo(data) {
                     ActionUtil.setAction(actionType.BA_DETAIL_SPEND_ONVIEW);
                     dispatch(setFeedbackVisible(true));
                 }
+
+                let key = common.USER_ENTER_STATUS + guid;
+                AsyncStorageComponent.get(key)
+                .then((value) => {
+                    if(!value && oData.feedback_status == "1") {
+                        dispatch(setEnterStatus(false));
+                        AsyncStorageComponent.save(key, "true").catch((error) => {console.log(error);})
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
             },
             error: function (oData) {
 

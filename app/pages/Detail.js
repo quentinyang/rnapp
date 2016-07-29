@@ -61,7 +61,7 @@ export default class Detail extends Component {
                 }
 
                 <GuideModal
-                    isVisible={info.get('is_enter_detail') == "0"}
+                    isVisible={!baseInfo.get('userEnter')}
                     actions={actions}
                 />
 
@@ -435,7 +435,7 @@ class GuideModal extends Component {
 
                             <TouchableHighlight
                                 underlayColor="transparent"
-                                onPress={() => {actions.setEnterStatus("1");}}
+                                onPress={() => {actions.setEnterStatus(true);}}
                             >
                                 <View style={[styles.knowBtn, styles.whiteBorder, styles.center, styles.justifyContent]}>
                                     <Text style={styles.whiteColor}>我知道了</Text>

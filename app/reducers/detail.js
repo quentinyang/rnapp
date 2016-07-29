@@ -36,7 +36,8 @@ let initialBaseInfo = {
         total: ""
     },
     userInfo: {},
-    couponArr: []
+    couponArr: [],
+    userEnter: true
 };
 
 function baseInfo(state, action) {
@@ -83,7 +84,7 @@ function baseInfo(state, action) {
             return state.set('couponArr', Immutable.fromJS(action.coupon));
             break;
         case types.ENTER_STATUS_CHANGED:
-            return state.setIn(['baseInfo', 'is_enter_detail'], Immutable.fromJS(action.status));  //关闭
+            return state.set('userEnter', Immutable.fromJS(action.status));  //关闭
             break;
         default:
             return state;
