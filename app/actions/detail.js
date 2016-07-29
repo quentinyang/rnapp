@@ -3,14 +3,14 @@
 import {Platform} from 'nuke'
 import Toast from 'react-native-root-toast';
 let CallModule = require('react-native').NativeModules.CallModule;
-
+let AudioPlayer = require('react-native').NativeModules.RNAudioPlayer;
 let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import * as homeTypes from '../constants/Home';
 import * as types from '../constants/DetailType';
 
 import { InteractionManager } from 'nuke'
-import { getBaseInfoService, callSellerPhone, postFeedback, getContactLogService, getUserInfoService, getSellerPhoneService } from '../service/detailService';
+import { getBaseInfoService, callSellerPhone, postFeedback, getContactLogService, getUserInfoService, getSellerPhoneService, getPropertyRecordService } from '../service/detailService';
 import { fetchSimilarHouseListService } from '../service/houseListService';
 import { getWelfareList }  from '../service/cardService';
 import {makeActionCreator, serviceAction} from './base';
@@ -41,6 +41,7 @@ export const setEnterStatus = makeActionCreator(types.ENTER_STATUS_CHANGED, 'sta
 export const setVoiceVisible = makeActionCreator(types.VOICE_VISIBLE_CHANGED, 'visible');
 export const setOrderId = makeActionCreator(types.SET_ORDER_ID, 'id');
 export const setCallTipVisibel = makeActionCreator(types.CALL_TIP_VISIBLE_CHANGED, 'visible');
+export const propertyRecordFetched = makeActionCreator(types.PROPERTY_RECORD_FETCHED, 'record');
 
 export function fetchBaseInfo(data) {
     return dispatch => {
@@ -49,6 +50,7 @@ export function fetchBaseInfo(data) {
             data: data,
             success: function(oData) {
                 oData.status = 0;
+                oData.feedback_status = 1;
                 oData.is_enter_detail = "0";
                 oData.is_verify = true;
                 oData.created_at = '7月18日';
@@ -228,6 +230,35 @@ export function fetchSellerPhone(data) {
 
                 dispatch(setHomeContactStatus({"property_id": data.property_id, "is_contact": "1"}));
                 dispatch(setContactStatus({"property_id": data.property_id, "is_contact": "1"}));
+            },
+            error: function (error) {
+                dispatch(callSellerFailed(error));
+                dispatch(setErrorTipVisible(true));
+            }
+        })
+    }
+}
+
+export function fetchPropertyRecord(data) {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: getPropertyRecordService,
+            data: data,
+            success: function (oData) {
+                // oData = 
+                // {
+                //     "record_url": "http://xxxxxx.mp3",
+                //     "record_time": 37, //录音时长，秒
+                // };
+                if(oData.record_url) {
+                    dispatch(propertyRecordFetched(oData));
+                    AudioPlayer.play(oData.record_url);
+                } else {
+                    Toast.show('录音生成中，请稍等一会儿', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER
+                    });
+                }
             },
             error: function (error) {
                 dispatch(callSellerFailed(error));

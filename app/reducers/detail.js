@@ -44,6 +44,8 @@ function baseInfo(state, action) {
         case types.HOUSE_BASE_FETCHED:
             return state.set('baseInfo', Immutable.fromJS(action.houseBase));
             break;
+        case types.PROPERTY_RECORD_FETCHED:
+            return state.setIn(['baseInfo', 'record_url'], Immutable.fromJS(action.record));
         case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initialBaseInfo);
             break;

@@ -17,7 +17,8 @@ let urls = {
         refund: HOST + 'appeal/refund',
         contactLog: HOST + 'property/contact/log',
         userInfo: HOST + 'property/input-user/info',
-        sellerPhone: HOST + 'wash/seller-phone'
+        sellerPhone: HOST + 'wash/seller-phone',
+        getRecord: HOST + 'property/record',
     },
     user: {
         sendCode: HOST + 'passport/login/sms',

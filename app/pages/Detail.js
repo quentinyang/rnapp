@@ -51,8 +51,9 @@ export default class Detail extends Component {
         return (
             <View style={styles.flex}>
                 {
-                    info.get('record_url') == null ? null :
-                    info.get('record_url').size ?
+                    info.get('feedback_status') == null ? null : 
+                    info.get('feedback_status') == '1' ? 
+
                     <VerifyBtn
                         phone={phone}
                         playRecord={this._playRecord}
@@ -190,6 +191,7 @@ export default class Detail extends Component {
         } else {
             DeviceEventEmitter.removeAllListeners('callIdle');
         }
+        AudioPlayer.stop();
     }
 
     _clickGetSellerPhoneBtn(status, phone) {
@@ -309,13 +311,17 @@ export default class Detail extends Component {
     };
 
     _playRecord = () => {
-        let {baseInfo, actions} = this.props;
+        let {baseInfo, actions, route} = this.props;
         let info = baseInfo.get('baseInfo');
         let record = info.get('record_url');
 
         if(record.get('record_url')) { //是否有录音
             actions.setVoiceVisible(true);
             AudioPlayer.play(record.get('record_url'));
+        } else {
+            actions.fetchPropertyRecord({
+                property_id: route.item.get('property_id')
+            });
         }
     }
 
@@ -506,7 +512,9 @@ class VoiceModal extends Component {
 
     render() {
         let {isVisible, time, actions} = this.props;
+        let m = parseInt(time / 60), s = time % 60;
         let voiceIcon = this.state.playing == 1 ? require('../images/voice_anim.gif') : require('../images/voice.png');
+
         return (
             <Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
                 <View style={[styles.flex, styles.center, styles.justifyContent, styles.voiceBg]}>
@@ -533,7 +541,7 @@ class VoiceModal extends Component {
                             source={voiceIcon}
                         />
 
-                        <Text style={styles.whiteColor}>{time}</Text>
+                        <Text style={styles.whiteColor}>{m}:{s}</Text>
                     </View>
                 </View>
             </Modal>
@@ -950,13 +958,7 @@ class BaseInfo extends Component {
     render() {
         let {baseInfo, route} = this.props;
         let houseInfo = route.item;
-console.log("========houseInfo.get('is_verify')", houseInfo.get('is_verify'));
-console.log("========baseInfo.get('is_verify')", baseInfo.get('is_verify'));
 
-console.log("========houseInfo.get('verify_at')", houseInfo.get('verify_at'));
-console.log("========baseInfo.get('verify_at')", baseInfo.get('verify_at'));
-console.log("========houseInfo.get('created_at')", houseInfo.get('created_at'));
-console.log("========baseInfo.get('created_at')", baseInfo.get('created_at'));
         return (
             <View>
                 <View style={[styles.center, styles.justifyContent, styles.nameBox]}>

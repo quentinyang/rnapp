@@ -41,3 +41,9 @@ export function getSellerPhoneService(params) {
         body: params
     });
 }
+
+export function getPropertyRecordService(params) {
+    return ajax.get(urls().detail.getRecord, {
+        data: params
+    });
+}
