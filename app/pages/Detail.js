@@ -47,9 +47,8 @@ export default class Detail extends Component {
         return (
             <View style={styles.flex}>
                 {
-                    info.get('feedback_status') == null ? null :
+                    info.get('feedback_status') == null ? null : 
                     (info.get('feedback_status') == '1' || phone) ?
-
                     <VerifyBtn
                         phone={phone}
                         playRecord={this._playRecord}
@@ -513,6 +512,12 @@ class VoiceModal extends Component {
         let {isVisible, time, actions} = this.props;
         let m = parseInt(time / 60), s = time % 60;
         let voiceIcon = this.state.playing == 1 ? require('../images/voice_anim.gif') : require('../images/voice.png');
+        if(m < 10) {
+            m = "0" + m;
+        }
+        if(s < 10) {
+            s = "0" + s;
+        }
 
         return (
             <Modal visible={isVisible} transparent={true} onRequestClose={() => {}}>
@@ -1117,7 +1122,7 @@ var styles = StyleSheet.create({
         backgroundColor: '#eee'
     },
     listView: {
-        marginBottom: 70
+        marginBottom: 60
     },
     nameBox: {
         height: 90,

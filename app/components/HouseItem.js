@@ -24,7 +24,7 @@ export default class HouseItem extends Component {
                     }
 
                     <View>
-                        <Text style={[styles.flex, styles.row, styles.justifyContent, styles.headerMsg, item.get('is_click') ? styles.gray : {}]} numberOfLines={1}>
+                        <Text style={[styles.flex, styles.row, styles.headerMsg, item.get('is_click') ? styles.gray : {}]} numberOfLines={1}>
                             {item.get('community_name') + "  "}
                             {item.get('building_num') + (item.get('building_num') && item.get('building_unit')) + item.get('door_num') + (item.get('door_num') && '室')}
                             {item.get('is_new') && ' '}
