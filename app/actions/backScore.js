@@ -5,6 +5,7 @@ import {makeActionCreator, serviceAction} from './base';
 import {postFeedback, postRefund} from '../service/detailService';
 import {setFeedbackVisible} from './detail'
 import {fetchPrependContactHouse} from './settings'
+import Toast from 'react-native-root-toast';
 export const changeSuccessModalVisible = makeActionCreator(types.SUCCESS_MODAL_VISIBLE_CHANGE, 'visible');
 
 export function submitReason(params, nav, origin) {
@@ -26,7 +27,10 @@ export function submitReason(params, nav, origin) {
                 });
             },
             error: function(oData) {
-
+                Toast.show(oData.msg || '系统错误，请稍后再试', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER
+                    });
             }
         })
     }

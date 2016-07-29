@@ -47,8 +47,8 @@ export default class Detail extends Component {
         return (
             <View style={styles.flex}>
                 {
-                    info.get('feedback_status') == null ? null : 
-                    (info.get('feedback_status') == '1' || phone) ? 
+                    info.get('feedback_status') == null ? null :
+                    (info.get('feedback_status') == '1' || phone) ?
 
                     <VerifyBtn
                         phone={phone}
@@ -953,6 +953,7 @@ class CostScoreModal extends Component {
             hideHeader: false,
             hideNavBar: false,
             bp: this.pageId,
+            washId: callInfo.get('orderId'),
             propertyId: propertyId
         });
     }
