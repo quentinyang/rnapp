@@ -27,7 +27,6 @@ let ds = new ListView.DataSource({
 export default class Detail extends Component {
     constructor(props) {
         super(props);
-        this.isGetCall = false;
         this.couponObj;
         this.pageId = actionType.BA_DETAIL;
         ActionUtil.setActionWithExtend(actionType.BA_DETAIL_ONVIEW, {
@@ -43,16 +42,13 @@ export default class Detail extends Component {
         let couponArr = baseInfo.get('couponArr');
         let status = Number(info.get('phone_lock_status'));
         let phone = status ? info.get('seller_phone') : callInfo.get('sellerPhone').get('seller_phone');
-
-
-
         let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');
 
         return (
             <View style={styles.flex}>
                 {
                     info.get('feedback_status') == null ? null : 
-                    info.get('feedback_status') == '1' ? 
+                    (info.get('feedback_status') == '1' || phone) ? 
 
                     <VerifyBtn
                         phone={phone}
@@ -171,7 +167,6 @@ export default class Detail extends Component {
         } else {
             ActionUtil.setAction(actionType.BA_DETAIL_SPEND);
             actions.setFeedbackVisible(true);
-            this.isGetCall = false;
         }
     }
 
@@ -195,10 +190,6 @@ export default class Detail extends Component {
     }
 
     _clickGetSellerPhoneBtn(status, phone) {
-        if (this.isGetCall) {
-            return;
-        }
-
         let {actions, actionsNavigation, actionsHome, route, baseInfo} = this.props;
         let propertyId = route.item.get("property_id");
 
@@ -510,6 +501,14 @@ class VoiceModal extends Component {
         };
     }
 
+    componentWillReceiveProps(nextProp) {
+        if(nextProp.isVisible == true) {
+            this.setState({
+                playing: 1
+            });
+        }
+    }
+
     render() {
         let {isVisible, time, actions} = this.props;
         let m = parseInt(time / 60), s = time % 60;
@@ -621,30 +620,24 @@ class CouponModal extends Component {
                             contentContainerStyle={styles.touchBox}
                             dataSource={ds.cloneWithRows(couponArr.toArray())}
                             renderRow={this._renderRow.bind(this)}
-                            renderFooter={this._renderFooter.bind(this)}
                             enableEmptySections={true}
                             showsVerticalScrollIndicator={false}
                             renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
                         />
 
+                        <TouchableWithoutFeedback
+                            onPress={()=> {
+                                ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_NOUSE);
+                                this.props.useCoupon()
+                            }}
+                        >
+                            <View style={[styles.center, styles.justifyContent, styles.couponFooter]}>
+                                <Text style={[styles.greenColor, styles.more]}>不使用看房卡</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
                 </View>
             </Modal>
-        );
-    }
-
-    _renderFooter() {
-        return (
-            <TouchableWithoutFeedback
-                onPress={()=> {
-                        ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_NOUSE);
-                        this.props.useCoupon()
-                    }}
-                >
-                <View style={[styles.center, styles.justifyContent, styles.couponFooter]}>
-                    <Text style={[styles.greenColor, styles.more]}>不使用看房卡</Text>
-                </View>
-            </TouchableWithoutFeedback>
         );
     }
 
@@ -905,10 +898,11 @@ class CostScoreModal extends Component {
                         <Text style={styles.scoreTip}>本次通话花费了您{score}积分</Text>
 
                         <TouchableHighlight
+                            style={styles.feedbackSureBtn}
                             underlayColor="#04c1ae"
                             onPress={this._handlerFeedback.bind(this, actionType.BA_DETAIL_SPENDENSURE)}
                         >
-                            <View style={styles.feedbackSureBtn}>
+                            <View>
                                 <Text style={styles.contactText}>房源在卖</Text>
                             </View>
                         </TouchableHighlight>
@@ -1016,7 +1010,7 @@ class ContactList extends Component {
     render() {
         let {curLogs, contact, actions} = this.props;
 
-        let contactList = curLogs.map((item, index) => {
+        let contactList = contact.get('logs').map((item, index) => {
             return (
                 <View key={index} style={[styles.row, styles.contactItem, styles.center]}>
                     <Text style={[styles.grayColor, styles.date]}>{item.get('time')}</Text><Text
@@ -1032,7 +1026,7 @@ class ContactList extends Component {
                     {contactList}
                 </View>
 
-                {curLogs.size == contact.get('total') ? null :
+                {curLogs.size == contact.get('total') || 1 ? null :
                     <TouchableWithoutFeedback
                         onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_MORECONTACT);actions.changeCurrentContactLog()}}
                     >
@@ -1167,7 +1161,6 @@ var styles = StyleSheet.create({
         fontSize: 16
     },
     contactBox: {
-        marginTop: 8,
         paddingLeft: 15,
         paddingRight: 15,
         paddingBottom: 6
@@ -1374,7 +1367,7 @@ var styles = StyleSheet.create({
         paddingTop: 0
     },
     couponFooter: {
-        marginTop: 20
+        marginVertical: 10
     },
     couponItem: {
         marginBottom: 20

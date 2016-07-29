@@ -49,23 +49,10 @@ export function fetchBaseInfo(data) {
             service: getBaseInfoService,
             data: data,
             success: function(oData) {
-                oData.status = 0;
-                oData.feedback_status = 1;
-                oData.is_enter_detail = "0";
-                oData.is_verify = true;
-                oData.created_at = '7月18日';
-                oData.verify_at = '7月28日';
-                oData.record_url = {};
-                // {
-                //     "record_url": "http://xxxxxx.mp3",
-                //     "record_time": 37, //录音时长，秒
-                // };
-
-
-
                 dispatch(houseBaseFetched(oData));
 
                 if (!Number(oData.is_reply)) {
+                    dispatch(setOrderId(oData.log_id));
                     ActionUtil.setAction(actionType.BA_DETAIL_SPEND_ONVIEW);
                     dispatch(setFeedbackVisible(true));
                 }
@@ -97,11 +84,9 @@ export function callSeller(params) {
         serviceAction(dispatch)({
             service: callSellerPhone,
             data: params,
+            loading: true,
             success: function (oData) {
-                oData.order_id = 5;        //?????
-
-
-                dispatch(setOrderId(oData.order_id));
+                dispatch(setOrderId(oData.wash_id));
                 dispatch(setHomeContactStatus({"property_id": params.property_id, "is_contact": "1"}));
                 dispatch(setContactStatus({"property_id": params.property_id, "is_contact": "1"}));
 
@@ -125,13 +110,9 @@ export function callFeedback(params, propertyId) {
         serviceAction(dispatch)({
             service: postFeedback,
             data: params,
+            loading: true,
             success: function (oData) {
-                oData = {
-                    "seller_phone": 1231232313, //当反馈为在卖时，返回值有此字段
-                    "experience": 5 //看房经验值
-                };
-
-                dispatch(setFeedbackVisible(false));
+                 dispatch(setFeedbackVisible(false));
                 dispatch(setSellerPhone(oData));
 
                 Toast.show('看房获得' + (oData.experience || 10) + '个经验', {
@@ -141,10 +122,6 @@ export function callFeedback(params, propertyId) {
                 ActionUtil.setActionWithExtend(actionType.BA_DETAIL_EXPERIENCE_ONVIEW, {"vpid": propertyId});
             },
             error: function (error) {
-                error = {
-                    "status": 3,
-                    "msg": "3天后再申请退积分"
-                };
                 dispatch(setFeedbackVisible(false));
                 dispatch(callSellerFailed(error));
                 dispatch(setErrorTipVisible(true));
@@ -218,12 +195,8 @@ export function fetchSellerPhone(data) {
         serviceAction(dispatch)({
             service: getSellerPhoneService,
             data: data,
+            loading: true,
             success: function (oData) {
-                oData = {
-                    "seller_phone": 12345678963,
-                    "experience": 10 //获取经验
-                };
-
                 dispatch(setSellerPhone(oData));
                 ActionUtil.setAction(actionType.BA_DETAIL_PHENO_ONVIEW);
                 dispatch(setSellerPhoneVisible(true));
@@ -245,11 +218,6 @@ export function fetchPropertyRecord(data) {
             service: getPropertyRecordService,
             data: data,
             success: function (oData) {
-                // oData = 
-                // {
-                //     "record_url": "http://xxxxxx.mp3",
-                //     "record_time": 37, //录音时长，秒
-                // };
                 if(oData.record_url) {
                     dispatch(propertyRecordFetched(oData));
                     AudioPlayer.play(oData.record_url);
