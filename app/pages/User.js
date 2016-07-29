@@ -150,7 +150,7 @@ export default class User extends Component {
                         {
                             userProfile.get('is_signed_in') == "0" ?
                                 <TouchableWithoutFeedback
-                                    onPress={() => {ActionUtil.setAction(actionType.BA_MINE_SIGN_INPUT);actions.fetchSignInInfo()}}
+                                    onPress={() => {ActionUtil.setActionWithExtend(actionType.BA_MINE_SIGN_INPUT, {'signDays': (Number(userProfile.get('sign_in_days')) + 1 ) + ""});actions.fetchSignInInfo()}}
                                 >
                                     <View style={styles.signInWarp}><Text style={styles.signInBtn}>签到</Text></View>
                                 </TouchableWithoutFeedback>

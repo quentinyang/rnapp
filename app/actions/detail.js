@@ -70,7 +70,6 @@ export function fetchBaseInfo(data) {
                 .catch((error) => {
                     console.log(error);
                 });
-
             },
             error: function (oData) {
 

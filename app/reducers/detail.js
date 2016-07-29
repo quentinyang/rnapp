@@ -57,7 +57,6 @@ function baseInfo(state, action) {
             return state.setIn(['contact', 'pager'], Immutable.fromJS(action.contact.pager));
             break;
         case types.HOSUE_CONTACT_LOG:
-            return state.set('contact', Immutable.fromJS(action.contact));
             // let newState = state.set('contact', Immutable.fromJS(action.contact));
             // let curTemp = Immutable.List();
             // newState = newState.updateIn(['contact', 'logs'], (k) => {
@@ -65,6 +64,13 @@ function baseInfo(state, action) {
             //     return k.splice(0, 2);
             // });
             // return newState.set('curLogs', curTemp);
+            let immuData = Immutable.fromJS(action.contact);
+            let newData = state.updateIn(['contact', 'logs'], (k) => {
+                return k.concat(immuData.get('logs'));
+            });
+            newData = newData.setIn(['contact', 'pager'], Immutable.fromJS(action.contact['pager']));
+            newData = newData.setIn(['contact', 'total'], Immutable.fromJS(action.contact['total']));
+            return newData;
             break;
         case types.CHANGE_CURRENT_CONTACT_LOG:
             let temp = Immutable.List();

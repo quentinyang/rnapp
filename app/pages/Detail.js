@@ -1,6 +1,6 @@
 'use strict';
 
-import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, TouchableWithoutFeedback, Alert, Modal, Button, Linking, Platform } from 'nuke'
+import {React, Component, View, Text, Image, StyleSheet, PixelRatio, ListView, InteractionManager, ScrollView, TouchableHighlight, TouchableWithoutFeedback, Alert, Modal, Button, Linking, Platform, AppState } from 'nuke'
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 import Toast from 'react-native-root-toast';
 import HouseItem from '../components/HouseItem';
@@ -532,7 +532,7 @@ class VoiceModal extends Component {
                             <Image
                                 style={styles.closeIcon}
                                 source={require("../images/close.png")}
-                            />
+                            />                            
                         </TouchableHighlight>
 
                         <Image
@@ -547,6 +547,8 @@ class VoiceModal extends Component {
         );
     }
     componentDidMount() {
+        AppState.addEventListener('change', this._changePlayStatus.bind(this));
+
         if(Platform.OS == "ios") {
             this.audioListener = NativeAppEventEmitter.addListener('mediaCompletioned', () => {
                 this.setState({
@@ -563,10 +565,22 @@ class VoiceModal extends Component {
     }
 
     componentWillUnmount() {
+        AppState.removeEventListener('change', this._changePlayStatus.bind(this));
+
         if(Platform.OS == 'ios') {
             this.audioListener.remove();
         } else {
             DeviceEventEmitter.removeAllListeners('mediaCompletioned');
+        }
+    }
+
+    _changePlayStatus(currentAppState) {
+        if(currentAppState == 'background') {
+            AudioPlayer.stop();
+            this.props.actions.setVoiceVisible(false);
+        } else if(currentAppState == 'inactive') {
+            AudioPlayer.stop();
+            this.props.actions.setVoiceVisible(false);
         }
     }
 }
@@ -958,14 +972,14 @@ class BaseInfo extends Component {
                 <View style={[styles.center, styles.justifyContent, styles.nameBox]}>
                     <Text style={[styles.name, styles.baseColor]}>{houseInfo.get('community_name') || ''}</Text>
                     <View style={[styles.row, styles.justifyContent]}>
-                        <Text
-                            style={[styles.subName, styles.baseColor]}>{houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}{houseInfo.get('door_num') && '室'}</Text>
-                        {
-                            houseInfo.get('is_new') ? <Text style={styles.tagNew}>新</Text> : null
-                        }
-                        {
-                            houseInfo.get('is_verify') ? <Text style={styles.tagNew}>认证</Text> : null
-                        }
+                        <Text style={[styles.subName, styles.baseColor]}>
+                            {houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}{houseInfo.get('door_num') && '室'}
+                            {houseInfo.get('is_new') && ' '}
+                            {houseInfo.get('is_new') ? <Image style={[styles.tagNew]} source={require("../images/new_tag.png")} />: null}
+                            {houseInfo.get('is_verify') && ' '}
+                            {houseInfo.get('is_verify') ? <Image style={[styles.tagVerify]} source={require("../images/verify_tag.png")} />: null}
+                        </Text>
+                                     
                     </View>
                 </View>
 
@@ -1008,8 +1022,8 @@ class ContactList extends Component {
     }
 
     render() {
-        let {curLogs, contact, actions} = this.props;
-
+        let {properyId, contact, actions} = this.props;
+        let pager = contact.get('pager');
         let contactList = contact.get('logs').map((item, index) => {
             return (
                 <View key={index} style={[styles.row, styles.contactItem, styles.center]}>
@@ -1026,9 +1040,15 @@ class ContactList extends Component {
                     {contactList}
                 </View>
 
-                {curLogs.size == contact.get('total') || 1 ? null :
+                {pager.get('current_page') == pager.get('last_page') ? null :
                     <TouchableWithoutFeedback
-                        onPress={() => {ActionUtil.setAction(actionType.BA_DETAIL_MORECONTACT);actions.changeCurrentContactLog()}}
+                        onPress={() => {
+                            ActionUtil.setAction(actionType.BA_DETAIL_MORECONTACT);
+                            actions.fetchContactLog({
+                                property_id: properyId,
+                                page: Number(pager.get('current_page')) + 1
+                            });
+                        }}
                     >
                         <View style={[styles.row, styles.justifyContent, styles.center, styles.moreBox]}>
                             <Image
@@ -1116,16 +1136,12 @@ var styles = StyleSheet.create({
         fontSize: 19
     },
     tagNew: {
-        backgroundColor: '#ffa251',
-        color: '#fff',
-        fontSize: 12,
-        padding: (Platform.OS === 'ios') ? 2 : 0,
-        fontWeight: '500',
-        marginTop: 4,
-        marginLeft: 5,
-        width: 16,
-        textAlign: 'center',
-        textAlignVertical: 'top'
+        width: 15,
+        height: 15
+    },
+    tagVerify: {
+        width: 27,
+        height: 15
     },
     tagAuth: {
         backgroundColor: '#45c7c9'
