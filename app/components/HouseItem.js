@@ -78,6 +78,8 @@ const styles = StyleSheet.create({
         height: 35
     },
     headerMsg: {
+        height: 20,
+        lineHeight: 20,
         color: '#3e3e3e',
         fontSize: 16,
         fontWeight: '500',
