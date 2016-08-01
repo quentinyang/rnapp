@@ -173,6 +173,9 @@ export default class ContactHouse extends Component {
     };
 
     _onItemPress = (item) => {
+        let visible = item.get('visible');
+
+        if(!visible) return;
         ActionUtil.setAction(actionType.BA_MINE_CONTACT_DETAIL);
         let {navigator} = this.props;
 
