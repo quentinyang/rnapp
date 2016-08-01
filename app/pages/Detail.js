@@ -220,7 +220,7 @@ export default class Detail extends Component {
         this.couponObj = coupon;
         actions.setCouponVisible(false);
 
-        if(baseInfo.get('baseInfo').get('status') == "1") {
+        if(baseInfo.get('baseInfo').get('feedback_status') == "1") {
             this._getSellerPhone();
         } else {
             this._callSellerPhone();
