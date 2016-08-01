@@ -230,6 +230,7 @@ export default class Home extends Component {
                     onEndReached={this._onEndReached}
                     renderFooter={this._renderFooter}
                     renderHeader={this._renderHeader}
+                    removeClippedSubviews={false}
                     enableEmptySections={true}
                     refreshControl={
                         <RefreshControl
@@ -519,7 +520,7 @@ class NoData extends Component {
                     source={require('../images/no_house_list.png')}
                     style={styles.noAttention} />
                 {
-                    districtBlockSelect.size == 0 && communitySelect.size == 0 ?                        
+                    districtBlockSelect.size == 0 && communitySelect.size == 0 ?
                         <View style={[styles.alignItems]}>
                             <Text style={[styles.noAttentionText]}>关注的房源会出现在这里</Text>
                         </View>

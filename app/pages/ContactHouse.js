@@ -245,7 +245,7 @@ class TooEarlyModal extends Component {
                         <View style={styles.center}>
                             <Text style={styles.modalContentWord}>客服已确认房子在卖哦</Text>
                             <Text style={styles.modalContentWord}>再试试联系房东吧</Text>
-                            <Text style={styles.modalContentWord}>{3}天后再来申请退积分</Text>
+                            <Text style={styles.modalContentWord}>反馈3天后再来申请退积分</Text>
                         </View>
 
                         <TouchableHighlight
