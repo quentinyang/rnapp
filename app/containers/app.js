@@ -156,7 +156,7 @@ class App extends Component {
                                 <Text style={styles.updateModalHeader}>{"大批真实房源来了,\n快更新吧"}</Text>
                             </View>
                             <View style={[styles.row, styles.updateWrap]}>
-                                {!appData.get('config').isEnforceUpdate ?
+                                {!appData.get('config').get('isEnforceUpdate') ?
                                 <TouchableHighlight
                                     onPress={actionsApp.closeUpdateModal.bind(null, false)}
                                     style={styles.flex}
