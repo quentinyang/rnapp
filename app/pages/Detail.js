@@ -957,6 +957,10 @@ class CostScoreModal extends Component {
             title: '找回积分',
             hideHeader: false,
             hideNavBar: false,
+            callbackFun: () => {
+                actions.setFeedbackVisible(true);
+                navigator.pop();
+            },
             bp: this.pageId,
             washId: callInfo.get('orderId'),
             propertyId: propertyId

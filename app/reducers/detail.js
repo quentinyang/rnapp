@@ -137,12 +137,6 @@ function callInfo(state, action) {
         case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initParam);
             break;
-        case appTypes.CLICK_BACK_PAGE:
-            if(action.pageName == "backScore") {
-                return state.set('feedbackVisible', Immutable.fromJS(true));
-            }
-            return state;
-            break;
         case types.COUPON_VISIBLE_CHANGED:
             return state.set('couponVisible', Immutable.fromJS(action.visible));
             break;
