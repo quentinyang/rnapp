@@ -48,7 +48,7 @@ export default class Detail extends Component {
             <View style={styles.flex}>
                 {
                     info.get('feedback_status') == null ? null : 
-                    (info.get('feedback_status') == '1' || phone) ?
+                    (info.get('feedback_status') == '1' || info.get("status") == '2' || phone) ?
                     <VerifyBtn
                         phone={phone}
                         playRecord={this._playRecord}

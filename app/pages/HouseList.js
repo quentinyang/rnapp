@@ -175,7 +175,7 @@ export default class HouseList extends Component {
     }
 
     componentDidMount() {
-        let {loaded} = this.state;
+        let {loaded, homeSearch} = this.state;
         let {actions, houseData, queryParamsData} = this.props;
         let pager = houseData.get('pager');
         if (!loaded) {
@@ -183,7 +183,7 @@ export default class HouseList extends Component {
                 actions.fetchHouseList({
                     page: Number(pager.get('current_page')) + 1,
                     ...queryParamsData.toJS()
-                });
+                }, !homeSearch && pager.get('current_page') == 0);
                 actions.fetchHouseFilter();
             });
         }

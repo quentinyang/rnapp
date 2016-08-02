@@ -153,7 +153,7 @@ class App extends Component {
                         <View style={styles.updateContentContainer}>
                             <View style={[styles.alignItems, styles.justifyContent]}>
                                 <Image style={styles.updateAppImage} source={require('../images/update_app.png')}/>
-                                <Text style={styles.updateModalHeader}>有新版本啦～</Text>
+                                <Text style={styles.updateModalHeader}>{"大批真实房源来了,\n快更新吧"}</Text>
                             </View>
                             <View style={[styles.row, styles.updateWrap]}>
                                 {!appData.get('config').isEnforceUpdate ?
@@ -635,6 +635,7 @@ let styles = StyleSheet.create({
         marginTop: 20
     },
     updateModalHeader: {
+        textAlign: 'center',
         color: '#3e3e3e',
         fontSize: 19,
         paddingBottom: 10
