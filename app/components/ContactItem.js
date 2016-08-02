@@ -37,8 +37,6 @@ export default class ContactItem extends Component {
                                     <Text style={[styles.bottomMsg, styles.green]}>{item.get('seller_phone')}</Text>
                                 </View>
                             </TouchableHighlight>
-
-                            <Text style={styles.bottomMsg}>{'(' + item.get('seller_name') + ')'}</Text>
                         </View>
                             :
                         <View style={[styles.status, styles.row, styles.center]}>
