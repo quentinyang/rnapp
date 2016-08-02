@@ -147,7 +147,7 @@ class App extends Component {
                         </View>
                     </View>
                 </Modal>
-                { isAndroid ?
+                
                 <Modal visible={appData.get('config').get('showUpdateModal')} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.updateContentContainer}>
@@ -180,7 +180,7 @@ class App extends Component {
                             </View>
                         </View>
                     </View>
-                </Modal> : null }
+                </Modal>
 
                 <Modal visible={appData.get('loadingVisible')} transparent={true} onRequestClose={() => {}}>
                     <View style={[styles.flex, styles.alignItems, styles.justifyContent]}>
