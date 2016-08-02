@@ -92,6 +92,7 @@ export default class HouseList extends Component {
                         onEndReachedThreshold={50}
                         onEndReached={this._onEndReached}
                         enableEmptySections={true}
+                        removeClippedSubviews={false}
                         refreshControl={
                             <RefreshControl
                                 refreshing={this.state.isRefreshing}

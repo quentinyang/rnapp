@@ -16,6 +16,7 @@ export function fetchContactHouse(params) {
         serviceAction(dispatch)({
             service: fetchContactHouseService,
             data: params,
+            loading: params.page == 1 ? true : false,
             success: function(oData) {
                 dispatch(contactHouseFetched(oData))
             },
@@ -46,6 +47,7 @@ export function fetchInputHouse(params) {
         serviceAction(dispatch)({
             service: fetchInputHouseService,
             data: params,
+            loading: params.page == 1 ? true : false,
             success: function(oData) {
                 dispatch(inputHouseFetched(oData))
             },

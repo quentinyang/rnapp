@@ -13,6 +13,7 @@ export function submitReason(params, nav, origin) {
         serviceAction(dispatch)({
             service: origin == 'ContactHouse' ? postRefund : postFeedback,
             data: params,
+            loading: true,
             success: function() {
                 dispatch(changeSuccessModalVisible(true));
 
