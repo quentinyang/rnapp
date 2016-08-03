@@ -243,8 +243,8 @@ export function fetchPropertyRecord(data) {
                 }
             },
             error: function (error) {
-                dispatch(callSellerFailed(error));
-                dispatch(setErrorTipVisible(true));
+                //dispatch(callSellerFailed(error));
+                //dispatch(setErrorTipVisible(true));
             }
         })
     }
