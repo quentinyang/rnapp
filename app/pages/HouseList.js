@@ -35,6 +35,7 @@ export default class HouseList extends Component {
         };
         this.keyword = "";
         this.showResult = true;
+        this.scrollView = ListView;
     }
 
     render() {
@@ -82,6 +83,7 @@ export default class HouseList extends Component {
                     </View>
                     :
                     <ListView
+                        ref={(scrollView) => {this.scrollView = scrollView;}}
                         dataSource={ds.cloneWithRows(houseList.toArray())}
                         renderRow={this._renderRow}
                         renderFooter={this._renderFooter}
@@ -299,7 +301,7 @@ export default class HouseList extends Component {
             page: 1,
             ...queryParamsDataJs
         }, this.showResult);
-
+        this.scrollView && this.scrollView.scrollTo({y:0});
         actions.onlyNewChanged(onlyNew)
     };
 
@@ -315,6 +317,7 @@ export default class HouseList extends Component {
             page: 1,
             ...queryParamsDataJs
         }, this.showResult);
+        this.scrollView && this.scrollView.scrollTo({y:0});
 
         actions.blockFilterChanged(districtId, blockId, areaName);
         this._hideMask();
@@ -335,6 +338,7 @@ export default class HouseList extends Component {
                 ...queryParamsDataJs
             }, this.showResult);
             actions.filterTabPriceChanged(min, max, title);
+            this.scrollView && this.scrollView.scrollTo({y:0});
         } else {
             ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_FILTERSTYLE);
             queryParamsDataJs.min_bedrooms = min;
@@ -345,6 +349,7 @@ export default class HouseList extends Component {
                 ...queryParamsDataJs
             }, this.showResult);
             actions.filterTabBedroomsChanged(min, max, title);
+            this.scrollView && this.scrollView.scrollTo({y:0});
         }
 
         this._hideMask();
@@ -417,6 +422,7 @@ export default class HouseList extends Component {
             community_id: item.get('id'),
             community_name: item.get('name')
         });
+        this.scrollView && this.scrollView.scrollTo({y:0});
         actions.filterCommunityNameChanged(item.get('id'), item.get('name'));
         actionsApp.addListSearchHistory({"id": item.get('id').toString(), "name": item.get('name'), "count": item.get('selling_house_count')});
     };
@@ -424,6 +430,7 @@ export default class HouseList extends Component {
     _onClearKeyword = () => {
         let {actions} = this.props;
         actions.fetchHouseList({page: 1});
+        this.scrollView && this.scrollView.scrollTo({y:0});
         actions.filterCommunityNameCleared();
         this.setState({
             isShowSearchHistory: true
@@ -442,6 +449,7 @@ export default class HouseList extends Component {
             community_id: item.get('id'),
             community_name: item.get('name')
         });
+        this.scrollView && this.scrollView.scrollTo({y:0});
         actionsApp.addListSearchHistory(item.toJS());
         actions.filterCommunityNameChanged(item.get('id'), item.get('name'));
         actions.autocompleteViewShowed(false);
