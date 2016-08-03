@@ -77,7 +77,7 @@ export default class CheckIdCard {
             if(!((new Date().getFullYear() - 100) < year < new Date().getFullYear() && 0 < month <= 12 && 0 < day <= 31)) {
                 return info.isTrue = false;
             }
-            if(check.toLowerCase() == 'x') {check == 10}
+            if(check.toLowerCase() == 'x') {check = 10}
             if(check != this.calcChecksum(card.substring(0, 17))) {
                 return info.isTrue = false;
             } else {
