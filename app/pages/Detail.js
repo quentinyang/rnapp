@@ -73,7 +73,7 @@ export default class Detail extends Component {
                 <CallTipModal
                     isVisible={callInfo.get('callTipVisible')}
                     score={info.get('unlock_phone_cost')}
-                    callSellerPhone={(info.get('feedback_status') == '1' || info.get("status") == '2' || phone) ? this._getSellerPhone : this._callSellerPhone}
+                    callSellerPhone={(info.get('feedback_status') == '1' || info.get("status") == '2' || phone) ? this._getSellerPhone.bind(this) : this._callSellerPhone.bind(this)}
                     actions={actions}
                 />
 
