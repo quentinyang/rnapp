@@ -73,7 +73,7 @@ export default class Detail extends Component {
                 <CallTipModal
                     isVisible={callInfo.get('callTipVisible')}
                     score={info.get('unlock_phone_cost')}
-                    callSellerPhone={this._callSellerPhone}
+                    callSellerPhone={(info.get('feedback_status') == '1' || info.get("status") == '2' || phone) ? this._getSellerPhone : this._callSellerPhone}
                     actions={actions}
                 />
 
@@ -200,7 +200,7 @@ export default class Detail extends Component {
                 ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_ONVIEW);
                 actions.setCouponVisible(true);
             } else {
-                this._getSellerPhone();
+                actions.setCallTipVisibel(true);
             }
         }
     }
