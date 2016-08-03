@@ -830,7 +830,7 @@ class ErrorTipModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={[styles.msgTip, styles.baseColor]}>{callInfo.get('callError') ? callInfo.get('callError').get('msg') : '拨打电话失败了,再试一下吧!'}</Text>
+                        <Text style={[styles.msgTip, styles.baseColor]}>{(callInfo.get('callError') && callInfo.get('callError').get('msg')) ? callInfo.get('callError').get('msg') : '拨打电话失败了,再试一下吧!'}</Text>
 
                         <TouchableHighlight
                             style={[styles.btn, styles.borderBtn]}
