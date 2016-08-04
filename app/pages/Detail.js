@@ -192,7 +192,7 @@ export default class Detail extends Component {
         let {actions, actionsNavigation, actionsHome, route, baseInfo} = this.props;
         let propertyId = route.item.get("property_id");
 
-        ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
+        ActionUtil.setAction(actionType.BA_DETAIL_PHONEGET_CLICK);
         if (phone) { // 已买 或 已获取房东电话
             callUp(phone);
         } else {   // 未买在卖状态的房源
@@ -207,6 +207,8 @@ export default class Detail extends Component {
 
     _getSellerPhone() {
         let {actions} = this.props;
+
+        ActionUtil.setAction(actionType.BA_DETAIL_PHONEGET_PAYPOINTS);
         actions.fetchSellerPhone({
             property_id: this.props.route.item.get('property_id'),
             card_id: this.couponObj ? this.couponObj.get('id') : null
@@ -305,8 +307,11 @@ export default class Detail extends Component {
         let info = baseInfo.get('baseInfo');
         let record = info.get('record_url');
 
+        ActionUtil.setAction(actionType.BA_DETAIL_TAPEFREE_CLICK);
         if(record.get('record_url')) { //是否有录音
+            ActionUtil.setAction(actionType.BA_DETAIL_TAPEFREE_ONVIEW);
             actions.setVoiceVisible(true);
+            AudioPlayer.stop();
             AudioPlayer.play(record.get('record_url'));
         } else {
             actions.fetchPropertyRecord({
@@ -317,6 +322,8 @@ export default class Detail extends Component {
 
     _contactSeller = () => {
         let {baseInfo, actions} = this.props;
+
+        ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
         if (baseInfo.get('couponArr').size) {  //是否有看房卡
             ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_ONVIEW);
             actions.setCouponVisible(true);
@@ -326,7 +333,7 @@ export default class Detail extends Component {
     }
     _callSellerPhone = () => {  //获取短号拨打
         let {actions, route} = this.props;
-
+        ActionUtil.setAction(actionType.BA_DETAIL_PAYPOINTS);
         actions.callSeller({
             property_id: route.item.get("property_id"),
             card_id: this.couponObj ? this.couponObj.get('id') : null
@@ -467,7 +474,7 @@ class CallTipModal extends Component {
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
                             underlayColor="transparent"
-                            onPress={() => actions.setCallTipVisibel(false)}
+                            onPress={() => {actions.setCallTipVisibel(false); ActionUtil.setAction(actionType.BA_DETAIL_PAYPOINTS_CLOSE)}}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -532,6 +539,7 @@ class VoiceModal extends Component {
                                 });
                                 AudioPlayer.stop();
                                 actions.setVoiceVisible(false);
+                                ActionUtil.setAction(actionType.BA_DETAIL_TAPEFREE_DELETE);
                             }}
                         >
                             <Image
@@ -696,7 +704,7 @@ class PhoneModal extends Component {
                         <TouchableHighlight
                             style={[styles.flex, styles.center, styles.justifyContent, styles.closeBox]}
                             underlayColor="transparent"
-                            onPress={this._closeModal.bind(this, actionType.BA_DETAIL_CASHRECHACLOSE)}
+                            onPress={this._closeModal.bind(this, actionType.BA_DETAIL_TAPEFREE_CLOSE)}
                         >
                             <Image
                                 style={styles.closeIcon}
@@ -710,7 +718,7 @@ class PhoneModal extends Component {
                         <TouchableHighlight
                             style={[styles.flex, styles.contactButton, styles.phoneSure]}
                             underlayColor="#04c1ae"
-                            onPress={this._closeModal.bind(this, '')}
+                            onPress={this._closeModal.bind(this, actionType.BA_DETAIL_TAPEFREE_SURE)}
                         >
                             <View>
                                 <Text style={styles.contactText}>确定</Text>

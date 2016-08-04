@@ -63,6 +63,7 @@ export function fetchBaseInfo(data) {
                 AsyncStorageComponent.get(key)
                 .then((value) => {
                     if(!value && oData.feedback_status == "1") {
+                        ActionUtil.setAction(actionType.BA_DETAIL_TAPE_REMIND_ONVIEW);
                         dispatch(setEnterStatus(false));
                         AsyncStorageComponent.save(key, "true").catch((error) => {console.log(error);})
                     }
@@ -233,7 +234,10 @@ export function fetchPropertyRecord(data) {
             data: data,
             success: function (oData) {
                 if(oData.record_url) {
+                    ActionUtil.setAction(actionType.BA_DETAIL_TAPEFREE_ONVIEW);
+                    dispatch(setVoiceVisible(true));
                     dispatch(propertyRecordFetched(oData));
+                    AudioPlayer.stop();
                     AudioPlayer.play(oData.record_url);
                 } else {
                     Toast.show('录音生成中，请稍等一会儿', {
