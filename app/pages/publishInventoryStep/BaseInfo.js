@@ -200,6 +200,10 @@ export default class BaseInfoPage extends Component {
 
 }
 
+let errMsgs = {
+    'wrongBuilding': '请输入正确的楼栋号'
+}
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
