@@ -444,7 +444,7 @@ export default class Home extends Component {
         navigator.push({
             component: WelfareContainer,
             name: 'welfare',
-            title: '福利卡',
+            title: '看房卡',
             hideNavBar: false,
             bp: this.pageId,
             backLog: backLog || '',

@@ -26,7 +26,7 @@ export default class SignIn extends Component {
 
         let signList = signArr.get('welfare_cards') && signArr.get('welfare_cards').map((item, index) => {
             return (
-                <WelfareCard  item={item} key={index} source={require('../images/welfare/got.png')} />
+                <WelfareCard item={item} key={index} source={require('../images/welfare/got.png')} wrapStyle={{marginBottom: 10}} />
             );
         });
 
