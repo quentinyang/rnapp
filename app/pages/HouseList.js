@@ -35,7 +35,7 @@ export default class HouseList extends Component {
         };
         this.keyword = "";
         this.showResult = true;
-        this.scrollView = ListView;
+        this.scrollView = null;
     }
 
     render() {
