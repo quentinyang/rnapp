@@ -42,13 +42,20 @@ export default class Detail extends Component {
         let couponArr = baseInfo.get('couponArr');
         let status = Number(info.get('phone_lock_status'));
         let phone = status ? info.get('seller_phone') : callInfo.get('sellerPhone').get('seller_phone');
-        let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');
+        let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');        
+        let verfify = null;
+
+        if(route.item.get('is_verify') || phone) {
+            verfify = true;
+        } else if(info.get('record_url')) {
+            verfify = info.get('record_url').size ? true : false;
+        }
 
         return (
             <View style={styles.flex}>
                 {
-                    info.get('feedback_status') == null ? null : 
-                    (info.get('feedback_status') == '1' || info.get("status") == '2' || phone) ?
+                    verfify == null ? null :
+                    verfify ?
                     <VerifyBtn
                         phone={phone}
                         playRecord={this._playRecord}
@@ -64,23 +71,26 @@ export default class Detail extends Component {
                     actions={actions}
                 />
 
-                <VoiceModal
-                    isVisible={callInfo.get('voiceVisible')}
-                    time={info.get('record_url').get('record_time') || "00:00"}
-                    actions={actions}
-                />
+                {
+                    verfify ?
+                    <VoiceModal
+                        isVisible={callInfo.get('voiceVisible')}
+                        time={info.get('record_url') && info.get('record_url').get('record_time') || "00:00"}
+                        actions={actions}
+                    /> : null
+                }
 
                 <CallTipModal
                     isVisible={callInfo.get('callTipVisible')}
                     score={info.get('unlock_phone_cost')}
-                    callSellerPhone={(info.get('feedback_status') == '1' || info.get("status") == '2' || phone) ? this._getSellerPhone.bind(this) : this._callSellerPhone.bind(this)}
+                    callSellerPhone={verfify ? this._getSellerPhone.bind(this) : this._callSellerPhone.bind(this)}
                     actions={actions}
                 />
 
                 { couponArr.size ?
                     <CouponModal
                         isVisible={callInfo.get('couponVisible')}
-                        useCoupon={this._useCoupon.bind(this)}
+                        useCoupon={this._useCoupon.bind(this, verfify)}
                         couponArr={couponArr}
                         actions={actions}
                     />
@@ -215,14 +225,14 @@ export default class Detail extends Component {
         });
     }
 
-    _useCoupon(coupon) {
-        let {baseInfo, route, actions} = this.props;
+    _useCoupon(verfify, coupon) {
+        let {route, actions} = this.props;
         let propertyId = route.item.get("property_id");
 
         this.couponObj = coupon;
         actions.setCouponVisible(false);
 
-        if(baseInfo.get('baseInfo').get('feedback_status') == "1") {
+        if(verfify) {
             this._getSellerPhone();
         } else {
             this._callSellerPhone();

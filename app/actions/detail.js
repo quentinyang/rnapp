@@ -62,7 +62,7 @@ export function fetchBaseInfo(data) {
                 let key = common.USER_ENTER_STATUS + guid;
                 AsyncStorageComponent.get(key)
                 .then((value) => {
-                    if(!value && oData.feedback_status == "1") {
+                    if(!value && oData.record_url && oData.record_url.record_url) {
                         ActionUtil.setAction(actionType.BA_DETAIL_TAPE_REMIND_ONVIEW);
                         dispatch(setEnterStatus(false));
                         AsyncStorageComponent.save(key, "true").catch((error) => {console.log(error);})
