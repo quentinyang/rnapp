@@ -97,8 +97,8 @@ android {
         applicationId "com.xinyi.fy360"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 35
-        versionName "1.6.2"
+        versionCode 36
+        versionName "1.6.3"
         // dex突破65535的限制
         multiDexEnabled true
         ndk {
