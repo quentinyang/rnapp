@@ -57,6 +57,7 @@ export default class Detail extends Component {
                     verfify == null ? null :
                     verfify ?
                     <VerifyBtn
+                        hideRecord={status && info.get('record_url') && info.get('record_url').size == 0}
                         phone={phone}
                         playRecord={this._playRecord}
                         getSellerPhone={this._clickGetSellerPhoneBtn.bind(this, status, phone)}
@@ -357,9 +358,11 @@ class VerifyBtn extends Component {
     }
 
     render() {
-        let {phone, playRecord, getSellerPhone} = this.props;
+        let {phone, playRecord, getSellerPhone, hideRecord} = this.props;
         return (
             <View style={[styles.contactWrap, styles.row, styles.center]}>
+            {
+                hideRecord ? null :
                 <TouchableHighlight
                     style={[styles.voiceBtn, styles.contactButton]}
                     underlayColor="#04c1ae"
@@ -369,7 +372,7 @@ class VerifyBtn extends Component {
                         <Text style={styles.whiteColor}>免费听录音</Text>
                     </View>
                 </TouchableHighlight>
-
+            }
                 <TouchableHighlight
                     style={[styles.flex, styles.contactButton]}
                     underlayColor="#04c1ae"
