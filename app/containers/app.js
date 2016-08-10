@@ -334,6 +334,7 @@ class App extends Component {
             actionsApp.netWorkChanged('no');
         } else {
             actionsApp.netWorkChanged('yes');
+            actionsApp.setAppConfig();
         }
     };
 
