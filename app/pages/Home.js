@@ -230,6 +230,7 @@ export default class Home extends Component {
                     onEndReached={this._onEndReached}
                     renderFooter={this._renderFooter}
                     renderHeader={this._renderHeader}
+                    removeClippedSubviews={false}
                     enableEmptySections={true}
                     refreshControl={
                         <RefreshControl
@@ -255,8 +256,7 @@ export default class Home extends Component {
             actions.fetchScoreModalStatus();
             actions.fetchHouseNewCount();
             actions.fetchCouponModalStatus();
-            actions.fetchRuleModalStatus();
-            actions.fetchCurrentStatus();
+            //actions.fetchRuleModalStatus();
         });
 
         AppState.addEventListener('change', this._refreshHouseData);
@@ -316,7 +316,6 @@ export default class Home extends Component {
             actions.fetchAttentionPrependHouseList({});
             actions.fetchAttentionBlockAndCommunity();
             actions.fetchHouseNewCount();
-            actions.fetchCurrentStatus();
         });
         this.setState({
             isRefreshing: false
@@ -521,7 +520,7 @@ class NoData extends Component {
                     source={require('../images/no_house_list.png')}
                     style={styles.noAttention} />
                 {
-                    districtBlockSelect.size == 0 && communitySelect.size == 0 ?                        
+                    districtBlockSelect.size == 0 && communitySelect.size == 0 ?
                         <View style={[styles.alignItems]}>
                             <Text style={[styles.noAttentionText]}>关注的房源会出现在这里</Text>
                         </View>

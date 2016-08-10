@@ -12,7 +12,7 @@ export default class BackScore extends Component {
             cur: -1
         };
         this.submitFlag = false;
-        this.reasons = [{select: false, val: "联系不上"}, {select: false, val: "虚假房源"}, {select: false, val: "房东不卖"}, {select: false, val: "房源已卖"}, {select: false, val: "按错了"}];
+        this.reasons = [{select: false, val: "联系不上"}, {select: false, val: "虚假房源"}, {select: false, val: "房东不卖"}, {select: false, val: "房源已卖"}];
 
         ActionUtil.setActionWithExtend(actionType.BA_DETAIL_SPENDRECALLONSHOUW, {"bp": this.props.route.bp});
     }
@@ -51,7 +51,7 @@ export default class BackScore extends Component {
                 </Modal>
 
                 <View style={[styles.titleBox]}>
-                    <Text style={styles.title}>请选择原因</Text>
+                    <Text style={styles.title}>请选择原因（请真实反馈）</Text>
                 </View>
                 {reasonsList}
 
@@ -90,15 +90,15 @@ export default class BackScore extends Component {
         }
     }
     submitReason() {
-        let {navigator} = this.props;
+        let {navigator, route} = this.props;
         if(!this.submitFlag && this.state.cur != -1) {
             ActionUtil.setActionWithExtend(actionType.BA_DETAIL_SPENDRECALL_ENSURE, {"vpid": this.props.route.propertyId, "status": this.state.cur+3 + ""});
 
             this.submitFlag = true;
             this.props.actions.submitReason({
-                wash_id: this.props.route.washId,
+                order_id: this.props.route.washId,
                 status: this.state.cur + 3
-            }, navigator);
+            }, navigator, route.from);
         }
     }
 }

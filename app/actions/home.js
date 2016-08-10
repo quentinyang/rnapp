@@ -3,7 +3,7 @@
 import * as types from '../constants/Home';
 import {fetchAttentionHouseListService, fetchAttentionAppendHouseListService, fetchAttentionPrependHouseListService, fetchHouseNewCountService} from '../service/houseListService';
 
-import {fetchAttentionBlockAndCommunityService,getAttentionStatus} from '../service/blockService';
+import {fetchAttentionBlockAndCommunityService} from '../service/blockService';
 import {fetchScoreModalStatusService} from '../service/userService'
 import {fetchCouponStatusService} from '../service/cardService';
 import {fetchRuleStatusService} from '../service/configService';
@@ -23,7 +23,6 @@ export const pushShowModal = makeActionCreator(types.PUSH_SHOW_MODAL, 'modal');
 
 export const attentionBlockAndCommunityFetched = makeActionCreator(types.ATTENTION_BLOCK_COMMUNITY_FETCHED, 'attentionList');
 export const HouseNewCount = makeActionCreator(types.HOUSE_NEW_COUNT, 'count');
-export const HouseCurrentStatus = makeActionCreator(types.HOUSE_CURRENT_STATUS, 'current');
 
 //home / list / detail same community
 export const setHomeContactStatus = makeActionCreator(types.SET_CONTACT_STATUS, 'contactStatus'); //{property_id: 1}
@@ -149,19 +148,6 @@ export function fetchHouseNewCount() {
             service: fetchHouseNewCountService,
             success: function (oData) {
                 dispatch(HouseNewCount(oData.count))
-            },
-            error: function (oData) {
-            }
-        })
-    }
-}
-
-export function fetchCurrentStatus() {
-    return dispatch => {
-        serviceAction(dispatch)({
-            service: getAttentionStatus,
-            success: function (oData) {
-                dispatch(HouseCurrentStatus(oData.user_set_status))
             },
             error: function (oData) {
             }

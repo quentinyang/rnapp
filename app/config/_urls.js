@@ -12,12 +12,13 @@ let HOST = global.ghost = NativeModules.Utils.host;
 let urls = {
     detail: {
         baseInfo: HOST + 'property/detail',
-        status: HOST + 'property/log',
         call: HOST + 'wash/call',
-        feedback: HOST + 'wash/status',
+        feedback: HOST + 'property/feedback',
+        refund: HOST + 'appeal/refund',
         contactLog: HOST + 'property/contact/log',
         userInfo: HOST + 'property/input-user/info',
-        sellerPhone: HOST + 'wash/record/phone'
+        sellerPhone: HOST + 'wash/seller-phone',
+        getRecord: HOST + 'property/record',
     },
     user: {
         sendCode: HOST + 'passport/login/sms',
@@ -61,7 +62,6 @@ let urls = {
         blockAndCommunity: HOST + 'get-attention-community-block',
         saveAttentionCommunity: HOST + 'set-attention-community',
         enter: HOST + 'set-attention-enter',
-        status: HOST + 'set-attention-status'
     },
     community: {
         list: HOST + 'community/search/app'

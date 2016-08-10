@@ -921,7 +921,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xinyi.fy360;
 				PRODUCT_NAME = fy360;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "9997de35-cccd-4f0e-a73a-8d5c60373116";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -958,7 +958,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xinyi.fy360;
 				PRODUCT_NAME = fy360;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "9997de35-cccd-4f0e-a73a-8d5c60373116";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

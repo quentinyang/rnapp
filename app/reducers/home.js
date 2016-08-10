@@ -98,7 +98,6 @@ function attentionList(state = Immutable.fromJS(initialAttentionList), action) {
 
 let initialBaseInfo = {
     newCount: "",
-    current: 0,
 
     currentModal: '',
     modals: [],
@@ -150,9 +149,6 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
 
         case types.HOUSE_NEW_COUNT:
             return state.set('newCount', Immutable.fromJS(action.count));
-            break;
-        case types.HOUSE_CURRENT_STATUS:
-            return state.set('current', Immutable.fromJS(action.current));
             break;
         case types.CLEAR_HOME_PAGE:
             return Immutable.fromJS(initialBaseInfo);

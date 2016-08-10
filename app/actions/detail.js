@@ -3,14 +3,16 @@
 import {Platform} from 'nuke'
 import Toast from 'react-native-root-toast';
 let CallModule = require('react-native').NativeModules.CallModule;
-
+let AudioPlayer = require('react-native').NativeModules.RNAudioPlayer;
 let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import * as homeTypes from '../constants/Home';
 import * as types from '../constants/DetailType';
 
 import { InteractionManager } from 'nuke'
-import { getBaseInfoService, callSellerPhone, postFeedback, getContactLogService, getUserInfoService, getSellerPhoneService } from '../service/detailService';
+import AsyncStorageComponent from '../utils/AsyncStorageComponent';
+import * as common from '../constants/Common';
+import { getBaseInfoService, callSellerPhone, postFeedback, getContactLogService, getUserInfoService, getSellerPhoneService, getPropertyRecordService } from '../service/detailService';
 import { fetchSimilarHouseListService } from '../service/houseListService';
 import { getWelfareList }  from '../service/cardService';
 import {makeActionCreator, serviceAction} from './base';
@@ -30,14 +32,18 @@ export const callSellerFailed = makeActionCreator(types.CALL_SELLER_FAILED, 'cal
 export const houseContactLogFetched = makeActionCreator(types.HOSUE_CONTACT_LOG, 'contact');
 export const contactLogAppendFetched = makeActionCreator(types.APPEND_HOUSE_CONTACT_LOG, 'contact');
 export const changeCurrentContactLog = makeActionCreator(types.CHANGE_CURRENT_CONTACT_LOG);
-export const setWashId = makeActionCreator(types.SET_WASH_ID, 'washId');
 
 export const userInfoFetched = makeActionCreator(types.USER_INFO_FETCHED, 'userInfo');
 export const couponFetched = makeActionCreator(types.COUPON_FETCHED, 'coupon');
 
 export const setCouponVisible = makeActionCreator(types.COUPON_VISIBLE_CHANGED, 'visible');
-export const setVoiceVisible = makeActionCreator(types.VOICE_VISIBLE_CHANGED, 'visible');
 export const setSellerPhoneVisible = makeActionCreator(types.SELLERPHONE_VISIBLE_CHANGED, 'visible');
+
+export const setEnterStatus = makeActionCreator(types.ENTER_STATUS_CHANGED, 'status');
+export const setVoiceVisible = makeActionCreator(types.VOICE_VISIBLE_CHANGED, 'visible');
+export const setOrderId = makeActionCreator(types.SET_ORDER_ID, 'id');
+export const setCallTipVisibel = makeActionCreator(types.CALL_TIP_VISIBLE_CHANGED, 'visible');
+export const propertyRecordFetched = makeActionCreator(types.PROPERTY_RECORD_FETCHED, 'record');
 
 export function fetchBaseInfo(data) {
     return dispatch => {
@@ -48,10 +54,22 @@ export function fetchBaseInfo(data) {
                 dispatch(houseBaseFetched(oData));
 
                 if (!Number(oData.is_reply)) {
+                    dispatch(setOrderId(oData.log_id));
                     ActionUtil.setAction(actionType.BA_DETAIL_SPEND_ONVIEW);
                     dispatch(setFeedbackVisible(true));
-                    dispatch(setWashId(oData.log_id));
                 }
+
+                let key = common.USER_ENTER_STATUS + guid;
+                AsyncStorageComponent.get(key)
+                .then((value) => {
+                    if(!value && oData.feedback_status == "1") {
+                        dispatch(setEnterStatus(false));
+                        AsyncStorageComponent.save(key, "true").catch((error) => {console.log(error);})
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
             },
             error: function (oData) {
 
@@ -80,9 +98,9 @@ export function callSeller(params) {
         serviceAction(dispatch)({
             service: callSellerPhone,
             data: params,
+            loading: true,
             success: function (oData) {
-                dispatch(setWashId(oData.log_id));
-
+                dispatch(setOrderId(oData.wash_id));
                 dispatch(setHomeContactStatus({"property_id": params.property_id, "is_contact": "1"}));
                 dispatch(setContactStatus({"property_id": params.property_id, "is_contact": "1"}));
 
@@ -106,20 +124,21 @@ export function callFeedback(params, propertyId) {
         serviceAction(dispatch)({
             service: postFeedback,
             data: params,
+            loading: true,
             success: function (oData) {
-                dispatch(setSellerPhone({
-                    phone: oData.seller_phone || '',
-                    exp: oData.experience || 5
-                }));
+                 dispatch(setFeedbackVisible(false));
+                dispatch(setSellerPhone(oData));
 
-                Toast.show('看房获得' + (oData.experience || 5) + '个经验', {
+                Toast.show('看房获得' + (oData.experience || 10) + '个经验', {
                     duration: Toast.durations.SHORT,
                     position: Toast.positions.CENTER
                 });
                 ActionUtil.setActionWithExtend(actionType.BA_DETAIL_EXPERIENCE_ONVIEW, {"vpid": propertyId});
             },
-            error: function (oData) {
-
+            error: function (error) {
+                dispatch(setFeedbackVisible(false));
+                dispatch(callSellerFailed(error));
+                dispatch(setErrorTipVisible(true));
             }
         })
     }
@@ -190,16 +209,38 @@ export function fetchSellerPhone(data) {
         serviceAction(dispatch)({
             service: getSellerPhoneService,
             data: data,
+            loading: true,
             success: function (oData) {
-                dispatch(setSellerPhone({
-                    phone: oData.seller_phone,
-                    exp: oData.experience || 5
-                }));
+                dispatch(setSellerPhone(oData));
                 ActionUtil.setAction(actionType.BA_DETAIL_PHENO_ONVIEW);
                 dispatch(setSellerPhoneVisible(true));
 
                 dispatch(setHomeContactStatus({"property_id": data.property_id, "is_contact": "1"}));
                 dispatch(setContactStatus({"property_id": data.property_id, "is_contact": "1"}));
+            },
+            error: function (error) {
+                dispatch(callSellerFailed(error));
+                dispatch(setErrorTipVisible(true));
+            }
+        })
+    }
+}
+
+export function fetchPropertyRecord(data) {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: getPropertyRecordService,
+            data: data,
+            success: function (oData) {
+                if(oData.record_url) {
+                    dispatch(propertyRecordFetched(oData));
+                    AudioPlayer.play(oData.record_url);
+                } else {
+                    Toast.show('录音生成中，请稍等一会儿', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.CENTER
+                    });
+                }
             },
             error: function (error) {
                 dispatch(callSellerFailed(error));

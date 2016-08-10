@@ -25,7 +25,9 @@ function houseData(state, action) {
 }
 
 let initialBaseInfo = {
-    baseInfo: {},
+    baseInfo: {
+        record_url: {}
+    },
 
     curLogs: [],
     contact: {
@@ -34,7 +36,8 @@ let initialBaseInfo = {
         total: ""
     },
     userInfo: {},
-    couponArr: []
+    couponArr: [],
+    userEnter: true
 };
 
 function baseInfo(state, action) {
@@ -42,6 +45,8 @@ function baseInfo(state, action) {
         case types.HOUSE_BASE_FETCHED:
             return state.set('baseInfo', Immutable.fromJS(action.houseBase));
             break;
+        case types.PROPERTY_RECORD_FETCHED:
+            return state.setIn(['baseInfo', 'record_url'], Immutable.fromJS(action.record));
         case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initialBaseInfo);
             break;
@@ -52,13 +57,20 @@ function baseInfo(state, action) {
             return state.setIn(['contact', 'pager'], Immutable.fromJS(action.contact.pager));
             break;
         case types.HOSUE_CONTACT_LOG:
-            let newState = state.set('contact', Immutable.fromJS(action.contact));
-            let curTemp = Immutable.List();
-            newState = newState.updateIn(['contact', 'logs'], (k) => {
-                curTemp = k.slice(0, 2);
-                return k.splice(0, 2);
+            // let newState = state.set('contact', Immutable.fromJS(action.contact));
+            // let curTemp = Immutable.List();
+            // newState = newState.updateIn(['contact', 'logs'], (k) => {
+            //     curTemp = k.slice(0, 2);
+            //     return k.splice(0, 2);
+            // });
+            // return newState.set('curLogs', curTemp);
+            let immuData = Immutable.fromJS(action.contact);
+            let newData = state.updateIn(['contact', 'logs'], (k) => {
+                return k.concat(immuData.get('logs'));
             });
-            return newState.set('curLogs', curTemp);
+            newData = newData.setIn(['contact', 'pager'], Immutable.fromJS(action.contact['pager']));
+            newData = newData.setIn(['contact', 'total'], Immutable.fromJS(action.contact['total']));
+            return newData;
             break;
         case types.CHANGE_CURRENT_CONTACT_LOG:
             let temp = Immutable.List();
@@ -77,6 +89,9 @@ function baseInfo(state, action) {
         case types.COUPON_FETCHED:
             return state.set('couponArr', Immutable.fromJS(action.coupon));
             break;
+        case types.ENTER_STATUS_CHANGED:
+            return state.set('userEnter', Immutable.fromJS(action.status));  //关闭
+            break;
         default:
             return state;
     }
@@ -87,23 +102,28 @@ let initParam = {
         msg: '拨打电话失败了,再试一下吧!'
     },
     errorTipVisible: false,
+    callTipVisible: false,
     feedbackVisible: false,
-    washId: '',
 
+    sellerPhoneVisible: false,
     sellerPhone: {
-        phone: '',
-        exp: 0
+        seller_phone: '',
+        experience: 10
     },
 
     couponVisible: false,
     voiceVisible: false,
-    sellerPhoneVisible: false
+
+    orderId: ''
 };
 
 function callInfo(state, action) {
     switch(action.type) {
         case types.ERROR_TIP_VISIBLE_CHANGED:
             return state.set('errorTipVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.CALL_TIP_VISIBLE_CHANGED:
+            return state.set('callTipVisible', Immutable.fromJS(action.visible));
             break;
         case types.FEEDBACK_VISIBLE_CHANGED:
             return state.set('feedbackVisible', Immutable.fromJS(action.visible));
@@ -117,23 +137,17 @@ function callInfo(state, action) {
         case types.CLEAR_HOUSE_DETAIL_PAGE:
             return Immutable.fromJS(initParam);
             break;
-        case types.SET_WASH_ID:
-            return state.set('washId', Immutable.fromJS(action.washId));
-            break;
-        case appTypes.CLICK_BACK_PAGE:
-            if(action.pageName == "backScore") {
-                return state.set('feedbackVisible', Immutable.fromJS(true));
-            }
-            return state;
-            break;
         case types.COUPON_VISIBLE_CHANGED:
             return state.set('couponVisible', Immutable.fromJS(action.visible));
+            break;
+        case types.SELLERPHONE_VISIBLE_CHANGED:
+            return state.set('sellerPhoneVisible', Immutable.fromJS(action.visible));
             break;
         case types.VOICE_VISIBLE_CHANGED:
             return state.set('voiceVisible', Immutable.fromJS(action.visible));
             break;
-        case types.SELLERPHONE_VISIBLE_CHANGED:
-            return state.set('sellerPhoneVisible', Immutable.fromJS(action.visible));
+        case types.SET_ORDER_ID:
+            return state.set('orderId', Immutable.fromJS(action.id));
             break;
         default:
             return state;

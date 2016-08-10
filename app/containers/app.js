@@ -147,16 +147,16 @@ class App extends Component {
                         </View>
                     </View>
                 </Modal>
-                { isAndroid ?
+                
                 <Modal visible={appData.get('config').get('showUpdateModal')} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.updateContentContainer}>
                             <View style={[styles.alignItems, styles.justifyContent]}>
                                 <Image style={styles.updateAppImage} source={require('../images/update_app.png')}/>
-                                <Text style={styles.updateModalHeader}>有新版本啦～</Text>
+                                <Text style={styles.updateModalHeader}>{"大批真实房源来了,\n快更新吧"}</Text>
                             </View>
                             <View style={[styles.row, styles.updateWrap]}>
-                                {!appData.get('config').isEnforceUpdate ?
+                                {!appData.get('config').get('isEnforceUpdate') ?
                                 <TouchableHighlight
                                     onPress={actionsApp.closeUpdateModal.bind(null, false)}
                                     style={styles.flex}
@@ -180,7 +180,7 @@ class App extends Component {
                             </View>
                         </View>
                     </View>
-                </Modal> : null }
+                </Modal>
 
                 <Modal visible={appData.get('loadingVisible')} transparent={true} onRequestClose={() => {}}>
                     <View style={[styles.flex, styles.alignItems, styles.justifyContent]}>
@@ -635,6 +635,7 @@ let styles = StyleSheet.create({
         marginTop: 20
     },
     updateModalHeader: {
+        textAlign: 'center',
         color: '#3e3e3e',
         fontSize: 19,
         paddingBottom: 10

@@ -20,7 +20,7 @@ export const userInputHouseCleared = makeActionCreator(types.USER_INPUT_HOUSE_CL
 export const signInFetched = makeActionCreator(types.SIGN_IN_FETCHED, 'info');
 export const signInVisibleChanged = makeActionCreator(types.SIGN_IN_VISIBLE_CHANGED, 'visible');
 export const signInBtnVisibleChanged = makeActionCreator(types.SIGN_IN_BUTTON_VISIBLE_CHANGED, 'visible');
-export const signInDaysChanged = makeActionCreator(types.SIGN_IN_DAYS_CHANGED, 'days', 'goOnDays');
+export const signInDaysChanged = makeActionCreator(types.SIGN_IN_DAYS_CHANGED, 'days', 'count', 'goOnDays');
 
 export function fetchUserProfile(params) {
     return dispatch => {
@@ -85,18 +85,21 @@ export function fetchSignInInfo() {
         serviceAction(dispatch)({
             service: getSignInInfo,
             success: function (oData) {
-                dispatch(signInFetched(oData));
-                dispatch(signInDaysChanged(oData.sign_in_days || '', oData.go_on_sign_in_day || ''));
-                dispatch(signInVisibleChanged(true));
+                let count = 0;
                 if(oData.welfare_cards && oData.welfare_cards.length) {
                     let points = [];
                     oData.welfare_cards.map((item) => {
                         points.push(item.cost);
                     });
                     ActionUtil.setActionWithExtend(actionType.BA_MINE_SIGN_CREDIT_ONVIEW, {"points": points.join(",")});
+                    count = oData.welfare_cards.length;
                 } else {
                     ActionUtil.setAction(actionType.BA_MINE_SIGN_EXPERIENCE_ONVIEW);
                 }
+
+                dispatch(signInFetched(oData));
+                dispatch(signInDaysChanged(oData.sign_in_days || '', count || 0, oData.go_on_sign_in_day || ''));
+                dispatch(signInVisibleChanged(true));
             },
             error: function () {
             }

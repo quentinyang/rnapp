@@ -9,12 +9,14 @@ export const contactHousePrependFetched = makeActionCreator(types.CONTACT_HOUSE_
 export const inputHouseFetched = makeActionCreator(types.INPUT_HOUSE_FETCHED, 'inputHouse');
 export const inputHousePrependFetched = makeActionCreator(types.INPUT_HOUSE_PREPEND_FETCHED, 'inputHouse');
 export const houseDataCleared = makeActionCreator(types.HOUSE_DATA_CLEARED);
+export const tooEarlyVisibleChanged = makeActionCreator(types.TIME_APPLY_VISIBLE_CHANGED, 'timeVisible');
 
 export function fetchContactHouse(params) {
     return dispatch => {
         serviceAction(dispatch)({
             service: fetchContactHouseService,
             data: params,
+            loading: params.page == 1 ? true : false,
             success: function(oData) {
                 dispatch(contactHouseFetched(oData))
             },
@@ -45,6 +47,7 @@ export function fetchInputHouse(params) {
         serviceAction(dispatch)({
             service: fetchInputHouseService,
             data: params,
+            loading: params.page == 1 ? true : false,
             success: function(oData) {
                 dispatch(inputHouseFetched(oData))
             },

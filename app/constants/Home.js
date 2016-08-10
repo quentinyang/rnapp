@@ -19,5 +19,3 @@ export const PUSH_SHOW_MODAL = 'PUSH_SHOW_MODAL';
 export const SCORE = 'SCORE_MODAL';
 export const COUPON = 'COUPON_MODAL';
 export const RULE = 'RULE_MODAL';
-
-export const HOUSE_CURRENT_STATUS = 'HOUSE_CURRENT_STATUS';

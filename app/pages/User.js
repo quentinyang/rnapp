@@ -148,9 +148,9 @@ export default class User extends Component {
                                 领签到礼包</Text>
                         </View>
                         {
-                            userProfile.get('is_signed_in') == "0" ? 
+                            userProfile.get('is_signed_in') == "0" ?
                                 <TouchableWithoutFeedback
-                                    onPress={() => {ActionUtil.setAction(actionType.BA_MINE_SIGN_INPUT);actions.fetchSignInInfo()}}
+                                    onPress={() => {ActionUtil.setActionWithExtend(actionType.BA_MINE_SIGN_INPUT, {'signDays': (Number(userProfile.get('sign_in_days')) + 1 ) + ""});actions.fetchSignInInfo()}}
                                 >
                                     <View style={styles.signInWarp}><Text style={styles.signInBtn}>签到</Text></View>
                                 </TouchableWithoutFeedback>
@@ -178,9 +178,9 @@ export default class User extends Component {
                             style: {width: 11.5, height: 11.5},
                             bgColor: '#54d89f'
                         }}
-                        onPress={() => this.navigatorPush({component: ContactHouseContainer, name: 'contactHouse', title: '联系过的房源', actionLog: actionType.BA_MINE_CONNECT, backLog: actionType.BA_MINE_CONTACT_RETURN})}
+                        onPress={() => this.navigatorPush({component: ContactHouseContainer, name: 'contactHouse', title: '查看的房源', actionLog: actionType.BA_MINE_CONNECT, backLog: actionType.BA_MINE_CONTACT_RETURN})}
                     >
-                        <Text style={styles.flex}>联系的房源</Text>
+                        <Text style={styles.flex}>查看的房源</Text>
                         <Text>{userProfile.get('contacted')}</Text>
                     </LinkSection>
 

@@ -20,7 +20,8 @@ let initialState = {
             'current_page': 0,
             'last_page': 2,
         }
-    }
+    },
+    timeVisible: false
 };
 
 function houseData(state = Immutable.fromJS(initialState), action) {
@@ -47,6 +48,8 @@ function houseData(state = Immutable.fromJS(initialState), action) {
         case types.INPUT_HOUSE_PREPEND_FETCHED:
             return state.set('inputHouse', Immutable.fromJS(action.inputHouse));
             break;
+        case types.TIME_APPLY_VISIBLE_CHANGED:
+            return state.set('timeVisible', action.timeVisible);
         case types.HOUSE_DATA_CLEARED:
             return Immutable.fromJS(initialState);
             break;

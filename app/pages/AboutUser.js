@@ -146,8 +146,6 @@ class UserSection extends Component {
 
     render() {
         let {userInfo, log} = this.props;
-        let mobile = userInfo.get('mobile');
-        let showMobile = mobile ? mobile.slice(0, 2) + '********' + mobile.slice(-1) : '';
         let attentArr = userInfo.get('user_attention_block_list').size > 0 ? userInfo.get('user_attention_block_list').toJS() : userInfo.get('user_attention_community_list').size > 0 ? userInfo.get('user_attention_community_list').toJS() : null;
 
         return (
@@ -157,7 +155,7 @@ class UserSection extends Component {
                         style={styles.avatarBox}
                         source={require('../images/avatar.png')}
                     />
-                    <Text style={{fontSize: 17}}>{showMobile}</Text>
+                    <Text style={{fontSize: 17}}>用户{userInfo.get('input_user_id')}</Text>
                     <View style={[styles.row, styles.resultList]}>
                         <View style={[styles.center, styles.resultItem]}>
                             <Text style={[styles.resultNum]}>{userInfo.get('login_days')}</Text>
@@ -212,8 +210,8 @@ class HouseSection extends Component {
                 <TitleBar title="Ta发的房源" />
                 {userInfo.get('input_house_count') != 0 ?
                 <View style={styles.inputResult}>
-                    <Text>累计发房：{userInfo.get('input_house_count')}</Text>
-                    <Text>发房在卖率：{userInfo.get('input_house_selling_rate')}</Text>
+                    <Text>发房认证：{userInfo.get('input_house_count')}</Text>
+                    <Text>发房认证率：{userInfo.get('input_house_selling_rate')}</Text>
                 </View>
                 : null}
             </View>
