@@ -225,8 +225,6 @@ class App extends Component {
 
     _downAppModel() {
         Linking.openURL('http://www.fangyuan360.cn/download/app')
-        let {actionsApp} = this.props;
-        actionsApp.closeUpdateModal(false);
     }
 
     componentDidUpdate() {
@@ -336,6 +334,7 @@ class App extends Component {
             actionsApp.netWorkChanged('no');
         } else {
             actionsApp.netWorkChanged('yes');
+            actionsApp.setAppConfig();
         }
     };
 

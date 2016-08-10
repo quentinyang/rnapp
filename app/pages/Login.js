@@ -17,6 +17,7 @@ import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 import Countdown from '../components/Countdown'
 import {loginService, sendCodeService} from '../service/userService';
 import TabViewContainer from '../containers/TabViewContainer';
+import TouchWebContainer from "../containers/TouchWebContainer";
 
 import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer';
 import {parseUrlParam} from '../utils/CommonUtils';
@@ -39,7 +40,8 @@ class Login extends Component {
         let {formInfo, controllerInfo} = this.props.login;
 
         return (
-            <FormContainer ref="formContainer" scrollViewRef="scrollView">
+            <View style={styles.container}>
+            <FormContainer style={styles.container} ref="formContainer" scrollViewRef="scrollView">
              <KeyboardAvoidingView behavior={"position"} >
                 <View style={styles.imgRightBox}>
                     <Image
@@ -51,7 +53,7 @@ class Login extends Component {
                     <Image style={[styles.nameLogo]} source={require("../images/name_logo.png")} />
                 </View>
 
-                <Text style={styles.fysubtitle}>房源信息共享平台</Text>
+                <Text style={styles.fysubtitle}>仅限二手房经纪人使用</Text>
                 <View style={styles.layout}>
                     <View style={styles.phoneBox}>
                         <TextInput
@@ -100,6 +102,8 @@ class Login extends Component {
                 </View>
             </KeyboardAvoidingView>
             </FormContainer>
+            <Agreement navigator={this.props.navigator} />
+            </View>
         );
     }
 
@@ -272,6 +276,32 @@ class Login extends Component {
     };
 }
 
+class Agreement extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <TouchableHighlight underlayColor="transparent" onPress={this.goLink}>
+                <View style={[styles.row, styles.center, {height: 40}]}>
+                    <Text style={{fontSize: 12, color: '#8d8c92'}}>登录表明同意</Text>
+                    <Text style={{fontSize: 12, color: '#04c1ae'}}>《用户协议》</Text>
+                </View>
+            </TouchableHighlight>
+        );
+    }
+
+    goLink = () => {
+        this.props.navigator.push({
+            component: TouchWebContainer,
+            url:'https://mp.weixin.qq.com/s?__biz=MzAxNDYyMTA0NQ==&mid=505710246&idx=1&sn=f5df3a0827688930a98b625bdf772f54&scene=0&uin=OTA2NDQ0MzAx&key=77421cf58af4a6530c369d591633f60ffb6af03c88c1247f6a13933258c27d3b7348336897a5c57d11143bdf395983c2&devicetype=iMac+MacBookPro11%2C1+OSX+OSX+10.10.5+build(14F1713)&version=11020201&lang=zh_CN&pass_ticket=jnN7tPBr%2BOSovurKr9I8a1x%2Fc5UqzoOKQ7Vj96YVWw1Q2%2B5KjRdwHbMDFuohSHZY',
+            title: '第一房源用户协议',
+            name: 'user rule'
+        });
+    };
+}
+
 let errMsgs = {
     "emptyPhone": "请输入手机号",
     "emptyCode": "请输入手机验证码",
@@ -282,6 +312,13 @@ let errMsgs = {
 let styles = StyleSheet.create({
     container: {
         flex: 1
+    },
+    row: {
+        flexDirection: 'row'
+    },
+    center: {
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     alignItems: {
         alignItems: "center"
@@ -306,7 +343,7 @@ let styles = StyleSheet.create({
     },
     fysubtitle: {
         marginTop: 10,
-        marginBottom: 80,
+        marginBottom: 60,
         fontSize: 14,
         textAlign: 'center',
         color: '#3e3e3e',

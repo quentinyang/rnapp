@@ -26,7 +26,7 @@ function houseData(state, action) {
 
 let initialBaseInfo = {
     baseInfo: {
-        record_url: {}
+        record_url: null
     },
 
     curLogs: [],

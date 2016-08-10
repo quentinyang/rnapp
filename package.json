@@ -11,7 +11,7 @@
     "react": "~15.2.1",
     "react-addons-pure-render-mixin": "^0.14.6",
     "react-native": "~0.29.0",
-    "react-native-code-push": "^1.13.1-beta",
+    "react-native-code-push": "^1.13.6-beta",
     "react-native-device-info": "^0.9.1",
     "react-native-root-toast": "^1.0.3",
     "react-redux": "^4.4.0",
