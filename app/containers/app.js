@@ -376,7 +376,7 @@ class App extends Component {
 
     _geTuiDataReceivedHandle = (notifData) => {
         let newNotifData = JSON.parse(notifData.payloadMsg);
-        let {actionsHome} = this.props;
+        let {actionsHome, actionsApp} = this.props;
 
         switch(Number(newNotifData.type)) {
             case notifConst.NEW_HOUSE: // 普通推送
@@ -391,6 +391,9 @@ class App extends Component {
                 break;
             case notifConst.OPEN_URL:
                 NotificationHandler.openURL(_navigator, notifData);
+                break;
+            case notifConst.RED_POINT:
+                actionsApp.appSignInChanged(false);
                 break;
             default:
                 break;
