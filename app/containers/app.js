@@ -8,11 +8,13 @@ import {NaviGoBack, parseUrlParam} from '../utils/CommonUtils';
 import LoginContainer from '../containers/LoginContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 import * as common from '../constants/Common';
+import * as notifConst from '../constants/Notification';
 import BackScore from '../pages/BackScore'
 var GeTui = require('react-native').NativeModules.GeTui;
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
-import {routes} from '../config/route'
+require('../config/route');
+let NotificationHandler = require('../utils/NotificationHandler');
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 import { setLoginDaysService } from '../service/configService';
 import Toast from 'react-native-root-toast';
@@ -87,7 +89,7 @@ class App extends Component {
 
         if(Platform.OS === 'ios') {
             this.unlistenNotification =  NativeAppEventEmitter.addListener('clientIdReceived', (cId) => {
-                self._clientIdReceived(cId);
+                self._clientIdReceived(cId.clientId);
             });
             this.unlistenPage =  NativeAppEventEmitter.addListener('goPage', (obj) => {
                 let navRoute = _navigator.getCurrentRoutes(), len = navRoute.length;
@@ -102,7 +104,7 @@ class App extends Component {
             });
         } else {
             DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
-                self._clientIdReceived(cId);
+                self._clientIdReceived(cId.clientId);
             });
 
             DeviceEventEmitter.addListener('goPage', (page) => {
@@ -372,41 +374,22 @@ class App extends Component {
     };
 
     _geTuiDataReceivedHandle = (notifData) => {
-        let newNotifData = JSON.parse(notifData);
+        let newNotifData = JSON.parse(notifData.payloadMsg);
         let {actionsHome} = this.props;
 
         switch(Number(newNotifData.type)) {
-            case 1: // 普通推送
+            case notifConst.NEW_HOUSE: // 普通推送
                 ActionUtil.setAction(actionType.BA_PUSH_RECIVED);
                 actionsHome.fetchAttentionPrependHouseList({});
                 break;
-            case 2: // 互踢
-                AsyncStorageComponent.get(common.USER_TOKEN_KEY)
-                .then((token) => {
-                    if (token) {
-                        AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
-                        if (Platform.OS === 'ios') {
-                            Alert.alert('提示', '您的账号在另外一台设备登陆，被迫下线！', [
-                                {text: '知道了', onPress: () => {
-                                    AsyncStorageComponent.get('user_phone')
-                                    .then((value) => {
-                                        _navigator.resetTo({
-                                            component: LoginContainer,
-                                            name: 'login',
-                                            title: '登录',
-                                            phone: value,
-                                            hideNavBar: true
-                                        });
-                                    });
-                                }}
-                            ]);
-                        } else {
-                            this.setState({
-                                showModal: true
-                            });
-                        }
-                    }
-                });
+            case notifConst.LOGOUT: // 互踢
+                NotificationHandler.logout.bind(this);
+                break;
+            case notifConst.OPEN_PAGE:
+                NotificationHandler.openPage(_navigator, notifData);
+                break;
+            case notifConst.OPEN_URL:
+                NotificationHandler.openURL(_navigator, notifData);
                 break;
             default:
                 break;

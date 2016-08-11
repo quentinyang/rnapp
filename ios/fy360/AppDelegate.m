@@ -243,9 +243,10 @@ NSString * const UMengChannelId = @"";
   NSLog(@"\n>>>[GeTuiSdk RegisterClient]:%@\n\n", clientId);
   [GeTui setClientId:clientId];
   NSString *eventName = @"clientIdReceived";
-  GeTui *geTui = [GeTui sharedInstance];
   
-  [geTui handleRemoteNotificationReceived:eventName andPayloadMsg:clientId withRoot:self.rootView];
+  //GeTui *geTui = [GeTui sharedInstance];
+  //[geTui handleRemoteNotificationReceived:eventName andPayloadMsg:clientId withRoot:self.rootView];
+  [Utils sendEventWithParam:eventName withParam:@{@"clientId": clientId} withRoot:self.rootView];
 }
 
 
@@ -258,10 +259,12 @@ NSString * const UMengChannelId = @"";
     payloadMsg = [[NSString alloc] initWithBytes:payloadData.bytes
                                           length:payloadData.length
                                         encoding:NSUTF8StringEncoding];
+    
 //    GeTui *geTui = [GeTui sharedInstance];
 //    [geTui handleRemoteNotificationReceived:eventName andPayloadMsg:payloadMsg withRoot:self.rootView];
     
-    [self performSelector:@selector(HandleGeTui:) withObject:payloadMsg afterDelay:3];
+    
+    [self performSelector:@selector(HandleGeTui:) withObject:@{@"payloadMsg": payloadMsg, @"isOffline": @(offLine)} afterDelay:3];
   }
   
   NSString *record = [NSString stringWithFormat:@"%d, %@, %@%@", ++_lastPayloadIndex, [self formateTime:[NSDate date]], payloadMsg, offLine ? @"<离线消息>" : @""];
@@ -274,9 +277,10 @@ NSString * const UMengChannelId = @"";
   [GeTuiSdk sendFeedbackMessage:90001 taskId:taskId msgId:msgId];
 }
 
-- (void)HandleGeTui:payloadMsg {
-  GeTui *geTui = [GeTui sharedInstance];
-  [geTui handleRemoteNotificationReceived:@"geTuiDataReceived" andPayloadMsg:payloadMsg withRoot:self.rootView];
+- (void)HandleGeTui:data{
+  //GeTui *geTui = [GeTui sharedInstance];
+  //[geTui handleRemoteNotificationReceived:@"geTuiDataReceived" andPayloadMsg:payloadMsg withRoot:self.rootView];
+  [Utils sendEventWithParam:@"geTuiDataReceived" withParam:data withRoot:self.rootView];
 }
 
 /** SDK收到sendMessage消息回调 */
