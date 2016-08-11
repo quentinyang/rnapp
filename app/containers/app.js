@@ -149,7 +149,7 @@ class App extends Component {
                         </View>
                     </View>
                 </Modal>
-                
+
                 <Modal visible={appData.get('config').get('showUpdateModal')} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.updateContentContainer}>
@@ -325,7 +325,8 @@ class App extends Component {
 
     _setLoginDays = (currentAppState) => {
         gtoken && (currentAppState == 'active') && setLoginDays();
-    }
+    };
+
     _handleConnectionInfoChange = (connection) => {
         let {actionsApp} = this.props;
         if(connection.toLowerCase() == 'none') {
@@ -355,7 +356,7 @@ class App extends Component {
             bp: actionType.BA_LOGIN
         });
         actionsApp.webAuthentication({visible: false});
-    }
+    };
 
     _clientIdReceived = (cId) => {
         let {actionsApp} = this.props;

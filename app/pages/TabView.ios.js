@@ -18,7 +18,8 @@ export default class TabView extends Component {
     }
 
     render() {
-        let {actionsUser, actionsHome, route, navigator} = this.props;
+        let {actionsUser, actionsHome, appUserConfig, route, navigator} = this.props;
+
         return (
             <View style={styles.container}>
                 <TabBar
@@ -30,7 +31,7 @@ export default class TabView extends Component {
                             (val) => {
                                 return (
                                     <TabBar.Item
-                                        badge={val.key == 2 ? '':null}
+                                        badge={val.key == 2 && !appUserConfig.get('isSignIn') ? '':null}
                                         style={{backgroundColor: "#333"}}
                                         title={val.title}
                                         selected={this.state.tabIndex === val.key}

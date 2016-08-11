@@ -2,13 +2,14 @@
 
 import * as types from '../constants/App';
 import {makeActionCreator, serviceAction} from './base';
-import {setWebStartConfigService, deletePushService, setConfigService} from '../service/configService';
+import {setWebStartConfigService, deletePushService, setConfigService, setUserConfigService} from '../service/configService';
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 
 export const webAuthentication = makeActionCreator(types.WEB_AUTHENTICATION, 'auth');
 export const webNetWorkError = makeActionCreator(types.WEB_NETWORK_ERROR, 'msg');
 export const webStartConfig = makeActionCreator(types.WEB_START_CONFIG, 'config');
 export const appConfig = makeActionCreator(types.APP_CONFIG, 'appConfig');
+export const appUserConfig = makeActionCreator(types.APP_USER_CONFIG, 'appUserConfig');
 export const closeUpdateModal = makeActionCreator(types.CLOSE_UPDATE_MODAL, 'visible');
 export const closeLoginModal = makeActionCreator(types.CLOSE_LOGIN_MODAL, 'visible');
 export const clickBackPage = makeActionCreator(types.CLICK_BACK_PAGE, 'pageName');
@@ -25,6 +26,8 @@ export const clickTabChanged = makeActionCreator(types.FORBIDDEN_TAB_CHANGED, 's
 export const appLoadingChanged = makeActionCreator(types.APP_LOADING_CHANGED, 'visible');
 
 export const netWorkChanged = makeActionCreator(types.APP_NETWORK_CHANGED, 'net');  //网络状况改变
+
+export const appSignInChanged = makeActionCreator(types.APP_SIGNIN_CHANGED, 'signIn');
 
 export function clickBack(name) {
     return dispatch => {
@@ -70,6 +73,26 @@ export function setAppConfig() {
                     showRecharge: Number(oData.recharge_switch) ? true: false,
                     isCidLogin: Number(oData.is_cid_login) ? true : false,
                     isEnforceUpdate: Number(oData.is_enforce_update) ? true : false  //是否强制更新  0  不需要 1 需要
+                }));
+                if(Number(oData.is_cid_login)) {
+                    dispatch(setAppUserConfig());
+                }
+            },
+            error: function(oData) {
+
+            }
+        })
+    }
+}
+
+export function setAppUserConfig() {  //获取登录后的配置
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: setUserConfigService,
+            success: function(oData) {
+                dispatch(appUserConfig({
+                    showRecharge: Number(oData.recharge_switch) ? true: false,
+                    isSignIn: Number(oData.is_sign_in) ? true : false,
                 }));
             },
             error: function(oData) {

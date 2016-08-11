@@ -86,7 +86,7 @@ class TabBar extends Component {
     }
 
     render() {
-        let {tabIndex, navigator, actionsUser, actionsHome} = this.props;
+        let {tabIndex, navigator, actionsUser, actionsHome, appUserConfig} = this.props;
         return (
             <View style={styles.tabbar}>
             {
@@ -117,7 +117,7 @@ class TabBar extends Component {
                                         source={{uri: tabIndex == tabItem.key ? tabItem.selectedIcon : tabItem.icon}}
                                         style={{width: tabItem.width, height: tabItem.height,  marginBottom: 3}}
                                     />
-                                    {tabItem.key == 2 ?
+                                    {tabItem.key == 2 && !appUserConfig.get('isSignIn') ?
                                     <Image
                                         source={require('../images/red_dot.png')}
                                         style={styles.redBadge}

@@ -20,7 +20,9 @@ class TabViewContainer extends Component {
 }
 
 function mapStateToProps(state) {
+    const {appUserConfig} = state.app;
     return {
+        appUserConfig
     }
 }
 

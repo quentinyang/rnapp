@@ -138,12 +138,16 @@ function clickStatus(state = Immutable.fromJS(initialClickStatus), action) {
 
 let initialConfig = {
     showRecharge: true,
+    isSignIn: true
 };
 
-function appConfig(state = Immutable.fromJS(initialConfig), action) {
+function appUserConfig(state = Immutable.fromJS(initialConfig), action) {
     switch(action.type) {
-        case types.APP_CONFIG:
-            return Immutable.fromJS(action.appConfig);
+        case types.APP_USER_CONFIG:
+            return Immutable.fromJS(action.appUserConfig);
+            break;
+        case types.APP_SIGNIN_CHANGED:
+            return state.set('isSignIn', action.signIn);
             break;
         default:
             return state;
@@ -152,6 +156,6 @@ function appConfig(state = Immutable.fromJS(initialConfig), action) {
 
 export default combineReducers({
     appData,
-    appConfig,
+    appUserConfig,
     clickStatus
 });
