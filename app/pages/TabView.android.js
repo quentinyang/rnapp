@@ -117,6 +117,12 @@ class TabBar extends Component {
                                         source={{uri: tabIndex == tabItem.key ? tabItem.selectedIcon : tabItem.icon}}
                                         style={{width: tabItem.width, height: tabItem.height,  marginBottom: 3}}
                                     />
+                                    {tabItem.key == 2 ?
+                                    <Image
+                                        source={require('../images/red_dot.png')}
+                                        style={styles.redBadge}
+                                    />
+                                    :null}
                                     <Text style={[styles.tabText, tabTextStyle]}>{tabItem.title}</Text>
                                 </View>
                             </TouchableOpacity>
@@ -185,6 +191,13 @@ const styles = StyleSheet.create({
     },
     tabItemImage: {
 
+    },
+    redBadge: {
+        position:'absolute',
+        top: 2,
+        right: -4,
+        width: 8,
+        height: 8
     }
 });
 

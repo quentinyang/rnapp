@@ -142,7 +142,10 @@ export default class User extends Component {
                         onPress={() => this.navigatorPush({component: SignInContainer, signInfo: signInData, name: 'signin', title: '签到礼包', actionLog: actionType.BA_MINE_SIGN, bp: this.pageId, backLog: actionType.BA_MINE_CREDIT_BACK})}
                     >
                         <View style={{flexDirection: 'column'}}>
-                            <Text style={{marginTop: 2}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
+                            <View style={{flexDirection: 'row', height: 22}}>
+                                <Text style={{marginRight: 6, lineHeight: 22}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
+                                {userProfile.get('is_signed_in') == "0" ?<Image source={require('../images/red_dot.png')} style={{width: 8, height: 8}} />:null}
+                            </View>
                             <Text style={styles.signInPrompt}>再签到{userProfile.get('go_on_sign_in_day')}天
                                 领签到礼包</Text>
                         </View>
