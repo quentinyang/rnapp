@@ -4,7 +4,7 @@
 */
 
 // 系统相关
-export const UPDATE = 1;
+export const FORCE_UPDATE = 1;
 
 // 业务相关
 export const NEW_HOUSE = 101;

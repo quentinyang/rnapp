@@ -27,6 +27,11 @@ let initialState = {
     inputSearchHistory: [],
 
     net: 'yes',  //yes有网，no无网
+
+    msgNotice: {
+        visible: false,
+        msg: ''
+    }
 };
 
 function appData(state = Immutable.fromJS(initialState), action) {
@@ -117,6 +122,10 @@ function appData(state = Immutable.fromJS(initialState), action) {
             break;
         case types.APP_NETWORK_CHANGED:
             return state.set('net', action.net);
+        case types.MESSAGE_NOTICE_GETED:
+            return state.set('msgNotice', Immutable.fromJS(action.message));
+        case types.FORCE_UPDATE_GETED:
+            return state.setIn(['config', 'showUpdateModal'], Immutable.fromJS(true)).setIn(['config', 'isEnforceUpdate'], Immutable.fromJS(true));
         default:
             return state;
     }

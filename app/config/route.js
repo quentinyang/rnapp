@@ -1,3 +1,4 @@
+import LoginContainer from '../containers/LoginContainer';
 import HouseListContainer from '../containers/HouseListContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
@@ -5,6 +6,12 @@ import DetailContainer from '../containers/DetailContainer';
 import TouchWebContainer from "../containers/TouchWebContainer";
 
 global.routes = {
+    "login": {
+        component: LoginContainer,
+        name: 'login',
+        title: '登录',
+        hideNavBar: true
+    },
     "home": {
         component: TabViewContainer,
         name: 'home',

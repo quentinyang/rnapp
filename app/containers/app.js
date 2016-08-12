@@ -5,6 +5,7 @@ import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, Touchabl
     PixelRatio, TouchableWithoutFeedback, Linking, InteractionManager, NetInfo, AppState} from 'nuke';
 import {navigationContext} from 'react-native'
 import {NaviGoBack, parseUrlParam} from '../utils/CommonUtils';
+require('../config/route');
 import LoginContainer from '../containers/LoginContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 import * as common from '../constants/Common';
@@ -13,7 +14,6 @@ import BackScore from '../pages/BackScore'
 var GeTui = require('react-native').NativeModules.GeTui;
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
-require('../config/route');
 let NotificationHandler = require('../utils/NotificationHandler');
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 import { setLoginDaysService } from '../service/configService';
@@ -129,6 +129,10 @@ class App extends Component {
         // (isAndroid && appData.get('config').get('isCidLogin'))
         return (
             <View style={styles.flex}>
+                <MessageNoticeModal
+                    message={appData.get('msgNotice')}
+                    actionsApp={actionsApp}
+                />
                 <LogoutModal
                     logoutInfo={appData.get('auth')}
                     logoutSure={this._logoutSure}
@@ -376,7 +380,8 @@ class App extends Component {
 
     _geTuiDataReceivedHandle = (notifData) => {
         let newNotifData = JSON.parse(notifData.payloadMsg);
-        let {actionsHome, actionsApp} = this.props;
+        let {actionsApp, actionsHome} = this.props;
+console.log('=========notifData', notifData);
 
         switch(Number(newNotifData.type)) {
             case notifConst.NEW_HOUSE: // 普通推送
@@ -384,7 +389,7 @@ class App extends Component {
                 actionsHome.fetchAttentionPrependHouseList({});
                 break;
             case notifConst.LOGOUT: // 互踢
-                NotificationHandler.logout.bind(this);
+                NotificationHandler.logout.call(this, _navigator);
                 break;
             case notifConst.OPEN_PAGE:
                 NotificationHandler.openPage(_navigator, notifData);
@@ -394,6 +399,15 @@ class App extends Component {
                 break;
             case notifConst.RED_POINT:
                 actionsApp.appSignInChanged(false);
+                break;
+            case notifConst.MESSAGE_NOTICE:
+                NotificationHandler.messageNotice(actionsApp, newNotifData);
+                break;
+            case notifConst.TOAST_NOTICE:
+                NotificationHandler.showToast(newNotifData);
+                break;
+            case notifConst.FORCE_UPDATE:
+                NotificationHandler.showForceUpdate(actionsApp);
                 break;
             default:
                 break;
@@ -501,10 +515,39 @@ class LogoutModal extends Component {
                         <Text style={styles.textCenter}>{logoutInfo.get('msg')}</Text>
 
                         <TouchableHighlight
+                            style={[styles.alignItems, styles.logoutSure, styles.justifyContent]}
                             onPress={logoutSure}
                             underlayColor='#04C1AE'
                         >
-                            <View style={[styles.logoutSure, styles.alignItems, styles.justifyContent]}>
+                            <View>
+                                <Text style={[styles.updateBtnRightText]}>确认</Text>
+                            </View>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+}
+
+class MessageNoticeModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        let {message, actionsApp} = this.props;
+        return (
+            <Modal visible={message.get('visible')} transparent={true} onRequestClose={() => {}}>
+                <View style={styles.bgWrap}>
+                    <View style={styles.contentContainer}>
+                        <Text style={styles.textCenter}>{message.get('msg')}</Text>
+
+                        <TouchableHighlight
+                            style={[styles.alignItems, styles.logoutSure, styles.justifyContent]}
+                            onPress={() => actionsApp.msgNoticeGeted({'visible': false})}
+                            underlayColor='#04C1AE'
+                        >
+                            <View>
                                 <Text style={[styles.updateBtnRightText]}>确认</Text>
                             </View>
                         </TouchableHighlight>

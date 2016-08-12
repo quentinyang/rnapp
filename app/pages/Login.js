@@ -26,7 +26,6 @@ import FormContainer from '../components/FormContainer';
 import * as common from '../constants/Common';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
-require('../config/route');
 import  {setLoginDays} from '../containers/app';
 
 class Login extends Component {
