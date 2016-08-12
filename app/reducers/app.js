@@ -31,6 +31,14 @@ let initialState = {
     msgNotice: {
         visible: false,
         msg: ''
+    },
+
+    levelNotice: {  //会员等级推送
+        visible: true,
+        data: {
+            level: '',
+            exp: ''
+        }
     }
 };
 
@@ -122,10 +130,19 @@ function appData(state = Immutable.fromJS(initialState), action) {
             break;
         case types.APP_NETWORK_CHANGED:
             return state.set('net', action.net);
+            break;
         case types.MESSAGE_NOTICE_GETED:
             return state.set('msgNotice', Immutable.fromJS(action.message));
+            break;
         case types.FORCE_UPDATE_GETED:
             return state.setIn(['config', 'showUpdateModal'], Immutable.fromJS(true)).setIn(['config', 'isEnforceUpdate'], Immutable.fromJS(true));
+            break;
+        case types.LEVEL_PUSHED:
+            return state.setIn(['levelNotice', 'visible'], Immutable.fromJS(true)).setIn(['levelNotice', 'data'], Immutable.fromJS(action.data));
+            break;
+        case types.NEW_LEVEL_MODAL_CHANGED:
+            return state.setIn(['levelNotice', 'visible'], Immutable.fromJS(action.visible));
+            break;
         default:
             return state;
     }

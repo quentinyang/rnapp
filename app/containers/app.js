@@ -7,6 +7,7 @@ import {navigationContext} from 'react-native'
 import {NaviGoBack, parseUrlParam} from '../utils/CommonUtils';
 require('../config/route');
 import LoginContainer from '../containers/LoginContainer';
+import AboutEXPContainer from './AboutEXPContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 import * as common from '../constants/Common';
 import * as notifConst from '../constants/Notification';
@@ -194,6 +195,8 @@ class App extends Component {
                     </View>
                 </Modal>
 
+                <LevelModal levelNotice={appData.get('levelNotice')} closeFn={() => this.closeLevelModal()} linkFn={() => this.goExp(appData.get('levelNotice').get('data').toJS())} />
+
                 {
                     hasSetRoute ?
                         <Navigator
@@ -209,6 +212,20 @@ class App extends Component {
             </View>
         )
     }
+
+    closeLevelModal = () => {
+        this.props.actionsApp.levelModalChanged(false);
+    };
+
+    goExp = (data) => {
+        this.props.actionsApp.levelModalChanged(false);
+        _navigator.push({
+            component: AboutEXPContainer,
+            name: 'exp',
+            title: '我的等级',
+            data: data
+        });
+    };
 
     _hideModel() {
         let {actionsApp} = this.props;
@@ -400,11 +417,11 @@ console.log('=========notifData', notifData);
             case notifConst.RED_POINT:
                 actionsApp.appSignInChanged(false);
                 break;
-            case notifConst.MESSAGE_NOTICE:
-                NotificationHandler.messageNotice(actionsApp, newNotifData);
+            case notifConst.NEW_LEVEL_NOTICE:
+                actionsApp.LevelPushed(newNotifData);
                 break;
             case notifConst.TOAST_NOTICE:
-                NotificationHandler.showToast(newNotifData);
+                NotificationHandler.showToast(newNotifData.data.extras);
                 break;
             case notifConst.FORCE_UPDATE:
                 NotificationHandler.showForceUpdate(actionsApp);
@@ -558,6 +575,55 @@ class MessageNoticeModal extends Component {
     }
 }
 
+class LevelModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {levelNotice, closeFn, linkFn} = this.props;
+        return (
+            <Modal visible={levelNotice.get('visible')} transparent={true} onRequestClose={() => {}}>
+                <View style={styles.bgWrap}>
+                    <View>
+                        <View style={[styles.contentContainer, {marginTop: 32}]}>
+                            <TouchableHighlight
+                                style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
+                                underlayColor="transparent"
+                                onPress={closeFn}
+                                >
+                                <Image
+                                    style={styles.closeIcon}
+                                    source={require("../images/close.png")}
+                                />
+                            </TouchableHighlight>
+
+                            <Text style={[styles.expTitle]}>会员升级</Text>
+
+                            <View style={{marginTop: 10, marginBottom: 30}}>
+                                <Text style={styles.font20}>恭喜您已成为<Text style={[styles.font20, styles.orange, styles.fontBold]}>V{levelNotice.get('data').get('level')}</Text>会员</Text>
+                            </View>
+                            <TouchableHighlight
+                                underlayColor='#fff'
+                                onPress={linkFn}
+                            >
+                                <View style={styles.flex}>
+                                    <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
+                                </View>
+                            </TouchableHighlight>
+                        </View>
+
+                        <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
+                            <Image style={styles.horn} source={require("../images/horn.png")}/>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
+        );
+    }
+}
+
 export function setLoginDays(uid) {
     let key = "LOGIN_DAYS_" + uid;
 
@@ -583,6 +649,15 @@ let styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row'
+    },
+    orange: {
+        color: '#ff6d4b'
+    },
+    fontBold: {
+        fontWeight: '400'
+    },
+    font20: {
+        fontSize: 20
     },
     alignItems: {
         alignItems: 'center'
@@ -639,7 +714,7 @@ let styles = StyleSheet.create({
     },
     contentContainer: {
         width: 270,
-        borderRadius: 5,
+        borderRadius: 10,
         padding: 20,
         backgroundColor: "#fff",
         justifyContent: "center",
@@ -714,6 +789,45 @@ let styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#04c1ae',
         marginTop: 20
+    },
+    closeBox: {
+        position: "absolute",
+        right: 0,
+        top: 0,
+        width: 50,
+        height: 30,
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    closeIcon: {
+        width: 15,
+        height: 11
+    },
+    expTitle: {
+        marginTop: 28,
+        marginBottom: 10,
+        fontSize: 12,
+        color: '#8d8c92'
+    },
+    giftBg: {
+        position: 'absolute',
+        top: 0,
+        left: 100,
+        width: 76,
+        height: 76,
+        borderRadius: 38,
+        borderWidth: 5,
+        borderColor: '#fff',
+        backgroundColor: "#04C1AE"
+    },
+    giftBtn: {
+        color: "#04c1ae",
+        fontSize: 12
+    },
+    horn: {
+        width: 34,
+        height: 32.5
     }
 });
 

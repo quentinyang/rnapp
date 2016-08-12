@@ -31,6 +31,9 @@ export const forceUpdateGeted = makeActionCreator(types.FORCE_UPDATE_GETED);
 
 export const appSignInChanged = makeActionCreator(types.APP_SIGNIN_CHANGED, 'signIn');
 
+export const levelPushed = makeActionCreator(types.LEVEL_PUSHED, 'data');
+export const levelModalChanged = makeActionCreator(types.NEW_LEVEL_MODAL_CHANGED, 'visible');
+
 export function clickBack(name) {
     return dispatch => {
         dispatch(clickBackPage(name));
