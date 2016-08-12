@@ -20,16 +20,28 @@ export default class Recharge extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            price: 10
+            price: 50
         };
 
         this.pageId = actionType.BA_DEPOSIT;
         this.tradeId = '';
         this.submitStatus = true;
+        this.points = [{price: 50, action: 'BA_DEPOSIT_TEN'}, {price: 100, action: 'BA_DEPOSIT_TWENTY'}, {price: 200, action: 'BA_DEPOSIT_FIFTY'}];
         ActionUtil.setActionWithExtend(actionType.BA_DEPOSIT_ONVIEW, {"bp": this.props.route.bp});
     }
 
     render() {
+        let priceBox = [];
+        for(let i = 0; i < this.points.length; i++) {
+            let obj = this.points[i];
+            priceBox.push(
+                <TouchableWithoutFeedback onPress={() => this.choosePrice(obj.price, actionType[obj.action])}>
+                    <View style={[styles.priceItem, this.state.price == obj.price ? styles.selectedBorder: null, i == this.points.length - 1 ? {marginRight: 0} : null]}>
+                        <Text style={this.state.price == obj.price ? styles.selectedFont: null}>{obj.price}积分</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+            );
+        }
         return (
             <ScrollView
                 style={styles.container}
@@ -38,21 +50,7 @@ export default class Recharge extends Component {
                 <View style={styles.choiceBox}>
                     <Text>选择充值面额</Text>
                     <View style={styles.priceBox}>
-                        <TouchableWithoutFeedback onPress={() => this.choosePrice(10, actionType.BA_DEPOSIT_TEN)}>
-                            <View style={[styles.priceItem, this.state.price == 10? styles.selectedBorder: null]}>
-                                <Text style={this.state.price == 10? styles.selectedFont: null}>10积分</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.choosePrice(20, actionType.BA_DEPOSIT_TWENTY)}>
-                            <View style={[styles.priceItem, this.state.price == 20? styles.selectedBorder: null]}>
-                                <Text style={this.state.price == 20? styles.selectedFont: null}>20积分</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
-                        <TouchableWithoutFeedback onPress={() => this.choosePrice(50, actionType.BA_DEPOSIT_FIFTY)}>
-                            <View style={[styles.priceItem, {marginRight: 0}, this.state.price == 50? styles.selectedBorder: null]}>
-                                <Text style={this.state.price == 50? styles.selectedFont: null}>50积分</Text>
-                            </View>
-                        </TouchableWithoutFeedback>
+                        {priceBox}
                     </View>
                 </View>
                 <View style={styles.payWay}>
