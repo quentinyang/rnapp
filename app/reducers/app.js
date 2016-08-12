@@ -150,7 +150,21 @@ let initialConfig = {
     isSignIn: true
 };
 
-function appUserConfig(state = Immutable.fromJS(initialConfig), action) {
+function appConfig(state = Immutable.fromJS(initialConfig), action) {
+    switch(action.type) {
+        case types.APP_CONFIG:
+            return Immutable.fromJS(action.appConfig);
+            break;
+        default:
+            return state;
+    }
+}
+
+let initialUserConfig = {
+    isSignIn: true
+};
+
+function appUserConfig(state = Immutable.fromJS(initialUserConfig), action) {
     switch(action.type) {
         case types.APP_USER_CONFIG:
             return Immutable.fromJS(action.appUserConfig);
@@ -165,6 +179,7 @@ function appUserConfig(state = Immutable.fromJS(initialConfig), action) {
 
 export default combineReducers({
     appData,
+    appConfig,
     appUserConfig,
     clickStatus
 });

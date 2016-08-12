@@ -141,7 +141,7 @@ export default class User extends Component {
                         }}
                         onPress={() => this.navigatorPush({component: SignInContainer, signInfo: signInData, name: 'signin', title: '签到礼包', actionLog: actionType.BA_MINE_SIGN, bp: this.pageId, backLog: actionType.BA_MINE_CREDIT_BACK})}
                     >
-                        <View style={{flexDirection: 'column'}}>
+                        <View style={{flexDirection: 'column', flex: 1}}>
                             <View style={{flexDirection: 'row', height: 22}}>
                                 <Text style={{marginRight: 6, lineHeight: 22}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
                                 {userProfile.get('is_signed_in') == "0" ?<Image source={require('../images/red_dot.png')} style={{width: 8, height: 8}} />:null}
@@ -159,7 +159,8 @@ export default class User extends Component {
                                 >
                                     <View style={styles.signInWarp}><Text style={styles.signInBtn}>签到</Text></View>
                                 </TouchableWithoutFeedback>
-                                : null
+                                :
+                                <Text style={styles.signInPrompt}>今日已签到</Text>
                         }
                     </LinkSection>
 
