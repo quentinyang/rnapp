@@ -55,7 +55,7 @@ export default class WelfareModal extends Component {
                                 onPress={goPage}
                             >
                                 <View style={styles.flex}>
-                                    <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
+                                    <Text style={[styles.giftBtn, styles.flex]}>看房卡怎么用></Text>
                                 </View>
                             </TouchableHighlight>
 

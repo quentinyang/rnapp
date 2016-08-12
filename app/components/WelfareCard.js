@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     },
     wfCaDesc: {
         flex: 1,
+        justifyContent: 'center',
         paddingLeft: 12,
     },
     fontBold: {
