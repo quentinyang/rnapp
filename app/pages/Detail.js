@@ -835,6 +835,8 @@ class ErrorTipModal extends Component {
 
     render() {
         let { callInfo, actions } = this.props;
+        let errorMsg = (callInfo && callInfo.get('callError') && callInfo.get('callError').get('msg')) ? callInfo.get('callError').get('msg') : '拨打电话失败了,再试一下吧!';
+
         return (
             <Modal visible={callInfo.get('errorTipVisible')} transparent={true}
                    onRequestClose={actions.setErrorTipVisible}>
@@ -851,7 +853,7 @@ class ErrorTipModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={[styles.msgTip, styles.baseColor]}>{(callInfo.get('callError') && callInfo.get('callError').get('msg')) ? callInfo.get('callError').get('msg') : '拨打电话失败了,再试一下吧!'}</Text>
+                        <Text style={[styles.msgTip, styles.baseColor]}>{errorMsg}</Text>
 
                         <TouchableHighlight
                             style={[styles.btn, styles.borderBtn]}

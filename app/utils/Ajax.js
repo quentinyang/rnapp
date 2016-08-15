@@ -32,7 +32,7 @@ var mobileAgent = (function() {
             ip: '',
             net: '',//网络类型
             p: (deviceInfo.manufacturer == 'Apple') ? 'IOS' : 'Android',//Android or IOS
-            pm: deviceInfo.manufacturer,//设备厂家或类型（三星，iPod, Touch)
+            pm: encodeURIComponent(deviceInfo.manufacturer),//设备厂家或类型（三星，iPod, Touch)
             osv: deviceInfo.systemVersion,//操作系统版本
             // dvid 设备ID(DeviceID)，安卓:用IMEI+Mac地址表示，e.g.:447769804451095+c5ab204dc58739c482f413d2a22de442；
             // IOS:用udid表示，举例:8A9B2903-B0D8-4137-A8BC-5C7F32CE9F04
