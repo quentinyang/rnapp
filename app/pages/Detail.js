@@ -999,6 +999,7 @@ class BaseInfo extends Component {
     render() {
         let {baseInfo, route} = this.props;
         let houseInfo = route.item;
+        let isVertify = houseInfo.get('is_verify') && houseInfo.get('is_verify') == "1"  || baseInfo.get('is_verify') && baseInfo.get('is_verify') == "1";
 
         return (
             <View>
@@ -1009,8 +1010,8 @@ class BaseInfo extends Component {
                             {houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}{houseInfo.get('door_num') && '室'}
                             {houseInfo.get('is_new') && ' '}
                             {houseInfo.get('is_new') ? <Image style={[styles.tagNew]} source={require("../images/new_tag.png")} />: null}
-                            {houseInfo.get('is_verify') && ' '}
-                            {houseInfo.get('is_verify') ? <Image style={[styles.tagVerify]} source={require("../images/verify_tag.png")} />: null}
+                            {isVertify && ' '}
+                            {isVertify ? <Image style={[styles.tagVerify]} source={require("../images/verify_tag.png")} />: null}
                         </Text>
                                      
                     </View>
@@ -1039,7 +1040,7 @@ class BaseInfo extends Component {
                 </View>
                 <View style={[styles.justifyContent, styles.address]}>
                     <Text style={[styles.baseSize, styles.baseColor]}
-                          numberOfLines={1}>{(houseInfo.get('is_verify') || baseInfo.get('is_verify')) ?
+                          numberOfLines={1}>{isVertify ?
                           "认证时间：" + (houseInfo.get('verify_at') || baseInfo.get('verify_at') || '') :
                           "发布时间：" + (houseInfo.get('created_at') || baseInfo.get('created_at') || '')}
                     </Text>
