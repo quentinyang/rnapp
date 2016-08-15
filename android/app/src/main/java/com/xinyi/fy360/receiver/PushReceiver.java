@@ -62,8 +62,15 @@ public class PushReceiver extends BroadcastReceiver {
 
                         showNotifyToActivityWithExtra(context, dataObject, dataString);
                         if (null != GeTuiManager.module) {
-                            GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", dataString);
+                            Log.d("ccz", "pushReceiver send event");
+                            //GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", dataString);
+
+                            JSONObject data = new JSONObject();
+                            data.put("payloadMsg", dataString);
+                            data.put("isOffline", false);
+                            GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", data.toString());
                         } else {
+                            Log.d("ccz", "pushReceiver sp save");
                             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
                             sp.edit().putString("dataString", dataString).commit();
                         }

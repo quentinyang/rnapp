@@ -105,7 +105,7 @@ class App extends Component {
             });
         } else {
             DeviceEventEmitter.addListener('clientIdReceived', (cId) => {
-                self._clientIdReceived(cId.clientId);
+                self._clientIdReceived(cId);
             });
 
             DeviceEventEmitter.addListener('goPage', (page) => {
@@ -287,7 +287,7 @@ class App extends Component {
             });
         } else {
             DeviceEventEmitter.addListener('geTuiDataReceived', (notifData) => {
-                this._geTuiDataReceivedHandle(notifData);
+                this._geTuiDataReceivedHandle(JSON.parse(notifData));
             });
 
             // 个推打开的action监听
@@ -396,9 +396,9 @@ class App extends Component {
     };
 
     _geTuiDataReceivedHandle = (notifData) => {
+        console.log('=========notifData', notifData);
         let newNotifData = JSON.parse(notifData.payloadMsg);
         let {actionsApp, actionsHome} = this.props;
-console.log('=========notifData', notifData);
 
         switch(Number(newNotifData.type)) {
             case notifConst.NEW_HOUSE: // 普通推送
@@ -412,6 +412,7 @@ console.log('=========notifData', notifData);
                 NotificationHandler.openPage(_navigator, notifData);
                 break;
             case notifConst.OPEN_URL:
+            console.log('======nav', _navigator);
                 NotificationHandler.openURL(_navigator, notifData);
                 break;
             case notifConst.RED_POINT:

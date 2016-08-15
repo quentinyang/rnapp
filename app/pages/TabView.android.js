@@ -67,6 +67,7 @@ export default class TabView extends Component {
                         tabIndex={this.state.tabIndex}
                         actionsUser={this.props.actionsUser}
                         actionsHome={this.props.actionsHome}
+                        appUserConfig={this.props.appUserConfig}
                     />
                 }
                 onWillFocus={this._onWillFocus}

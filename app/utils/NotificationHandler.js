@@ -1,4 +1,4 @@
-import {Platform, Alert} from 'nuke';
+import {Platform, Alert, AppState} from 'nuke';
 import Toast from 'react-native-root-toast';
 import Immutable from 'immutable';
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
@@ -31,34 +31,38 @@ module.exports = function() {
 	}
 
 	function openPage(nav, notifData) {
-		let isOffline = notifData.isOffline;
         let newNotifData = JSON.parse(notifData.payloadMsg);
+        let isOffline = notifData.isOffline;
         let page = newNotifData.data.anchor;
 
-		if(isOffline && page) {
+		if(Platform.OS == "ios" && isOffline === true && page) {
+			nav.push(Object.assign(routes[page], {"item": Immutable.fromJS(newNotifData.data.extras.nav)}));
+		} else if(Platform.OS == "android" && AppState.currentState == "background" && page) {
 			nav.push(Object.assign(routes[page], {"item": Immutable.fromJS(newNotifData.data.extras.nav)}));
 		}
 	}
 
 	function openURL(nav, notifData) {
-		let isOffline = notifData.isOffline;
         let newNotifData = JSON.parse(notifData.payloadMsg);
+        let isOffline = notifData.isOffline;
         let page = newNotifData.data.anchor;
 
-		if(isOffline && page) {
+		if(Platform.OS == "ios" && isOffline === true && page) {
+			nav.push(Object.assign(routes["webView"], {"url": page}, newNotifData.data.extras));
+		} else if(Platform.OS == "android" && (AppState.currentState == "background" || isOffline == true) && page) {
 			nav.push(Object.assign(routes["webView"], {"url": page}, newNotifData.data.extras));
 		}
 	}
 
-	function messageNotice(actions, notifData) {
+	function messageNotice(actions, payloadMsg) {
 		actions.msgNoticeGeted({
 			visible: true,
-			msg: notifData.data.msg
+			msg: payloadMsg.data.msg
 		});
 	}
 
-	function showToast(notifData) {
-		Toast.show(notifData.data.msg, {
+	function showToast(payloadMsg) {
+		Toast.show(payloadMsg.data.msg, {
             duration: Toast.durations.SHORT,
             position: Toast.positions.CENTER
         });
