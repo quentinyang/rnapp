@@ -45,7 +45,7 @@ export default class Detail extends Component {
         let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');        
         let verfify = null;
 
-        if(route.item.get('is_verify') || phone) {
+        if((route.item.get('is_verify') && route.item.get('is_verify') == "1") || phone) {
             verfify = true;
         } else if(info.get('record_url')) {
             verfify = info.get('record_url').size ? true : false;
