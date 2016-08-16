@@ -10,7 +10,8 @@ let initialState = {
         showUpdateModal: false,
         showRecharge: true,
         isCidLogin: false,
-        isEnforceUpdate: false
+        isEnforceUpdate: false,
+        isNewModal: null
     },
     auth: {
         visible: false,

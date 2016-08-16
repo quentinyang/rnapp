@@ -77,7 +77,8 @@ export function setAppConfig() {
                     showUpdateModal: Number(oData.update) ? true : false,
                     showRecharge: Number(oData.recharge_switch) ? true: false,
                     isCidLogin: Number(oData.is_cid_login) ? true : false,
-                    isEnforceUpdate: Number(oData.is_enforce_update) ? true : false  //是否强制更新  0  不需要 1 需要
+                    isEnforceUpdate: Number(oData.is_enforce_update) ? true : false,  //是否强制更新  0  不需要 1 需要
+                    isNewModal: Number(oData.switch_two_zero_version) ? true : false,
                 }));
                 if(Number(oData.is_cid_login)) {
                     dispatch(setAppUserConfig());

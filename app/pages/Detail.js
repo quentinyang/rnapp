@@ -42,8 +42,9 @@ export default class Detail extends Component {
         let couponArr = baseInfo.get('couponArr');
         let status = Number(info.get('phone_lock_status'));
         let phone = status ? info.get('seller_phone') : callInfo.get('sellerPhone').get('seller_phone');
-        let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');        
+        let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');
         let verfify = null;
+        let point = info.get('has_discount') == "1" ? info.get('cur_point') : info.get('point');
 
         if(phone) {
             verfify = true;
@@ -83,7 +84,7 @@ export default class Detail extends Component {
 
                 <CallTipModal
                     isVisible={callInfo.get('callTipVisible')}
-                    score={info.get('unlock_phone_cost')}
+                    score={point}
                     callSellerPhone={verfify ? this._getSellerPhone.bind(this) : this._callSellerPhone.bind(this)}
                     actions={actions}
                 />
@@ -254,13 +255,11 @@ export default class Detail extends Component {
 
         return (
             <View>
-
                 <BaseInfo baseInfo={baseInfo.get('baseInfo')} hasBuyed={callInfo.get('sellerPhone').get('seller_phone')} route={route}/>
                 { userInfo.get('input_user_id') ?
                     <UserInfo userInfo={userInfo} navigator={navigator} actions={actions} actionsNavigation={actionsNavigation} />
                     : null
                 }
-
                 {
                     baseInfo.get('contact').get('total') > 0 ?
                         <ContactList
@@ -270,7 +269,6 @@ export default class Detail extends Component {
                             contact={baseInfo.get('contact')}
                         /> : null
                 }
-
                 {
                     houseList.size > 0 ? <View style={styles.gap}></View> : null
                 }
@@ -373,7 +371,7 @@ class VerifyBtn extends Component {
                     onPress={playRecord}
                 >
                     <View style={[styles.justifyContent, styles.center]}>
-                        <Text style={styles.whiteColor}>免费听录音</Text>
+                        <Text style={[styles.whiteColor, styles.voiceText]}>听认证录音</Text>
                     </View>
                 </TouchableHighlight>
             }
@@ -389,13 +387,17 @@ class VerifyBtn extends Component {
                                 style={styles.phoneIcon}
                                 source={require("../images/phone.png")}
                             />
-                            <Text style={styles.whiteColor}>联系房东</Text>
+                            <Text style={styles.contactText}>联系房东</Text>
                             <Text style={[styles.sellerPhone, styles.whiteColor]}>({phone})</Text>
                         </View>
                         :
                         <View style={[styles.row, styles.justifyContent, styles.center]}>
-                            <Text style={styles.whiteColor}>
-                                <Text style={[styles.fontMedium, styles.whiteColor]}>4</Text>积分看房东电话
+                            <Image
+                                style={styles.phoneIcon}
+                                source={require("../images/phone.png")}
+                            />
+                            <Text style={styles.contactText}>
+                                联系房东
                             </Text>
                         </View>
                     }
@@ -413,12 +415,6 @@ class UnVerifyBtn extends Component {
     render() {
         return (
             <View style={[styles.contactWrap, styles.row, styles.center]}>
-                <Image
-                    style={styles.moneyIcon}
-                    source={require("../images/money.png")}
-                />
-                <Text style={[styles.orangeColor, styles.scoreVal]}><Text style={[styles.orangeColor, styles.fontMedium]}>4</Text>积分</Text>
-
                 <TouchableHighlight
                     style={[styles.flex, styles.contactButton, styles.orangeBg]}
                     underlayColor="#FF6D4B"
@@ -499,7 +495,7 @@ class CallTipModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={[styles.msgTip, styles.baseColor]}>消耗{score}积分即可获得房东电话</Text>
+                        <Text style={[styles.msgTip, styles.baseColor]}>消耗<Text style={styles.fontMedium}>{score}</Text>积分即可获得房东电话</Text>
 
                         <TouchableHighlight
                             style={[styles.btn, styles.greenBg, {marginBottom: 18}]}
@@ -562,7 +558,7 @@ class VoiceModal extends Component {
                             <Image
                                 style={styles.closeIcon}
                                 source={require("../images/close.png")}
-                            />                            
+                            />
                         </TouchableHighlight>
 
                         <Image
@@ -1024,7 +1020,7 @@ class BaseInfo extends Component {
                             {isVertify && ' '}
                             {isVertify ? <Image style={[styles.tagVerify]} source={require("../images/verify_tag.png")} />: null}
                         </Text>
-                                     
+
                     </View>
                 </View>
 
@@ -1056,6 +1052,32 @@ class BaseInfo extends Component {
                           "发布时间：" + (houseInfo.get('created_at') || baseInfo.get('created_at') || '')}
                     </Text>
                 </View>
+
+                {
+                    baseInfo.get('has_discount') == "1" ?
+                    <View style={[styles.row, styles.center, styles.lightGrayBg, styles.priceBox]}>
+                        <View style={[styles.justifyContent, styles.center, styles.discountTag]}>
+                            <Text style={[styles.orangeColor, styles.more]}>优惠价</Text>
+                        </View>
+
+                        <View style={[styles.row, styles.center]}>
+                            <Image
+                                style={styles.moneyIcon}
+                                source={require('../images/money.png')}
+                            />
+                            <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>8</Text>积分</Text>
+                        </View>
+                        <Text style={[styles.pointSmallTip, styles.grayColor]}>原价：<Text style={[styles.pointSmall, styles.grayColor]}>10</Text>积分</Text>
+                    </View>
+                    :
+                    <View style={[styles.row, styles.center, styles.lightGrayBg, styles.priceBox]}>
+                        <Image
+                            style={styles.moneyIcon}
+                            source={require('../images/money.png')}
+                        />
+                        <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>10</Text>积分</Text>
+                    </View>
+                }
             </View>
         );
     }
@@ -1150,6 +1172,9 @@ var styles = StyleSheet.create({
     orangeColor: {
         color: '#FF6D4B'
     },
+    lightGrayBg: {
+        backgroundColor: '#f8f8f8'
+    },
     fontMedium: {
         fontWeight: '600'
     },
@@ -1218,6 +1243,10 @@ var styles = StyleSheet.create({
         borderTopWidth: 1 / PixelRatio.get(),
         borderTopColor: '#d9d9d9',
     },
+    priceBox: {
+        height: 50,
+        paddingHorizontal: 15
+    },
     baseSize: {
         fontSize: 16
     },
@@ -1263,10 +1292,10 @@ var styles = StyleSheet.create({
         paddingHorizontal: 15
     },
     moneyIcon: {
-        width: 11,
-        height: 15,
-        marginRight: 4,
-        marginLeft: 4
+        width: 8.5,
+        height: 11,
+        marginRight: 3,
+        marginLeft: 14
     },
     scoreVal: {
         marginRight: 18
@@ -1478,6 +1507,9 @@ var styles = StyleSheet.create({
         width: 106,
         marginRight: 9
     },
+    voiceText: {
+        fontSize: 18
+    },
     sellerPhone: {
         fontSize: 12,
         marginLeft: 8
@@ -1506,5 +1538,23 @@ var styles = StyleSheet.create({
         height: 53,
         marginTop: 35,
         marginBottom: 18
+    },
+    discountTag: {
+        borderWidth: 1 / PixelRatio.get(),
+        borderColor: '#FF6D4B',
+        width: 54,
+        height: 21
+    },
+    point: {
+        fontSize: 20
+    },
+    pointSmall: {
+        fontSize: 14
+    },
+    pointSmallTip: {
+        fontSize: 13,
+        marginLeft: 10,
+        textDecorationLine: 'line-through',
+        marginTop: 4
     }
 });

@@ -44,26 +44,38 @@ class InputRuleModal extends Component {
                             onPress={() => {
                                 setCurrentModal('');
                             }}
-                            >
-                                <Image
-                                    style={styles.closeIcon}
-                                    source={require("../images/close.png")}
-                                />
-                            </TouchableHighlight>
+                        >
+                            <Image
+                                style={styles.closeIcon}
+                                source={require("../images/close.png")}
+                            />
+                        </TouchableHighlight>
 
 
-                            <Text style={[styles.h5, styles.giftDay, styles.grey]}>发房新规则</Text>
+                        <Text style={[styles.h3, styles.mediumFont, styles.giftDay, styles.orange]}>发房新规则</Text>
 
-                            <Text>发布一套房源审核通过后获得<Text style={styles.orange}>{modalInfo.get('input_points')}</Text>积分</Text>
-                        </View>
+                        <Text style={styles.ruleText}>1、发布房源的电话每被查看1次获得<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('input_points')}</Text>积分</Text>
+                        <Text style={styles.ruleText}>2、每套房源审核通过，平台补贴<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('looked_points')}</Text>积分<Text style={[styles.h6, styles.grey]}>（补贴只是暂时的，之后会有调整）</Text></Text>
+                        <Text style={styles.ruleText}>3、房源审核通过，得<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('experience')}</Text>经验</Text>
+                    
+                        <TouchableHighlight
+                            style={[styles.flex, styles.alignItems, styles.justifyContent, styles.knowBtn]}
+                            underlayColor="#04C1AE"
+                            onPress={() => {
+                                setCurrentModal('');
+                            }}
+                        >
+                            <View><Text style={[styles.h4, styles.white]}>我知道了</Text></View>
+                        </TouchableHighlight>
 
+                    </View>
 
-                        <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
-                            <Image style={styles.horn} source={require("../images/horn.png")}/>
-                        </View>
+                    <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
+                        <Image style={styles.horn} source={require("../images/horn.png")}/>
                     </View>
                 </View>
-            </Modal>
+            </View>
+        </Modal>
         );
     }
 }
@@ -72,13 +84,12 @@ export default class Home extends Component {
     constructor(props) {
         super(props);
         let hasGetModal = false;
-
+        let hasGetRuleStatus = false;
         this.state = {
             isRefreshing: false
         };
         this.pageId = actionType.BA_HOME_PAGE;
         ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_ONVIEW, {"bp": this.props.route.bp});
-        this._ruleModalStatus();
     }
 
      _ruleModalStatus() {
@@ -99,7 +110,7 @@ export default class Home extends Component {
                 console.log(error);
             });
     }
-    componentWillUpdate() {
+    componentWillUpdate(nextProps) {
         if(this.hasGetModal) {
             return;
         }
@@ -108,6 +119,11 @@ export default class Home extends Component {
         if(baseInfo.get('scoreModal').get('fetched') && baseInfo.get('couponModal').get('fetched')) {
             this._setCurrentModal(homeConst.SCORE);
             this.hasGetModal = true;
+        }
+
+        if(!this.hasGetRuleStatus && nextProps.appConfig.get('isNewModal')) {
+            this._ruleModalStatus();
+            this.hasGetRuleStatus = true;
         }
     }
 
@@ -175,7 +191,7 @@ export default class Home extends Component {
     }
 
     render() {
-        let {houseData, baseInfo, actions, navigator} = this.props;
+        let {houseData, baseInfo, appConfig, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
         let registerMoalInfo = baseInfo.get('scoreModal');
         let couponModalInfo = baseInfo.get('couponModal');
@@ -198,6 +214,16 @@ export default class Home extends Component {
                     closeModal={this._closeModal.bind(this, homeConst.RULE, null)}
                     goPage={this._goCoupon.bind(this, homeConst.RULE, null, actionType.BA_MINE_WELFARE_BACK)}
                 />
+
+                {
+                    appConfig.get('isNewModal') ? 
+                    <InputRuleModal
+                        isVisible={baseInfo.get('currentModal') == homeConst.RULE}
+                        modalInfo={baseInfo.get('ruleModal')}
+                        actions={actions}
+                        setCurrentModal={this._setCurrentModal.bind(this)}
+                    /> : null
+                }
 
                 <View style={styles.searchWrap}>
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>
@@ -249,6 +275,7 @@ export default class Home extends Component {
 
     componentDidMount() {
         let {actions} = this.props;
+        let {appConfig} = this.props;
 
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionHouseList({});
@@ -586,8 +613,14 @@ const styles = StyleSheet.create({
     h3: {
         fontSize: 19
     },
+    h4: {
+        fontSize: 18
+    },
     h5: {
         fontSize: 15
+    },
+    h6: {
+        fontSize: 14
     },
     allHouse: {
         flexDirection: 'row',
@@ -715,32 +748,33 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0, 0, 0, 0.5)"
     },
     contentContainer: {
-        width: 270,
+        width: 300,
         borderRadius: 10,
-        padding: 20,
-        backgroundColor: "#fff",
-        justifyContent: "center",
-        alignItems: "center"
+        padding: 25,
+        backgroundColor: "#fff"
     },
     closeBox: {
         position: "absolute",
         right: 0,
         top: 0,
         width: 50,
-        height: 30,
+        height: 50,
         flex: 1,
         alignItems: "center",
         justifyContent: "center"
     },
     closeIcon: {
-        width: 15,
-        height: 11
+        width: 18,
+        height: 18
     },
     orange: {
         color: "#FD9673"
     },
     grey: {
         color: '#8d8c92'
+    },
+    white: {
+        color: '#fff'
     },
     giftBg: {
         position: 'absolute',
@@ -754,11 +788,20 @@ const styles = StyleSheet.create({
         backgroundColor: "#04C1AE"
     },
     giftDay: {
-        marginTop: 28,
-        marginBottom: 4
+        marginTop: 28
     },
     horn: {
         width: 34,
         height: 32.5
+    },
+    knowBtn: {
+        height: 40,
+        backgroundColor: '#04C1AE',
+        borderRadius: 5,
+        marginTop: 30,
+        marginBottom: 10
+    },
+    ruleText: {
+        marginTop: 12
     }
 });

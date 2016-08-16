@@ -11,7 +11,7 @@ export default class TitleBar extends Component {
 		return (
 			<View style={[styles.row, styles.center, styles.titleBox]}>
                 <Text style={styles.bar}></Text>
-                <Text>{this.props.title}</Text>
+                <Text style={styles.fontMedium}>{this.props.title}</Text>
             </View>
 		);
 	}
@@ -34,5 +34,8 @@ let styles = StyleSheet.create({
         backgroundColor: '#04C1AE',
         marginRight: 8,
         borderRadius: 2
-    }
+    },
+    fontMedium: {
+        fontWeight: '600'
+    },
 });
