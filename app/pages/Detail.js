@@ -317,6 +317,9 @@ export default class Detail extends Component {
         let {baseInfo, actions, route} = this.props;
         let info = baseInfo.get('baseInfo');
         let record = info.get('record_url');
+        if (record == null) {
+            return;
+        }
 
         ActionUtil.setAction(actionType.BA_DETAIL_TAPEFREE_CLICK);
         if(record.get('record_url')) { //是否有录音
