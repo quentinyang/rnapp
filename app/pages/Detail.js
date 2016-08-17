@@ -45,7 +45,7 @@ export default class Detail extends Component {
         let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');        
         let verfify = null;
 
-        if(route.item.get('is_verify') || phone) {
+        if((route.item.get('is_verify') && route.item.get('is_verify') == "1") || phone) {
             verfify = true;
         } else if(info.get('record_url')) {
             verfify = info.get('record_url').size ? true : false;
@@ -317,6 +317,9 @@ export default class Detail extends Component {
         let {baseInfo, actions, route} = this.props;
         let info = baseInfo.get('baseInfo');
         let record = info.get('record_url');
+        if (record == null) {
+            return;
+        }
 
         ActionUtil.setAction(actionType.BA_DETAIL_TAPEFREE_CLICK);
         if(record.get('record_url')) { //是否有录音
@@ -835,6 +838,8 @@ class ErrorTipModal extends Component {
 
     render() {
         let { callInfo, actions } = this.props;
+        let errorMsg = (callInfo && callInfo.get('callError') && callInfo.get('callError').get('msg')) ? callInfo.get('callError').get('msg') : '拨打电话失败了,再试一下吧!';
+
         return (
             <Modal visible={callInfo.get('errorTipVisible')} transparent={true}
                    onRequestClose={actions.setErrorTipVisible}>
@@ -851,7 +856,7 @@ class ErrorTipModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={[styles.msgTip, styles.baseColor]}>{(callInfo.get('callError') && callInfo.get('callError').get('msg')) ? callInfo.get('callError').get('msg') : '拨打电话失败了,再试一下吧!'}</Text>
+                        <Text style={[styles.msgTip, styles.baseColor]}>{errorMsg}</Text>
 
                         <TouchableHighlight
                             style={[styles.btn, styles.borderBtn]}
@@ -997,6 +1002,7 @@ class BaseInfo extends Component {
     render() {
         let {baseInfo, route} = this.props;
         let houseInfo = route.item;
+        let isVertify = houseInfo.get('is_verify') && houseInfo.get('is_verify') == "1"  || baseInfo.get('is_verify') && baseInfo.get('is_verify') == "1";
 
         return (
             <View>
@@ -1007,8 +1013,8 @@ class BaseInfo extends Component {
                             {houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}{houseInfo.get('door_num') && '室'}
                             {houseInfo.get('is_new') && ' '}
                             {houseInfo.get('is_new') ? <Image style={[styles.tagNew]} source={require("../images/new_tag.png")} />: null}
-                            {houseInfo.get('is_verify') && ' '}
-                            {houseInfo.get('is_verify') ? <Image style={[styles.tagVerify]} source={require("../images/verify_tag.png")} />: null}
+                            {isVertify && ' '}
+                            {isVertify ? <Image style={[styles.tagVerify]} source={require("../images/verify_tag.png")} />: null}
                         </Text>
                                      
                     </View>
@@ -1037,7 +1043,7 @@ class BaseInfo extends Component {
                 </View>
                 <View style={[styles.justifyContent, styles.address]}>
                     <Text style={[styles.baseSize, styles.baseColor]}
-                          numberOfLines={1}>{(houseInfo.get('is_verify') || baseInfo.get('is_verify')) ?
+                          numberOfLines={1}>{isVertify ?
                           "认证时间：" + (houseInfo.get('verify_at') || baseInfo.get('verify_at') || '') :
                           "发布时间：" + (houseInfo.get('created_at') || baseInfo.get('created_at') || '')}
                     </Text>

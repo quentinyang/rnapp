@@ -29,8 +29,8 @@ export default class HouseItem extends Component {
                             {item.get('building_num') + (item.get('building_num') && item.get('building_unit')) + item.get('door_num') + (item.get('door_num') && '室')}
                             {item.get('is_new') && ' '}
                             {item.get('is_new') ? <Image style={[styles.tagNew]} source={require("../images/new_tag.png")} />: null}
-                            {item.get('is_verify') && ' '}
-                            {item.get('is_verify') ? <Image style={[styles.tagVerify]} source={require("../images/verify_tag.png")} />: null}
+                            {item.get('is_verify') && item.get('is_verify') == "1" && ' '}
+                            {item.get('is_verify') && item.get('is_verify') == "1" ? <Image style={[styles.tagVerify]} source={require("../images/verify_tag.png")} />: null}
                         </Text>
 
                     </View>
