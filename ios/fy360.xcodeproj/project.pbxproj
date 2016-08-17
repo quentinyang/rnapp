@@ -221,7 +221,6 @@
 		6620FBA31CAA91F800BB2A3F /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		6620FBA51CAA920100BB2A3F /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		6620FBB61CAAB11000BB2A3F /* GtSdkLib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GtSdkLib; path = ../GtSdkLib; sourceTree = "<group>"; };
-		6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libGeTuiSdk-1.4.1.a"; path = "../GtSdkLib/libGeTuiSdk-1.4.1.a"; sourceTree = "<group>"; };
 		6630588C1CA0F87C00F15BB8 /* CodePush.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		6630589D1CA0F91D00F15BB8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		66559B641CA2744C001E7AD9 /* index.ios.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = index.ios.jsbundle; path = ../index.ios.jsbundle; sourceTree = "<group>"; };
@@ -467,7 +466,6 @@
 				6630589D1CA0F91D00F15BB8 /* libz.tbd */,
 				2DDF0ACB1CDC8FAF00D261BE /* libc++.tbd */,
 				6620FB951CAA91AB00BB2A3F /* libsqlite3.tbd */,
-				6620FBB81CABF90F00BB2A3F /* libGeTuiSdk-1.4.1.a */,
 				66559B641CA2744C001E7AD9 /* index.ios.jsbundle */,
 				6620FBB61CAAB11000BB2A3F /* GtSdkLib */,
 				6620FBA51CAA920100BB2A3F /* CoreBluetooth.framework */,
@@ -898,6 +896,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -935,6 +934,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
