@@ -102,7 +102,7 @@ android {
         // dex突破65535的限制
         multiDexEnabled true
         ndk {
-            abiFilters "armeabi-v7a", "x86"
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "x86", "x86_64"
         }
 
         manifestPlaceholders = [UMENG_CHANNEL_VALUE   : propFile.getProperty('UMENG_CHANNEL_VALUE_DEBUG'),
@@ -229,6 +229,12 @@ android {
             dirs 'libs'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -239,7 +245,7 @@ dependencies {
     compile files('libs/alipaySdk-20160427.jar')
 
     // GeTui
-    compile files('libs/GetuiSDK2.8.1.0.jar')
+    compile files('libs/GetuiSDK2.9.0.0.jar')
     compile files('libs/GetuiExt-2.0.3.jar')
     compile 'com.android.support:support-v4'
 

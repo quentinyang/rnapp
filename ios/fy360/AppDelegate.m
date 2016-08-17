@@ -179,6 +179,15 @@ NSString * const UMengChannelId = @"";
 #endif
 }
 
+
+#pragma mark - 用户通知(推送)回调 _IOS 8.0以上使用
+
+/** 已登记用户通知 */
+- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
+  // 注册远程通知（推送）
+  [application registerForRemoteNotifications];
+}
+
 #pragma mark - 远程通知(推送)回调
 
 /** 远程通知注册成功委托 */
@@ -209,6 +218,13 @@ NSString * const UMengChannelId = @"";
 #pragma mark - APP运行中接收到通知(推送)处理
 
 /** APP已经接收到“远程”通知(推送) - (App运行在后台/App运行在前台)  */
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+  application.applicationIconBadgeNumber = 0; // 标签
+  
+  NSLog(@"\n>>>[Receive RemoteNotification]:%@\n\n", userInfo);
+}
+
+/** APP已经接收到“远程”通知(推送) - 透传推送消息  */
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler {
   
   // [4-EXT]:处理APN
@@ -244,9 +260,9 @@ NSString * const UMengChannelId = @"";
   [GeTui setClientId:clientId];
   NSString *eventName = @"clientIdReceived";
   
-  //GeTui *geTui = [GeTui sharedInstance];
-  //[geTui handleRemoteNotificationReceived:eventName andPayloadMsg:clientId withRoot:self.rootView];
-  [Utils sendEventWithParam:eventName withParam:@{@"clientId": clientId} withRoot:self.rootView];
+  GeTui *geTui = [GeTui sharedInstance];
+  [geTui handleRemoteNotificationReceived:eventName andPayloadMsg:clientId withRoot:self.rootView];
+  //[Utils sendEventWithParam:eventName withParam:@{@"clientId": clientId} withRoot:self.rootView];
 }
 
 
@@ -274,7 +290,7 @@ NSString * const UMengChannelId = @"";
   NSLog(@"\n>>>[GexinSdk ReceivePayload Message]:%@, taskId: %@, msgId :%@", msg, taskId, msgId);
 
   // 汇报个推自定义事件
-  [GeTuiSdk sendFeedbackMessage:90001 taskId:taskId msgId:msgId];
+  [GeTuiSdk sendFeedbackMessage:90001 andTaskId:taskId andMsgId:msgId];
 }
 
 - (void)HandleGeTui:data{

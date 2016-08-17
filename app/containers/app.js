@@ -90,7 +90,7 @@ class App extends Component {
 
         if(Platform.OS === 'ios') {
             this.unlistenNotification =  NativeAppEventEmitter.addListener('clientIdReceived', (cId) => {
-                self._clientIdReceived(cId.clientId);
+                self._clientIdReceived(cId);
             });
             this.unlistenPage =  NativeAppEventEmitter.addListener('goPage', (obj) => {
                 let navRoute = _navigator.getCurrentRoutes(), len = navRoute.length;

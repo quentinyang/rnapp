@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+// Import Getui
+import com.igexin.sdk.PushManager;
 import com.facebook.react.ReactActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.xinyi.fy360.getui.GeTuiManager;
@@ -33,6 +35,12 @@ public class MainActivity extends ReactActivity {
         setPushAction(getIntent());
         //checkHash();
         OpenAppActivity.hasLanched = true;
+
+
+        //if (!PushManager.getInstance().isPushTurnedOn(this)) {
+        Log.d("GetuiSdkDemo init", "init instance");
+        PushManager.getInstance().initialize(this.getApplicationContext());
+        //}
     }
 
     //检查hash
