@@ -6,6 +6,7 @@ import * as actionType from '../constants/ActionLog';
 import {profileService, scoreListService, expRuleService, userInputListService, getSignInInfo} from '../service/userService';
 import {makeActionCreator, serviceAction} from './base';
 import {appSignInChanged} from './app';
+import Toast from 'react-native-root-toast';
 
 export const userProfileFetched = makeActionCreator(types.USER_PROFILE, 'profile');
 export const scoreFetched = makeActionCreator(types.SCORE_LIST, 'scores');
@@ -102,6 +103,11 @@ export function fetchSignInInfo() {
                 dispatch(signInDaysChanged(oData.sign_in_days || '', count || 0, oData.go_on_sign_in_day || ''));
                 dispatch(signInVisibleChanged(true));
                 dispatch(appSignInChanged(true));
+
+                Toast.show('签到成功得' + oData.experience + '个经验', {
+                    duration: Toast.durations.SHORT,
+                    position: Toast.positions.CENTER
+                });
             },
             error: function () {
             }
