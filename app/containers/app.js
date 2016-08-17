@@ -80,7 +80,7 @@ class App extends Component {
                         hasSetRoute: true
                     });
                 }
-
+                actionsApp.setAppUserConfig();
                 setLoginDays(guid);
             }
         })

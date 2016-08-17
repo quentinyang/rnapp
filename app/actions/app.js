@@ -80,9 +80,6 @@ export function setAppConfig() {
                     isEnforceUpdate: Number(oData.is_enforce_update) ? true : false,  //是否强制更新  0  不需要 1 需要
                     isNewModal: Number(oData.switch_two_zero_version) ? true : false,
                 }));
-                if(Number(oData.is_cid_login)) {
-                    dispatch(setAppUserConfig());
-                }
             },
             error: function(oData) {
 
