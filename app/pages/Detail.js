@@ -175,7 +175,7 @@ export default class Detail extends Component {
         let info = baseInfo.get("baseInfo");
         let status = Number(info.get('phone_lock_status'));
 
-        if (status || !status && callInfo.get('sellerPhone').get('seller_phone')) {
+        if (status || (!status && callInfo.get('sellerPhone').get('seller_phone')) || !callInfo.get('orderId'))  {
         } else {
             ActionUtil.setAction(actionType.BA_DETAIL_SPEND);
             actions.setFeedbackVisible(true);
