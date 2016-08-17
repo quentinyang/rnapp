@@ -74,7 +74,7 @@ let urls = {
         config: HOST + 'update/push',
         deletePush: HOST + 'delete/push',
         setConfig: HOST + 'configs',
-        setUserConfig: HOST + 'user/configs',
+        setUserConfig: HOST + 'user/config',
         setLoginDay: HOST + 'user/login/days',
         inputRule: HOST + 'property/rule'
     },

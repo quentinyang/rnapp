@@ -35,7 +35,7 @@ let initialState = {
     },
 
     levelNotice: {  //会员等级推送
-        visible: true,
+        visible: false,
         data: {
             level: '',
             exp: ''
