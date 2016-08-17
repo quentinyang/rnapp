@@ -82,7 +82,7 @@ export default class Setting extends Component {
                     <View style={[styles.row, styles.center]}>
                         <Text style={styles.callInfo}>客服电话:</Text>
                         <TouchableWithoutFeedback onPress={this.callCenter}>
-                            <View><Text style={[styles.callInfo, styles.callNum]}>13222740214</Text></View>
+                            <View><Text style={[styles.callInfo, styles.callNum]}>150-0004-9652</Text></View>
                         </TouchableWithoutFeedback>
                     </View>
                 </View>
@@ -91,7 +91,7 @@ export default class Setting extends Component {
     }
 
     callCenter = () => {
-        let url = "tel:13222740214";
+        let url = "tel:15000049652";
         Linking.canOpenURL(url).then(supported => {
             if (supported) {
                 Linking.openURL(url);
