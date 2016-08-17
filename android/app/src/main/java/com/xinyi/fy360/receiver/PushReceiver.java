@@ -4,10 +4,12 @@ package com.xinyi.fy360.receiver;
  * Created by zhouxiaojian on 16/4/13.
  */
 
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +19,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.igexin.sdk.PushConsts;
@@ -34,6 +37,7 @@ public class PushReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
         Log.d("GetuiSdkDemo", "onReceive() action=" + bundle.getInt("action"));
+        Log.d("GetuiSdkDemo", "app is active:"+getRunningTask(context, context.getPackageName()));
 
         switch (bundle.getInt(PushConsts.CMD_ACTION)) {
             case PushConsts.GET_CLIENTID:
@@ -128,5 +132,11 @@ public class PushReceiver extends BroadcastReceiver {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean getRunningTask(Context context, String packageName) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        return !TextUtils.isEmpty(packageName) && packageName.equals(cn.getPackageName());
     }
 }
