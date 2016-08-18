@@ -94,13 +94,13 @@ export default class ScoreList extends Component {
     };
 
     renderHeader(value) {
-        let {navigator, appConfig, userProfile, actions} = this.props;
+        let {navigator, appConfig, userProfile, money, actions} = this.props;
 
         return (
             <View>
                 <View style={[styles.totalBox]}>
                     <View style={[styles.justifyContent, styles.alignItems, styles.priceBox]}>
-                        <Text style={styles.totalPrice}>{userProfile.get('score')}<Text style={styles.unit}>分</Text></Text>
+                        <Text style={styles.totalPrice}>{money || userProfile.get('score')}<Text style={styles.unit}>分</Text></Text>
                     </View>
                     <CashArea
                         navigator={navigator}
