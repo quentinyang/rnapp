@@ -74,7 +74,7 @@ let initQueryParams = {
     max_price: 0,
     min_bedrooms: 0,
     max_bedrooms: 0,
-    only_new: false,
+    only_verify: false,
     community_id: '',
     community_name: '',
     keyword: ''
@@ -82,8 +82,8 @@ let initQueryParams = {
 
 function queryParamsData(state, action) {
     switch(action.type) {
-        case types.ONLY_NEW_CHANGED:
-            return state.set('only_new', action.onlyNew);
+        case types.ONLY_VERIFY_CHANGED:
+            return state.set('only_verify', action.onlyVerify);
         case types.BLOCK_FILTER_CHANGED:
             return state.set('block_id', action.blockId).set('district_id', action.districtId);
         case types.FILTER_TAB_PRICE_CHANGED:
@@ -107,7 +107,7 @@ function queryParamsData(state, action) {
 
 let initUIData = {
     tabType: '',
-    onlyNew: false,
+    onlyVerify: false,
     areaName: '',
     priceName: '',
     bedroomsName: '',
@@ -119,8 +119,8 @@ function uiData(state, action) {
         case types.FILTER_ITEM_PRESSED:
             return state.set('tabType', action.item);
             break;
-        case types.ONLY_NEW_CHANGED:
-            return state.set('onlyNew', action.onlyNew);
+        case types.ONLY_VERIFY_CHANGED:
+            return state.set('onlyVerify', action.onlyVerify);
             break;
         case types.BLOCK_FILTER_CHANGED:
             return state.set('areaName', action.areaName);
