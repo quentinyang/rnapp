@@ -31,7 +31,7 @@ export default class TabView extends Component {
                             (val) => {
                                 return (
                                     <TabBar.Item
-                                        badge={val.key == 2 && !appUserConfig.get('isSignIn') ? '':null}
+                                        badge={val.key == 2 && !appUserConfig.get('isSignIn') ? '1':null}
                                         style={{backgroundColor: "#333"}}
                                         title={val.title}
                                         selected={this.state.tabIndex === val.key}
