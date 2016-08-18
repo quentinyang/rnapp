@@ -94,8 +94,7 @@ export function setAppUserConfig() {  //获取登录后的配置
             service: setUserConfigService,
             success: function(oData) {
                 dispatch(appUserConfig({
-                    showRecharge: Number(oData.recharge_switch) ? true: false,
-                    isSignIn: Number(oData.is_sign_in) ? true : false,
+                    isSignIn: Number(oData.is_signed_in) ? true : false
                 }));
             },
             error: function(oData) {

@@ -35,7 +35,7 @@ export default class Recharge extends Component {
         for(let i = 0; i < this.points.length; i++) {
             let obj = this.points[i];
             priceBox.push(
-                <TouchableWithoutFeedback onPress={() => this.choosePrice(obj.price, actionType[obj.action])}>
+                <TouchableWithoutFeedback key={i} onPress={() => this.choosePrice(obj.price, actionType[obj.action])}>
                     <View style={[styles.priceItem, this.state.price == obj.price ? styles.selectedBorder: null, i == this.points.length - 1 ? {marginRight: 0} : null]}>
                         <Text style={this.state.price == obj.price ? styles.selectedFont: null}>{obj.price}积分</Text>
                     </View>
