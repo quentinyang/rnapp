@@ -102,7 +102,7 @@ android {
         // dex突破65535的限制
         multiDexEnabled true
         ndk {
-            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "x86", "x86_64"
+            abiFilters "armeabi-v7a", "x86"
         }
 
         manifestPlaceholders = [UMENG_CHANNEL_VALUE   : propFile.getProperty('UMENG_CHANNEL_VALUE_DEBUG'),
