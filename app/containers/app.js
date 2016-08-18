@@ -420,6 +420,7 @@ class App extends Component {
                 break;
             case notifConst.NEW_LEVEL_NOTICE:
                 actionsApp.LevelPushed(newNotifData);
+                actionsUser.fetchUserProfile();
                 break;
             case notifConst.TOAST_NOTICE:
                 NotificationHandler.showToast(newNotifData.data.extras);

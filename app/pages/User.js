@@ -28,6 +28,7 @@ import SettingContainer from '../containers/SettingContainer';
 import ScoreListContainer from '../containers/ScoreListContainer';
 import WelfareContainer from '../containers/WelfareContainer';
 import WelfareModal from '../components/WelfareModal';
+import Toast from 'react-native-root-toast';
 import Immutable from 'immutable';
 let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
@@ -62,10 +63,10 @@ export default class User extends Component {
             welfareModal =
                 <WelfareModal
                     title={"连续签到" + signInInfo.get('sign_in_result').get('sign_in_days') + "天"}
-                    subTitle={"获得" + welfareCards.size + "张看房卡，+" + signInInfo.get('sign_in_result').get('experience') + "经验"}
+                    subTitle={welfareCards.size}
                     isVisible={signInInfo.get('visible')}
                     welfareData={welfareCards}
-                    closeModal={()=>{ActionUtil.setAction(actionType.BA_MINE_SIGN_DELETE);actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged("1");}}
+                    closeModal={()=>this.closeWelfareModal(signInInfo.get('sign_in_result').get('experience'))}
                     goPage={() => {
                         this.navigatorPush({
                             component: WelfareContainer,
@@ -79,6 +80,7 @@ export default class User extends Component {
                         actions.signInBtnVisibleChanged("1");
                         ActionUtil.setAction(actionType.BA_MINE_SIGN_FIND);
                     }}
+                    goTitle='看房卡怎么用'
                 />
         } else {
             welfareModal =
@@ -223,6 +225,17 @@ export default class User extends Component {
             hideNavBar: false,
             ...ops
         })
+    }
+
+    closeWelfareModal = (exp) => {
+        let {actions} = this.props;
+        ActionUtil.setAction(actionType.BA_MINE_SIGN_DELETE);
+        actions.signInVisibleChanged(false);
+        actions.signInBtnVisibleChanged("1");
+        Toast.show('签到成功得' + exp + '个经验', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.CENTER
+        });
     }
 }
 

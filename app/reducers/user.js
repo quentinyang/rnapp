@@ -25,12 +25,6 @@ function userProfile(state = Immutable.fromJS(initialState), action) {
         case types.SIGN_IN_BUTTON_VISIBLE_CHANGED:
             return state.set('is_signed_in', Immutable.fromJS(action.visible));
             break;
-        case types.SIGN_IN_DAYS_CHANGED:
-            let count = Number(state.get('welfare_card_count'));
-            state = state.set('sign_in_days', Immutable.fromJS(action.days));
-            state = state.set('welfare_card_count', Immutable.fromJS(count + Number(action.count)));
-            return state.set('go_on_sign_in_day', Immutable.fromJS(action.goOnDays));
-            break;
         default:
             return state;
             break

@@ -57,7 +57,7 @@ class InputRuleModal extends Component {
                         <Text style={styles.ruleText}>1、发布房源的电话每被查看1次获得<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('input_points')}</Text>积分</Text>
                         <Text style={styles.ruleText}>2、每套房源审核通过，平台补贴<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('looked_points')}</Text>积分<Text style={[styles.h6, styles.grey]}>（补贴只是暂时的，之后会有调整）</Text></Text>
                         <Text style={styles.ruleText}>3、房源审核通过，得<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('experience')}</Text>经验</Text>
-                    
+
                         <TouchableHighlight
                             style={[styles.flex, styles.alignItems, styles.justifyContent, styles.knowBtn]}
                             underlayColor="#04C1AE"
@@ -201,7 +201,7 @@ export default class Home extends Component {
                 <WelfareModal
                     isVisible={baseInfo.get('currentModal') == homeConst.SCORE}
                     title="注册成功"
-                    subTitle={"获得" + registerMoalInfo.get('welfareArr').size + "张看房卡"}
+                    subTitle={registerMoalInfo.get('welfareArr').size}
                     welfareData={registerMoalInfo.get('welfareArr')}
                     closeModal={this._closeModal.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_DELETE)}
                     goPage={this._goCoupon.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_GETSOON, actionType.BA_FIRSTOPEN_RETURN)}
@@ -216,7 +216,7 @@ export default class Home extends Component {
                 />
 
                 {
-                    appConfig.get('isNewModal') ? 
+                    appConfig.get('isNewModal') ?
                     <InputRuleModal
                         isVisible={baseInfo.get('currentModal') == homeConst.RULE}
                         modalInfo={baseInfo.get('ruleModal')}
