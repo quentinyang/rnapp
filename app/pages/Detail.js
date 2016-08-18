@@ -940,7 +940,7 @@ class CostScoreModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={styles.scoreTip}>{callInfo.get('isPayed') ? "请反馈本次通话结果" : "本次通话花费了您" + (score || '') + "积分"}</Text>
+                        <Text style={styles.scoreTip}>{callInfo.get('isPayed') ? "请选择本次通话结果" : "本次通话花费了您" + (score || '') + "积分"}</Text>
 
                         <TouchableHighlight
                             style={styles.feedbackSureBtn}
@@ -1057,7 +1057,7 @@ class BaseInfo extends Component {
                 </View>
 
                 {
-                    baseInfo.get('has_discount') == "1" ?
+                    (houseInfo.get('has_discount') == "1" || baseInfo.get('has_discount') == "1") ?
                     <View style={[styles.row, styles.center, styles.lightGrayBg, styles.priceBox]}>
                         <View style={[styles.justifyContent, styles.center, styles.discountTag]}>
                             <Text style={[styles.orangeColor, styles.more]}>优惠价</Text>
@@ -1068,9 +1068,9 @@ class BaseInfo extends Component {
                                 style={styles.moneyIcon}
                                 source={require('../images/money.png')}
                             />
-                            <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{baseInfo.get("cur_point")}</Text>积分</Text>
+                            <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{houseInfo.get("cur_point") || baseInfo.get("cur_point")}</Text>积分</Text>
                         </View>
-                        <Text style={[styles.pointSmallTip, styles.grayColor]}>原价：<Text style={[styles.pointSmall, styles.grayColor]}>{baseInfo.get("point")}</Text>积分</Text>
+                        <Text style={[styles.pointSmallTip, styles.grayColor]}>原价：<Text style={[styles.pointSmall, styles.grayColor]}>{houseInfo.get("point") || baseInfo.get("point")}</Text>积分</Text>
                     </View>
                     :
                     <View style={[styles.row, styles.center, styles.lightGrayBg, styles.priceBox]}>
@@ -1078,7 +1078,7 @@ class BaseInfo extends Component {
                             style={styles.moneyIcon}
                             source={require('../images/money.png')}
                         />
-                        <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{baseInfo.get("point")}</Text>积分</Text>
+                        <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{houseInfo.get("point") || baseInfo.get("point")}</Text>积分</Text>
                     </View>
                 }
             </View>
