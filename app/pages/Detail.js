@@ -1337,12 +1337,12 @@ var styles = StyleSheet.create({
         right: 0,
         top: 0,
         width: 50,
-        height: 30
+        height: 50
     },
     closeIcon: {
         marginTop: 5,
-        width: 15,
-        height: 13
+        width: 18,
+        height: 18
     },
     msgTip: {
         marginTop: 14,

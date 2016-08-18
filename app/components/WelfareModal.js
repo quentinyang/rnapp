@@ -102,14 +102,14 @@ let styles = StyleSheet.create({
         right: 0,
         top: 0,
         width: 50,
-        height: 30,
+        height: 50,
         flex: 1,
         alignItems: "center",
         justifyContent: "center"
     },
     closeIcon: {
-        width: 15,
-        height: 11
+        width: 18,
+        height: 18
     },
     title: {
         marginTop: 28,

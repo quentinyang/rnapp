@@ -35,7 +35,7 @@ export const changeCurrentContactLog = makeActionCreator(types.CHANGE_CURRENT_CO
 
 export const userInfoFetched = makeActionCreator(types.USER_INFO_FETCHED, 'userInfo');
 export const couponFetched = makeActionCreator(types.COUPON_FETCHED, 'coupon');
-
+export const updateCoupon = makeActionCreator(types.UPDATE_COUPON, 'id');
 export const setCouponVisible = makeActionCreator(types.COUPON_VISIBLE_CHANGED, 'visible');
 export const setSellerPhoneVisible = makeActionCreator(types.SELLERPHONE_VISIBLE_CHANGED, 'visible');
 
@@ -104,6 +104,7 @@ export function callSeller(params) {
                 dispatch(setOrderId(oData.wash_id));
                 dispatch(setHomeContactStatus({"property_id": params.property_id, "is_contact": "1"}));
                 dispatch(setContactStatus({"property_id": params.property_id, "is_contact": "1"}));
+                params.card_id && dispatch(updateCoupon(params.card_id));
 
                 //oData 拿到短号, 直接拨出
                 if (Platform.OS == "android") {
@@ -215,6 +216,7 @@ export function fetchSellerPhone(data) {
                 dispatch(setSellerPhone(oData));
                 ActionUtil.setAction(actionType.BA_DETAIL_PHENO_ONVIEW);
                 dispatch(setSellerPhoneVisible(true));
+                data.card_id && dispatch(updateCoupon(data.card_id));
 
                 dispatch(setHomeContactStatus({"property_id": data.property_id, "is_contact": "1"}));
                 dispatch(setContactStatus({"property_id": data.property_id, "is_contact": "1"}));

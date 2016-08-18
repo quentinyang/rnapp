@@ -36,7 +36,7 @@ export function fetchHouseList(params, showResult) {
 
                 if(showResult && Number(oData.pager.total)) {
                     Toast.show('找到' + oData.pager.total + '套房源', {
-                        duration: Toast.durations.SHORT,
+                        duration: 1000,
                         position: Toast.positions.CENTER
                     });
                 }

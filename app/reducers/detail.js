@@ -89,6 +89,15 @@ function baseInfo(state, action) {
         case types.COUPON_FETCHED:
             return state.set('couponArr', Immutable.fromJS(action.coupon));
             break;
+        case types.UPDATE_COUPON:
+            let deleteId = action.id, coupons = state.get('couponArr'), newCoupon = [];
+            coupons.forEach((val, index) => {
+                if(val.get('id') != deleteId) {
+                    newCoupon.push(val);
+                }
+            });
+            return state.set('couponArr', newCoupon);
+            break;    
         case types.ENTER_STATUS_CHANGED:
             return state.set('userEnter', Immutable.fromJS(action.status));  //关闭
             break;
