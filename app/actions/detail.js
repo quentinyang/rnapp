@@ -44,6 +44,7 @@ export const setVoiceVisible = makeActionCreator(types.VOICE_VISIBLE_CHANGED, 'v
 export const setOrderId = makeActionCreator(types.SET_ORDER_ID, 'id');
 export const setCallTipVisibel = makeActionCreator(types.CALL_TIP_VISIBLE_CHANGED, 'visible');
 export const propertyRecordFetched = makeActionCreator(types.PROPERTY_RECORD_FETCHED, 'record');
+export const updatePayedStatus = makeActionCreator(types.UPDATE_PAYED_STATUS, 'status');
 
 export function fetchBaseInfo(data) {
     return dispatch => {
@@ -57,6 +58,10 @@ export function fetchBaseInfo(data) {
                     dispatch(setOrderId(oData.log_id));
                     ActionUtil.setAction(actionType.BA_DETAIL_SPEND_ONVIEW);
                     dispatch(setFeedbackVisible(true));
+                }
+
+                if (Number(oData.is_payed)) {  // 0: no, 1: yes
+                    dispatch(updatePayedStatus(true));
                 }
 
                 let key = common.USER_ENTER_STATUS + guid;
@@ -105,6 +110,7 @@ export function callSeller(params) {
                 dispatch(setHomeContactStatus({"property_id": params.property_id, "is_contact": "1"}));
                 dispatch(setContactStatus({"property_id": params.property_id, "is_contact": "1"}));
                 params.card_id && dispatch(updateCoupon(params.card_id));
+                dispatch(updatePayedStatus(true));
 
                 //oData 拿到短号, 直接拨出
                 if (Platform.OS == "android") {

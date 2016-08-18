@@ -334,10 +334,13 @@ export default class Detail extends Component {
     }
 
     _contactSeller = () => {
-        let {baseInfo, actions} = this.props;
-
+        let {baseInfo, actions, callInfo} = this.props;
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
-        if (baseInfo.get('couponArr').size) {  //是否有看房卡
+
+        if(callInfo.get('isPayed')) {
+            this.couponObj = null;
+            this._callSellerPhone();
+        } else if (baseInfo.get('couponArr').size) {  //是否有看房卡
             ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_ONVIEW);
             actions.setCouponVisible(true);
         } else {
@@ -1337,7 +1340,7 @@ var styles = StyleSheet.create({
         right: 0,
         top: 0,
         width: 50,
-        height: 50
+        height: 30
     },
     closeIcon: {
         marginTop: 5,

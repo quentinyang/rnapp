@@ -123,7 +123,8 @@ let initParam = {
     couponVisible: false,
     voiceVisible: false,
 
-    orderId: ''
+    orderId: '',
+    isPayed: false
 };
 
 function callInfo(state, action) {
@@ -158,6 +159,8 @@ function callInfo(state, action) {
         case types.SET_ORDER_ID:
             return state.set('orderId', Immutable.fromJS(action.id));
             break;
+        case types.UPDATE_PAYED_STATUS:
+            return state.set('isPayed', Immutable.fromJS(action.status));
         default:
             return state;
     }
