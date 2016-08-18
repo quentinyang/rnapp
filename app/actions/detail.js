@@ -60,7 +60,7 @@ export function fetchBaseInfo(data) {
                     dispatch(setFeedbackVisible(true));
                 }
 
-                if (Number(oData.is_payed)) {  // 0: no, 1: yes
+                if (Number(oData.is_paid)) {  // 0: no, 1: yes
                     dispatch(updatePayedStatus(true));
                 }
 

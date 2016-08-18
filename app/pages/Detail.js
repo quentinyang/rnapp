@@ -940,7 +940,7 @@ class CostScoreModal extends Component {
                             />
                         </TouchableHighlight>
 
-                        <Text style={styles.scoreTip}>本次通话花费了您{score}积分</Text>
+                        <Text style={styles.scoreTip}>{callInfo.get('isPayed') ? "请反馈本次通话结果" : "本次通话花费了您" + (score || '') + "积分"}</Text>
 
                         <TouchableHighlight
                             style={styles.feedbackSureBtn}
