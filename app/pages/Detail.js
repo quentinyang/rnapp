@@ -684,20 +684,20 @@ class CouponModal extends Component {
     _renderRow(rowData) {
         let isCur = this.state.curCoupon.get('id') == rowData.get("id");
         return (
-            <View style={[styles.row, styles.center, styles.couponItem]}>
-                <TouchableWithoutFeedback onPress={() => {
-                    if(!isCur) {
-                        this.setState({
-                            curCoupon: rowData
-                        });
-                    }
-                }}>
+            <TouchableWithoutFeedback onPress={() => {
+                if(!isCur) {
+                    this.setState({
+                        curCoupon: rowData
+                    });
+                }
+            }}>
+                <View style={[styles.row, styles.center, styles.couponItem]}>
                     <View style={[styles.markBg, isCur ? styles.greenBg : styles.greyBg, styles.center, styles.justifyContent]}>
                         {isCur ? <Image style={styles.mark} source={require('../images/mark_white.png')} /> : null}
                     </View>
-                </TouchableWithoutFeedback>
-                <WelfareCard item={rowData}/>
-            </View>
+                    <WelfareCard item={rowData}/>
+                </View>
+            </TouchableWithoutFeedback>
         );
     }
 }
