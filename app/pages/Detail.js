@@ -205,10 +205,10 @@ export default class Detail extends Component {
         let {actions, actionsNavigation, actionsHome, route, baseInfo} = this.props;
         let propertyId = route.item.get("property_id");
 
-        ActionUtil.setAction(actionType.BA_DETAIL_PHONEGET_CLICK);
         if (phone) { // 已买 或 已获取房东电话
             callUp(phone);
         } else {   // 未买在卖状态的房源
+            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_PHONEGET_CLICK, {"vpid": propertyId + ''});
             if (baseInfo.get('couponArr').size) {  //是否有看房卡
                 ActionUtil.setAction(actionType.BA_DETAIL_WELFARECARD_ONVIEW);
                 actions.setCouponVisible(true);
@@ -316,11 +316,12 @@ export default class Detail extends Component {
         let {baseInfo, actions, route} = this.props;
         let info = baseInfo.get('baseInfo');
         let record = info.get('record_url');
+        let propertyId = route.item.get('property_id');
         if (record == null) {
             return;
         }
 
-        ActionUtil.setAction(actionType.BA_DETAIL_TAPEFREE_CLICK);
+        ActionUtil.setActionWithExtend(actionType.BA_DETAIL_TAPEFREE_CLICK, {"vpid": propertyId + ''});
         if(record.get('record_url')) { //是否有录音
             ActionUtil.setAction(actionType.BA_DETAIL_TAPEFREE_ONVIEW);
             actions.setVoiceVisible(true);
@@ -328,7 +329,7 @@ export default class Detail extends Component {
             AudioPlayer.play(record.get('record_url'));
         } else {
             actions.fetchPropertyRecord({
-                property_id: route.item.get('property_id')
+                property_id: propertyId
             });
         }
     }

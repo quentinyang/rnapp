@@ -102,12 +102,12 @@ export default class ScoreList extends Component {
                     <View style={[styles.justifyContent, styles.alignItems, styles.priceBox]}>
                         <Text style={styles.totalPrice}>{money || userProfile.get('score')}<Text style={styles.unit}>分</Text></Text>
                     </View>
-                    <CashArea
-                        navigator={navigator}
-                        accountData = {value}
-                        appConfig={appConfig}
-                        actions={actions}
-                    />
+                    {/* <CashArea
+                            navigator={navigator}
+                            accountData = {value}
+                            appConfig={appConfig}
+                            actions={actions}
+                        />*/}
                 </View>
 
                 <View style={[styles.row, styles.alignItems, styles.titleBox]}>
