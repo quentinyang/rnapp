@@ -37,7 +37,7 @@ module.exports = function() {
 
 		if(Platform.OS == "ios" && isOffline === true && page) {
 			nav.push(Object.assign(routes[page], {"item": Immutable.fromJS(newNotifData.data.extras.nav)}));
-		} else if(Platform.OS == "android" && AppState.currentState == "background" && page) {
+		} else if(Platform.OS == "android" && (AppState.currentState == "background" || isOffline == true) && page) {
 			nav.push(Object.assign(routes[page], {"item": Immutable.fromJS(newNotifData.data.extras.nav)}));
 		}
 	}
