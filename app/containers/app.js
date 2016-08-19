@@ -398,7 +398,7 @@ class App extends Component {
     _geTuiDataReceivedHandle = (notifData) => {
         console.log('=========notifData', notifData);
         let newNotifData = JSON.parse(notifData.payloadMsg);
-        let {actionsApp, actionsHome} = this.props;
+        let {actionsApp, actionsHome, actionsUser} = this.props;
 
         switch(Number(newNotifData.type)) {
             case notifConst.NEW_HOUSE: // 普通推送
@@ -419,7 +419,7 @@ class App extends Component {
                 actionsApp.appSignInChanged(false);
                 break;
             case notifConst.NEW_LEVEL_NOTICE:
-                actionsApp.LevelPushed(newNotifData);
+                actionsApp.levelPushed(newNotifData);
                 actionsUser.fetchUserProfile();
                 break;
             case notifConst.TOAST_NOTICE:
