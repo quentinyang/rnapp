@@ -164,8 +164,7 @@ function clickStatus(state = Immutable.fromJS(initialClickStatus), action) {
 }
 
 let initialConfig = {
-    showRecharge: true,
-    isSignIn: true
+    showRecharge: true
 };
 
 function appConfig(state = Immutable.fromJS(initialConfig), action) {

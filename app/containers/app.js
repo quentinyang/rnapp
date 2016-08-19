@@ -412,14 +412,13 @@ class App extends Component {
                 NotificationHandler.openPage(_navigator, notifData);
                 break;
             case notifConst.OPEN_URL:
-            console.log('======nav', _navigator);
                 NotificationHandler.openURL(_navigator, notifData);
                 break;
             case notifConst.RED_POINT:
                 actionsApp.appSignInChanged(false);
                 break;
             case notifConst.NEW_LEVEL_NOTICE:
-                actionsApp.levelPushed(newNotifData);
+                actionsApp.levelPushed(newNotifData.data.extras);
                 actionsUser.fetchUserProfile();
                 break;
             case notifConst.TOAST_NOTICE:

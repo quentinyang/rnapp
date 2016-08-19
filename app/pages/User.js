@@ -42,7 +42,7 @@ export default class User extends Component {
     }
 
     render() {
-        let {userProfile, userControlData, signInInfo, navigator, actions} = this.props;
+        let {userProfile, userControlData, signInInfo, appUserConfig, navigator, actions} = this.props;
         let signInData = Immutable.fromJS({
             sign_in_days: userProfile.get('sign_in_days'),
             experience: userProfile.get('sign_in_experience')
@@ -152,7 +152,7 @@ export default class User extends Component {
                                 领签到礼包</Text>
                         </View>
                         {
-                            userProfile.get('is_signed_in') == "0" ?
+                            !appUserConfig.get('isSignIn') || userProfile.get('is_signed_in') == "0" ?
                                 <TouchableWithoutFeedback
                                     onPress={() => {
                                         ActionUtil.setActionWithExtend(actionType.BA_MINE_SIGN_INPUT, {'signDays': (Number(userProfile.get('sign_in_days')) + 1 ) + ""});
