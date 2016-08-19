@@ -18,6 +18,11 @@ export default class ContactItem extends Component {
 
         if(replyStatus == 1) checkStatus = 0;
 
+        let checkStatus = item.get('check_status'),
+            replyStatus = item.get('reply_status');
+
+        if(replyStatus == 1) checkStatus = 0;
+
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
