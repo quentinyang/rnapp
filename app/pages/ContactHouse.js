@@ -95,6 +95,8 @@ export default class ContactHouse extends Component {
     _renderRow = (rowData: any, sectionID: number, rowID: number) => {
         let checkStatus = rowData.get('check_status'),
             replyStatus = rowData.get('reply_status'),
+            isVerified = rowData.get('is_verify'),
+            status = rowData.get('status'),
             past = rowData.get('past'),
             btn,  //'green', 'gray'
             handleBtn,  //'less', 'normal', 'more', 'sell'  'less'小于申诉时间, 'normal'正常, 'more'超时, 'sell'再次确认在卖
@@ -107,14 +109,18 @@ export default class ContactHouse extends Component {
             btn = 'gray';
             handleBtn = 'sell';
             currentStatus = 'tel';
-        } else {  //未审核：未提交审核/审核中...，按钮和底部文案需要分开判断
+        } else {  //未审核：未提交审核/审核中…，按钮和底部文案需要分开判断
             //按钮
             if(replyStatus != 1) {  //只要没有反馈在卖（包括反馈非在卖状态或者未反馈），申诉按钮都隐藏
 
             } else {  //反馈在卖
                 if(past <= 3) {  //小于申诉时间，按钮绿色，弹层提示小于3天
                     btn = 'green';
-                    handleBtn = 'less';
+                    if(status == 1 || status == 4 || status == 5 || status == 6 || status == 7) {  //房源非在卖
+                        handleBtn = 'normal';
+                    } else {
+                        handleBtn = 'less';
+                    }
                 } else if(past > 10) {  //超过申诉时间，按钮灰色，弹层提示超过申诉时间
                     btn = 'gray';
                     handleBtn = 'more';
