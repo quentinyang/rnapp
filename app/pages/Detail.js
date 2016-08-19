@@ -126,6 +126,7 @@ export default class Detail extends Component {
                     renderHeader={this._renderHeader}
                     style={styles.listView}
                     enableEmptySections={true}
+                    removeClippedSubviews={false}
                     renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
                 />
             </View>
