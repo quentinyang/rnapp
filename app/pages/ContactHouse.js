@@ -100,6 +100,7 @@ export default class ContactHouse extends Component {
             handleBtn,  //'less', 'normal', 'more', 'sell'  'less'小于申诉时间, 'normal'正常, 'more'超时, 'sell'再次确认在卖
             currentStatus;  //'tel', 'score', 'check'
 
+        if(replyStatus == 1) checkStatus = 0;
         if(checkStatus == 1) {  //审核通过，1.隐藏按钮 2.底部显示积分退还
             currentStatus = 'score';
         } else if(checkStatus == 2) {  //审核驳回，1.按钮变灰，弹层提示客服仍确认在卖 2.底部显示手机号
