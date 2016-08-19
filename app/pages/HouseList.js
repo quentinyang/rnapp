@@ -180,7 +180,7 @@ export default class HouseList extends Component {
         let {loaded, homeSearch} = this.state;
         let {actions, houseData, queryParamsData} = this.props;
         let pager = houseData.get('pager');
-        if (!loaded) {
+        if (!loaded && !homeSearch) {
             InteractionManager.runAfterInteractions(() => {
                 actions.fetchHouseList({
                     page: Number(pager.get('current_page')) + 1,
