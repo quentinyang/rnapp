@@ -124,12 +124,18 @@ export default class ContactHouse extends Component {
                 } else if(past > 10) {  //超过申诉时间，按钮灰色，弹层提示超过申诉时间
                     btn = 'gray';
                     handleBtn = 'more';
+                } else {  //在申诉时间内，按钮绿色，点击跳转
+                    btn = 'green';
+                    handleBtn = 'normal';
                 }
             }
 
-        } else if (isVerified == 1) {
-            btn = 'gray';
-            handleBtn = 'sell';
+            //底部文案
+            if(replyStatus == 0 || replyStatus == 1) {  //底部显示手机号
+                currentStatus = 'tel';
+            } else {  //底部显示客服审核中
+                currentStatus = 'check';
+            }
         }
 
         //房源是否可点
