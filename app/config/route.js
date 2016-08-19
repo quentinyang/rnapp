@@ -4,6 +4,8 @@ import TabViewContainer from '../containers/TabViewContainer';
 import PublishFirstStepContainer from '../containers/PublishFirstStepContainer';
 import DetailContainer from '../containers/DetailContainer';
 import TouchWebContainer from "../containers/TouchWebContainer";
+import ScoreListContainer from "../containers/ScoreListContainer";
+import * as actionType from '../constants/ActionLog';
 
 global.routes = {
     "login": {
@@ -44,5 +46,19 @@ global.routes = {
         name: 'webView',
         component: TouchWebContainer,
         hideNavBar: false,
+    },
+    "userCenter": {
+        component: TabViewContainer,
+        name: 'userCenter',
+        title: '我的',
+        hideNavBar: true,
+        index: 2
+    },
+    "scoreList": {
+        component: ScoreListContainer,
+        name: 'scoreList',
+        title: '积分明细',
+        backLog: actionType.BA_MINE_POINTS_RETURN,
+        //accountData: withdrawData
     }
 }

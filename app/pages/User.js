@@ -11,7 +11,8 @@ import {
     Alert,
     PixelRatio,
     Platform,
-    StyleSheet
+    StyleSheet,
+    InteractionManager
 } from 'nuke';
 
 import Header from '../components/Header';
@@ -214,6 +215,15 @@ export default class User extends Component {
                 />
             </View>
         );
+    }
+
+    componentDidMount() {
+        let {userProfile, actions} = this.props;
+        if(!userProfile.get('uid')) {
+            InteractionManager.runAfterInteractions(() => {
+                actions.fetchUserProfile();
+            });
+        }
     }
 
     navigatorPush = (value) => {

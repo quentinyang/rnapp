@@ -396,7 +396,6 @@ class App extends Component {
     };
 
     _geTuiDataReceivedHandle = (notifData) => {
-        console.log('=========notifData', notifData);
         let newNotifData = JSON.parse(notifData.payloadMsg);
         let {actionsApp, actionsHome, actionsUser} = this.props;
 

@@ -56,6 +56,7 @@ function _getHeader() {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'token': global.gtoken || '',
+            'uid': global.guid || '',
             'Angejia-Signature': '',// 签名信息
             'Angejia-Auth': global.gtoken,// 用户认证信息
             'Angejia-MobileAgent': mobileAgent,// 移动设备信息
