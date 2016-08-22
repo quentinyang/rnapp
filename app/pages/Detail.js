@@ -155,7 +155,8 @@ export default class Detail extends Component {
             });
             actions.fetchCoupon({
                 status: 1,
-                type: 1
+                type: 1,
+                per_page: 100
             });
         });
 
