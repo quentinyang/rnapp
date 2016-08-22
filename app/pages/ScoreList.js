@@ -99,7 +99,8 @@ export default class ScoreList extends Component {
         return (
             <View>
                 <View style={[styles.totalBox]}>
-                    <View style={[styles.justifyContent, styles.alignItems, styles.priceBox]}>
+                    <View style={[styles.justifyContent, styles.priceBox]}>
+                        <Text style={styles.scoreTime}>积分：</Text>
                         <Text style={styles.totalPrice}>{money || userProfile.get('score')}<Text style={styles.unit}>分</Text></Text>
                     </View>
                     {/* <CashArea
@@ -254,11 +255,12 @@ const styles = StyleSheet.create({
         color: '#8d8c92'
     },
     priceBox: {
-        height: 97
+        height: 90
     },
     totalPrice: {
         fontSize: 30,
-        color: '#04c1ae'
+        color: '#04c1ae',
+        marginTop: 8
     },
     unit: {
         fontSize: 19,
