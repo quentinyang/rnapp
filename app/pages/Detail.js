@@ -57,7 +57,7 @@ export default class Detail extends Component {
                     verfify == null ? null :
                     verfify ?
                     <VerifyBtn
-                        hideRecord={status && info.get('record_url') && info.get('record_url').size == 0}
+                        hideRecord={info.get('record_url') && info.get('record_url').size == 0}
                         phone={phone}
                         playRecord={this._playRecord}
                         getSellerPhone={this._clickGetSellerPhoneBtn.bind(this, status, phone)}

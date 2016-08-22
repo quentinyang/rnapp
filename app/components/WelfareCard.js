@@ -38,7 +38,7 @@ export default class Card extends Component {
                 <View style={{flex: 10}}>
                 <View style={styles.wfCaDesc}>
                     <Text style={[styles.fontBold, item.get('status') != 1 ? styles.gray : null]}>{item.get('name')}</Text>
-                    <Text style={styles.descFont} numberOfLines={1}>· {item.get('brief') || '全平台通用'}</Text>
+                    {item.get('brief') ? <Text style={styles.descFont} numberOfLines={1}>· {item.get('brief')}</Text> : null}
                     {item.get('end_at') ? <Text style={styles.descFont} numberOfLines={1}>· 有效期至{item.get('end_at').substring(0, 10)}</Text> : null}
                 </View>
                 </View>
