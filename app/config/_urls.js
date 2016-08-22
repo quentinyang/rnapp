@@ -6,6 +6,7 @@ import { NativeModules } from 'nuke'
 import { replaceJSONContent } from '../utils/CommonUtils'
 import * as common from '../constants/Common'
 
+global.gver = '';
 global.gDebug = NativeModules.Utils.isDebug;
 let HOST = global.ghost = NativeModules.Utils.host;
 
@@ -90,12 +91,22 @@ let urls = {
     }
 }
 
-gDebug && AsyncStorageComponent.get(common.API_HOST)
+gDebug && AsyncStorageComponent.multiGet([common.API_HOST, common.APP_VERSION])
     .then((value) => {
-        if (value) {
-            if (value !== global.ghost) {
-                urls = replaceJSONContent(urls, ghost, value);
-                ghost = value;
+        let len = value.length;
+        for(let i=0; i<len; i++) {
+            switch (value[i][0]) {
+                case common.API_HOST:
+                    if (value[i][1] && value[i][1] !== global.ghost) {
+                        urls = replaceJSONContent(urls, ghost, value[i][1]);
+                        ghost = value[i][1];
+                    }
+                    break;
+                case common.APP_VERSION:
+                    if(value[i][1]) {
+                        gver = value[i][1];
+                    }
+                    break;
             }
         }
     })

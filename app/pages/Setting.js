@@ -60,12 +60,12 @@ export default class Setting extends Component {
                                 nav.push({
                                     component: ConfigHost,
                                     name: "hostApi",
-                                    title: "设置 HOST API",
+                                    title: "设置 APP",
                                     hideNavBar: false
                                 });
                             }}
                             navigator={this.props.navigator}
-                            title='设置 HOST API'
+                            title='设置 APP'
                         />
                     </View>
                     : null

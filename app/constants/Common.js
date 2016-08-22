@@ -10,4 +10,6 @@ export const APP_SHOW_RULE = 'app_show_rule';
 export const API_HOST = 'api_host';
 export const IS_DEBUG = 'is_debug';
 export const HOST_CHANGE = 'host_change';
+export const APP_VERSION = 'APP_VERSION';
+export const APP_VERSION_CHANGE = 'APP_VERSION_CHANGE';
 export const USER_ENTER_STATUS = 'USER_ENTER_STATUS';
