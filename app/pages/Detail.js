@@ -126,6 +126,7 @@ export default class Detail extends Component {
                     renderHeader={this._renderHeader}
                     style={styles.listView}
                     enableEmptySections={true}
+                    removeClippedSubviews={false}
                     renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
                 />
             </View>
@@ -247,14 +248,14 @@ export default class Detail extends Component {
     };
 
     _renderHeader = () => {
-        let {baseInfo, sameCommunityList, route, actions, navigator, actionsNavigation} = this.props;
+        let {baseInfo, callInfo, sameCommunityList, route, actions, navigator, actionsNavigation} = this.props;
         let houseList = sameCommunityList.get('properties');
         let userInfo = baseInfo.get('userInfo');
 
         return (
             <View>
 
-                <BaseInfo baseInfo={baseInfo.get('baseInfo')} route={route}/>
+                <BaseInfo baseInfo={baseInfo.get('baseInfo')} hasBuyed={callInfo.get('sellerPhone').get('seller_phone')} route={route}/>
                 { userInfo.get('input_user_id') ?
                     <UserInfo userInfo={userInfo} navigator={navigator} actions={actions} actionsNavigation={actionsNavigation} />
                     : null
@@ -1000,9 +1001,16 @@ class BaseInfo extends Component {
     }
 
     render() {
-        let {baseInfo, route} = this.props;
+        let {baseInfo, hasBuyed, route} = this.props;
         let houseInfo = route.item;
         let isVertify = houseInfo.get('is_verify') && houseInfo.get('is_verify') == "1"  || baseInfo.get('is_verify') && baseInfo.get('is_verify') == "1";
+        let doorNum = '';
+        if(houseInfo.get('is_verify') == "1" || houseInfo.get('phone_lock_status') == "1" ||
+            baseInfo.get('is_verify') == "1" || baseInfo.get('phone_lock_status') == "1" || hasBuyed) {
+            doorNum = (houseInfo.get('door_num') || baseInfo.get('floor')) + '室';
+        } else if(houseInfo.get('floor') || baseInfo.get('floor')) {
+            doorNum = (houseInfo.get('floor') || baseInfo.get('floor')) + '层';
+        }
 
         return (
             <View>
@@ -1010,7 +1018,7 @@ class BaseInfo extends Component {
                     <Text style={[styles.name, styles.baseColor]}>{houseInfo.get('community_name') || ''}</Text>
                     <View style={[styles.row, styles.justifyContent]}>
                         <Text style={[styles.subName, styles.baseColor]}>
-                            {houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{houseInfo.get('door_num') || ''}{houseInfo.get('door_num') && '室'}
+                            {houseInfo.get('building_num') || ''}{houseInfo.get('building_num') && houseInfo.get('building_unit') || ''}{doorNum}
                             {houseInfo.get('is_new') && ' '}
                             {houseInfo.get('is_new') ? <Image style={[styles.tagNew]} source={require("../images/new_tag.png")} />: null}
                             {isVertify && ' '}

@@ -12,7 +12,12 @@ export default class ContactItem extends Component {
 
     render() {
         let {item, current} = this.props;
-        let statusStr = ['未反馈', '确认在卖', '反馈虚假', '联系不上', '反馈虚假', '确认不卖', '确认已卖', '按错了'];
+        let statusStr = ['未反馈', '反馈在卖', '反馈虚假', '联系不上', '反馈虚假', '确认不卖', '确认已卖', '按错了'];
+
+        let checkStatus = item.get('check_status'),
+            replyStatus = item.get('reply_status');
+
+        if(replyStatus == 1) checkStatus = 0;
 
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
@@ -20,7 +25,7 @@ export default class ContactItem extends Component {
                     <HouseItem
                         item={item}
                         dateKey="reply_at"
-                        operator={item.get('check_status') == 2 ? '客服确认在卖' : statusStr[item.get('reply_status')]}
+                        operator={checkStatus == 2 ? '客服确认在卖' : statusStr[item.get('reply_status')]}
                         onItemPress={this._onHandlePress}
                     />
 
@@ -40,7 +45,7 @@ export default class ContactItem extends Component {
                         </View>
                             :
                         <View style={[styles.status, styles.row, styles.center]}>
-                            <Text style={styles.bottomMsg}>{current == 'score' ? item.get('unlock_phone_cost') + '积分已返还' : '客服审核中'}</Text>
+                            <Text style={styles.bottomMsg}>{current == 'score' ? (item.get('unlock_phone_cost') != 0 ? item.get('unlock_phone_cost') + '积分' : '') + (item.get('card') > 0 ? ' ' + item.get('card') + '张看房卡': '') + '已返还' : '客服审核中'}</Text>
                         </View>
                     }
                 </View>

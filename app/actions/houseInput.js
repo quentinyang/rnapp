@@ -7,6 +7,7 @@ export const communityChanged = makeActionCreator(types.COMMUNITY_CHANGED, 'comm
 export const buildingChanged = makeActionCreator(types.BUILDING_CHANGED, 'building_num');
 export const unitChanged = makeActionCreator(types.UNIT_CHANGED, 'unit_num');
 export const doorChanged = makeActionCreator(types.DOOR_CHANGED, 'door_num');
+export const floorChanged = makeActionCreator(types.FLOOR_CHANGED, 'floor');
 export const bedroomsChanged = makeActionCreator(types.BEDROOMS_CHANGED, 'bedrooms');
 export const livingroomsChanged = makeActionCreator(types.LIVINGROOMS_CHANGED, 'living_rooms');
 export const bathroomsChanged = makeActionCreator(types.BATHROOMS_CHANGED, 'bathrooms');

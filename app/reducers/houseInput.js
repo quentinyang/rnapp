@@ -12,6 +12,7 @@ let initInput = Immutable.fromJS({
     'building_num': '',
     'unit_num': '',
     'door_num': '',
+    'floor': '',
     'has_no_building_num': 0,
     'has_no_door_num': 0,
     'price': '',
@@ -35,6 +36,8 @@ function houseForm(state = initInput, action) {
             return state.set('unit_num', action.unit_num);
         case types.DOOR_CHANGED:
             return state.set('door_num', action.door_num);
+        case types.FLOOR_CHANGED:
+            return state.set('floor', action.floor);
         case types.PRICE_CHANGED:
             return state.set('price', action.price);
         case types.AREA_CHANGED:

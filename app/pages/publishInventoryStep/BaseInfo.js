@@ -32,7 +32,7 @@ export default class BaseInfoPage extends Component {
     render() {
         let {navigator, route} = this.props;
         let {houseForm, controller} = this.props.houseInput;
-        let isOpacity = !!(houseForm.get('community_name') && !controller.get('err_msg') && (controller.get('single')? true: houseForm.get('building_num')) && (controller.get('villa')?true:houseForm.get('door_num')));
+        let isOpacity = !!(houseForm.get('community_name') && !controller.get('err_msg') && (controller.get('single')? true: houseForm.get('building_num')) && (controller.get('villa')?true:houseForm.get('door_num') && houseForm.get('floor')));
 
         return (
             <View style={styles.container}>
@@ -84,13 +84,25 @@ export default class BaseInfoPage extends Component {
                             editable={controller.get('villa')? false: true}
                             maxLength={5}
                             onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_ROOM)}
-                            onChangeText={(v) => {this.singleAction('doorChanged', v.trim())}}
+                            onChangeText={(v) => {this.doorChanged(v.trim())}}
                         >
                             <Attached
                                 isSelected={controller.get('villa')}
                                 attachedText='无'
-                                toggleAttach={() => this.toggleAttach(actionType.BA_SENDONE_THREE_VILLA, 'villaChanged', !controller.get('villa'), 'doorChanged', 'attachDoorChanged')}
+                                toggleAttach={() => {this.toggleAttach(actionType.BA_SENDONE_THREE_VILLA, 'villaChanged', !controller.get('villa'), 'doorChanged', 'attachDoorChanged'); this.props.actions.floorChanged('');}}
                             />
+                        </WithLabel>
+                        <WithLabel
+                            label='楼层'
+                            rightText='层'
+                            value={houseForm.get('floor')}
+                            placeholder={controller.get('villa') ? '无' : '输入楼层'}
+                            underlineColorAndroid = 'transparent'
+                            editable={controller.get('villa')? false: true}
+                            maxLength={2}
+                            onChangeText={(v) => {this.singleAction('floorChanged', v.trim())}}
+                        >
+                            <View style={{width: 90}}></View>
                         </WithLabel>
                     </View>
                     <ErrorMsg
@@ -128,7 +140,7 @@ export default class BaseInfoPage extends Component {
                     actionsApp.webAuthentication(error);
                 } else {
                     Alert.alert('', error.msg || '网络不太顺畅');
-                }                
+                }
             })
         });
 
@@ -139,6 +151,18 @@ export default class BaseInfoPage extends Component {
 
         houseInput.controller.get('err_msg') && actions.error('');
         actions[action](value);
+    }
+
+    doorChanged(value) {
+        let {actions} = this.props;
+
+        this.singleAction('doorChanged', value);
+        if(value.length == 3 || value.length == 4) {
+            let floor = value.slice(0, -2);
+            actions.floorChanged(floor);
+        } else {
+            actions.floorChanged('');
+        }
     }
 
     toggleAttach(actionLog, action, value, secAction, thirdAction) {

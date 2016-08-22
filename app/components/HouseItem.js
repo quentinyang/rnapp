@@ -11,6 +11,13 @@ export default class HouseItem extends Component {
     render() {
         let {item, dateKey, operator} = this.props;
         let date = formatDate(dateKey ? item.get(dateKey) : item.get('updated_at'));
+        let doorNum = '';
+        if(item.get('is_verify') == "1" || item.get('phone_lock_status') == "1") {
+            doorNum = item.get('door_num') + '室';
+        } else if(item.get('floor')) {
+            doorNum = item.get('floor') + '层';
+        }
+
         return (
             <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, item)} key={item.get('property_id')}>
                 <View style={styles.item}>
@@ -26,7 +33,7 @@ export default class HouseItem extends Component {
                     <View>
                         <Text style={[styles.flex, styles.row, styles.headerMsg, item.get('is_click') ? styles.gray : {}]} numberOfLines={1}>
                             {item.get('community_name') + "  "}
-                            {item.get('building_num') + (item.get('building_num') && item.get('building_unit')) + item.get('door_num') + (item.get('door_num') && '室')}
+                            {item.get('building_num') + (item.get('building_num') && item.get('building_unit')) + doorNum}
                             {item.get('is_new') && ' '}
                             {item.get('is_new') ? <Image style={[styles.tagNew]} source={require("../images/new_tag.png")} />: null}
                             {item.get('is_verify') && item.get('is_verify') == "1" && ' '}
