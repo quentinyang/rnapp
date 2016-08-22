@@ -1005,8 +1005,8 @@ class BaseInfo extends Component {
         let houseInfo = route.item;
         let isVertify = houseInfo.get('is_verify') && houseInfo.get('is_verify') == "1"  || baseInfo.get('is_verify') && baseInfo.get('is_verify') == "1";
         let doorNum = '';
-        if(houseInfo.get('is_verify') == "1" || houseInfo.get('phone_lock_status') == "1" || houseInfo.get('is_creator') == "1" ||
-            baseInfo.get('is_verify') == "1" || baseInfo.get('phone_lock_status') == "1" || baseInfo.get('is_creator') == "1" || hasBuyed) {
+        if(houseInfo.get('is_verify') == "1" || houseInfo.get('phone_lock_status') == "1" ||
+            baseInfo.get('is_verify') == "1" || baseInfo.get('phone_lock_status') == "1" || hasBuyed) {
             doorNum = (houseInfo.get('door_num') || baseInfo.get('floor')) + '室';
         } else if(houseInfo.get('floor') || baseInfo.get('floor')) {
             doorNum = (houseInfo.get('floor') || baseInfo.get('floor')) + '层';
