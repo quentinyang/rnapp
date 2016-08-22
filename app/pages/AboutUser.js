@@ -76,13 +76,19 @@ export default class AboutUser extends Component {
 
     _renderRow = (rowData, secId, rowId, highlightRow) => {
         let date = formatDate(rowData.get('created_at'));
+        let doorNum = '';
+        if(rowData.get('is_verify') == "1" || rowData.get('phone_lock_status') == "1" || rowData.get('is_creator') == "1") {
+            doorNum = rowData.get('door_num') + '室';
+        } else if(rowData.get('floor')) {
+            doorNum = rowData.get('floor') + '层';
+        }
 
         return (
             <TouchableHighlight onPress={() => this.goDetail(rowData)} underlayColor='transparent'>
                 <View style={styles.houseItem}>
                     <Text style={{width: 80}}>{date.month}月{date.day}日</Text>
                     <View style={styles.flex}>
-                        <Text style={{fontWeight: '500'}} numberOfLines={1}>{rowData.get('community_name')} {rowData.get('building_num') ? rowData.get('building_num') + rowData.get('building_unit') : null}{rowData.get('door_num') ? rowData.get('door_num') + '室' : null}</Text>
+                        <Text style={{fontWeight: '500'}} numberOfLines={1}>{rowData.get('community_name')} {rowData.get('building_num') ? rowData.get('building_num') + rowData.get('building_unit') : null}{doorNum}</Text>
                         <Text style={{fontSize: 12, marginTop: 2}}>{rowData.get('bedrooms')}室{rowData.get('living_roooms')}厅{rowData.get('bathrooms')}卫 {rowData.get('area')}平 {rowData.get('price')}万</Text>
                         <Text style={{fontSize: 12, color: '#8d8c92', marginTop: 2}}>{rowData.get('district_name')}-{rowData.get('block_name')} {rowData.get('community_address')}</Text>
                     </View>
