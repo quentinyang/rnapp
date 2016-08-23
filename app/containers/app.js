@@ -5,14 +5,17 @@ import {React, Component, Navigator, BackAndroid, StyleSheet, Platform, Touchabl
     PixelRatio, TouchableWithoutFeedback, Linking, InteractionManager, NetInfo, AppState} from 'nuke';
 import {navigationContext} from 'react-native'
 import {NaviGoBack, parseUrlParam} from '../utils/CommonUtils';
+require('../config/route');
 import LoginContainer from '../containers/LoginContainer';
+import AboutEXPContainer from './AboutEXPContainer';
 import TabViewContainer from '../containers/TabViewContainer';
 import * as common from '../constants/Common';
+import * as notifConst from '../constants/Notification';
 import BackScore from '../pages/BackScore'
 var GeTui = require('react-native').NativeModules.GeTui;
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
-import {routes} from '../config/route'
+let NotificationHandler = require('../utils/NotificationHandler');
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 import { setLoginDaysService } from '../service/configService';
 import Toast from 'react-native-root-toast';
@@ -77,7 +80,7 @@ class App extends Component {
                         hasSetRoute: true
                     });
                 }
-
+                actionsApp.setAppUserConfig();
                 setLoginDays(guid);
             }
         })
@@ -127,6 +130,10 @@ class App extends Component {
         // (isAndroid && appData.get('config').get('isCidLogin'))
         return (
             <View style={styles.flex}>
+                <MessageNoticeModal
+                    message={appData.get('msgNotice')}
+                    actionsApp={actionsApp}
+                />
                 <LogoutModal
                     logoutInfo={appData.get('auth')}
                     logoutSure={this._logoutSure}
@@ -147,7 +154,7 @@ class App extends Component {
                         </View>
                     </View>
                 </Modal>
-                
+
                 <Modal visible={appData.get('config').get('showUpdateModal')} transparent={true} onRequestClose={() => {}}>
                     <View style={styles.bgWrap}>
                         <View style={styles.updateContentContainer}>
@@ -188,6 +195,8 @@ class App extends Component {
                     </View>
                 </Modal>
 
+                <LevelModal levelNotice={appData.get('levelNotice')} closeFn={() => this.closeLevelModal()} linkFn={() => this.goExp(appData.get('levelNotice').get('data').toJS())} />
+
                 {
                     hasSetRoute ?
                         <Navigator
@@ -203,6 +212,20 @@ class App extends Component {
             </View>
         )
     }
+
+    closeLevelModal = () => {
+        this.props.actionsApp.levelModalChanged(false);
+    };
+
+    goExp = (data) => {
+        this.props.actionsApp.levelModalChanged(false);
+        _navigator.push({
+            component: AboutEXPContainer,
+            name: 'exp',
+            title: '我的等级',
+            data: data
+        });
+    };
 
     _hideModel() {
         let {actionsApp} = this.props;
@@ -264,7 +287,7 @@ class App extends Component {
             });
         } else {
             DeviceEventEmitter.addListener('geTuiDataReceived', (notifData) => {
-                this._geTuiDataReceivedHandle(notifData);
+                this._geTuiDataReceivedHandle(JSON.parse(notifData));
             });
 
             // 个推打开的action监听
@@ -323,7 +346,8 @@ class App extends Component {
 
     _setLoginDays = (currentAppState) => {
         gtoken && (currentAppState == 'active') && setLoginDays();
-    }
+    };
+
     _handleConnectionInfoChange = (connection) => {
         let {actionsApp} = this.props;
         if(connection.toLowerCase() == 'none') {
@@ -353,7 +377,7 @@ class App extends Component {
             bp: actionType.BA_LOGIN
         });
         actionsApp.webAuthentication({visible: false});
-    }
+    };
 
     _clientIdReceived = (cId) => {
         let {actionsApp} = this.props;
@@ -372,41 +396,35 @@ class App extends Component {
     };
 
     _geTuiDataReceivedHandle = (notifData) => {
-        let newNotifData = JSON.parse(notifData);
-        let {actionsHome} = this.props;
+        let newNotifData = JSON.parse(notifData.payloadMsg);
+        let {actionsApp, actionsHome, actionsUser} = this.props;
 
         switch(Number(newNotifData.type)) {
-            case 1: // 普通推送
+            case notifConst.NEW_HOUSE: // 普通推送
                 ActionUtil.setAction(actionType.BA_PUSH_RECIVED);
                 actionsHome.fetchAttentionPrependHouseList({});
                 break;
-            case 2: // 互踢
-                AsyncStorageComponent.get(common.USER_TOKEN_KEY)
-                .then((token) => {
-                    if (token) {
-                        AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
-                        if (Platform.OS === 'ios') {
-                            Alert.alert('提示', '您的账号在另外一台设备登陆，被迫下线！', [
-                                {text: '知道了', onPress: () => {
-                                    AsyncStorageComponent.get('user_phone')
-                                    .then((value) => {
-                                        _navigator.resetTo({
-                                            component: LoginContainer,
-                                            name: 'login',
-                                            title: '登录',
-                                            phone: value,
-                                            hideNavBar: true
-                                        });
-                                    });
-                                }}
-                            ]);
-                        } else {
-                            this.setState({
-                                showModal: true
-                            });
-                        }
-                    }
-                });
+            case notifConst.LOGOUT: // 互踢
+                NotificationHandler.logout.call(this, _navigator);
+                break;
+            case notifConst.OPEN_PAGE:
+                NotificationHandler.openPage(_navigator, notifData);
+                break;
+            case notifConst.OPEN_URL:
+                NotificationHandler.openURL(_navigator, notifData);
+                break;
+            case notifConst.RED_POINT:
+                actionsApp.appSignInChanged(false);
+                break;
+            case notifConst.NEW_LEVEL_NOTICE:
+                actionsApp.levelPushed(newNotifData.data.extras);
+                actionsUser.fetchUserProfile();
+                break;
+            case notifConst.TOAST_NOTICE:
+                NotificationHandler.showToast(newNotifData.data.extras);
+                break;
+            case notifConst.FORCE_UPDATE:
+                NotificationHandler.showForceUpdate(actionsApp);
                 break;
             default:
                 break;
@@ -514,16 +532,94 @@ class LogoutModal extends Component {
                         <Text style={styles.textCenter}>{logoutInfo.get('msg')}</Text>
 
                         <TouchableHighlight
+                            style={[styles.alignItems, styles.logoutSure, styles.justifyContent]}
                             onPress={logoutSure}
                             underlayColor='#04C1AE'
                         >
-                            <View style={[styles.logoutSure, styles.alignItems, styles.justifyContent]}>
+                            <View>
                                 <Text style={[styles.updateBtnRightText]}>确认</Text>
                             </View>
                         </TouchableHighlight>
                     </View>
                 </View>
             </Modal>
+        );
+    }
+}
+
+class MessageNoticeModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        let {message, actionsApp} = this.props;
+        return (
+            <Modal visible={message.get('visible')} transparent={true} onRequestClose={() => {}}>
+                <View style={styles.bgWrap}>
+                    <View style={styles.contentContainer}>
+                        <Text style={styles.textCenter}>{message.get('msg')}</Text>
+
+                        <TouchableHighlight
+                            style={[styles.alignItems, styles.logoutSure, styles.justifyContent]}
+                            onPress={() => actionsApp.msgNoticeGeted({'visible': false})}
+                            underlayColor='#04C1AE'
+                        >
+                            <View>
+                                <Text style={[styles.updateBtnRightText]}>确认</Text>
+                            </View>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
+        );
+    }
+}
+
+class LevelModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        let {levelNotice, closeFn, linkFn} = this.props;
+        return (
+            <Modal visible={levelNotice.get('visible')} transparent={true} onRequestClose={() => {}}>
+                <View style={styles.bgWrap}>
+                    <View>
+                        <View style={[styles.contentContainer, {marginTop: 32}]}>
+                            <TouchableHighlight
+                                style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
+                                underlayColor="transparent"
+                                onPress={closeFn}
+                                >
+                                <Image
+                                    style={styles.closeIcon}
+                                    source={require("../images/close.png")}
+                                />
+                            </TouchableHighlight>
+
+                            <Text style={[styles.expTitle]}>会员升级</Text>
+
+                            <View style={{marginTop: 10, marginBottom: 30}}>
+                                <Text style={styles.font20}>恭喜您已成为<Text style={[styles.font20, styles.orange, styles.fontBold]}>V{levelNotice.get('data').get('level')}</Text>会员</Text>
+                            </View>
+                            <TouchableHighlight
+                                underlayColor='#fff'
+                                onPress={linkFn}
+                            >
+                                <View style={styles.flex}>
+                                    <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
+                                </View>
+                            </TouchableHighlight>
+                        </View>
+
+                        <View style={[styles.alignItems, styles.justifyContent, styles.giftBg]}>
+                            <Image style={styles.horn} source={require("../images/horn.png")}/>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+
         );
     }
 }
@@ -553,6 +649,15 @@ let styles = StyleSheet.create({
     },
     row: {
         flexDirection: 'row'
+    },
+    orange: {
+        color: '#ff6d4b'
+    },
+    fontBold: {
+        fontWeight: '400'
+    },
+    font20: {
+        fontSize: 20
     },
     alignItems: {
         alignItems: 'center'
@@ -609,7 +714,7 @@ let styles = StyleSheet.create({
     },
     contentContainer: {
         width: 270,
-        borderRadius: 5,
+        borderRadius: 10,
         padding: 20,
         backgroundColor: "#fff",
         justifyContent: "center",
@@ -684,6 +789,45 @@ let styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#04c1ae',
         marginTop: 20
+    },
+    closeBox: {
+        position: "absolute",
+        right: 0,
+        top: 0,
+        width: 50,
+        height: 50,
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    closeIcon: {
+        width: 18,
+        height: 18
+    },
+    expTitle: {
+        marginTop: 28,
+        marginBottom: 10,
+        fontSize: 12,
+        color: '#8d8c92'
+    },
+    giftBg: {
+        position: 'absolute',
+        top: 0,
+        left: 100,
+        width: 76,
+        height: 76,
+        borderRadius: 38,
+        borderWidth: 5,
+        borderColor: '#fff',
+        backgroundColor: "#04C1AE"
+    },
+    giftBtn: {
+        color: "#04c1ae",
+        fontSize: 12
+    },
+    horn: {
+        width: 34,
+        height: 32.5
     }
 });
 

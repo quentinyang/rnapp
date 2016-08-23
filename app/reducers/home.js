@@ -116,7 +116,8 @@ let initialBaseInfo = {
 
     ruleModal: {
         "input_points": 7, //发房积分
-        "looked_points": 2 //房源被查看
+        "looked_points": 2, //房源被查看
+        "experience" : 5,  //发放成功经验值
     },
 };
 

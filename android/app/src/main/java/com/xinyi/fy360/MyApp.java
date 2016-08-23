@@ -10,8 +10,6 @@ import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
-// Import Getui
-import com.igexin.sdk.PushManager;
 
 // 1. Import the plugin class
 import com.microsoft.codepush.react.CodePush;
@@ -52,10 +50,6 @@ public class MyApp extends Application implements ReactApplication {
          */
         ActionLog.reactNativeInit(-297722831, -297722831, "fy360", this, 3 * 60, 5);
         DevUtil.setDebug(BuildConfig.DEBUG);
-
-        if (!PushManager.getInstance().isPushTurnedOn(this)) {
-            PushManager.getInstance().initialize(this);
-        }
     }
 
     private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {

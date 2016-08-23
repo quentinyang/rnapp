@@ -95,7 +95,7 @@ export default class AboutUser extends Component {
         let userInfo = this.userInfo;
         if(userInfo.get('input_house_count') == 0) {
             return (
-                <View style={[styles.center, styles.flex, {marginVertical: 70}]}>
+                <View style={[styles.center, {height: 240}]}>
                     <Image source={require('../images/icon/house_light_gray_big.png')} style={styles.noHouse} />
                     <Text style={{fontSize: 15}}>Ta还没有发布房源</Text>
                 </View>

@@ -2,13 +2,14 @@
 
 import * as types from '../constants/App';
 import {makeActionCreator, serviceAction} from './base';
-import {setWebStartConfigService, deletePushService, setConfigService} from '../service/configService';
+import {setWebStartConfigService, deletePushService, setConfigService, setUserConfigService} from '../service/configService';
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
 
 export const webAuthentication = makeActionCreator(types.WEB_AUTHENTICATION, 'auth');
 export const webNetWorkError = makeActionCreator(types.WEB_NETWORK_ERROR, 'msg');
 export const webStartConfig = makeActionCreator(types.WEB_START_CONFIG, 'config');
 export const appConfig = makeActionCreator(types.APP_CONFIG, 'appConfig');
+export const appUserConfig = makeActionCreator(types.APP_USER_CONFIG, 'appUserConfig');
 export const closeUpdateModal = makeActionCreator(types.CLOSE_UPDATE_MODAL, 'visible');
 export const closeLoginModal = makeActionCreator(types.CLOSE_LOGIN_MODAL, 'visible');
 export const clickBackPage = makeActionCreator(types.CLICK_BACK_PAGE, 'pageName');
@@ -25,6 +26,13 @@ export const clickTabChanged = makeActionCreator(types.FORBIDDEN_TAB_CHANGED, 's
 export const appLoadingChanged = makeActionCreator(types.APP_LOADING_CHANGED, 'visible');
 
 export const netWorkChanged = makeActionCreator(types.APP_NETWORK_CHANGED, 'net');  //网络状况改变
+export const msgNoticeGeted = makeActionCreator(types.MESSAGE_NOTICE_GETED, 'message');
+export const forceUpdateGeted = makeActionCreator(types.FORCE_UPDATE_GETED);
+
+export const appSignInChanged = makeActionCreator(types.APP_SIGNIN_CHANGED, 'signIn');
+
+export const levelPushed = makeActionCreator(types.LEVEL_PUSHED, 'data');
+export const levelModalChanged = makeActionCreator(types.NEW_LEVEL_MODAL_CHANGED, 'visible');
 
 export function clickBack(name) {
     return dispatch => {
@@ -69,7 +77,24 @@ export function setAppConfig() {
                     showUpdateModal: Number(oData.update) ? true : false,
                     showRecharge: Number(oData.recharge_switch) ? true: false,
                     isCidLogin: Number(oData.is_cid_login) ? true : false,
-                    isEnforceUpdate: Number(oData.is_enforce_update) ? true : false  //是否强制更新  0  不需要 1 需要
+                    isEnforceUpdate: Number(oData.is_enforce_update) ? true : false,  //是否强制更新  0  不需要 1 需要
+                    isNewModal: Number(oData.switch_two_zero_version) ? true : false,
+                }));
+            },
+            error: function(oData) {
+
+            }
+        })
+    }
+}
+
+export function setAppUserConfig() {  //获取登录后的配置
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: setUserConfigService,
+            success: function(oData) {
+                dispatch(appUserConfig({
+                    isSignIn: Number(oData.is_signed_in) ? true : false
                 }));
             },
             error: function(oData) {

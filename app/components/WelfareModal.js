@@ -9,7 +9,7 @@ export default class WelfareModal extends Component {
 	}
 
 	render() {
-        let {isVisible, title, subTitle, welfareData, icon, children, closeModal, goPage} = this.props;
+        let {isVisible, title, subTitle, welfareData, icon, children, closeModal, goPage, goTitle} = this.props;
 
         let welfareList = welfareData && welfareData.map((item, index) => {
             return (
@@ -41,7 +41,7 @@ export default class WelfareModal extends Component {
 
                             <Text style={[styles.title]}>{title}</Text>
 
-                            {subTitle ? <Text style={[styles.subTitle]}>{subTitle}</Text> : null}
+                            {subTitle ? <Text style={[styles.subTitle]}>获得<Text style={[styles.subTitle, styles.orange]}>{subTitle}</Text>张看房卡</Text> : null}
 
 
                             {welfareData && welfareData.size > 3 ?
@@ -55,7 +55,7 @@ export default class WelfareModal extends Component {
                                 onPress={goPage}
                             >
                                 <View style={styles.flex}>
-                                    <Text style={[styles.giftBtn, styles.flex]}>查看详情></Text>
+                                    <Text style={[styles.giftBtn, styles.flex]}>{goTitle || '查看详情'}></Text>
                                 </View>
                             </TouchableHighlight>
 
@@ -102,22 +102,25 @@ let styles = StyleSheet.create({
         right: 0,
         top: 0,
         width: 50,
-        height: 30,
+        height: 50,
         flex: 1,
         alignItems: "center",
         justifyContent: "center"
     },
     closeIcon: {
-        width: 15,
-        height: 11
+        width: 18,
+        height: 18
     },
     title: {
         marginTop: 28,
         marginBottom: 10
     },
     subTitle: {
-        width: 230,
-        marginBottom: 10
+        marginBottom: 10,
+        fontSize: 19
+    },
+    orange: {
+        color: '#ff6d4b'
     },
     giftBg: {
         position: 'absolute',

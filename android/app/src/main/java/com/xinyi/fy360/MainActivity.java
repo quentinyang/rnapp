@@ -7,7 +7,10 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
+// Import Getui
+import com.igexin.sdk.PushManager;
 import com.facebook.react.ReactActivity;
 import com.umeng.analytics.MobclickAgent;
 import com.xinyi.fy360.getui.GeTuiManager;
@@ -32,6 +35,12 @@ public class MainActivity extends ReactActivity {
         setPushAction(getIntent());
         //checkHash();
         OpenAppActivity.hasLanched = true;
+
+
+        //if (!PushManager.getInstance().isPushTurnedOn(this)) {
+        Log.d("GetuiSdkDemo init", "init instance");
+        PushManager.getInstance().initialize(this.getApplicationContext());
+        //}
     }
 
     //检查hash
@@ -75,17 +84,31 @@ public class MainActivity extends ReactActivity {
             try {
                 JSONObject dataObject = new JSONObject(payload);
                 String type = dataObject.getString("type");
-                if (type.equals("2")) {
+                //if (type.equals("2")) {
                     getWindow().getDecorView().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             if (null != GeTuiManager.module) {
-                                GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", payload);
-                                sp.edit().putString("dataString", "").commit();
+                                Log.d("ccz", "onResume send event");
+                                //GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", payload);
+
+
+                                try{
+                                    JSONObject data = new JSONObject();
+                                    data.put("payloadMsg", payload);
+                                    data.put("isOffline", true);
+                                    GeTuiManager.module.handleRemoteNotificationReceived("geTuiDataReceived", data.toString());
+
+
+                                    sp.edit().putString("dataString", "").commit();
+                                }catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
                         }
                     }, 3000);
-                }
+                //}
             } catch (JSONException e) {
                 e.printStackTrace();
             }

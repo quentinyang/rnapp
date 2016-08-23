@@ -24,14 +24,21 @@ export default class HouseInputSuccess extends Component {
     }
 
     render() {
+        let {appConfig} = this.props;
         let {data} = this.props.route;
 
         return (
             <View style={styles.container}>
                 <Image source={require('../images/success.png')} style={[styles.sucImg]}/>
 
-                <Text style={styles.promptTitle}>审核通过可获<Text style={styles.promptColor}>{data.money}</Text>积分和<Text style={styles.promptColor}>{data.experience}</Text>个经验</Text>
+                {
+                    appConfig.get('isNewModal') ? <Text style={styles.sucButtonText}>发布成功！</Text>
+                    :
+                    <Text style={styles.promptTitle}>审核通过可获<Text style={styles.promptColor}>{data.money}</Text>积分和<Text style={styles.promptColor}>{data.experience}</Text>个经验</Text>
+                }
+
                 {data.is_special ? <Text style={[styles.promptTitle, styles.fontOrange]}>{data.msg}</Text>:null}
+
                 {data.is_can_input ?
                 <TouchableHighlight
                     style={[styles.sucButton, styles.backgroundGreen]}
@@ -41,6 +48,16 @@ export default class HouseInputSuccess extends Component {
                     <View><Text style={[styles.sucButtonText, styles.fontWhite]}>继续发房</Text></View>
                 </TouchableHighlight>
                 :null
+                }
+                {
+                    appConfig.get('isNewModal') ?
+                    <View style={styles.ruleBox}>
+                        <Text style={styles.grayColor}>发房规则：</Text>
+                        <Text style={styles.grayColor}>1、发布房源的电话每被查看1次获得<Text style={styles.fontOrange}>{data.looked_points}</Text>积分</Text>
+                        <Text style={styles.grayColor}>2、每套房源审核通过，平台补贴<Text style={styles.fontOrange}>{data.money}</Text>积分</Text>
+                        <Text style={[styles.ruleSub, styles.grayColor]}>（补贴只是暂时的，之后会有调整）</Text>
+                        <Text style={styles.grayColor}>3、房源审核通过，得<Text style={styles.fontOrange}>{data.experience}</Text>经验</Text>
+                    </View> : null
                 }
             </View>
         )
@@ -99,21 +116,27 @@ const styles = StyleSheet.create({
         borderRadius: 5
     },
     sucButtonText: {
-        fontSize: 18
+        fontSize: 19
     },
     fontWhite: {
         color: '#fff'
     },
-    fontGreen: {
-        color: '#04c1ae'
-    },
     fontOrange: {
-        color: '#ffa251'
-    },
-    backgroundWhite: {
-        backgroundColor: '#fff'
+        color: '#FF845D'
     },
     backgroundGreen: {
         backgroundColor: '#04c1ae'
+    },
+    ruleBox: {
+        marginLeft: 62,
+        marginTop: 25,
+        marginRight: 32
+    },
+    grayColor: {
+        color: '#8d8c92',
+        marginTop: 3
+    },
+    ruleSub: {
+        fontSize: 14
     }
 });

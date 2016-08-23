@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
         height: 30
     },
     closeIcon: {
-        width: 15,
-        height: 13
+        width: 18,
+        height: 18
     },
     msgTip: {
         marginTop: 14,

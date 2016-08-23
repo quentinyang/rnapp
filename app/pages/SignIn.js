@@ -15,32 +15,45 @@ export default class SignIn extends Component {
 
         let unsignList = unsignArr.map((item, index) => {
             return (
-                <View key={index}>
-                    <Text style={{marginBottom: 10}}>连续签到{item.get('sign_in_days')}天获{item.get('total')}张</Text>
+                <View style={styles.wfBox} key={index}>
+                    <Text style={{marginBottom: 10}}><Text style={styles.orange}>{item.get('sign_in_days')}天</Text>签到获得{item.get('total')}张</Text>
                     {item.get('welfare_cards').map((card, ins) => {
-                        return <WelfareCard item={card} key={ins} wrapStyle={{marginBottom: 10}} />
+                        return <WelfareCard
+                                    item={card}
+                                    key={ins}
+                                    leftFlex={4}
+                                    icon={require('../images/welfare/welfare_white_available.png')}
+                                    wrapStyle={ins != (item.get('welfare_cards').size - 1) ? {marginBottom: 10}:null}
+                                />
                     })}
                 </View>
             );
         });
 
-        let signList = signArr.get('welfare_cards') && signArr.get('welfare_cards').map((item, index) => {
-            return (
-                <WelfareCard item={item} key={index} source={require('../images/welfare/got.png')} wrapStyle={{marginBottom: 10}} />
-            );
-        });
+        let signList = signArr.get('total') > 0 ?
+            (
+                <View style={styles.wfBox}>
+                    {signArr.get('welfare_cards').map((item, index) => {
+                        return <WelfareCard
+                                    item={item}
+                                    key={index}
+                                    leftFlex={4}
+                                    icon={require('../images/welfare/welfare_white.png')}
+                                    source={require('../images/welfare/got.png')}
+                                    wrapStyle={index != (signArr.get('welfare_cards').size - 1) ?{marginBottom: 10}:null}
+                                />
+                    })}
+                </View>
+            ):null;
 
         return (
             <ScrollView
                 style={styles.container}
                 automaticallyAdjustContentInsets={false}
             >
-                <View style={[styles.alignItems, styles.justifyContent, styles.box]}>
-                    <Text style={[styles.topTip]}>已连续签到</Text>
-                    <View style={[styles.panel, styles.alignItems, styles.justifyContent]}>
-                        <Text style={[styles.h5]}><Text style={styles.h1}>{signInfo.get('sign_in_days')}</Text>天</Text>
-                    </View>
-                    <Text style={[styles.bottomTip]}>每天签到 经验<Text style={[styles.orange, styles.add]}> + </Text><Text style={styles.orange}>{signInfo.get('experience')}</Text></Text>
+                <View style={[styles.alignItems, styles.row, styles.box]}>
+                    <View style={[styles.flex, styles.row, styles.alignItems]}><Text>连续签到：</Text><Text style={[styles.h1, styles.orange, {marginTop: -6}]}>{signInfo.get('sign_in_days')} </Text><Text>天</Text></View>
+                    <Text style={[styles.h6, styles.grey]}>每天签到 经验 + {signInfo.get('experience')}</Text>
                 </View>
 
                 <View style={[styles.row, styles.alignItems, styles.titleBox]}>
@@ -96,7 +109,7 @@ const styles = StyleSheet.create({
         fontWeight: '500'
     },
     h1: {
-        fontSize: 40
+        fontSize: 30
     },
     h2: {
         fontSize: 20
@@ -120,6 +133,8 @@ const styles = StyleSheet.create({
         color: '#8D8C92'
     },
     box: {
+        paddingHorizontal: 20,
+        height: 75,
         backgroundColor: '#f8f8f8'
     },
     topTip: {
@@ -172,6 +187,13 @@ const styles = StyleSheet.create({
             height: 1,
             width: 0
         }
+    },
+    wfBox: {
+        marginBottom: 15,
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        backgroundColor: '#f8f8f8',
+        borderRadius: 2
     },
     sPanel: {
         width: 22,

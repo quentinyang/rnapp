@@ -11,7 +11,8 @@ import {
     Alert,
     PixelRatio,
     Platform,
-    StyleSheet
+    StyleSheet,
+    InteractionManager
 } from 'nuke';
 
 import Header from '../components/Header';
@@ -28,6 +29,7 @@ import SettingContainer from '../containers/SettingContainer';
 import ScoreListContainer from '../containers/ScoreListContainer';
 import WelfareContainer from '../containers/WelfareContainer';
 import WelfareModal from '../components/WelfareModal';
+import Toast from 'react-native-root-toast';
 import Immutable from 'immutable';
 let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
@@ -41,7 +43,7 @@ export default class User extends Component {
     }
 
     render() {
-        let {userProfile, userControlData, signInInfo, navigator, actions} = this.props;
+        let {userProfile, userControlData, signInInfo, appUserConfig, navigator, actions} = this.props;
         let signInData = Immutable.fromJS({
             sign_in_days: userProfile.get('sign_in_days'),
             experience: userProfile.get('sign_in_experience')
@@ -62,10 +64,10 @@ export default class User extends Component {
             welfareModal =
                 <WelfareModal
                     title={"连续签到" + signInInfo.get('sign_in_result').get('sign_in_days') + "天"}
-                    subTitle={"获得" + welfareCards.size + "张看房卡，+" + signInInfo.get('sign_in_result').get('experience') + "经验"}
+                    subTitle={welfareCards.size}
                     isVisible={signInInfo.get('visible')}
                     welfareData={welfareCards}
-                    closeModal={()=>{ActionUtil.setAction(actionType.BA_MINE_SIGN_DELETE);actions.signInVisibleChanged(false);actions.signInBtnVisibleChanged("1");}}
+                    closeModal={()=>this.closeWelfareModal(signInInfo.get('sign_in_result').get('experience'))}
                     goPage={() => {
                         this.navigatorPush({
                             component: WelfareContainer,
@@ -79,6 +81,7 @@ export default class User extends Component {
                         actions.signInBtnVisibleChanged("1");
                         ActionUtil.setAction(actionType.BA_MINE_SIGN_FIND);
                     }}
+                    goTitle='看房卡怎么用'
                 />
         } else {
             welfareModal =
@@ -141,19 +144,26 @@ export default class User extends Component {
                         }}
                         onPress={() => this.navigatorPush({component: SignInContainer, signInfo: signInData, name: 'signin', title: '签到礼包', actionLog: actionType.BA_MINE_SIGN, bp: this.pageId, backLog: actionType.BA_MINE_CREDIT_BACK})}
                     >
-                        <View style={{flexDirection: 'column'}}>
-                            <Text style={{marginTop: 2}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
+                        <View style={{flexDirection: 'column', flex: 1}}>
+                            <View style={{flexDirection: 'row', height: 22}}>
+                                <Text style={{marginRight: 6, lineHeight: 22}}>连续签到：{userProfile.get('sign_in_days')}天</Text>
+                                {userProfile.get('is_signed_in') == "0" ?<Image source={require('../images/red_dot.png')} style={{width: 8, height: 8}} />:null}
+                            </View>
                             <Text style={styles.signInPrompt}>再签到{userProfile.get('go_on_sign_in_day')}天
                                 领签到礼包</Text>
                         </View>
                         {
-                            userProfile.get('is_signed_in') == "0" ?
+                            !appUserConfig.get('isSignIn') || userProfile.get('is_signed_in') == "0" ?
                                 <TouchableWithoutFeedback
-                                    onPress={() => {ActionUtil.setActionWithExtend(actionType.BA_MINE_SIGN_INPUT, {'signDays': (Number(userProfile.get('sign_in_days')) + 1 ) + ""});actions.fetchSignInInfo()}}
+                                    onPress={() => {
+                                        ActionUtil.setActionWithExtend(actionType.BA_MINE_SIGN_INPUT, {'signDays': (Number(userProfile.get('sign_in_days')) + 1 ) + ""});
+                                        actions.fetchSignInInfo();
+                                        }}
                                 >
                                     <View style={styles.signInWarp}><Text style={styles.signInBtn}>签到</Text></View>
                                 </TouchableWithoutFeedback>
-                                : null
+                                :
+                                <Text style={styles.signInPrompt}>今日已签到</Text>
                         }
                     </LinkSection>
 
@@ -207,6 +217,15 @@ export default class User extends Component {
         );
     }
 
+    componentDidMount() {
+        let {userProfile, actions} = this.props;
+        if(!userProfile.get('uid')) {
+            InteractionManager.runAfterInteractions(() => {
+                actions.fetchUserProfile();
+            });
+        }
+    }
+
     navigatorPush = (value) => {
         let {actionLog, ...ops} = value;
         ActionUtil.setAction(actionLog);
@@ -216,6 +235,17 @@ export default class User extends Component {
             hideNavBar: false,
             ...ops
         })
+    }
+
+    closeWelfareModal = (exp) => {
+        let {actions} = this.props;
+        ActionUtil.setAction(actionType.BA_MINE_SIGN_DELETE);
+        actions.signInVisibleChanged(false);
+        actions.signInBtnVisibleChanged("1");
+        Toast.show('签到成功得' + exp + '个经验', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.CENTER
+        });
     }
 }
 

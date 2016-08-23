@@ -13,7 +13,6 @@ export default class ContactItem extends Component {
     render() {
         let {item, current} = this.props;
         let statusStr = ['未反馈', '反馈在卖', '反馈虚假', '联系不上', '反馈虚假', '确认不卖', '确认已卖', '按错了'];
-
         let checkStatus = item.get('check_status'),
             replyStatus = item.get('reply_status');
 

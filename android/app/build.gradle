@@ -97,8 +97,8 @@ android {
         applicationId "com.xinyi.fy360"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 36
-        versionName "1.6.3"
+        versionCode 37
+        versionName "2.0.0"
         // dex突破65535的限制
         multiDexEnabled true
         ndk {
@@ -174,7 +174,7 @@ android {
 
     productFlavors {
         dev {
-            buildConfigField "String", "API_HOST", "\"http://360.master.stage.angejia.com/service/\""
+            buildConfigField "String", "API_HOST", "\"http://360.master.dev.angejia.com/service/\""
         }
 
         //渠道
@@ -229,6 +229,12 @@ android {
             dirs 'libs'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
 }
 
 dependencies {
@@ -239,7 +245,7 @@ dependencies {
     compile files('libs/alipaySdk-20160427.jar')
 
     // GeTui
-    compile files('libs/GetuiSDK2.8.1.0.jar')
+    compile files('libs/GetuiSDK2.9.0.0.jar')
     compile files('libs/GetuiExt-2.0.3.jar')
     compile 'com.android.support:support-v4'
 

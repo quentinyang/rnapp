@@ -10,7 +10,8 @@ let initialState = {
         showUpdateModal: false,
         showRecharge: true,
         isCidLogin: false,
-        isEnforceUpdate: false
+        isEnforceUpdate: false,
+        isNewModal: null
     },
     auth: {
         visible: false,
@@ -27,6 +28,19 @@ let initialState = {
     inputSearchHistory: [],
 
     net: 'yes',  //yes有网，no无网
+
+    msgNotice: {
+        visible: false,
+        msg: ''
+    },
+
+    levelNotice: {  //会员等级推送
+        visible: false,
+        data: {
+            level: '',
+            exp: ''
+        }
+    }
 };
 
 function appData(state = Immutable.fromJS(initialState), action) {
@@ -117,6 +131,19 @@ function appData(state = Immutable.fromJS(initialState), action) {
             break;
         case types.APP_NETWORK_CHANGED:
             return state.set('net', action.net);
+            break;
+        case types.MESSAGE_NOTICE_GETED:
+            return state.set('msgNotice', Immutable.fromJS(action.message));
+            break;
+        case types.FORCE_UPDATE_GETED:
+            return state.setIn(['config', 'showUpdateModal'], Immutable.fromJS(true)).setIn(['config', 'isEnforceUpdate'], Immutable.fromJS(true));
+            break;
+        case types.LEVEL_PUSHED:
+            return state.setIn(['levelNotice', 'visible'], Immutable.fromJS(true)).setIn(['levelNotice', 'data'], Immutable.fromJS(action.data));
+            break;
+        case types.NEW_LEVEL_MODAL_CHANGED:
+            return state.setIn(['levelNotice', 'visible'], Immutable.fromJS(action.visible));
+            break;
         default:
             return state;
     }
@@ -137,7 +164,7 @@ function clickStatus(state = Immutable.fromJS(initialClickStatus), action) {
 }
 
 let initialConfig = {
-    showRecharge: true,
+    showRecharge: true
 };
 
 function appConfig(state = Immutable.fromJS(initialConfig), action) {
@@ -150,8 +177,26 @@ function appConfig(state = Immutable.fromJS(initialConfig), action) {
     }
 }
 
+let initialUserConfig = {
+    isSignIn: true
+};
+
+function appUserConfig(state = Immutable.fromJS(initialUserConfig), action) {
+    switch(action.type) {
+        case types.APP_USER_CONFIG:
+            return Immutable.fromJS(action.appUserConfig);
+            break;
+        case types.APP_SIGNIN_CHANGED:
+            return state.set('isSignIn', action.signIn);
+            break;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     appData,
     appConfig,
+    appUserConfig,
     clickStatus
 });

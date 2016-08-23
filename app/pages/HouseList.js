@@ -43,7 +43,7 @@ export default class HouseList extends Component {
         let houseList = houseData.get('properties');
         let pager = houseData.get('pager');
         let tabType = uiData.get('tabType');
-        let onlyNew = uiData.get('onlyNew');
+        let onlyVerify = uiData.get('onlyVerify');
         let areaName = uiData.get('areaName');
         let bedroomsName = uiData.get('bedroomsName');
         let priceName = uiData.get('priceName');
@@ -62,12 +62,12 @@ export default class HouseList extends Component {
                 />
                 <Filter
                     tabType={tabType}
-                    onlyNew={onlyNew}
+                    onlyVerify={onlyVerify}
                     areaName={areaName}
                     priceName={priceName}
                     bedroomsName={bedroomsName}
                     filterItemPress={this._filterItemPress}
-                    onlyNewChanged={this._onlyNewChanged}
+                    onlyVerifyChanged={this._onlyVerifyChanged}
                 />
                 {
                     netWork == 'no' && !pager.get('total') ?
@@ -290,19 +290,19 @@ export default class HouseList extends Component {
         }
     };
 
-    // 过滤只看最新
-    _onlyNewChanged = (onlyNew) => {
+    // 过滤只看认证
+    _onlyVerifyChanged = (onlyVerify) => {
         ActionUtil.setAction(actionType.BA_ALLHOUSE_LIST_FILTERCERTIFY);
         let {actions, queryParamsData} = this.props;
         let queryParamsDataJs = queryParamsData.toJS();
-        queryParamsDataJs.only_new = onlyNew;
+        queryParamsDataJs.only_verify = onlyVerify;
 
         actions.fetchHouseList({
             page: 1,
             ...queryParamsDataJs
         }, this.showResult);
         this.scrollView && this.scrollView.scrollTo({y:0});
-        actions.onlyNewChanged(onlyNew)
+        actions.onlyVerifyChanged(onlyVerify)
     };
 
     // 过滤区域板块

@@ -5,6 +5,7 @@ let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
 import {profileService, scoreListService, expRuleService, userInputListService, getSignInInfo} from '../service/userService';
 import {makeActionCreator, serviceAction} from './base';
+import {appSignInChanged} from './app';
 
 export const userProfileFetched = makeActionCreator(types.USER_PROFILE, 'profile');
 export const scoreFetched = makeActionCreator(types.SCORE_LIST, 'scores');
@@ -20,7 +21,6 @@ export const userInputHouseCleared = makeActionCreator(types.USER_INPUT_HOUSE_CL
 export const signInFetched = makeActionCreator(types.SIGN_IN_FETCHED, 'info');
 export const signInVisibleChanged = makeActionCreator(types.SIGN_IN_VISIBLE_CHANGED, 'visible');
 export const signInBtnVisibleChanged = makeActionCreator(types.SIGN_IN_BUTTON_VISIBLE_CHANGED, 'visible');
-export const signInDaysChanged = makeActionCreator(types.SIGN_IN_DAYS_CHANGED, 'days', 'count', 'goOnDays');
 
 export function fetchUserProfile(params) {
     return dispatch => {
@@ -98,8 +98,9 @@ export function fetchSignInInfo() {
                 }
 
                 dispatch(signInFetched(oData));
-                dispatch(signInDaysChanged(oData.sign_in_days || '', count || 0, oData.go_on_sign_in_day || ''));
                 dispatch(signInVisibleChanged(true));
+                dispatch(appSignInChanged(true));
+                dispatch(fetchUserProfile());
             },
             error: function () {
             }

@@ -17,6 +17,10 @@ export function setConfigService() {
     return ajax.get(urls().app.setConfig);
 }
 
+export function setUserConfigService() {
+    return ajax.get(urls().app.setUserConfig);
+}
+
 export function setLoginDaysService() {
     return ajax.put(urls().app.setLoginDay);
 }

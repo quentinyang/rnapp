@@ -26,7 +26,6 @@ import FormContainer from '../components/FormContainer';
 import * as common from '../constants/Common';
 let ActionUtil = require( '../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
-import {routes} from '../config/route'
 import  {setLoginDays} from '../containers/app';
 
 class Login extends Component {
@@ -239,6 +238,7 @@ class Login extends Component {
                 actionsApp.appLoadingChanged(false);
                 gtoken = oData.token;
                 guid = oData.user_id;
+                actionsApp.setAppUserConfig();
                 if(oData.is_enter_attention_page) {
                     navigator.resetTo({
                         component: TabViewContainer,

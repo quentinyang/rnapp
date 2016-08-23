@@ -18,7 +18,10 @@ class HouseInputSuccessContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    return {}
+    let {appData} = state.app;
+    return {
+        appConfig: appData.get('config')
+    }
 }
 
 function mapDispatchToProps(dispatch) {

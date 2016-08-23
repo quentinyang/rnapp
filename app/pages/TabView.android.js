@@ -67,6 +67,7 @@ export default class TabView extends Component {
                         tabIndex={this.state.tabIndex}
                         actionsUser={this.props.actionsUser}
                         actionsHome={this.props.actionsHome}
+                        appUserConfig={this.props.appUserConfig}
                     />
                 }
                 onWillFocus={this._onWillFocus}
@@ -86,7 +87,7 @@ class TabBar extends Component {
     }
 
     render() {
-        let {tabIndex, navigator, actionsUser, actionsHome} = this.props;
+        let {tabIndex, navigator, actionsUser, actionsHome, appUserConfig} = this.props;
         return (
             <View style={styles.tabbar}>
             {
@@ -117,6 +118,12 @@ class TabBar extends Component {
                                         source={{uri: tabIndex == tabItem.key ? tabItem.selectedIcon : tabItem.icon}}
                                         style={{width: tabItem.width, height: tabItem.height,  marginBottom: 3}}
                                     />
+                                    {tabItem.key == 2 && !appUserConfig.get('isSignIn') ?
+                                    <Image
+                                        source={require('../images/red_dot.png')}
+                                        style={styles.redBadge}
+                                    />
+                                    :null}
                                     <Text style={[styles.tabText, tabTextStyle]}>{tabItem.title}</Text>
                                 </View>
                             </TouchableOpacity>
@@ -185,6 +192,13 @@ const styles = StyleSheet.create({
     },
     tabItemImage: {
 
+    },
+    redBadge: {
+        position:'absolute',
+        top: 2,
+        right: -4,
+        width: 8,
+        height: 8
     }
 });
 
