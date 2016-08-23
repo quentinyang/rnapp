@@ -60,10 +60,12 @@ export default class Detail extends Component {
                     <VerifyBtn
                         hideRecord={info.get('record_url') && info.get('record_url').size == 0}
                         phone={phone}
+                        point={point}
                         playRecord={this._playRecord}
                         getSellerPhone={this._clickGetSellerPhoneBtn.bind(this, status, phone)}
                     /> :
                     <UnVerifyBtn
+                        point={point}
                         contactSeller={this._contactSeller}
                     />
                 }
@@ -365,7 +367,7 @@ class VerifyBtn extends Component {
     }
 
     render() {
-        let {phone, playRecord, getSellerPhone, hideRecord} = this.props;
+        let {phone, point, playRecord, getSellerPhone, hideRecord} = this.props;
         return (
             <View style={[styles.contactWrap, styles.row, styles.center]}>
             {
@@ -376,7 +378,7 @@ class VerifyBtn extends Component {
                     onPress={playRecord}
                 >
                     <View style={[styles.justifyContent, styles.center]}>
-                        <Text style={[styles.whiteColor, styles.voiceText]}>听认证录音</Text>
+                        <Text style={[styles.whiteColor, styles.voiceText]}>免费录音</Text>
                     </View>
                 </TouchableHighlight>
             }
@@ -402,7 +404,7 @@ class VerifyBtn extends Component {
                                 source={require("../images/phone.png")}
                             />
                             <Text style={styles.contactText}>
-                                联系房东
+                                {point}积分联系房东
                             </Text>
                         </View>
                     }
@@ -430,7 +432,7 @@ class UnVerifyBtn extends Component {
                             style={[styles.phoneIcon, styles.mPhoneIcon]}
                             source={require("../images/phone.png")}
                         />
-                        <Text style={styles.contactText}>联系房东</Text>
+                        <Text style={styles.contactText}>{this.props.point}积分联系房东</Text>
                     </View>
                 </TouchableHighlight>
             </View>
@@ -468,7 +470,7 @@ class GuideModal extends Component {
                         </View>
 
                         <View style={[styles.whiteBorder, styles.contactButton, styles.voiceBtn, styles.center]}>
-                            <Text style={styles.whiteColor}>免费听录音</Text>
+                            <Text style={styles.whiteColor}>免费录音</Text>
                         </View>
                     </View>
                 </View>
@@ -1509,7 +1511,7 @@ var styles = StyleSheet.create({
         marginTop: 20
     },
     voiceBtn: {
-        width: 106,
+        width: 90,
         marginRight: 9
     },
     voiceText: {
@@ -1517,7 +1519,7 @@ var styles = StyleSheet.create({
     },
     sellerPhone: {
         fontSize: 12,
-        marginLeft: 8
+        marginLeft: 0
     },
     phoneVal: {
         fontSize: 21,
