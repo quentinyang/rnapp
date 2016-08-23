@@ -45,7 +45,7 @@ export default class Detail extends Component {
         let cost = this.couponObj ? this.couponObj.get('cost') : info.get('unlock_phone_cost');        
         let verfify = null;
 
-        if((route.item.get('is_verify') && route.item.get('is_verify') == "1") || phone) {
+        if(phone) {
             verfify = true;
         } else if(info.get('record_url')) {
             verfify = info.get('record_url').size ? true : false;
@@ -57,7 +57,7 @@ export default class Detail extends Component {
                     verfify == null ? null :
                     verfify ?
                     <VerifyBtn
-                        hideRecord={status && info.get('record_url') && info.get('record_url').size == 0}
+                        hideRecord={info.get('record_url') && info.get('record_url').size == 0}
                         phone={phone}
                         playRecord={this._playRecord}
                         getSellerPhone={this._clickGetSellerPhoneBtn.bind(this, status, phone)}
