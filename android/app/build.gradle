@@ -90,6 +90,7 @@ android {
     buildToolsVersion "24.0.1"
 
     def debugChannels = ['dev', '']
+    def branch = "master.stage"
     def myFile = file("customSetting.properties")
     Properties propFile = new Properties()
     propFile.load(new FileInputStream(myFile))
@@ -180,7 +181,11 @@ android {
     productFlavors {
         //start_replace_flag
         dev {
+<<<<<<< d244678b16038468b7bdc14a5643d18bc0d037e3
             buildConfigField "String", "API_HOST", "\"http://360.master.test.angejia.com/service/\""
+=======
+            buildConfigField "String", "API_HOST", "\"http://360." + branch + ".angejia.com/service/\""
+>>>>>>> android config
         }
 
         //渠道
@@ -197,6 +202,7 @@ android {
 //        VIVO {}
 //        WANDOUJIA {}
 //        XIAOMI {}
+
     }
 
     productFlavors.all { flavor ->

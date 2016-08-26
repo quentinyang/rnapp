@@ -1,2 +1,11 @@
-AppStore {}
-QQ {}
+AppStore {}\
+QQ {}\
+A360 {}\
+BAIDU {}\
+HUAWEI {}\
+LIANXIANG {}\
+MEIZU {}\
+OPPO {}\
+VIVO {}\
+WANDOUJIA {}\
+XIAOMI {}
