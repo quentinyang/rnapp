@@ -956,7 +956,7 @@
 					"$(SRCROOT)/../GtSdkLib",
 					"$(PROJECT_DIR)/UMAnalytics_IOS_Sdk_3.6.6",
 				);
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xinyi.fy360;
 				PRODUCT_NAME = fy360;
