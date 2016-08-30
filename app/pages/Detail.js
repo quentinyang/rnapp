@@ -1016,6 +1016,14 @@ class BaseInfo extends Component {
             doorNum = (houseInfo.get('floor') || baseInfo.get('floor')) + '层';
         }
 
+        let curPoint = houseInfo.get("cur_point"), point = houseInfo.get("point");
+        if(baseInfo.get("cur_point") && houseInfo.get("cur_point") != baseInfo.get("cur_point")) {
+            curPoint = baseInfo.get("cur_point");
+        }
+        if(baseInfo.get("point") && houseInfo.get("point") != baseInfo.get("point")) {
+            point = baseInfo.get("point");
+        }
+
         return (
             <View>
                 <View style={[styles.center, styles.justifyContent, styles.nameBox]}>
@@ -1073,9 +1081,9 @@ class BaseInfo extends Component {
                                 style={styles.moneyIcon}
                                 source={require('../images/money.png')}
                             />
-                            <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{houseInfo.get("cur_point") || baseInfo.get("cur_point")}</Text>积分</Text>
+                            <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{curPoint}</Text>积分</Text>
                         </View>
-                        <Text style={[styles.pointSmallTip, styles.grayColor]}>原价：<Text style={[styles.pointSmall, styles.grayColor]}>{houseInfo.get("point") || baseInfo.get("point")}</Text>积分</Text>
+                        <Text style={[styles.pointSmallTip, styles.grayColor]}>原价：<Text style={[styles.pointSmall, styles.grayColor]}>{point}</Text>积分</Text>
                     </View>
                     :
                     <View style={[styles.row, styles.center, styles.lightGrayBg, styles.priceBox]}>
@@ -1083,7 +1091,7 @@ class BaseInfo extends Component {
                             style={styles.moneyIcon}
                             source={require('../images/money.png')}
                         />
-                        <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{houseInfo.get("point") || baseInfo.get("point")}</Text>积分</Text>
+                        <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{point}</Text>积分</Text>
                     </View>
                 }
             </View>
