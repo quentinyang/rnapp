@@ -1205,11 +1205,15 @@ var styles = StyleSheet.create({
         borderBottomColor: '#d9d9d9',
     },
     name: {
+        height: 30,
+        lineHeight: 30,
         fontWeight: '500',
         fontSize: 22,
-        marginBottom: 10
+        marginBottom: 5
     },
     subName: {
+        height: 26,
+        lineHeight: 26,
         fontWeight: '500',
         fontSize: 19
     },
