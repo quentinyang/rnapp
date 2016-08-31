@@ -11,8 +11,11 @@
 
 #import "AppDelegate.h"
 
+#import <tingyunApp/NBSAppAgent.h>
+
 int main(int argc, char * argv[]) {
   @autoreleasepool {
+    [NBSAppAgent startWithAppID:@"c89692155d5c4737948e4f8ca7ee0227"];
     return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
   }
 }
