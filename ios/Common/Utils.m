@@ -60,7 +60,7 @@ RCT_EXPORT_METHOD(getEnv:(RCTResponseSenderBlock) callback) {
     
   } else if([version isEqualToString:@"master"]) {
     return @"http://360.master.dev.angejia.com/service/";
-    
+
   } else {
     return [NSString stringWithFormat: @"http://360.%@.angejia.com/service/", version];
   }
