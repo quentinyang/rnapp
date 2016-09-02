@@ -44,7 +44,7 @@ public class MainActivity extends ReactActivity {
         PushManager.getInstance().initialize(this.getApplicationContext());
         //}
 
-        NBSAppAgent.setLicenseKey("ddb2cc685a8946c5bb76d3598654a51c").withLocationServiceEnabled(true).start(this.getApplicationContext());
+        NBSAppAgent.setLicenseKey(BuildConfig.TY_APPKEY_VALUE).withLocationServiceEnabled(true).start(this.getApplicationContext());
     }
 
     //检查hash

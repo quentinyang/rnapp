@@ -108,6 +108,7 @@ android {
 
         manifestPlaceholders = [UMENG_CHANNEL_VALUE   : propFile.getProperty('UMENG_CHANNEL_VALUE_DEBUG'),
                                 UMENG_APPKEY_VALUE    : propFile.getProperty('UMENG_APPKEY_VALUE_DEBUG'),
+                                TY_APPKEY_VALUE     : propFile.getProperty('TY_APPKEY_VALUE_DEBUG'),
                                 GETUIPUSH_APPID_VALUE   : propFile.getProperty('GETUIPUSH_APPID_VALUE_DEBUG'),
                                 GETUIPUSH_APPKEY_VALUE   : propFile.getProperty('GETUIPUSH_APPKEY_VALUE_DEBUG'),
                                 GETUIPUSH_APPSECRET_VALUE   : propFile.getProperty('GETUIPUSH_APPSECRET_VALUE_DEBUG'),
@@ -115,6 +116,7 @@ android {
                                 CODEPUSH_KEY_VALUE   : propFile.getProperty('CODEPUSH_KEY_VALUE_DEBUG')]
 
         buildConfigField "String", "CODE_PUSH_KEY", "\"" + manifestPlaceholders.CODEPUSH_KEY_VALUE + "\""
+        buildConfigField "String", "TY_APPKEY_VALUE", "\"" + manifestPlaceholders.TY_APPKEY_VALUE + "\""
     }
     signingConfigs {
         debug {
@@ -154,6 +156,8 @@ android {
         }
         release {
             minifyEnabled enableProguardInReleaseBuilds
+            //启用代码混淆
+            minifyEnabled false
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
 
@@ -196,6 +200,7 @@ android {
         if (!debugChannels.contains(name)) {
             flavor.manifestPlaceholders = [ UMENG_CHANNEL_VALUE     : name,
                                             UMENG_APPKEY_VALUE      : propFile.getProperty('UMENG_APPKEY_VALUE_RELEASE'),
+                                            TY_APPKEY_VALUE     : propFile.getProperty('TY_APPKEY_VALUE_RELEASE'),
                                             GETUIPUSH_APPID_VALUE    : propFile.getProperty('GETUIPUSH_APPID_VALUE_RELEASE'),
                                             GETUIPUSH_APPKEY_VALUE    : propFile.getProperty('GETUIPUSH_APPKEY_VALUE_RELEASE'),
                                             GETUIPUSH_APPSECRET_VALUE    : propFile.getProperty('GETUIPUSH_APPSECRET_VALUE_RELEASE'),
@@ -204,6 +209,7 @@ android {
 
             buildConfigField "String", "CODE_PUSH_KEY", "\"" + flavor.manifestPlaceholders.CODEPUSH_KEY_VALUE + "\""
             buildConfigField "String", "API_HOST", "\"https://api.fangyuan360.cn/service/\""
+            buildConfigField "String", "TY_APPKEY_VALUE", "\"" + flavor.manifestPlaceholders.TY_APPKEY_VALUE + "\""
         }
     }
 
