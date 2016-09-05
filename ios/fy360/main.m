@@ -13,9 +13,15 @@
 
 #import <tingyunApp/NBSAppAgent.h>
 
+#ifdef DEBUG
+NSString * const TY_KEY = @"c89692155d5c4737948e4f8ca7ee0227";
+#else
+NSString * const TY_KEY = @"c89692155d5c4737948e4f8ca7ee0228";
+#endif
+
 int main(int argc, char * argv[]) {
   @autoreleasepool {
-    [NBSAppAgent startWithAppID:@"c89692155d5c4737948e4f8ca7ee0227"];
+    [NBSAppAgent startWithAppID:TY_KEY];
     return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
   }
 }
