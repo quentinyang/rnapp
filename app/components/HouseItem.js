@@ -12,7 +12,7 @@ export default class HouseItem extends Component {
         let {item, dateKey, operator} = this.props;
         let date = formatDate(dateKey ? item.get(dateKey) : item.get('updated_at'));
         let doorNum = '';
-        if(item.get('is_verify') == "1" || item.get('phone_lock_status') == "1") {
+        if(item.get('phone_lock_status') == "1") {
             doorNum = item.get('door_num');
             doorNum = doorNum ? doorNum + '室' : '';
         } else if(item.get('floor')) {
