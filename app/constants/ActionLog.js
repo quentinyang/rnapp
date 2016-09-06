@@ -50,7 +50,8 @@ export const BA_DETAIL_TAPEFREE_DELETE = "3-100000-48"
 export const BA_DETAIL_TAPEFREE_SURE = "3-100000-49"
 export const BA_DETAIL_TAPEFREE_CLOSE = "3-100000-50"
 export const BA_DETAIL_PHONEGET_PAYPOINTS = "3-100000-51"
-
+export const BA_DETAIL_TAPE = "3-100001-01"
+export const BA_DETAIL_PHONE = "3-100001-02"
 
 //设置我的关注 - 1 (跳过)
 export const BA_LOGFOCUS_AREA = "101-110000"

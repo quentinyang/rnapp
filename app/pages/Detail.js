@@ -1008,12 +1008,20 @@ class BaseInfo extends Component {
         let houseInfo = route.item;
         let isVertify = houseInfo.get('is_verify') && houseInfo.get('is_verify') == "1"  || baseInfo.get('is_verify') && baseInfo.get('is_verify') == "1";
         let doorNum = '';
-        if(houseInfo.get('is_verify') == "1" || houseInfo.get('phone_lock_status') == "1" ||
-            baseInfo.get('is_verify') == "1" || baseInfo.get('phone_lock_status') == "1" || hasBuyed) {
+        if(houseInfo.get('phone_lock_status') == "1" ||
+            baseInfo.get('phone_lock_status') == "1" || hasBuyed) {
             doorNum = (houseInfo.get('door_num') || baseInfo.get('door_num'));
             doorNum = doorNum ? doorNum + '室' : '';
         } else if(houseInfo.get('floor') || baseInfo.get('floor')) {
             doorNum = (houseInfo.get('floor') || baseInfo.get('floor')) + '层';
+        }
+
+        let curPoint = houseInfo.get("cur_point"), point = houseInfo.get("point");
+        if(baseInfo.get("cur_point") && houseInfo.get("cur_point") != baseInfo.get("cur_point")) {
+            curPoint = baseInfo.get("cur_point");
+        }
+        if(baseInfo.get("point") && houseInfo.get("point") != baseInfo.get("point")) {
+            point = baseInfo.get("point");
         }
 
         return (
@@ -1073,9 +1081,9 @@ class BaseInfo extends Component {
                                 style={styles.moneyIcon}
                                 source={require('../images/money.png')}
                             />
-                            <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{houseInfo.get("cur_point") || baseInfo.get("cur_point")}</Text>积分</Text>
+                            <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{curPoint}</Text>积分</Text>
                         </View>
-                        <Text style={[styles.pointSmallTip, styles.grayColor]}>原价：<Text style={[styles.pointSmall, styles.grayColor]}>{houseInfo.get("point") || baseInfo.get("point")}</Text>积分</Text>
+                        <Text style={[styles.pointSmallTip, styles.grayColor]}>原价：<Text style={[styles.pointSmall, styles.grayColor]}>{point}</Text>积分</Text>
                     </View>
                     :
                     <View style={[styles.row, styles.center, styles.lightGrayBg, styles.priceBox]}>
@@ -1083,7 +1091,7 @@ class BaseInfo extends Component {
                             style={styles.moneyIcon}
                             source={require('../images/money.png')}
                         />
-                        <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{houseInfo.get("point") || baseInfo.get("point")}</Text>积分</Text>
+                        <Text style={[styles.greenColor, styles.userName]}><Text style={[styles.greenColor, styles.point]}>{point}</Text>积分</Text>
                     </View>
                 }
             </View>
@@ -1103,7 +1111,7 @@ class ContactList extends Component {
             return (
                 <View key={index} style={[styles.row, styles.contactItem, styles.center]}>
                     <Text style={[styles.grayColor, styles.date]}>{item.get('time')}</Text><Text
-                    style={[styles.baseColor, styles.itemSize]}>{item.get('phone')}查看房东电话</Text>
+                    style={[styles.baseColor, styles.itemSize]}>{item.get('phone')}联系房东</Text>
                 </View>
             );
         });
@@ -1205,11 +1213,15 @@ var styles = StyleSheet.create({
         borderBottomColor: '#d9d9d9',
     },
     name: {
+        height: 30,
+        lineHeight: 30,
         fontWeight: '500',
         fontSize: 22,
-        marginBottom: 10
+        marginBottom: 5
     },
     subName: {
+        height: 26,
+        lineHeight: 26,
         fontWeight: '500',
         fontSize: 19
     },

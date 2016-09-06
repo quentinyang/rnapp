@@ -64,6 +64,12 @@ export function fetchBaseInfo(data) {
                     dispatch(updatePayedStatus(true));
                 }
 
+                if(!oData.record_url.length) {
+                    ActionUtil.setAction(actionType.BA_DETAIL_PHONE);
+                } else {
+                    ActionUtil.setActionWithExtend(actionType.BA_DETAIL_TAPE, {"is_verify": oData.is_verify || "0"})
+                }
+
                 let key = common.USER_ENTER_STATUS + guid;
                 AsyncStorageComponent.get(key)
                 .then((value) => {
