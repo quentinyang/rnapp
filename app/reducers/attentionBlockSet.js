@@ -41,6 +41,25 @@ function attentionBlockSet(state = Immutable.fromJS(initialState), action) {
     }
 }
 
+let initialCity = {
+    cityList: [],
+    curCityId: ""
+}
+
+function cityInfo(state = Immutable.fromJS(initialCity), action) {
+    switch(action.type) {
+        case types.CITY_LIST_FETCHED:
+            return state.set('cityList', Immutable.fromJS(action.list)).set('curCityId', Immutable.fromJS(action.list[0].id));
+            break;
+        case types.CUR_CITY_CHANGED:
+            return state.set('curCityId', Immutable.fromJS(action.id));
+            break;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
-    attentionBlockSet
+    attentionBlockSet,
+    cityInfo
 });

@@ -25,6 +25,12 @@ export function saveAttentionCommunitySetService(params) {
     })
 };
 
-export function enterAttentionBlockSetService() {
-    return ajax.put(urls().attention.enter)
+export function cityListService() {
+    return ajax.get(urls().city.list)
+};
+
+export function setCityService(params) {
+    return ajax.post(urls().city.set, {
+        body: params
+    })
 };

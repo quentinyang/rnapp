@@ -55,6 +55,10 @@ let urls = {
         baseDuplicate: HOST + 'house/duplicate',
         allowToInput: HOST + 'house/can/input'
     },
+    city: {
+        list: HOST + 'get/cities',
+        set: HOST + 'city/set'
+    },
     blocks: {
         attention: HOST + 'get-attention-block',
         saveAttention: HOST + 'set-attention-block'

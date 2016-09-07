@@ -24,13 +24,9 @@ export default class AttentionBlockSet extends Component {
 
         return (
             <View style={[styles.flex, styles.pageMarginBottom]}>
-                <View style={[styles.right, styles.marginTop]}>
-                    <TouchableWithoutFeedback onPress={this._skip}>
-                        <View><Text style={[styles.topSubHeader, styles.skip]}>跳过</Text></View>
-                    </TouchableWithoutFeedback>
-                </View>
                 <View style={styles.topMsg}>
                     <Text style={styles.topHeader}>设置关注的区域</Text>
+                    <Text style={styles.topSubHeader}>关注区域的新房源第一时间收到</Text>
                 </View>
                 {
                     districtBlockList && districtBlockList.toJS().length > 0 ?
@@ -59,22 +55,8 @@ export default class AttentionBlockSet extends Component {
 
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionBlockSet();
-            actions.enterAttentionBlockSet();
         });
     }
-
-    _skip = () => {
-        ActionUtil.setAction(actionType.BA_LOGFOCUS_AREA_SKIP);
-        let {navigator, actions} = this.props;
-        actions.attentionBlockSetCleared();
-        navigator.resetTo({
-            component: TabViewContainer,
-            name: 'home',
-            title: '我的主页',
-            hideNavBar: true,
-            bp: this.pageId
-        });
-    };
 
     _conformBlockSet = () => {
         let {attentionBlockSet, navigator, actionsApp} = this.props;
@@ -126,8 +108,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     topMsg: {
-        height: 30,
-        marginBottom: 10,
+        marginTop: 12,
+        marginBottom: 20,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -143,10 +125,6 @@ const styles = StyleSheet.create({
     },
     marginTop: {
         marginTop: 30, // TODO
-    },
-    skip: {
-        color: '#04c1ae',
-        paddingRight: 15
     },
     conformWrap: {
         position: 'absolute',

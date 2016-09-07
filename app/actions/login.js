@@ -12,3 +12,4 @@ export const numChanged = makeActionCreator(types.NUM_CHANGED, 'num');
 export const errMsg = makeActionCreator(types.ERR_MSG, 'err_msg');
 
 export const loginCleared = makeActionCreator(types.LOGIN_CLEARED);
+export const userDataFetched = makeActionCreator(types.USER_DATA_FETCHED, 'data');

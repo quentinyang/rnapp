@@ -1111,7 +1111,7 @@ class ContactList extends Component {
             return (
                 <View key={index} style={[styles.row, styles.contactItem, styles.center]}>
                     <Text style={[styles.grayColor, styles.date]}>{item.get('time')}</Text><Text
-                    style={[styles.baseColor, styles.itemSize]}>{item.get('phone')}联系房东</Text>
+                    style={[styles.baseColor, styles.itemSize]}>{item.get('phone')}查看房源</Text>
                 </View>
             );
         });
