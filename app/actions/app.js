@@ -27,6 +27,7 @@ export const appLoadingChanged = makeActionCreator(types.APP_LOADING_CHANGED, 'v
 
 export const netWorkChanged = makeActionCreator(types.APP_NETWORK_CHANGED, 'net');  //网络状况改变
 export const msgNoticeGeted = makeActionCreator(types.MESSAGE_NOTICE_GETED, 'message');
+export const msgNoticeVisibleChanged = makeActionCreator(types.MESSAGE_NOTICE_VISIBLE_CHANGED, 'visible');
 export const forceUpdateGeted = makeActionCreator(types.FORCE_UPDATE_GETED);
 
 export const appSignInChanged = makeActionCreator(types.APP_SIGNIN_CHANGED, 'signIn');
@@ -93,8 +94,12 @@ export function setAppUserConfig() {  //获取登录后的配置
         serviceAction(dispatch)({
             service: setUserConfigService,
             success: function(oData) {
+                //oData.is_new = true;
                 dispatch(appUserConfig({
-                    isSignIn: Number(oData.is_signed_in) ? true : false
+                    isSignIn: Number(oData.is_signed_in) ? true : false,
+                    isNew: Number(oData.is_new) ? true : false,
+                    verifiedStatus: oData.verified_status || "0",
+                    city: oData.city || {}
                 }));
             },
             error: function(oData) {

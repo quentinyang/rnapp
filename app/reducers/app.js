@@ -28,12 +28,6 @@ let initialState = {
     inputSearchHistory: [],
 
     net: 'yes',  //yes有网，no无网
-
-    msgNotice: {
-        visible: false,
-        msg: ''
-    },
-
     levelNotice: {  //会员等级推送
         visible: false,
         data: {
@@ -132,9 +126,6 @@ function appData(state = Immutable.fromJS(initialState), action) {
         case types.APP_NETWORK_CHANGED:
             return state.set('net', action.net);
             break;
-        case types.MESSAGE_NOTICE_GETED:
-            return state.set('msgNotice', Immutable.fromJS(action.message));
-            break;
         case types.FORCE_UPDATE_GETED:
             return state.setIn(['config', 'showUpdateModal'], Immutable.fromJS(true)).setIn(['config', 'isEnforceUpdate'], Immutable.fromJS(true));
             break;
@@ -144,6 +135,22 @@ function appData(state = Immutable.fromJS(initialState), action) {
         case types.NEW_LEVEL_MODAL_CHANGED:
             return state.setIn(['levelNotice', 'visible'], Immutable.fromJS(action.visible));
             break;
+        default:
+            return state;
+    }
+}
+
+let initMessage = {
+    visible: false,
+    msg: ''
+}
+function messageNotice(state = Immutable.fromJS(initMessage), action) {
+    switch(action.type) {
+        case types.MESSAGE_NOTICE_GETED:
+            return Immutable.fromJS(action.message);
+            break;
+        case types.MESSAGE_NOTICE_VISIBLE_CHANGED:
+            return state.set('visible', Immutable.fromJS(action.visible));
         default:
             return state;
     }
@@ -178,7 +185,13 @@ function appConfig(state = Immutable.fromJS(initialConfig), action) {
 }
 
 let initialUserConfig = {
-    isSignIn: true
+    isSignIn: true,
+    isNew: true,
+    verifiedStatus: "0",
+    city: {
+        id: "",
+        "name": "上海"
+    }
 };
 
 function appUserConfig(state = Immutable.fromJS(initialUserConfig), action) {
@@ -196,6 +209,7 @@ function appUserConfig(state = Immutable.fromJS(initialUserConfig), action) {
 
 export default combineReducers({
     appData,
+    messageNotice,
     appConfig,
     appUserConfig,
     clickStatus

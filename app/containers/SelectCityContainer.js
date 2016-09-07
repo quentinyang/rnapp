@@ -4,7 +4,6 @@ import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/attentionBlockSet';
-import * as actionsApp from '../actions/app';
 import SelectCity from '../pages/SelectCity';
 
 class SelectCityContainer extends Component {
@@ -30,7 +29,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actionsApp: bindActionCreators(actionsApp, dispatch),
         actions: bindActionCreators(actions, dispatch)
     }
 }

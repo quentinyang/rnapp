@@ -29,6 +29,7 @@ import SettingContainer from '../containers/SettingContainer';
 import ScoreListContainer from '../containers/ScoreListContainer';
 import WelfareContainer from '../containers/WelfareContainer';
 import WelfareModal from '../components/WelfareModal';
+import MessageNoticeModal from '../components/MessageNoticeModal';
 import Toast from 'react-native-root-toast';
 import Immutable from 'immutable';
 let ActionUtil = require('../utils/ActionLog');
@@ -284,10 +285,28 @@ class UserAccount extends Component {
     }
 
     render() {
-        let {userProfile, withdrawData} = this.props;
+        let {userProfile, withdrawData, appUserConfig, messageNotice, navigator, actionsApp} = this.props;
 
         return (
             <View style={styles.accountSection}>
+                {
+                    appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0" ? 
+                    <MessageNoticeModal
+                        visible={messageNotice.get('visible')}
+                        message={messageNotice.get('msg')}
+                        btnText={"好的"}
+                        onSure={() => {
+                            // navigator.push({
+                            //     components: "",
+                            //     name: "",
+                            //     title: "",
+                            // });
+                        }}
+                        actionsApp={actionsApp}
+                    />
+                    :null
+                }
+
                 <View style={styles.row}>
                     <View style={[styles.accountIconBox, styles.center]}>
                         <Image
@@ -319,8 +338,14 @@ class UserAccount extends Component {
 
     goCharge() {
         ActionUtil.setAction(actionType.BA_MINE_RECHANGE);
-        let {navigator, appConfig} = this.props;
-        if (appConfig.get('showRecharge')) {
+        let {navigator, appConfig, appUserConfig, actionsApp} = this.props;
+
+        if(appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0") {
+            actionsApp.msgNoticeGeted({
+                visible: true,
+                msg: "充值请先进行身份认证"
+            });
+        } else if (appConfig.get('showRecharge')) {
             navigator.push({
                 component: RechargeContainer,
                 name: 'recharge',
@@ -335,9 +360,14 @@ class UserAccount extends Component {
 
     goWithdraw(value) {
         ActionUtil.setAction(actionType.BA_MINE_CASH);
-        let {navigator, actions} = this.props;
+        let {navigator, actions, appUserConfig, actionsApp} = this.props;
 
-        if (parseInt(value.score) < parseInt(value.min_price)) {
+        if(appUserConfig.get('verifiedStatus') != "2") {
+            actionsApp.msgNoticeGeted({
+                visible: true,
+                msg: "提现请先进行身份认证"
+            });
+        } else if (parseInt(value.score) < parseInt(value.min_price)) {
             Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);
         } else if (value.name && value.alipay_account && value.identity_card_number) {
             navigator.push({

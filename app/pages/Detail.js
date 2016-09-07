@@ -17,6 +17,7 @@ import * as actionType from '../constants/ActionLog';
 import TitleBar from '../components/TitleBar';
 import WelfareCard from '../components/WelfareCard';
 import deviceInfo from '../utils/DeviceInfo';
+import MessageNoticeModal from '../components/MessageNoticeModal';
 var AudioPlayer = require('react-native').NativeModules.RNAudioPlayer;
 var {RecyclerViewBackedScrollView} = require('react-native');
 
@@ -36,7 +37,7 @@ export default class Detail extends Component {
     }
 
     render() {
-        let {baseInfo, sameCommunityList, callInfo, actions, navigator, route} = this.props;
+        let {baseInfo, sameCommunityList, callInfo, appUserConfig, messageNotice, actions, actionsApp, navigator, route} = this.props;
         let houseList = sameCommunityList.get('properties');
         let info = baseInfo.get("baseInfo");
         let couponArr = baseInfo.get('couponArr');
@@ -68,6 +69,24 @@ export default class Detail extends Component {
                         point={point}
                         contactSeller={this._contactSeller}
                     />
+                }
+
+                {
+                    appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0" ? 
+                    <MessageNoticeModal
+                        visible={messageNotice.get('visible')}
+                        message={messageNotice.get('msg')}
+                        btnText={"好的"}
+                        onSure={() => {
+                            // navigator.push({
+                            //     components: "",
+                            //     name: "",
+                            //     title: "",
+                            // });
+                        }}
+                        actionsApp={actionsApp}
+                    />
+                    :null
                 }
 
                 <GuideModal
@@ -204,7 +223,18 @@ export default class Detail extends Component {
         AudioPlayer.stop();
     }
 
+    _userVerified() {
+        let {appUserConfig, actionsApp} = this.props;
+        if(appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0") {
+            actionsApp.msgNoticeGeted({
+                visible: true,
+                msg: "您需要进行身份认证\n才能联系房东哦~"
+            });
+        }
+    }
     _clickGetSellerPhoneBtn(status, phone) {
+        this._userVerified();
+
         let {actions, actionsNavigation, actionsHome, route, baseInfo} = this.props;
         let propertyId = route.item.get("property_id");
 
@@ -316,6 +346,8 @@ export default class Detail extends Component {
     };
 
     _playRecord = () => {
+        this._userVerified();
+
         let {baseInfo, actions, route} = this.props;
         let info = baseInfo.get('baseInfo');
         let record = info.get('record_url');
@@ -338,6 +370,8 @@ export default class Detail extends Component {
     }
 
     _contactSeller = () => {
+        this._userVerified();
+
         let {baseInfo, actions, callInfo} = this.props;
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
 

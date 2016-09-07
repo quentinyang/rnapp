@@ -19,6 +19,7 @@ let NotificationHandler = require('../utils/NotificationHandler');
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 import { setLoginDaysService } from '../service/configService';
 import Toast from 'react-native-root-toast';
+import MessageNoticeModal from '../components/MessageNoticeModal';
 
 let _navigator;
 global.gtoken = '';
@@ -125,13 +126,14 @@ class App extends Component {
 
     render() {
         let {hasSetRoute} = this.state;
-        let {appData, actionsApp} = this.props;
+        let {appData, messageNotice, actionsApp} = this.props;
         let isAndroid = (Platform.OS == "android");
         // (isAndroid && appData.get('config').get('isCidLogin'))
         return (
             <View style={styles.flex}>
                 <MessageNoticeModal
-                    message={appData.get('msgNotice')}
+                    visible={messageNotice.get('visible')}
+                    message={messageNotice.get('msg')}
                     actionsApp={actionsApp}
                 />
                 <LogoutModal
@@ -547,33 +549,6 @@ class LogoutModal extends Component {
     }
 }
 
-class MessageNoticeModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        let {message, actionsApp} = this.props;
-        return (
-            <Modal visible={message.get('visible')} transparent={true} onRequestClose={() => {}}>
-                <View style={styles.bgWrap}>
-                    <View style={styles.contentContainer}>
-                        <Text style={styles.textCenter}>{message.get('msg')}</Text>
-
-                        <TouchableHighlight
-                            style={[styles.alignItems, styles.logoutSure, styles.justifyContent]}
-                            onPress={() => actionsApp.msgNoticeGeted({'visible': false})}
-                            underlayColor='#04C1AE'
-                        >
-                            <View>
-                                <Text style={[styles.updateBtnRightText]}>确认</Text>
-                            </View>
-                        </TouchableHighlight>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
-}
 
 class LevelModal extends Component {
     constructor(props) {

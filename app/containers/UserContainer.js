@@ -4,6 +4,7 @@ import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from '../actions/user';
+import * as actionsApp from '../actions/app';
 import User from '../pages/User';
 
 class UserContainer extends Component {
@@ -19,20 +20,22 @@ class UserContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {appConfig, appUserConfig} = state.app;
+    const {appConfig, appUserConfig, messageNotice} = state.app;
     const {userProfile, userControlData, signInInfo} = state.user;
     return {
         userProfile,
         userControlData,
         signInInfo,
         appConfig,
-        appUserConfig
+        appUserConfig,
+        messageNotice
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(actions, dispatch)
+        actions: bindActionCreators(actions, dispatch),
+        actionsApp: bindActionCreators(actionsApp, dispatch)
     }
 }
 
