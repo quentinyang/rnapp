@@ -19,10 +19,11 @@ class AuthenticationContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {userInformation} = state.aut;
+    const {userInformation, autController} = state.aut;
 
     return {
-        userinfo: userInformation
+        userinfo: userInformation,
+        controller: autController
     }
 }
 
