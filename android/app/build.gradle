@@ -256,6 +256,9 @@ dependencies {
     compile files('libs/GetuiExt-2.0.3.jar')
     compile 'com.android.support:support-v4'
 
+    //upload image
+    compile project(':react-native-image-picker')
+
     // custom getui
     compile project(':getui')
     compile project(':deviceid')

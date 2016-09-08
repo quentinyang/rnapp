@@ -11,20 +11,41 @@ import {
     PixelRatio,
     Platform,
     StyleSheet,
+    TouchableHighlight,
     InteractionManager
 } from 'nuke';
 
 import WithLabel from '../components/LabelTextInput';
 import ErrorMsg from '../components/ErrorMsg';
 import Pickers from '../components/Pickers';
+import {upload} from '../components/ImageSelected';
 import TouchableSubmit from '../components/TouchableSubmit';
 let commonStyle = require('../styles/main');
 let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
 
+var ImagePicker = require('react-native-image-picker');
+
+var options = {
+    title: '选择图片',
+    cancelButtonTitle: '取消',
+    takePhotoButtonTitle: '拍照',
+    chooseFromLibraryButtonTitle: '从手机相册选择',
+
+    storageOptions: {
+        skipBackup: true,
+        path: 'images'
+    }
+};
+
 export default class Authentication extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            business_card: '',
+            id_card: ''
+        };
+
         this.district_block_list = [
             {
                 blocks: [
@@ -136,11 +157,15 @@ export default class Authentication extends Component {
                     <UploadCard
                         label='上传名片'
                         labelDesc='名片正面朝上'
+                        source={this.state.business_card}
                         otherStyle={styles.borderBottom}
+                        upCard={() => this.upCard('business_card')}
                     />
                     <UploadCard
                         label='上传身份证'
                         labelDesc='身份证正面朝上'
+                        source={this.state.id_card}
+                        upCard={() => this.upCard('id_card')}
                     />
                 </View>
                 <ErrorMsg
@@ -167,8 +192,36 @@ export default class Authentication extends Component {
         actions[action](value);
     }
 
-    handleSubmit() {
+    upCard(state) {
+        ImagePicker.showImagePicker(options, (response) => {
+          console.log('Response = ', response);
 
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          }
+          else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+          }
+          else {
+            let source = {};
+            const img = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+            // or a reference to the platform specific asset location
+            if (Platform.OS === 'ios') {
+              source = {uri: response.uri.replace('file://', '')};
+            } else {
+              source = {uri: response.uri};
+            }
+            let json = {};
+            json[state] = source;
+
+            this.setState(json);
+          }
+        });
+
+    }
+
+    handleSubmit() {
+        upload(response.uri);
     }
 
     confirmModal = (d) => {
@@ -192,12 +245,23 @@ class UploadCard extends Component {
                     <Text>{this.props.label}</Text>
                     <Text style={commonStyle.smallFt}>{this.props.labelDesc}</Text>
                 </View>
-                <View style={[commonStyle.center, styles.addBox]}>
+                <TouchableHighlight
+                    style={[commonStyle.center, styles.addBox]}
+                    underlayColor='#fff'
+                    onPress={this.props.upCard}
+                >
+                    {this.props.source ?
+                    <Image
+                        source={this.props.source}
+                        style={styles.showImg}
+                    />
+                    :
                     <Image
                         source={require('../images/add.png')}
                         style={styles.addImg}
                     />
-                </View>
+                    }
+                </TouchableHighlight>
             </View>
         );
     }
@@ -224,6 +288,10 @@ const styles = StyleSheet.create({
         borderWidth: 1/PixelRatio.get(),
         borderColor: '#d9d9d9',
         borderRadius: 2
+    },
+    showImg: {
+        width: 86,
+        height: 60
     },
     addImg: {
         width: 30,

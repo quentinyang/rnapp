@@ -91,7 +91,8 @@ let urls = {
     card: {
         welfare: HOST + 'my-welfare-cards',
         getNewWelfare: HOST + 'my-welfare-card/latest'
-    }
+    },
+    token: HOST.slice(0, -8) + 'api/storage-tokens'
 }
 
 gDebug && AsyncStorageComponent.multiGet([common.API_HOST, common.APP_VERSION])
