@@ -25,7 +25,6 @@ let urls = {
         sendCode: HOST + 'passport/login/sms',
         login: HOST + 'passport/login',
         profile: HOST + 'user/profile',
-        isFirst: HOST + 'point/notify',
         alipayStatus: HOST + 'user/binding/alipay/status',
         withdraw: HOST + 'withdrawals',
         scoreList: HOST + 'my/account/flow',

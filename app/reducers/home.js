@@ -102,12 +102,6 @@ let initialBaseInfo = {
     currentModal: '',
     modals: [],
 
-    scoreModal: {       //注册送福利卡
-        fetched: false,
-        visible: false,
-        welfareArr: []
-    },
-
     couponModal: {        //打开App送福利卡
         fetched: false,
         visible: false,
@@ -135,9 +129,6 @@ function baseInfo(state = Immutable.fromJS(initialBaseInfo), action) {
             return state.update('modals', (k) => {
                 return k.push(Immutable.fromJS(action.modal));
             });
-            break;
-        case types.SCORE_MODAL_STATUS:
-            return state.set('scoreModal', Immutable.fromJS(action.status));
             break;
 
         case types.COUPON_MODAL_STATUS:

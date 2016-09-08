@@ -35,6 +35,12 @@ export const appSignInChanged = makeActionCreator(types.APP_SIGNIN_CHANGED, 'sig
 export const levelPushed = makeActionCreator(types.LEVEL_PUSHED, 'data');
 export const levelModalChanged = makeActionCreator(types.NEW_LEVEL_MODAL_CHANGED, 'visible');
 
+export const verifiedNoticeSet = makeActionCreator(types.VERIFIED_NOTICE_SET, 'data');
+export const verifiedNoticeVisibleChanged = makeActionCreator(types.VERIFIED_NOTICE_VISIBLE_CHANGED, 'visible');
+
+export const verifiedResultSet = makeActionCreator(types.VERIFIED_RESULT_SET, 'data');
+export const verifiedResultVisibleChanged = makeActionCreator(types.VERIFIED_RESULT_VISIBLE_CHANGED, 'visible');
+
 export function clickBack(name) {
     return dispatch => {
         dispatch(clickBackPage(name));
@@ -99,7 +105,7 @@ export function setAppUserConfig() {  //获取登录后的配置
                     isSignIn: Number(oData.is_signed_in) ? true : false,
                     isNew: Number(oData.is_new) ? true : false,
                     verifiedStatus: oData.verified_status || "0",
-                    city: oData.city || {}
+                    city: oData.city || {"name": "上海"}
                 }));
             },
             error: function(oData) {

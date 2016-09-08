@@ -116,8 +116,8 @@ export default class Home extends Component {
         }
 
         let {baseInfo} = this.props;
-        if(baseInfo.get('scoreModal').get('fetched') && baseInfo.get('couponModal').get('fetched')) {
-            this._setCurrentModal(homeConst.SCORE);
+        if(baseInfo.get('couponModal').get('fetched')) {
+            this._setCurrentModal(homeConst.COUPON);
             this.hasGetModal = true;
         }
 
@@ -191,22 +191,13 @@ export default class Home extends Component {
     }
 
     render() {
-        let {houseData, baseInfo, appConfig, actions, navigator} = this.props;
+        let {houseData, baseInfo, appConfig, appUserConfig, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
         let registerMoalInfo = baseInfo.get('scoreModal');
         let couponModalInfo = baseInfo.get('couponModal');
 
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
-                <WelfareModal
-                    isVisible={baseInfo.get('currentModal') == homeConst.SCORE}
-                    title="注册成功"
-                    subTitle={registerMoalInfo.get('welfareArr').size}
-                    welfareData={registerMoalInfo.get('welfareArr')}
-                    closeModal={this._closeModal.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_DELETE)}
-                    goPage={this._goCoupon.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_GETSOON, actionType.BA_FIRSTOPEN_RETURN)}
-                />
-
                 <WelfareModal
                     isVisible={baseInfo.get('currentModal') == homeConst.COUPON}
                     title={"恭喜您获得" + couponModalInfo.get('welfareArr').size + "张"}
@@ -227,7 +218,7 @@ export default class Home extends Component {
 
                 <View style={styles.searchWrap}>
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>
-                        <Text style={[styles.searchText, styles.searchTextPadding]}>上海</Text>
+                        <Text style={[styles.searchText, styles.searchTextPadding]}>{appUserConfig.get('city').get('name') || ""}</Text>
                         <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, 'search')}>
                             <View
                                 style={[styles.flex, styles.searchBtn, styles.alignItems, styles.justifyContent, styles.row]}>
@@ -280,7 +271,6 @@ export default class Home extends Component {
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionHouseList({});
             actions.fetchAttentionBlockAndCommunity({});
-            actions.fetchScoreModalStatus();
             actions.fetchHouseNewCount();
             actions.fetchCouponModalStatus();
             //actions.fetchRuleModalStatus();

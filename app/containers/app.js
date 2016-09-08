@@ -9,6 +9,7 @@ require('../config/route');
 import LoginContainer from '../containers/LoginContainer';
 import AboutEXPContainer from './AboutEXPContainer';
 import TabViewContainer from '../containers/TabViewContainer';
+import WelfareContainer from '../containers/WelfareContainer';
 import * as common from '../constants/Common';
 import * as notifConst from '../constants/Notification';
 import BackScore from '../pages/BackScore'
@@ -20,6 +21,7 @@ import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 import { setLoginDaysService } from '../service/configService';
 import Toast from 'react-native-root-toast';
 import MessageNoticeModal from '../components/MessageNoticeModal';
+import WelfareModal from '../components/WelfareModal';
 
 let _navigator;
 global.gtoken = '';
@@ -134,7 +136,46 @@ class App extends Component {
                 <MessageNoticeModal
                     visible={messageNotice.get('visible')}
                     message={messageNotice.get('msg')}
-                    actionsApp={actionsApp}
+                    onClose={() => {
+                        actionsApp.msgNoticeVisibleChanged(false);
+                    }}
+                    onSure={() => {
+                        actionsApp.msgNoticeVisibleChanged(false);
+                    }}
+                />
+                <WelfareModal
+                    isVisible={appData.get('verifiedResult').get('visible')}
+                    title="身份审核通过"
+                    goTitle="看房卡怎么用"
+                    subTitle={appData.get('verifiedResult').get('welfare_cards').size}
+                    welfareData={appData.get('verifiedResult').get('welfare_cards')}
+                    closeModal={() => {
+                        actionsApp.verifiedResultVisibleChanged(false);
+                    }}
+                    goPage={() => {
+                        actionsApp.verifiedResultVisibleChanged(false);
+                        navigator.push({
+                            component: WelfareContainer,
+                            name: 'welfare',
+                            title: '看房卡',
+                            hideNavBar: false
+                        });
+                    }}
+                />
+                <MessageNoticeModal
+                    visible={appData.get('verifiedNotice').get('visible')}
+                    message={appData.get('verifiedNotice').get('msg')}
+                    onClose={() => {
+                        actionsApp.verifiedNoticeVisibleChanged(false);
+                    }}
+                    onSure={() => {
+                        actionsApp.verifiedNoticeVisibleChanged(false);
+                        // navigator.push({
+                        //     components: "",
+                        //     name: "",
+                        //     title: "",
+                        // });
+                    }}
                 />
                 <LogoutModal
                     logoutInfo={appData.get('auth')}
@@ -409,24 +450,37 @@ class App extends Component {
             case notifConst.LOGOUT: // 互踢
                 NotificationHandler.logout.call(this, _navigator);
                 break;
-            case notifConst.OPEN_PAGE:
+            case notifConst.OPEN_PAGE: //跳转到指定页
                 NotificationHandler.openPage(_navigator, notifData);
                 break;
-            case notifConst.OPEN_URL:
+            case notifConst.OPEN_URL: //打开指定URL
                 NotificationHandler.openURL(_navigator, notifData);
                 break;
-            case notifConst.RED_POINT:
+            case notifConst.RED_POINT: //签到小红点提示
                 actionsApp.appSignInChanged(false);
                 break;
-            case notifConst.NEW_LEVEL_NOTICE:
+            case notifConst.NEW_LEVEL_NOTICE:  //会员等级升级提示
                 actionsApp.levelPushed(newNotifData.data.extras);
                 actionsUser.fetchUserProfile();
                 break;
-            case notifConst.TOAST_NOTICE:
+            case notifConst.TOAST_NOTICE:  //toast消息提示
                 NotificationHandler.showToast(newNotifData.data.extras);
                 break;
-            case notifConst.FORCE_UPDATE:
+            case notifConst.FORCE_UPDATE: //强制升级
                 NotificationHandler.showForceUpdate(actionsApp);
+                break;
+            case notifConst.MESSAGE_NOTICE: //消息弹框提示
+                NotificationHandler.messageNotice(actionsApp);
+                break;
+            case notifConst.VERIFIED_NOTICE: //用户认证结果提示
+                if(newNotifData.data.extras.resulte == "0") { //失败
+                    actionsApp.verifiedNoticeSet({
+                        visible: true,
+                        msg: "您的身份未通过认证\n请重新上传身份信息"
+                    });
+                } else if(newNotifData.data.extras.resulte == "1") { //成功
+
+                }                
                 break;
             default:
                 break;

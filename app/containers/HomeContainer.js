@@ -22,13 +22,14 @@ class HomeContainer extends Component {
 
 function mapStateToProps(state) {
     const {houseData, attentionList, baseInfo} = state.home;
-    const {appData} = state.app;
+    const {appData, appUserConfig} = state.app;
     let netWork = state.app.appData.get('net');
     return {
         houseData,
         attentionList,
         baseInfo,
         netWork,
+        appUserConfig,
         appConfig: appData.get('config')
     }
 }

@@ -34,6 +34,25 @@ let initialState = {
             level: '',
             exp: ''
         }
+    },
+
+    verifiedNotice: {
+        visible: false,
+        msg: ""
+    },
+
+    verifiedResult: {
+        visible: false,
+        result: "1",
+        welfare_cards: [
+            {
+                "name": "看房卡",  // 福利卡名称
+                "type": "1", // 1看房卡, 2补签卡
+                "cost": "1", // 花费积分，0积分为免费。补签卡则另外说明
+                "status": "1", //使用状态, 0不可用, 1可用, 2已用，3过期
+                "end_at": "2016-10-1"
+            }
+        ]
     }
 };
 
@@ -134,6 +153,18 @@ function appData(state = Immutable.fromJS(initialState), action) {
             break;
         case types.NEW_LEVEL_MODAL_CHANGED:
             return state.setIn(['levelNotice', 'visible'], Immutable.fromJS(action.visible));
+            break;
+        case types.VERIFIED_NOTICE_SET:
+            return state.set('verifiedNotice', Immutable.fromJS(action.data));
+            break;
+        case types.VERIFIED_NOTICE_VISIBLE_CHANGED:
+            return state.setIn(['verifiedNotice', 'visible'], Immutable.fromJS(action.visible));
+            break;
+        case types.VERIFIED_RESULT_SET:
+            return state.set('verifiedResult', Immutable.fromJS(action.data));
+            break;
+        case types.VERIFIED_RESULT_VISIBLE_CHANGED:
+            return state.setIn(['verifiedResult', 'visible'], Immutable.fromJS(action.visible));
             break;
         default:
             return state;

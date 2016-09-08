@@ -6,7 +6,7 @@ export default class MessageNoticeModal extends Component {
         super(props);
     }
     render() {
-        let {visible, message, btnText, hideClose} = this.props;
+        let {visible, message, btnText, onClose, onSure, hideClose} = this.props;
 
         return (
             <Modal visible={visible} transparent={true} onRequestClose={() => {}}>
@@ -17,7 +17,7 @@ export default class MessageNoticeModal extends Component {
                             <TouchableHighlight
                                 style={[styles.flex, styles.alignItems, styles.justifyContent, styles.closeBox]}
                                 underlayColor="transparent"
-                                onPress={this._onClose.bind(this)}
+                                onPress={onClose}
                             >
                                 <Image
                                     style={styles.closeIcon}
@@ -29,7 +29,7 @@ export default class MessageNoticeModal extends Component {
 
                         <TouchableHighlight
                             style={[styles.alignItems, styles.justifyContent, styles.sureBtn]}
-                            onPress={this._onSure.bind(this)}
+                            onPress={onSure}
                             underlayColor='#04C1AE'
                         >
                             <View>
@@ -40,18 +40,6 @@ export default class MessageNoticeModal extends Component {
                 </View>
             </Modal>
         );
-    }
-    _onClose() {
-        let {actionsApp, onClose} = this.props;
-
-        actionsApp && actionsApp.msgNoticeVisibleChanged(false);
-        onClose && onClose();
-    }
-    _onSure() {
-        let {actionsApp, onSure} = this.props;
-
-        actionsApp && actionsApp.msgNoticeVisibleChanged(false);
-        onSure && onSure();
     }
 }
 

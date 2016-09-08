@@ -285,28 +285,10 @@ class UserAccount extends Component {
     }
 
     render() {
-        let {userProfile, withdrawData, appUserConfig, messageNotice, navigator, actionsApp} = this.props;
+        let {userProfile, withdrawData, messageNotice, navigator} = this.props;
 
         return (
             <View style={styles.accountSection}>
-                {
-                    appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0" ? 
-                    <MessageNoticeModal
-                        visible={messageNotice.get('visible')}
-                        message={messageNotice.get('msg')}
-                        btnText={"好的"}
-                        onSure={() => {
-                            // navigator.push({
-                            //     components: "",
-                            //     name: "",
-                            //     title: "",
-                            // });
-                        }}
-                        actionsApp={actionsApp}
-                    />
-                    :null
-                }
-
                 <View style={styles.row}>
                     <View style={[styles.accountIconBox, styles.center]}>
                         <Image
@@ -341,7 +323,7 @@ class UserAccount extends Component {
         let {navigator, appConfig, appUserConfig, actionsApp} = this.props;
 
         if(appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0") {
-            actionsApp.msgNoticeGeted({
+            actionsApp.verifiedNoticeSet({
                 visible: true,
                 msg: "充值请先进行身份认证"
             });
@@ -361,11 +343,12 @@ class UserAccount extends Component {
     goWithdraw(value) {
         ActionUtil.setAction(actionType.BA_MINE_CASH);
         let {navigator, actions, appUserConfig, actionsApp} = this.props;
+        let verfifiedStatus = appUserConfig.get('verifiedStatus');
 
-        if(appUserConfig.get('verifiedStatus') != "2") {
-            actionsApp.msgNoticeGeted({
+        if(verfifiedStatus != "2") {
+            actionsApp.verifiedNoticeSet({
                 visible: true,
-                msg: "提现请先进行身份认证"
+                msg: verfifiedStatus == "0" ? "提现请先进行身份认证" : (verfifiedStatus == "1" ? "您的身份信息审核中\n暂不可提现" : "认证失败\n请重新认证")
             });
         } else if (parseInt(value.score) < parseInt(value.min_price)) {
             Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);

@@ -37,7 +37,7 @@ export default class Detail extends Component {
     }
 
     render() {
-        let {baseInfo, sameCommunityList, callInfo, appUserConfig, messageNotice, actions, actionsApp, navigator, route} = this.props;
+        let {baseInfo, sameCommunityList, callInfo, messageNotice, actions, navigator, route} = this.props;
         let houseList = sameCommunityList.get('properties');
         let info = baseInfo.get("baseInfo");
         let couponArr = baseInfo.get('couponArr');
@@ -69,24 +69,6 @@ export default class Detail extends Component {
                         point={point}
                         contactSeller={this._contactSeller}
                     />
-                }
-
-                {
-                    appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0" ? 
-                    <MessageNoticeModal
-                        visible={messageNotice.get('visible')}
-                        message={messageNotice.get('msg')}
-                        btnText={"好的"}
-                        onSure={() => {
-                            // navigator.push({
-                            //     components: "",
-                            //     name: "",
-                            //     title: "",
-                            // });
-                        }}
-                        actionsApp={actionsApp}
-                    />
-                    :null
                 }
 
                 <GuideModal
@@ -226,7 +208,7 @@ export default class Detail extends Component {
     _userVerified() {
         let {appUserConfig, actionsApp} = this.props;
         if(appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0") {
-            actionsApp.msgNoticeGeted({
+            actionsApp.verifiedNoticeSet({
                 visible: true,
                 msg: "您需要进行身份认证\n才能联系房东哦~"
             });
