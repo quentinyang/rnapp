@@ -10,16 +10,12 @@ export default class Pickers extends Component {
     constructor(props) {
         super(props);
 
-        let {options, visible, num} = this.props;
+        let {options, visible, num, selectedOption} = this.props;
         this.state = {
             modalVisible: visible
         }
         for(let i = 0; i < num; i++) {
-            if(i == 0) {
-                this.state['selectedOption0'] = options[1].id;
-            } else {
-                this.state['selectedOption' + i] = '';
-            }
+            this.state['selectedOption' + i] = selectedOption[i];
         }
         this.allData = {};
         this.handleData(options, 0);

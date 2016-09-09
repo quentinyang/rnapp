@@ -5,7 +5,7 @@ const CONFIGS = {
     cancelButtonTitle: '取消',
     takePhotoButtonTitle: '拍照',
     chooseFromLibraryButtonTitle: '从手机相册选择',
-
+    mediaType: 'photo',
     storageOptions: {
         skipBackup: true,
         path: 'images'

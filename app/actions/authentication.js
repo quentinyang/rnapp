@@ -2,9 +2,11 @@
 
 import * as types from '../constants/Authentication';
 import {getAuthenticationService, sendAuthenticationService} from '../service/userService';
+import {fetchAttentionBlockSetService} from '../service/blockService';
 import {makeActionCreator, serviceAction} from './base';
 
 export const autFetched = makeActionCreator(types.AUT_FETCHED, 'data');
+export const allBlockFetched = makeActionCreator(types.ALL_BLOCK_FETCHED, 'data');
 export const realNameChanged = makeActionCreator(types.REAL_NAME_CHANGED, 'name');
 export const IDCardNumChanged = makeActionCreator(types.ID_CARD_NUM_CHANGED, 'identity_card_number');
 export const workAddrChanged = makeActionCreator(types.WORK_ADDRESS_CHANGED, 'data');
@@ -28,6 +30,19 @@ export function submitAuthentication(params) {
                 dispatch(autErrMsgChanged(err.msg));
             }
         });
+    }
+}
+
+export function fetchAllBlock() {
+    return dispatch => {
+        serviceAction(dispatch)({
+            service: fetchAttentionBlockSetService,
+            success: function(oData) {
+                dispatch(allBlockFetched(oData))
+            },
+            error: function(oData) {
+            }
+        })
     }
 }
 

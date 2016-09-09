@@ -32,78 +32,11 @@ export default class Authentication extends Component {
         super(props);
         this.business_card_info = null;
         this.id_card_info = null;
-        this.state = {
-            business_card: '',
-            id_card: ''
-        };
-
-        this.district_block_list = [
-            {
-                blocks: [
-                    {
-                        id: '77',
-                        name: '北蔡'
-                    },
-                    {
-                        id: '78',
-                        name: '碧云'
-                    },
-                    {
-                        id: '75',
-                        name: '北蔡'
-                    },
-                    {
-                        id: '74',
-                        name: '碧云'
-                    },
-                    {
-                        id: '73',
-                        name: '北蔡'
-                    },
-                    {
-                        id: '72',
-                        name: '碧云'
-                    },
-                ],
-                id: '7',
-                name: '浦东'
-            },
-            {
-                blocks: [
-                    {
-                        id: '42',
-                        name: '北蔡2'
-                    },
-                    {
-                        id: '43',
-                        name: '碧云20'
-                    },
-                    {
-                        id: '45',
-                        name: '北蔡2'
-                    },
-                    {
-                        id: '44',
-                        name: '碧云21'
-                    },
-                    {
-                        id: '47',
-                        name: '北蔡2'
-                    },
-                    {
-                        id: '22',
-                        name: '碧云22'
-                    },
-                ],
-                id: '11',
-                name: '闵行'
-            },
-        ];
     }
 
     render() {
         let {userinfo, controller} = this.props;
-        let district_block_list = this.district_block_list;
+        let district_block_list = controller.get('districts').district_block_list;
 
         let isOpacity = !!(userinfo.get('name') && userinfo.get('identity_card_number')
                         && userinfo.get('district_name') && userinfo.get('block_name')
@@ -142,15 +75,18 @@ export default class Authentication extends Component {
                         onFocus={() => {this.singleAction('addrPickerChanged', true)}}
                     />
                 </View>
+                {district_block_list ?
                 <View style={[commonStyle.flex, commonStyle.row]}>
                     <Pickers
                         options={district_block_list}
                         cancel={() => {this.singleAction('addrPickerChanged', false)}}
                         confirm={this.confirmModal}
                         visible={controller.get('modal_visible')}
+                        selectedOption={[userinfo.get('district_id'), userinfo.get('block_id')]}
                         num={2}
                     />
                 </View>
+                :null}
                 <View style={[commonStyle.bgWhite, styles.boxTop]}>
                     <UploadCard
                         label='上传名片'
@@ -191,6 +127,7 @@ export default class Authentication extends Component {
 
         InteractionManager.runAfterInteractions(() => {
             actions.getAuthentication();
+            actions.fetchAllBlock();
         });
     }
 
@@ -261,7 +198,7 @@ export default class Authentication extends Component {
             imgObj[data[i].id] = value.id;
         }
         return imgObj;
-    }
+    };
 
     checkForm = (value) => {
         let reg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
