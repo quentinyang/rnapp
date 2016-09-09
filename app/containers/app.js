@@ -22,6 +22,7 @@ import { setLoginDaysService } from '../service/configService';
 import Toast from 'react-native-root-toast';
 import MessageNoticeModal from '../components/MessageNoticeModal';
 import WelfareModal from '../components/WelfareModal';
+import AuthenticationContainer from '../containers/AuthenticationContainer';
 
 let _navigator;
 global.gtoken = '';
@@ -154,7 +155,7 @@ class App extends Component {
                     }}
                     goPage={() => {
                         actionsApp.verifiedResultVisibleChanged(false);
-                        navigator.push({
+                        _navigator.push({
                             component: WelfareContainer,
                             name: 'welfare',
                             title: '看房卡',
@@ -170,11 +171,11 @@ class App extends Component {
                     }}
                     onSure={() => {
                         actionsApp.verifiedNoticeVisibleChanged(false);
-                        // navigator.push({
-                        //     components: "",
-                        //     name: "",
-                        //     title: "",
-                        // });
+                        _navigator.push({
+                            component: AuthenticationContainer,
+                            name: "auth",
+                            title: "身份认证",
+                        });
                     }}
                 />
                 <LogoutModal
