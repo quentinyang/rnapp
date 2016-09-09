@@ -8,6 +8,7 @@ import {
     ScrollView,
     Image,
     Alert,
+    Modal,
     PixelRatio,
     Platform,
     StyleSheet,
@@ -18,6 +19,7 @@ import {
 import WithLabel from '../components/LabelTextInput';
 import ErrorMsg from '../components/ErrorMsg';
 import Pickers from '../components/Pickers';
+import CheckID from '../components/CheckID';
 import {qiniuUpload} from '../components/QiniuUploader';
 import {imageSelected} from '../components/ImageSelected';
 import TouchableSubmit from '../components/TouchableSubmit';
@@ -103,7 +105,13 @@ export default class Authentication extends Component {
         let {userinfo, controller} = this.props;
         let district_block_list = this.district_block_list;
 
+        let isOpacity = !!(userinfo.get('name') && userinfo.get('identity_card_number') && userinfo.get('district_name') && userinfo.get('block_name')
+                        && !controller.get('err_msg')
+                        && this.state.business_card && this.state.id_card
+                        );
+
         return (
+            <View>
             <ScrollView
                 style={commonStyle.container}
             >
@@ -163,12 +171,17 @@ export default class Authentication extends Component {
                 />
                 <View style={styles.submitBox}>
                     <TouchableSubmit
-                        opacity={0.3}
+                        opacity={isOpacity ? 1: 0.3}
                         onPress={this.handleSubmit}
                         submitText='提交'
                     />
                 </View>
             </ScrollView>
+            <SubmitModal
+                visible={controller.get('submit_modal_visible')}
+                onPress={this.submitSucModal}
+            />
+            </View>
         );
     }
 
@@ -177,7 +190,7 @@ export default class Authentication extends Component {
 
     singleAction(action, value) {
         let {actions} = this.props;
-
+        actions.autErrMsgChanged('');
         actions[action](value);
     }
 
@@ -214,9 +227,34 @@ export default class Authentication extends Component {
         this.props.actions.autErrMsgChanged('');
     };
 
+    handleSubmit = () => {
+        let {userinfo, actions, actionsApp} = this.props;
+        if(!this.checkForm(userinfo)) return;
+        actionsApp.appLoadingChanged(true);
+        this.upload(this.business_card_info.uri, this.id_card_info.uri)
+        .then((response) => {
+            actionsApp.appLoadingChanged(false);
+            let user = userinfo.toJS();
+            let data = {...user, ...response};
+            actions.submitAuthentication(data);
+            console.log('xxxxxx',data);
+        })
+        .catch((err) => {
+            actions.autErrMsgChanged(err);
+        });
+    };
 
-
-
+    upload = async function (business_uri, id_uri) {
+        let {actions} = this.props;
+        var business_img = await qiniuUpload(business_uri);
+        actions.businessCardChanged(business_img.id);
+        var id_img = await qiniuUpload(id_uri);
+        actions.identityCardChanged(id_img.id);
+        return {
+            business_card_id: business_img.id,
+            identity_card_id: id_img.id
+        }
+    }
 
     success(data) {
         console.log('success',data);
@@ -226,10 +264,21 @@ export default class Authentication extends Component {
         console.log('error', error);
     }
 
-    handleSubmit() {
-        upload(response.uri);
+    checkForm = (value) => {
+        let reg = /^[\u4e00-\u9fa5a-zA-Z]{2,10}$/;
+        let cardInfo = new CheckID(value.get('identity_card_number')).info.isTrue;
+        let {actions} = this.props;
 
-    }
+        if(!reg.test(value.get('name'))) {
+            actions.autErrMsgChanged('请输入您的真实姓名');
+            return false;
+        }
+        if(!cardInfo) {
+            actions.autErrMsgChanged('请输入正确的身份证号');
+            return false;
+        }
+        return true;
+    };
 
     confirmModal = (d) => {
         let data = {
@@ -240,8 +289,20 @@ export default class Authentication extends Component {
         };
         this.singleAction('workAddrChanged', data);
         this.singleAction('addrPickerChanged', false);
+    };
+
+    submitSucModal = () => {
+        let {navigator, actions} = this.props;
+        actions.autSubmitModalChanged(false);
+        navigator.pop();
+
     }
 }
+
+let errMsgs = {
+    'wrongName': '请输入您的真实姓名',
+    'wrongId': '请输入正确的身份证号',
+};
 
 class UploadCard extends Component {
     render() {
@@ -270,6 +331,34 @@ class UploadCard extends Component {
                     }
                 </TouchableHighlight>
             </View>
+        );
+    }
+}
+
+class SubmitModal extends Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        let {visible, onPress} = this.props;
+        return (
+            <Modal visible={visible} transparent={true} onRequestClose={() => {}}>
+                <View style={styles.bgWrap}>
+                    <View style={styles.contentContainer}>
+                        <Text style={styles.textCenter}>{"提交成功\n1个工作日内审核"}</Text>
+
+                        <TouchableHighlight
+                            style={[commonStyle.center, styles.logoutSure]}
+                            onPress={onPress}
+                            underlayColor='#04c1ae'
+                        >
+                            <View>
+                                <Text style={[styles.updateBtnRightText]}>确定</Text>
+                            </View>
+                        </TouchableHighlight>
+                    </View>
+                </View>
+            </Modal>
         );
     }
 }

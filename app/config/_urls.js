@@ -35,7 +35,11 @@ let urls = {
 
         expRule: HOST + 'user/level/rule',
 
-        inputList: HOST + 'user/house/checked/success/list'
+        inputList: HOST + 'user/house/checked/success/list',
+
+        getAut: HOST + 'user/authentication',
+        postAut: HOST + 'verify/submit'
+
     },
     house: {
         list: HOST + 'property-list',

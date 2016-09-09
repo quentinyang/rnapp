@@ -7,12 +7,12 @@ let QINIU_URL = 'http://upload.qiniu.com';
 * @params err_cb 错误时的回调
 */
 export function qiniuUpload(data, suc_cb, err_cb) {
-    getToken()
+    return getToken()
     .then((d) => d.items[0])
     .then(token => uploadImage(data, token))
     .then(response => response.json())
-    .then(data => suc_cb(data))
-    .catch(err => err_cb(err));
+    // .then(data => suc_cb(data))
+    // .catch(err => err_cb(err));
 }
 
 function uploadImage(data, token) {

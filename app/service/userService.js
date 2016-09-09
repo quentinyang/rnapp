@@ -53,6 +53,18 @@ module.exports=function(){
         });
     }
 
+    function getAuthenticationService() {
+        return ajax.get(urls().user.getAut);
+    }
+
+    function sendAuthenticationService(params) {
+        return ajax.post(urls().user.postAut, {
+            body: params
+        });
+    }
+
+
+
     return {
         sendCodeService: sendCodeService,
         loginService: loginService,
@@ -64,6 +76,7 @@ module.exports=function(){
         getSignInInfo: getSignInInfo,
         signInStatusService: signInStatusService,
         expRuleService: expRuleService,
-        userInputListService: userInputListService
+        userInputListService: userInputListService,
+        sendAuthenticationService: sendAuthenticationService
     };
 }();

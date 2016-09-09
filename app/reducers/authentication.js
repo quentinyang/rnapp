@@ -40,6 +40,7 @@ function userInformation(state = Immutable.fromJS(initialState), action) {
 
 let initialController = {
     modal_visible: false,
+    submit_modal_visible: false,
     err_msg: ''
 }
 
@@ -48,6 +49,8 @@ function autController(state = Immutable.fromJS(initialController), action) {
         case types.ADDR_PICKER_CHANGED:
             return state.set('modal_visible', action.visible);
             break;
+        case types.AUT_SUBMIT_MODAL_CHANGED:
+            return state.set('submit_modal_visible', action.submit_modal_visible);
         case types.AUT_ERRMSG_CHANGED:
             return state.set('err_msg', action.err_msg);
             break;
