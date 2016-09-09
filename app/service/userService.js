@@ -77,6 +77,7 @@ module.exports=function(){
         signInStatusService: signInStatusService,
         expRuleService: expRuleService,
         userInputListService: userInputListService,
+        getAuthenticationService: getAuthenticationService,
         sendAuthenticationService: sendAuthenticationService
     };
 }();

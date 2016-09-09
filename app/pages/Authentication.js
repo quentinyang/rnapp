@@ -105,9 +105,10 @@ export default class Authentication extends Component {
         let {userinfo, controller} = this.props;
         let district_block_list = this.district_block_list;
 
-        let isOpacity = !!(userinfo.get('name') && userinfo.get('identity_card_number') && userinfo.get('district_name') && userinfo.get('block_name')
+        let isOpacity = !!(userinfo.get('name') && userinfo.get('identity_card_number')
+                        && userinfo.get('district_name') && userinfo.get('block_name')
+                        && userinfo.get('business_card_url') && userinfo.get('identity_card_url')
                         && !controller.get('err_msg')
-                        && this.state.business_card && this.state.id_card
                         );
 
         return (
@@ -154,14 +155,14 @@ export default class Authentication extends Component {
                     <UploadCard
                         label='上传名片'
                         labelDesc='名片正面朝上'
-                        source={this.state.business_card}
+                        source={userinfo.get('business_card_url')}
                         otherStyle={styles.borderBottom}
                         upCard={() => this.upCard('business_card')}
                     />
                     <UploadCard
                         label='上传身份证'
                         labelDesc='身份证正面朝上'
-                        source={this.state.id_card}
+                        source={userinfo.get('identity_card_url')}
                         upCard={() => this.upCard('id_card')}
                     />
                 </View>
@@ -186,6 +187,11 @@ export default class Authentication extends Component {
     }
 
     componentDidMount() {
+        let {actions} = this.props;
+
+        InteractionManager.runAfterInteractions(() => {
+            actions.getAuthentication();
+        });
     }
 
     singleAction(action, value) {
@@ -204,21 +210,19 @@ export default class Authentication extends Component {
             res_cb: this.imgPickerResponse,
             suc_cb: this.imgPickerSucCb.bind(null, state)
         }
-
         imageSelected(ops);
     }
 
     imgPickerSucCb = (state, res) => {
-        let source = {};
+        let {actions} = this.props;
+        let uri = '';
         if (Platform.OS === 'ios') {
-            source = {uri: res.uri.replace('file://', '')};
+            uri = res.uri.replace('file://', '');
         } else {
-            source = {uri: res.uri};
+            uri = res.uri;
         }
-        let json = {};
-        json[state] = source;
-
-        this.setState(json);
+        let arr = state.split('_');
+        actions[arr[0] + arr[1] + 'UrlChanged'](uri);
         this[state+'_info'] = res;
     };
 
@@ -231,37 +235,32 @@ export default class Authentication extends Component {
         let {userinfo, actions, actionsApp} = this.props;
         if(!this.checkForm(userinfo)) return;
         actionsApp.appLoadingChanged(true);
-        this.upload(this.business_card_info.uri, this.id_card_info.uri)
-        .then((response) => {
-            actionsApp.appLoadingChanged(false);
-            let user = userinfo.toJS();
-            let data = {...user, ...response};
-            actions.submitAuthentication(data);
-            console.log('xxxxxx',data);
-        })
-        .catch((err) => {
-            actions.autErrMsgChanged(err);
-        });
+        var arr = [];
+        !userinfo.get('business_card_id') && arr.push({id: 'business_card_id', url: userinfo.get('business_card_url')});
+        !userinfo.get('identity_card_id') && arr.push({id: 'identity_card_id', url: userinfo.get('identity_card_url')});
+        if(arr.length > 0) {
+            this.upload(arr)
+            .then((response) => {
+                actionsApp.appLoadingChanged(false);
+                let user = userinfo.toJS();
+                let data = {...user, ...response};
+                actions.submitAuthentication(data);
+                console.log('xxxxxx',data);
+            })
+            .catch((err) => {
+                actions.autErrMsgChanged(err);
+            });
+        }
     };
 
-    upload = async function (business_uri, id_uri) {
+    upload = async function (data) {
         let {actions} = this.props;
-        var business_img = await qiniuUpload(business_uri);
-        actions.businessCardChanged(business_img.id);
-        var id_img = await qiniuUpload(id_uri);
-        actions.identityCardChanged(id_img.id);
-        return {
-            business_card_id: business_img.id,
-            identity_card_id: id_img.id
+        let imgObj = {};
+        for(var i = 0; i < data.length; i++) {
+            var value = await qiniuUpload(data[i].url);
+            imgObj[data[i].id] = value.id;
         }
-    }
-
-    success(data) {
-        console.log('success',data);
-    }
-
-    error(data) {
-        console.log('error', error);
+        return imgObj;
     }
 
     checkForm = (value) => {
@@ -295,8 +294,7 @@ export default class Authentication extends Component {
         let {navigator, actions} = this.props;
         actions.autSubmitModalChanged(false);
         navigator.pop();
-
-    }
+    };
 }
 
 let errMsgs = {
@@ -320,7 +318,7 @@ class UploadCard extends Component {
                 >
                     {this.props.source ?
                     <Image
-                        source={this.props.source}
+                        source={{uri: this.props.source}}
                         style={styles.showImg}
                     />
                     :

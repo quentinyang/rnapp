@@ -11,12 +11,17 @@ let initialState = {
     district_name: '',
     block_id: '',
     block_name: '',
+    business_card_url: '',
+    identity_card_url: '',
     business_card_id: '',
     identity_card_id: ''
 };
 
 function userInformation(state = Immutable.fromJS(initialState), action) {
     switch(action.type) {
+        case types.AUT_FETCHED:
+            return Immutable.fromJS(action.data);
+            break;
         case types.REAL_NAME_CHANGED:
             return state.set('name', action.name);
             break;
@@ -28,9 +33,15 @@ function userInformation(state = Immutable.fromJS(initialState), action) {
                         .set('block_id', action.data.block_id).set('block_name', action.data.block_name);
             break;
         case types.BUSINESS_CARD_CHANGED:
-            return state.set('business_card_id', action.business_card_id);
+            return state.set('business_card_url', action.business_card_url).set('business_card_id', '');
             break;
         case types.IDENTITY_CARD_CHANGED:
+            return state.set('identity_card_url', action.identity_card_url).set('identity_card_id', '');
+            break;
+        case types.BUSINESS_ID_CHANGED:
+            return state.set('business_card_id', action.business_card_id);
+            break;
+        case types.IDENTITY_ID_CHANGED:
             return state.set('identity_card_id', action.identity_card_id);
             break;
         default:
