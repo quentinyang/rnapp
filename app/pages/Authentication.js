@@ -18,7 +18,7 @@ import {
 import WithLabel from '../components/LabelTextInput';
 import ErrorMsg from '../components/ErrorMsg';
 import Pickers from '../components/Pickers';
-import {upload} from '../components/ImageSelected';
+import {qiniuUpload} from '../components/ImageSelected';
 import TouchableSubmit from '../components/TouchableSubmit';
 let commonStyle = require('../styles/main');
 let ActionUtil = require('../utils/ActionLog');
@@ -205,6 +205,7 @@ export default class Authentication extends Component {
           else {
             let source = {};
             const img = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
+            qiniuUpload(response.uri, this.success, this.error);
             // or a reference to the platform specific asset location
             if (Platform.OS === 'ios') {
               source = {uri: response.uri.replace('file://', '')};
@@ -217,7 +218,14 @@ export default class Authentication extends Component {
             this.setState(json);
           }
         });
+    }
 
+    success(data) {
+        console.log('success',data);
+    }
+
+    error(data) {
+        console.log('error', error);
     }
 
     handleSubmit() {

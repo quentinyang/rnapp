@@ -1,14 +1,18 @@
 import {getToken} from '../service/tokenService';
 
+let QINIU_URL = 'http://upload.qiniu.com';
 /*
 * @params data 图片路径或图片base64编码
+* @params suc_cb 成功时的回调
+* @params err_cb 错误时的回调
 */
-export function upload(data) {
+export function qiniuUpload(data, suc_cb, err_cb) {
     getToken()
-    .then((d) => {
-        let token = d.items[0];
-        uploadImage(data, token);
-    })
+    .then((d) => d.items[0])
+    .then(token => uploadImage(data, token))
+    .then(response => response.json())
+    .then(data => suc_cb(data))
+    .catch(err => err_cb(err));
 }
 
 function uploadImage(data, token) {
@@ -16,11 +20,10 @@ function uploadImage(data, token) {
     formData.append('token', token);
     formData.append('file', {uri: data, type: 'application/octet-stream'});
 
-    fetch('http://upload.qiniu.com', {body: formData, method: 'POST'})
-    .then((data) => {
-        return data.json();
-    })
-    .then((json) => {
-        console.log('json--------', json)
-    })
+    let myInit = {
+        body: formData,
+        method: 'POST'
+    }
+
+    return fetch(QINIU_URL, myInit);
 }
