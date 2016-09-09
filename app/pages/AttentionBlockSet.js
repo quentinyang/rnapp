@@ -37,7 +37,7 @@ export default class AttentionBlockSet extends Component {
                 }
                 <View style={styles.conformWrap}>
                     <TouchableHighlight
-                        style={styles.conformButton}
+                        style={[styles.conformButton, districtBlockSelect.size ? {} : {opacity: 0.3}]}
                         underlayColor="#04c1ae"
                         onPress={this._conformBlockSet}
                     >
@@ -61,6 +61,9 @@ export default class AttentionBlockSet extends Component {
     _conformBlockSet = () => {
         let {attentionBlockSet, navigator, actionsApp} = this.props;
         let districtBlockSelect = attentionBlockSet.get('district_block_select');
+        if(!districtBlockSelect.size) {
+            return;
+        }
 
         let params = districtBlockSelect.map((v) => {
             return v.get('id')

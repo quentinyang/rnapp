@@ -30,7 +30,7 @@ export default class BaseInfoPage extends Component {
     }
 
     render() {
-        let {navigator, route} = this.props;
+        let {appUserConfig, navigator, route} = this.props;
         let {houseForm, controller} = this.props.houseInput;
         let isOpacity = !!(
             houseForm.get('community_name') &&
@@ -86,21 +86,22 @@ export default class BaseInfoPage extends Component {
                             />
                         </WithLabel>
 
-
-                        <WithLabel
-                            label='单元'
-                            rightText='单元'
-                            value={houseForm.get('unit_num')}
-                            placeholder={controller.get('single') ? '无' : '输入单元号'}
-                            editable={controller.get('single') ? false : true}
-                            underlineColorAndroid = 'transparent'
-                            maxLength={5}
-                            onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_BUILDING)}
-                            onChangeText={(v) => {this.singleAction('unitChanged', v.trim())}}
-                        >
-                            <View style={{width: 90}}></View>
-                        </WithLabel>
-
+                        {
+                            appUserConfig.get("city").get("id") == "2" ?
+                            <WithLabel
+                                label='单元'
+                                rightText='单元'
+                                value={houseForm.get('unit_num')}
+                                placeholder={controller.get('single') ? '无' : '输入单元号'}
+                                editable={controller.get('single') ? false : true}
+                                underlineColorAndroid = 'transparent'
+                                maxLength={5}
+                                onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_BUILDING)}
+                                onChangeText={(v) => {this.singleAction('unitChanged', v.trim())}}
+                            >
+                                <View style={{width: 90}}></View>
+                            </WithLabel> : null
+                        }
 
                         <WithLabel
                             label='房号'

@@ -21,10 +21,11 @@ class AppContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {appData, messageNotice} = state.app;
+    const {appData, messageNotice, appUserConfig} = state.app;
     return {
         appData,
-        messageNotice
+        messageNotice,
+        appUserConfig
     }
 }
 

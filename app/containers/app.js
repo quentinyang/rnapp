@@ -23,6 +23,8 @@ import Toast from 'react-native-root-toast';
 import MessageNoticeModal from '../components/MessageNoticeModal';
 import WelfareModal from '../components/WelfareModal';
 import AuthenticationContainer from '../containers/AuthenticationContainer';
+import SelectCityContainer from '../containers/SelectCityContainer';
+import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer';
 
 let _navigator;
 global.gtoken = '';
@@ -33,6 +35,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         var self = this;
+        this.hasShowAttention = false;
         let {actionsApp} = this.props;
 
         this.routeStack = [];
@@ -295,7 +298,7 @@ class App extends Component {
     }
 
     componentDidUpdate() {
-        let {appData, actionsApp} = this.props;
+        let {appData, actionsApp, appUserConfig} = this.props;
 
         if (appData.get('msg') !== '') {
             Alert.alert('提示', appData.get('msg'), [
@@ -307,6 +310,25 @@ class App extends Component {
                 }
             ])
         }
+
+        if(!this.hasShowAttention && appUserConfig.get('isSelectCity') != null && appUserConfig.get('isSelectAttention') != null) {
+            this.hasShowAttention = true;
+            if(!appUserConfig.get('isSelectCity')) {
+                _navigator.resetTo({
+                    component: SelectCityContainer,
+                    name: 'selectCity',
+                    title: '选择城市',
+                    hideNavBar: false
+                });
+            } else if(!appUserConfig.get('isSelectAttention')) {
+                 _navigator.resetTo({
+                    component: AttentionBlockSetContainer,
+                    name: 'AttentionBlockSetContainer',
+                    title: '',
+                    hideNavBar: false
+                });
+            }
+        }        
     }
 
     componentDidMount() {
@@ -403,6 +425,7 @@ class App extends Component {
         } else {
             actionsApp.netWorkChanged('yes');
             actionsApp.setAppConfig();
+            actionsApp.setAppUserConfig();
         }
     };
 

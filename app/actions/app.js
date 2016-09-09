@@ -1,5 +1,6 @@
 'use strict';
 
+let ActionUtil = require( '../utils/ActionLog');
 import * as types from '../constants/App';
 import {makeActionCreator, serviceAction} from './base';
 import {setWebStartConfigService, deletePushService, setConfigService, setUserConfigService} from '../service/configService';
@@ -100,11 +101,15 @@ export function setAppUserConfig() {  //获取登录后的配置
         serviceAction(dispatch)({
             service: setUserConfigService,
             success: function(oData) {
+                ActionUtil.setCcid(oData.city.id);
+                global.gccid = oData.city.id;
                 //oData.is_new = true;
                 dispatch(appUserConfig({
                     isSignIn: Number(oData.is_signed_in) ? true : false,
                     isNew: Number(oData.is_new) ? true : false,
                     verifiedStatus: oData.verified_status || "0",
+                    isSelectCity: Number(oData.is_select_city) ? true : false,
+                    isSelectAttention: Number(oData.is_select_attention) ? true : false,
                     city: oData.city || {"name": "上海"}
                 }));
             },

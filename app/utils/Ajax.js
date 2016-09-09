@@ -24,7 +24,7 @@ var mobileAgent = (function() {
         var infos = {
             app: 'FangYuan360',//app APP 名称
             av: deviceInfo.version,//APP 版本号
-            ccid: '1',//用户选择的城市 id
+            ccid: global.gccid,//用户选择的城市 id
             gcid: '1',//定位到的城市 id
             ch: '',//发布的渠道 id
             lng: '',//经度

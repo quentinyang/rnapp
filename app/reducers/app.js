@@ -219,6 +219,8 @@ let initialUserConfig = {
     isSignIn: true,
     isNew: true,
     verifiedStatus: "0",
+    isSelectCity: null,
+    isSelectAttention: null,
     city: {
         id: "",
         "name": "上海"
