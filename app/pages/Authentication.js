@@ -18,29 +18,18 @@ import {
 import WithLabel from '../components/LabelTextInput';
 import ErrorMsg from '../components/ErrorMsg';
 import Pickers from '../components/Pickers';
-import {qiniuUpload} from '../components/ImageSelected';
+import {qiniuUpload} from '../components/QiniuUploader';
+import {imageSelected} from '../components/ImageSelected';
 import TouchableSubmit from '../components/TouchableSubmit';
 let commonStyle = require('../styles/main');
 let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog';
 
-var ImagePicker = require('react-native-image-picker');
-
-var options = {
-    title: '选择图片',
-    cancelButtonTitle: '取消',
-    takePhotoButtonTitle: '拍照',
-    chooseFromLibraryButtonTitle: '从手机相册选择',
-
-    storageOptions: {
-        skipBackup: true,
-        path: 'images'
-    }
-};
-
 export default class Authentication extends Component {
     constructor(props) {
         super(props);
+        this.business_card_info = null;
+        this.id_card_info = null;
         this.state = {
             business_card: '',
             id_card: ''
@@ -170,7 +159,7 @@ export default class Authentication extends Component {
                 </View>
                 <ErrorMsg
                     errBoxStyle={{paddingLeft: 20}}
-                    errText={''}
+                    errText={controller.get('err_msg')}
                 />
                 <View style={styles.submitBox}>
                     <TouchableSubmit
@@ -193,32 +182,41 @@ export default class Authentication extends Component {
     }
 
     upCard(state) {
-        ImagePicker.showImagePicker(options, (response) => {
-          console.log('Response = ', response);
+        let {actions} = this.props;
+        this.timer = setTimeout(() => {
+            actions.autErrMsgChanged('图片加载中，请稍等...');
+        }, 3000);
 
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-          }
-          else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-          }
-          else {
-            let source = {};
-            const img = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-            qiniuUpload(response.uri, this.success, this.error);
-            // or a reference to the platform specific asset location
-            if (Platform.OS === 'ios') {
-              source = {uri: response.uri.replace('file://', '')};
-            } else {
-              source = {uri: response.uri};
-            }
-            let json = {};
-            json[state] = source;
+        var ops = {
+            res_cb: this.imgPickerResponse,
+            suc_cb: this.imgPickerSucCb.bind(null, state)
+        }
 
-            this.setState(json);
-          }
-        });
+        imageSelected(ops);
     }
+
+    imgPickerSucCb = (state, res) => {
+        let source = {};
+        if (Platform.OS === 'ios') {
+            source = {uri: res.uri.replace('file://', '')};
+        } else {
+            source = {uri: res.uri};
+        }
+        let json = {};
+        json[state] = source;
+
+        this.setState(json);
+        this[state+'_info'] = res;
+    };
+
+    imgPickerResponse = () => {
+        this.timer && clearTimeout(this.timer);
+        this.props.actions.autErrMsgChanged('');
+    };
+
+
+
+
 
     success(data) {
         console.log('success',data);
@@ -230,6 +228,7 @@ export default class Authentication extends Component {
 
     handleSubmit() {
         upload(response.uri);
+
     }
 
     confirmModal = (d) => {

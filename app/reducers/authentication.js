@@ -12,8 +12,7 @@ let initialState = {
     block_id: '',
     block_name: '',
     business_card_id: '',
-    identity_card_id: '',
-    err_msg: '',
+    identity_card_id: ''
 };
 
 function userInformation(state = Immutable.fromJS(initialState), action) {
@@ -40,13 +39,17 @@ function userInformation(state = Immutable.fromJS(initialState), action) {
 }
 
 let initialController = {
-    modal_visible: false
+    modal_visible: false,
+    err_msg: ''
 }
 
 function autController(state = Immutable.fromJS(initialController), action) {
     switch(action.type) {
         case types.ADDR_PICKER_CHANGED:
             return state.set('modal_visible', action.visible);
+            break;
+        case types.AUT_ERRMSG_CHANGED:
+            return state.set('err_msg', action.err_msg);
             break;
         default:
             return state;

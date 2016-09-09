@@ -1,29 +1,32 @@
-import {getToken} from '../service/tokenService';
+var ImagePicker = require('react-native-image-picker');
 
-let QINIU_URL = 'http://upload.qiniu.com';
-/*
-* @params data 图片路径或图片base64编码
-* @params suc_cb 成功时的回调
-* @params err_cb 错误时的回调
-*/
-export function qiniuUpload(data, suc_cb, err_cb) {
-    getToken()
-    .then((d) => d.items[0])
-    .then(token => uploadImage(data, token))
-    .then(response => response.json())
-    .then(data => suc_cb(data))
-    .catch(err => err_cb(err));
-}
+const CONFIGS = {
+    title: '选择图片',
+    cancelButtonTitle: '取消',
+    takePhotoButtonTitle: '拍照',
+    chooseFromLibraryButtonTitle: '从手机相册选择',
 
-function uploadImage(data, token) {
-    let formData = new FormData();
-    formData.append('token', token);
-    formData.append('file', {uri: data, type: 'application/octet-stream'});
-
-    let myInit = {
-        body: formData,
-        method: 'POST'
+    storageOptions: {
+        skipBackup: true,
+        path: 'images'
     }
+};
 
-    return fetch(QINIU_URL, myInit);
+export function imageSelected(ops) {
+    let options = {...CONFIGS, ...ops.config};
+    ImagePicker.showImagePicker(options, (response) => {
+        console.log('Response = ', response);
+        ops.res_cb && ops.res_cb();
+        if (response.didCancel) {
+            ops.cancel_cb && ops.cancel_cb();
+        } else if (response.error) {
+            if(ops.err_cb) {
+                ops.err_cb(response.error);
+            } else {
+                console.log('ImagePicker Error: ', response.error);
+            }
+        } else {
+            ops.suc_cb && ops.suc_cb(response);
+        }
+    });
 }

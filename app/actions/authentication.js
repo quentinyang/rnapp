@@ -9,4 +9,5 @@ export const workAddrChanged = makeActionCreator(types.WORK_ADDRESS_CHANGED, 'da
 export const businessCardChanged = makeActionCreator(types.BUSINESS_CARD_CHANGED, 'business_card_id');
 export const identityCardChanged = makeActionCreator(types.IDENTITY_CARD_CHANGED, 'identity_card_id');
 export const addrPickerChanged = makeActionCreator(types.ADDR_PICKER_CHANGED, 'visible');
+export const autErrMsgChanged = makeActionCreator(types.AUT_ERRMSG_CHANGED, 'err_msg');
 
