@@ -32,7 +32,14 @@ export default class BaseInfoPage extends Component {
     render() {
         let {navigator, route} = this.props;
         let {houseForm, controller} = this.props.houseInput;
-        let isOpacity = !!(houseForm.get('community_name') && !controller.get('err_msg') && (controller.get('single')? true: houseForm.get('building_num')) && (controller.get('villa')?true:houseForm.get('door_num') && houseForm.get('floor')));
+        let isOpacity = !!(
+            houseForm.get('community_name') &&
+            !controller.get('err_msg') && 
+            (controller.get('single') && houseForm.get('door_num') || 
+                controller.get('villa') && houseForm.get('building_num') ||
+                houseForm.get('door_num') && houseForm.get('building_num')
+                )
+        );
 
         return (
             <View style={styles.container}>
@@ -62,7 +69,7 @@ export default class BaseInfoPage extends Component {
                             label='楼栋'
                             rightText='号/座'
                             value={houseForm.get('building_num')}
-                            placeholder={controller.get('single')?'无':'输入楼/座号'}
+                            placeholder={controller.get('single')?'无':'输入楼号/座号'}
                             editable={controller.get('single')? false: true}
                             underlineColorAndroid = 'transparent'
                             maxLength={5}
@@ -72,9 +79,29 @@ export default class BaseInfoPage extends Component {
                             <Attached
                                 isSelected={controller.get('single')}
                                 attachedText='无'
-                                toggleAttach={() => this.toggleAttach(actionType.BA_SENDONE_THREE_ONEBUILD, 'singleChanged', !controller.get('single'), 'buildingChanged', 'attachBuildingChanged')}
+                                toggleAttach={() => {
+                                    this.toggleAttach(actionType.BA_SENDONE_THREE_ONEBUILD, 'singleChanged', !controller.get('single'), 'buildingChanged', 'attachBuildingChanged');
+                                    this.props.actions.unitChanged('');
+                                }}
                             />
                         </WithLabel>
+
+
+                        <WithLabel
+                            label='单元'
+                            rightText='单元'
+                            value={houseForm.get('unit_num')}
+                            placeholder={controller.get('single') ? '无' : '输入单元号'}
+                            editable={controller.get('single') ? false : true}
+                            underlineColorAndroid = 'transparent'
+                            maxLength={5}
+                            onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_BUILDING)}
+                            onChangeText={(v) => {this.singleAction('unitChanged', v.trim())}}
+                        >
+                            <View style={{width: 90}}></View>
+                        </WithLabel>
+
+
                         <WithLabel
                             label='房号'
                             rightText='室'
@@ -169,13 +196,14 @@ export default class BaseInfoPage extends Component {
         ActionUtil.setAction(actionLog);
         if(value) {
             this.singleAction(secAction, '');
-            if(thirdAction) {
-                this.singleAction(thirdAction, 1);
-            }
         }
 
+        if(thirdAction) {
+            this.singleAction(thirdAction, value? 1: 0);
+        }
         this.singleAction(action, value);
     }
+
 
     checkForm() {
         let houseForm = this.props.houseInput.houseForm.toJS(),

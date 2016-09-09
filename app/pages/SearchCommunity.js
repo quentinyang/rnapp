@@ -62,6 +62,7 @@ export default class CommunitySearch extends Component {
         actionsInput.buildingChanged('');
         actionsInput.doorChanged('');
         actionsInput.singleChanged('');
+        actionsInput.villaChanged('');
         actionsInput.landlordCleared();
         actionsInput.moreCleared();
         actionsApp.addInputSearchHistory(community.toJS());

@@ -57,7 +57,7 @@ function houseForm(state = initInput, action) {
         case types.INPUT_BASE_CLEARED:
             return state.set('community_id', '').set('community_name', '').set('building_num', '').set('door_num', '');
         case types.INPUT_MORE_CLEARED:
-            return state.set('bedrooms', '').set('living_rooms', '').set('bathrooms', '').set('area', '').set('price', '');
+            return state.set('bedrooms', '').set('living_rooms', '').set('bathrooms', '').set('area', '').set('price', '').set('has_no_building_num', 0).set('has_no_door_num', 0);
         case types.INPUT_LANDLORD_CLEARED:
             return state.set('seller_alias', '').set('seller_phone', '');
         default:
@@ -67,7 +67,7 @@ function houseForm(state = initInput, action) {
 
 let controlData = Immutable.fromJS({
     'single': false, // 独栋
-    'no_unit': true, //单元
+    'no_unit': false, //单元
     'villa': false, // 别墅
     'err_msg': ''
 });
@@ -75,11 +75,11 @@ let controlData = Immutable.fromJS({
 export function controller(state = controlData, action) {
     switch(action.type) {
         case types.SINGLE_CHANGED:
-            return state.set('single', action.single).set('villa', false);
+            return state.set('single', action.single);
         case types.NO_UNIT_CHANGED:
             return state.set('no_unit', action.no_unit);
         case types.VILLA_CHANGED:
-            return state.set('villa', action.villa).set('single', false);
+            return state.set('villa', action.villa);
         case types.ERR_MSG:
             return state.set('err_msg', action.err_msg);
         case types.INPUT_DATA_CLEARED:
