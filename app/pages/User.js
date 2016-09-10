@@ -327,7 +327,15 @@ class UserAccount extends Component {
             actionsApp.verifiedNoticeSet({
                 visible: true,
                 msg: "充值请先进行身份认证",
-                from: "charge"
+                from: "charge",
+                hideClose: false
+            });
+        } else if(appUserConfig.get('verifiedStatus') == "3") {
+            actionsApp.verifiedNoticeSet({
+                visible: true,
+                msg: "您的身份未通过认证\n请重新上传身份信息",
+                from: "charge",
+                hideClose: true
             });
         } else if (appConfig.get('showRecharge')) {
             navigator.push({
@@ -356,8 +364,9 @@ class UserAccount extends Component {
             
             actionsApp.verifiedNoticeSet({
                 visible: true,
-                msg: verfifiedStatus == "0" ? "提现请先进行身份认证" : (verfifiedStatus == "1" ? "您的身份信息审核中\n暂不可提现" : "认证失败\n请重新认证"),
-                from: verfifiedStatus == "0" ? "noVerify" : (verfifiedStatus == "1" ? "inVerify" : "")
+                msg: verfifiedStatus == "0" ? "提现请先进行身份认证" : (verfifiedStatus == "1" ? "您的身份信息审核中\n暂不可提现" : "您的身份未通过认证\n请重新上传身份信息"),
+                from: verfifiedStatus == "0" ? "noVerify" : (verfifiedStatus == "1" ? "inVerify" : ""),
+                hideClose: verfifiedStatus == "3" ? true : false
             });
         } else if (parseInt(value.score) < parseInt(value.min_price)) {
             Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);

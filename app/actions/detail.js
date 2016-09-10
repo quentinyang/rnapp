@@ -8,6 +8,7 @@ let ActionUtil = require('../utils/ActionLog');
 import * as actionType from '../constants/ActionLog'
 import * as homeTypes from '../constants/Home';
 import * as types from '../constants/DetailType';
+import {verifiedNoticeSet} from './app';
 
 import { InteractionManager } from 'nuke'
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
@@ -126,8 +127,17 @@ export function callSeller(params) {
                 }
             },
             error: function (error) {
-                dispatch(setErrorTipVisible(true));
-                dispatch(callSellerFailed(error))
+                if(error.type && error.type == "1") {
+                    dispatch(verifiedNoticeSet({
+                        visible: true,
+                        msg: "您的身份未通过认证\n请重新上传身份信息",
+                        from: "detail",
+                        hideClose: true
+                    }));
+                } else {
+                    dispatch(setErrorTipVisible(true));
+                    dispatch(callSellerFailed(error))
+                }
             }
         })
     }
@@ -225,13 +235,22 @@ export function fetchSellerPhone(data) {
             data: data,
             loading: true,
             success: function (oData) {
-                dispatch(setSellerPhone(oData));
-                ActionUtil.setAction(actionType.BA_DETAIL_PHENO_ONVIEW);
-                dispatch(setSellerPhoneVisible(true));
-                data.card_id && dispatch(updateCoupon(data.card_id));
+                if(oData.type && oData.type == "1") {
+                    dispatch(verifiedNoticeSet({
+                        visible: true,
+                        msg: "您的身份未通过认证\n请重新上传身份信息",
+                        from: "",
+                        hideClose: true
+                    }));
+                } else {
+                    dispatch(setSellerPhone(oData));
+                    ActionUtil.setAction(actionType.BA_DETAIL_PHENO_ONVIEW);
+                    dispatch(setSellerPhoneVisible(true));
+                    data.card_id && dispatch(updateCoupon(data.card_id));
 
-                dispatch(setHomeContactStatus({"property_id": data.property_id, "is_contact": "1"}));
-                dispatch(setContactStatus({"property_id": data.property_id, "is_contact": "1"}));
+                    dispatch(setHomeContactStatus({"property_id": data.property_id, "is_contact": "1"}));
+                    dispatch(setContactStatus({"property_id": data.property_id, "is_contact": "1"}));
+                }
             },
             error: function (error) {
                 dispatch(callSellerFailed(error));

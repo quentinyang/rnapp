@@ -212,7 +212,18 @@ export default class Detail extends Component {
             actionsApp.verifiedNoticeSet({
                 visible: true,
                 msg: "您需要进行身份认证\n才能联系房东哦~",
-                from: "detail"
+                from: "detail",
+                hideClose: false
+            });
+            return false;
+        }
+        if(appUserConfig.get('verifiedStatus') == "3") {
+            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_IDENTITY_ONVIEW, {"uid": global.guid});
+            actionsApp.verifiedNoticeSet({
+                visible: true,
+                msg: "您的身份未通过认证\n请重新上传身份信息",
+                from: "detail",
+                hideClose: true
             });
             return false;
         }

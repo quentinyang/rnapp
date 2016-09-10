@@ -173,6 +173,7 @@ class App extends Component {
                 <MessageNoticeModal
                     visible={appData.get('verifiedNotice').get('visible')}
                     message={appData.get('verifiedNotice').get('msg')}
+                    hideClose={appData.get('verifiedNotice').get('hideClose')}
                     onClose={() => {
                         switch(appData.get('verifiedNotice').get('from')) {
                         case "detail":
@@ -210,11 +211,13 @@ class App extends Component {
                             break;
                         }
                         actionsApp.verifiedNoticeVisibleChanged(false);
-                        _navigator.push({
-                            component: AuthenticationContainer,
-                            name: "auth",
-                            title: "身份认证",
-                        });
+                        if(appData.get('verifiedNotice').get('from') != "inVerify") {
+                            _navigator.push({
+                                component: AuthenticationContainer,
+                                name: "auth",
+                                title: "身份认证",
+                            });
+                        }
                     }}
                 />
                 <LogoutModal
@@ -536,7 +539,8 @@ class App extends Component {
                 if(newNotifData.data.extras.resulte == "0") { //失败
                     actionsApp.verifiedNoticeSet({
                         visible: true,
-                        msg: "您的身份未通过认证\n请重新上传身份信息"
+                        msg: "您的身份未通过认证\n请重新上传身份信息",
+                        hideClose: true
                     });
                     actionsApp.verifiedStatusChanged("3");
                 } else if(newNotifData.data.extras.resulte == "1") { //成功

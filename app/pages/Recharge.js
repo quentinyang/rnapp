@@ -145,7 +145,14 @@ export default class Recharge extends Component {
             Alipay.addEvent(oData.data, 'Charge');
         })
         .catch((data) => {
-            if (data && data.codeStatus == 401) {
+            if(data && data.type && data.type == "1") {
+                actionsApp.verifiedNoticeSet({
+                    visible: true,
+                    msg: "您的身份未通过认证\n请重新上传身份信息",
+                    from: "detail",
+                    hideClose: true
+                }));
+            } else if (data && data.codeStatus == 401) {
                 data.visible = true;
                 actionsApp.webAuthentication(data);
             } else {
