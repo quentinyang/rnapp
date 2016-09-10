@@ -38,7 +38,8 @@ let initialState = {
 
     verifiedNotice: {
         visible: false,
-        msg: ""
+        msg: "",
+        from: ""
     },
 
     verifiedResult: {

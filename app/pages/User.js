@@ -323,9 +323,11 @@ class UserAccount extends Component {
         let {navigator, appConfig, appUserConfig, actionsApp} = this.props;
 
         if(appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0") {
+            ActionUtil.setActionWithExtend(actionType.BA_MINE_RECHANGE_ENSURE, {"uid": global.guid});
             actionsApp.verifiedNoticeSet({
                 visible: true,
-                msg: "充值请先进行身份认证"
+                msg: "充值请先进行身份认证",
+                from: "charge"
             });
         } else if (appConfig.get('showRecharge')) {
             navigator.push({
@@ -346,9 +348,16 @@ class UserAccount extends Component {
         let verfifiedStatus = appUserConfig.get('verifiedStatus');
 
         if(verfifiedStatus != "2") {
+            if(verfifiedStatus == "0") {
+                ActionUtil.setActionWithExtend(actionType.BA_MINE_IDENTITY_REVIEWBOX, {"uid": global.guid});
+            } else if(verfifiedStatus == "1") {
+                ActionUtil.setActionWithExtend(actionType.BA_MINE_IDENTITY_NOREVIEWBOX, {"uid": global.guid});
+            }
+            
             actionsApp.verifiedNoticeSet({
                 visible: true,
-                msg: verfifiedStatus == "0" ? "提现请先进行身份认证" : (verfifiedStatus == "1" ? "您的身份信息审核中\n暂不可提现" : "认证失败\n请重新认证")
+                msg: verfifiedStatus == "0" ? "提现请先进行身份认证" : (verfifiedStatus == "1" ? "您的身份信息审核中\n暂不可提现" : "认证失败\n请重新认证"),
+                from: verfifiedStatus == "0" ? "noVerify" : (verfifiedStatus == "1" ? "inVerify" : "")
             });
         } else if (parseInt(value.score) < parseInt(value.min_price)) {
             Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);

@@ -23,8 +23,6 @@ import {setCityService} from '../service/blockService';
 export default class SelectCity extends Component {
     constructor(props) {
         super(props);
-        //this.pageId = actionType.BA_MINE_POINTS;
-        //ActionUtil.setActionWithExtend(actionType.BA_MINE_POINTS_ONVIEW, {"bp": this.props.route.bp});
     }
     componentWillMount() {
         this.props.actions.curCityChanged({});
@@ -75,6 +73,8 @@ export default class SelectCity extends Component {
         setCityService({
             id: curCity.get('id')
         }).then(() => {
+            ActionUtil.setActionWithExtend(actionType.BA_LOGIN_CITY, {"ccid": curCity.get("id")});
+
             actionsApp.curCityChanged(curCity);
             if(!userData.get('setAttention')) {
                 navigator.push({

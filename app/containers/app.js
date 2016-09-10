@@ -174,9 +174,41 @@ class App extends Component {
                     visible={appData.get('verifiedNotice').get('visible')}
                     message={appData.get('verifiedNotice').get('msg')}
                     onClose={() => {
+                        switch(appData.get('verifiedNotice').get('from')) {
+                        case "detail":
+                            ActionUtil.setAction(actionType.BA_DETAIL_IDENTITY_DELETE);
+                            break;
+                        case "charge":
+                            ActionUtil.setAction(actionType.BA_MINE_RECHANGE_ENSURE_DELETE);
+                            break;
+                        case "noVerify":
+                            ActionUtil.setAction(actionType.BA_MINE_IDENTITY_REVIEWBOX_DELETE);
+                            break;
+                        case "inVerify":
+                            ActionUtil.setAction(actionType.BA_MINE_IDENTITY_NOREVIEWBOX_DELETE);
+                            break;
+                        default:
+                            break;
+                        }
                         actionsApp.verifiedNoticeVisibleChanged(false);
                     }}
                     onSure={() => {
+                        switch(appData.get('verifiedNotice').get('from')) {
+                        case "detail":
+                            ActionUtil.setAction(actionType.BA_DETAIL_IDENTITY_SURE);
+                            break;
+                        case "charge":
+                            ActionUtil.setAction(actionType.BA_MINE_RECHANGE_ENSURE_SURE);
+                            break;
+                        case "noVerify":
+                            ActionUtil.setAction(actionType.BA_MINE_IDENTITY_REVIEWBOX_SURE);
+                            break;
+                        case "inVerify":
+                            ActionUtil.setAction(actionType.BA_MINE_IDENTITY_NOREVIEWBOX_SURE);
+                            break;
+                        default:
+                            break;
+                        }
                         actionsApp.verifiedNoticeVisibleChanged(false);
                         _navigator.push({
                             component: AuthenticationContainer,

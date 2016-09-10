@@ -208,9 +208,11 @@ export default class Detail extends Component {
     _userVerified() {
         let {appUserConfig, actionsApp} = this.props;
         if(appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0") {
+            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_IDENTITY_ONVIEW, {"uid": global.guid});
             actionsApp.verifiedNoticeSet({
                 visible: true,
-                msg: "您需要进行身份认证\n才能联系房东哦~"
+                msg: "您需要进行身份认证\n才能联系房东哦~",
+                from: "detail"
             });
             return false;
         }

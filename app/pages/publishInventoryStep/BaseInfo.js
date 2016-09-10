@@ -96,7 +96,7 @@ export default class BaseInfoPage extends Component {
                                 editable={controller.get('single') ? false : true}
                                 underlineColorAndroid = 'transparent'
                                 maxLength={5}
-                                onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_BUILDING)}
+                                onBlur={() => ActionUtil.setAction(actionType.BA_SENDONE_THREE_UNIT)}
                                 onChangeText={(v) => {this.singleAction('unitChanged', v.trim())}}
                             >
                                 <View style={{width: 90}}></View>
