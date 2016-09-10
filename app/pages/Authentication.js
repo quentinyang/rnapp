@@ -44,79 +44,78 @@ export default class Authentication extends Component {
                         && !controller.get('err_msg'));
 
         return (
-            <View>
-            <ScrollView
-                style={commonStyle.container}
-            >
-                <View style={[commonStyle.bgWhite, styles.boxTop]}>
-                    <WithLabel
-                        label='姓名'
-                        defaultValue={userinfo.get('name')}
-                        placeholder='请输入真实姓名'
-                        underlineColorAndroid = 'transparent'
-                        maxLength={10}
-                        onChangeText={(v) => {this.singleAction('realNameChanged', v)}}
+            <View style={commonStyle.container}>
+                <View>
+                    <View style={[commonStyle.bgWhite, styles.boxTop]}>
+                        <WithLabel
+                            label='姓名'
+                            defaultValue={userinfo.get('name')}
+                            placeholder='请输入真实姓名'
+                            underlineColorAndroid = 'transparent'
+                            maxLength={10}
+                            onChangeText={(v) => {this.singleAction('realNameChanged', v)}}
+                        />
+                        <WithLabel
+                            label='身份证'
+                            defaultValue={userinfo.get('identity_card_number')}
+                            placeholder='请输入身份证号'
+                            underlineColorAndroid = 'transparent'
+                            maxLength={18}
+                            onChangeText={(v) => {this.singleAction('IDCardNumChanged', v)}}
+                        />
+                        <WithLabel
+                            label='工作区域'
+                            arrow={true}
+                            placeholder='请选择工作区域'
+                            special={true}
+                            specialText1={userinfo.get('district_name') && userinfo.get('block_name') ? userinfo.get('district_name') + '-' + userinfo.get('block_name') : ''}
+                            underlineColorAndroid = 'transparent'
+                            onClick={() => {this.singleAction('addrPickerChanged', true)}}
+                        />
+                    </View>
+                    {district_block_list ?
+                    <View style={[commonStyle.flex, commonStyle.row]}>
+                        <Pickers
+                            options={district_block_list}
+                            cancel={() => {this.singleAction('addrPickerChanged', false)}}
+                            confirm={this.confirmModal}
+                            visible={controller.get('modal_visible')}
+                            selectedOption={[userinfo.get('district_id') || district_block_list[0].id, userinfo.get('block_id') || district_block_list[0]['blocks'][0].id]}
+                            num={2}
+                        />
+                    </View>
+                    :null}
+                    <View style={[commonStyle.bgWhite, styles.boxTop]}>
+                        <UploadCard
+                            label='上传名片'
+                            labelDesc='名片正面朝上'
+                            source={userinfo.get('business_card_url')}
+                            otherStyle={styles.borderBottom}
+                            upCard={() => this.upCard('business_card')}
+                        />
+                        <UploadCard
+                            label='上传身份证'
+                            labelDesc='身份证正面朝上'
+                            source={userinfo.get('identity_card_url')}
+                            upCard={() => this.upCard('id_card')}
+                        />
+                    </View>
+                    <ErrorMsg
+                        errBoxStyle={{paddingLeft: 20}}
+                        errText={controller.get('err_msg')}
                     />
-                    <WithLabel
-                        label='身份证'
-                        defaultValue={userinfo.get('identity_card_number')}
-                        placeholder='请输入身份证号'
-                        underlineColorAndroid = 'transparent'
-                        maxLength={18}
-                        onChangeText={(v) => {this.singleAction('IDCardNumChanged', v)}}
-                    />
-                    <WithLabel
-                        label='工作区域'
-                        value={userinfo.get('district_name') && userinfo.get('block_name') ? userinfo.get('district_name') + '-' + userinfo.get('block_name') : ''}
-                        arrow={true}
-                        placeholder='请选择工作区域'
-                        underlineColorAndroid = 'transparent'
-                        onFocus={() => {this.singleAction('addrPickerChanged', true)}}
-                    />
+                    <View style={styles.submitBox}>
+                        <TouchableSubmit
+                            opacity={isOpacity ? 1: 0.3}
+                            onPress={this.handleSubmit}
+                            submitText='提交'
+                        />
+                    </View>
                 </View>
-                {district_block_list ?
-                <View style={[commonStyle.flex, commonStyle.row]}>
-                    <Pickers
-                        options={district_block_list}
-                        cancel={() => {this.singleAction('addrPickerChanged', false)}}
-                        confirm={this.confirmModal}
-                        visible={controller.get('modal_visible')}
-                        selectedOption={[userinfo.get('district_id') || district_block_list[0].id, userinfo.get('block_id') || district_block_list[0]['blocks'][0].id]}
-                        num={2}
-                    />
-                </View>
-                :null}
-                <View style={[commonStyle.bgWhite, styles.boxTop]}>
-                    <UploadCard
-                        label='上传名片'
-                        labelDesc='名片正面朝上'
-                        source={userinfo.get('business_card_url')}
-                        otherStyle={styles.borderBottom}
-                        upCard={() => this.upCard('business_card')}
-                    />
-                    <UploadCard
-                        label='上传身份证'
-                        labelDesc='身份证正面朝上'
-                        source={userinfo.get('identity_card_url')}
-                        upCard={() => this.upCard('id_card')}
-                    />
-                </View>
-                <ErrorMsg
-                    errBoxStyle={{paddingLeft: 20}}
-                    errText={controller.get('err_msg')}
+                <SubmitModal
+                    visible={controller.get('submit_modal_visible')}
+                    onPress={this.submitSucModal}
                 />
-                <View style={styles.submitBox}>
-                    <TouchableSubmit
-                        opacity={isOpacity ? 1: 0.3}
-                        onPress={this.handleSubmit}
-                        submitText='提交'
-                    />
-                </View>
-            </ScrollView>
-            <SubmitModal
-                visible={controller.get('submit_modal_visible')}
-                onPress={this.submitSucModal}
-            />
             </View>
         );
     }
