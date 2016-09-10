@@ -36,6 +36,9 @@ function attentionBlockSet(state = Immutable.fromJS(initialState), action) {
                 return districtBlockSelectTemp
             });
             break;
+        case types.ATTENTION_CLEAR:
+            return Immutable.fromJS(initialState);
+            break;
         default: 
             return state;
     }
@@ -43,16 +46,16 @@ function attentionBlockSet(state = Immutable.fromJS(initialState), action) {
 
 let initialCity = {
     cityList: [],
-    curCityId: ""
+    curCity: {}
 }
 
 function cityInfo(state = Immutable.fromJS(initialCity), action) {
     switch(action.type) {
         case types.CITY_LIST_FETCHED:
-            return state.set('cityList', Immutable.fromJS(action.list)).set('curCityId', Immutable.fromJS(action.list[0].id));
+            return state.set('cityList', Immutable.fromJS(action.list)).set('curCity', Immutable.fromJS(action.list[0]));
             break;
         case types.CUR_CITY_CHANGED:
-            return state.set('curCityId', Immutable.fromJS(action.id));
+            return state.set('curCity', Immutable.fromJS(action.city));
             break;
         default:
             return state;

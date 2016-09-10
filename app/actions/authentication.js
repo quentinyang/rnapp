@@ -4,6 +4,7 @@ import * as types from '../constants/Authentication';
 import {getAuthenticationService, sendAuthenticationService} from '../service/userService';
 import {fetchAttentionBlockSetService} from '../service/blockService';
 import {makeActionCreator, serviceAction} from './base';
+import {verifiedStatusChanged} from './app';
 
 export const autFetched = makeActionCreator(types.AUT_FETCHED, 'data');
 export const allBlockFetched = makeActionCreator(types.ALL_BLOCK_FETCHED, 'data');
@@ -25,6 +26,7 @@ export function submitAuthentication(params) {
             data: params,
             success: function () {
                 dispatch(autSubmitModalChanged(true));
+                dispatch(verifiedStatusChanged("1"));
             },
             error: function (err) {
                 dispatch(autErrMsgChanged(err.msg));

@@ -235,14 +235,14 @@ class Login extends Component {
                 ActionUtil.setUid(oData.user_id || "");
                 setLoginDays(oData.user_id);
                 actions.userDataFetched({
-                    setAttention: oData.is_select_attention || false
+                    setAttention: Number(oData.is_select_attention) ? true : false
                 });
                 actionsApp.setSearchHistory(oData.user_id || "0");
                 actionsApp.appLoadingChanged(false);
                 gtoken = oData.token;
                 guid = oData.user_id;
                 actionsApp.setAppUserConfig();
-                if(!oData.is_select_city) {
+                if(oData.is_select_city == "0") {
                     navigator.push({
                         component: SelectCityContainer,
                         name: 'selectCity',
@@ -250,7 +250,7 @@ class Login extends Component {
                         hideNavBar: false,
                         bp: this.pageId
                     });
-                } else if(!oData.is_select_attention) {
+                } else if(oData.is_select_attention == "0") {
                     navigator.push({
                         component: AttentionBlockSetContainer,
                         name: 'AttentionBlockSetContainer',

@@ -10,9 +10,10 @@ export const attentionBlockSetDeleted = makeActionCreator(types.ATTENTION_BLOCK_
 export const attentionBlockSetEntered = makeActionCreator(types.ATTENTION_BLOCK_SET_ENTERED, 'status');
 
 export const attentionBlockSetCleared = makeActionCreator(types.ATTENTION_BLOCK_SET_CLEAR);
+export const attentionCleared = makeActionCreator(types.ATTENTION_CLEAR);
 
 export const cityListFetched = makeActionCreator(types.CITY_LIST_FETCHED, 'list');
-export const curCityChanged = makeActionCreator(types.CUR_CITY_CHANGED, 'id');
+export const curCityChanged = makeActionCreator(types.CUR_CITY_CHANGED, 'city');
 
 export function fetchAttentionBlockSet() {
     return dispatch => {

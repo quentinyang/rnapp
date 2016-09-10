@@ -506,8 +506,10 @@ class App extends Component {
                         visible: true,
                         msg: "您的身份未通过认证\n请重新上传身份信息"
                     });
+                    actionsApp.verifiedStatusChanged("3");
                 } else if(newNotifData.data.extras.resulte == "1") { //成功
                     actionsApp.verifiedResultVisibleChanged(true);
+                    actionsApp.verifiedStatusChanged("2");
                 }                
                 break;
             default:

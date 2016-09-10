@@ -11,7 +11,6 @@ import * as actionType from '../constants/ActionLog'
 export default class AttentionBlockSet extends Component {
     constructor(props) {
         super(props);
-
         this.pageId = actionType.BA_LOGFOCUS_AREA;
         ActionUtil.setActionWithExtend(actionType.BA_LOGFOCUS_AREA_ONVIEW, {"bp": this.props.route.bp});
     }
@@ -58,6 +57,10 @@ export default class AttentionBlockSet extends Component {
         });
     }
 
+    componentWillUnmount() {
+        this.props.actions.attentionCleared();
+    }
+
     _conformBlockSet = () => {
         let {attentionBlockSet, navigator, actionsApp} = this.props;
         let districtBlockSelect = attentionBlockSet.get('district_block_select');
@@ -95,7 +98,6 @@ export default class AttentionBlockSet extends Component {
 
     _onHandleBlockSelected = (block, insert:boolen) => {
         let {actions} = this.props;
-
         if (insert) {
             ActionUtil.setActionWithExtend(actionType.BA_LOGFOCUS_AREA_CHOOSE, {"block_id": block.get("id"), "block_name": block.get("name")});
             actions.attentionBlockSetAdded(block);
@@ -120,6 +122,7 @@ const styles = StyleSheet.create({
         fontSize: 23
     },
     topSubHeader: {
+        marginTop: 8,
         fontSize: 15,
         color: '#8d8c92'
     },

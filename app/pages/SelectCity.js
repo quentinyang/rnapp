@@ -26,10 +26,12 @@ export default class SelectCity extends Component {
         //this.pageId = actionType.BA_MINE_POINTS;
         //ActionUtil.setActionWithExtend(actionType.BA_MINE_POINTS_ONVIEW, {"bp": this.props.route.bp});
     }
-
+    componentWillMount() {
+        this.props.actions.curCityChanged({});
+    }
     render() {
         let { cityInfo } = this.props;
-        let cityList = cityInfo.get('cityList'), curCityId = cityInfo.get('curCityId');
+        let cityList = cityInfo.get('cityList'), curCity = cityInfo.get('curCity');
 
         let listView = null;
         listView = cityList.map((item, index) => {
@@ -37,7 +39,7 @@ export default class SelectCity extends Component {
                 <CityItem
                     key={index}
                     item={item}
-                    isCur={item.get('id') == curCityId}
+                    isCur={item.get('id') == curCity.get('id')}
                     changeCity={this._changeCity.bind(this)}
                 />
             );
@@ -68,11 +70,12 @@ export default class SelectCity extends Component {
     }
 
     _citySubmit() {
-        let {cityInfo, userData, navigator} = this.props;
-        let curCityId = cityInfo.get('curCityId');
+        let {cityInfo, userData, actionsApp, navigator} = this.props;
+        let curCity = cityInfo.get('curCity');
         setCityService({
-            id: curCityId
+            id: curCity.get('id')
         }).then(() => {
+            actionsApp.curCityChanged(curCity);
             if(!userData.get('setAttention')) {
                 navigator.push({
                     component: AttentionBlockSetContainer,
@@ -109,7 +112,7 @@ export default class SelectCity extends Component {
         });
     }
     _changeCity(item) {
-        this.props.actions.curCityChanged(item.get('id'));
+        this.props.actions.curCityChanged(item);
     }
 }
 

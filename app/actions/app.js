@@ -42,6 +42,8 @@ export const verifiedNoticeVisibleChanged = makeActionCreator(types.VERIFIED_NOT
 
 export const verifiedResultSet = makeActionCreator(types.VERIFIED_RESULT_SET, 'data');
 export const verifiedResultVisibleChanged = makeActionCreator(types.VERIFIED_RESULT_VISIBLE_CHANGED, 'visible');
+export const curCityChanged = makeActionCreator(types.APP_CITY_CHANGED, 'city');
+export const verifiedStatusChanged = makeActionCreator(types.VERIFIED_STATUS_CHANGED, 'status');
 
 export function clickBack(name) {
     return dispatch => {
@@ -115,7 +117,7 @@ export function setAppUserConfig() {  //获取登录后的配置
                     verifiedStatus: oData.verified_status || "0",
                     isSelectCity: Number(oData.is_select_city) ? true : false,
                     isSelectAttention: Number(oData.is_select_attention) ? true : false,
-                    city: oData.city || {"name": "上海"}
+                    city: oData.city || {}
                 }));
             },
             error: function(oData) {

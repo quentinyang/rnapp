@@ -212,10 +212,14 @@ export default class Detail extends Component {
                 visible: true,
                 msg: "您需要进行身份认证\n才能联系房东哦~"
             });
+            return false;
         }
+        return true;
     }
     _clickGetSellerPhoneBtn(status, phone) {
-        this._userVerified();
+        if(! this._userVerified()){
+            return;
+        }
 
         let {actions, actionsNavigation, actionsHome, route, baseInfo} = this.props;
         let propertyId = route.item.get("property_id");
@@ -328,7 +332,9 @@ export default class Detail extends Component {
     };
 
     _playRecord = () => {
-        this._userVerified();
+        if(! this._userVerified()){
+            return;
+        }
 
         let {baseInfo, actions, route} = this.props;
         let info = baseInfo.get('baseInfo');
@@ -352,7 +358,9 @@ export default class Detail extends Component {
     }
 
     _contactSeller = () => {
-        this._userVerified();
+        if(! this._userVerified()){
+            return;
+        }
 
         let {baseInfo, actions, callInfo} = this.props;
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);

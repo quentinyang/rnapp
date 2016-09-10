@@ -235,6 +235,12 @@ function appUserConfig(state = Immutable.fromJS(initialUserConfig), action) {
         case types.APP_SIGNIN_CHANGED:
             return state.set('isSignIn', action.signIn);
             break;
+        case types.APP_CITY_CHANGED:
+            return state.set('city', Immutable.fromJS(action.city));
+            break;
+        case types.VERIFIED_STATUS_CHANGED:
+            return state.set('verifiedStatus', Immutable.fromJS(action.status));
+            break;
         default:
             return state;
     }
