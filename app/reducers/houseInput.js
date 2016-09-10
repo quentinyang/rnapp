@@ -55,7 +55,7 @@ function houseForm(state = initInput, action) {
         case types.INPUT_DATA_CLEARED:
             return initInput;
         case types.INPUT_BASE_CLEARED:
-            return state.set('community_id', '').set('community_name', '').set('building_num', '').set('door_num', '');
+            return state.set('community_id', '').set('community_name', '').set('building_num', '').set('door_num', '').set('unit_num', '');
         case types.INPUT_MORE_CLEARED:
             return state.set('bedrooms', '').set('living_rooms', '').set('bathrooms', '').set('area', '').set('price', '').set('has_no_building_num', 0).set('has_no_door_num', 0);
         case types.INPUT_LANDLORD_CLEARED:

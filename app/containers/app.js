@@ -536,15 +536,15 @@ class App extends Component {
                 NotificationHandler.messageNotice(actionsApp);
                 break;
             case notifConst.VERIFIED_NOTICE: //用户认证结果提示
-                if(newNotifData.data.extras.resulte == "0") { //失败
+                if(newNotifData.data.extras.result == "0") { //失败
                     actionsApp.verifiedNoticeSet({
                         visible: true,
                         msg: "您的身份未通过认证\n请重新上传身份信息",
                         hideClose: true
                     });
                     actionsApp.verifiedStatusChanged("3");
-                } else if(newNotifData.data.extras.resulte == "1") { //成功
-                    actionsApp.verifiedResultVisibleChanged(true);
+                } else if(newNotifData.data.extras.result == "1") { //成功
+                    actionsApp.verifiedResultSet(Object.assign({visible: true}, newNotifData.data.extras));
                     actionsApp.verifiedStatusChanged("2");
                 }                
                 break;

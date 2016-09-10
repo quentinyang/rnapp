@@ -25,7 +25,7 @@ export default class MessageNoticeModal extends Component {
                                 />
                             </TouchableHighlight>
                         }
-                        <Text>{message || ""}</Text>
+                        <Text style={styles.textCenter}>{message || ""}</Text>
 
                         <TouchableHighlight
                             style={[styles.alignItems, styles.justifyContent, styles.sureBtn]}
@@ -67,6 +67,9 @@ let styles = StyleSheet.create({
         paddingTop: 32,
         backgroundColor: "#fff",
         alignItems: 'center'
+    },
+    textCenter: {
+        textAlign: 'center'
     },
     closeBox: {
         position: "absolute",
