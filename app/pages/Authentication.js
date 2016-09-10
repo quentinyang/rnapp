@@ -129,6 +129,10 @@ export default class Authentication extends Component {
         });
     }
 
+    componentWillUnmount() {
+        this.props.actions.autInfoCleared();
+    }
+
     singleAction(action, value) {
         let {actions} = this.props;
         actions.autErrMsgChanged('');
@@ -226,7 +230,6 @@ export default class Authentication extends Component {
 
     submitSucModal = () => {
         let {navigator, actions} = this.props;
-        actions.autInfoCleared();
         actions.autSubmitModalChanged(false);
         navigator.pop();
     };
