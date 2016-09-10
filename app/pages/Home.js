@@ -55,7 +55,7 @@ class InputRuleModal extends Component {
                         <Text style={[styles.h3, styles.mediumFont, styles.giftDay, styles.orange]}>发房新规则</Text>
 
                         <Text style={styles.ruleText}>1、发布房源的电话每被查看1次获得<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('looked_points')}</Text>积分</Text>
-                        <Text style={styles.ruleText}>2、每套房源审核通过，平台补贴<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('input_points')}</Text>积分<Text style={[styles.h6, styles.grey]}>（补贴只是暂时的，之后会有调整）</Text></Text>
+                        <Text style={styles.ruleText}>2、每套房源审核通过，平台补贴<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('input_points')}</Text>积分<Text style={[styles.h6, styles.grey]}>（每天补贴5套房源）</Text></Text>
                         <Text style={styles.ruleText}>3、房源审核通过，得<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('experience')}</Text>经验</Text>
 
                         <TouchableHighlight
