@@ -41,8 +41,7 @@ export default class Authentication extends Component {
         let isOpacity = !!(userinfo.get('name') && userinfo.get('identity_card_number')
                         && userinfo.get('district_name') && userinfo.get('block_name')
                         && userinfo.get('business_card_url') && userinfo.get('identity_card_url')
-                        && !controller.get('err_msg')
-                        );
+                        && !controller.get('err_msg'));
 
         return (
             <View>
@@ -182,7 +181,6 @@ export default class Authentication extends Component {
                 let user = userinfo.toJS();
                 let data = {...user, ...response};
                 actions.submitAuthentication(data);
-                console.log('xxxxxx',data);
             })
             .catch((err) => {
                 actions.autErrMsgChanged(err);

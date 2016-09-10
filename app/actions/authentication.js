@@ -54,6 +54,9 @@ export function getAuthentication() {
             service: getAuthenticationService,
             success: function (data) {
                 dispatch(autFetched(data));
+                if(data.business_card_url) {
+                    dispatch(autErrMsgChanged('您的身份认证失败，请修改后再提交'));
+                }
             },
             error: function (err) {
                 dispatch(autErrMsgChanged(err.msg));
