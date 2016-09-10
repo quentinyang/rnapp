@@ -82,7 +82,7 @@ export default class Authentication extends Component {
                         cancel={() => {this.singleAction('addrPickerChanged', false)}}
                         confirm={this.confirmModal}
                         visible={controller.get('modal_visible')}
-                        selectedOption={[userinfo.get('district_id'), userinfo.get('block_id')]}
+                        selectedOption={[userinfo.get('district_id') || district_block_list[0].id, userinfo.get('block_id') || district_block_list[0]['blocks'][0].id]}
                         num={2}
                     />
                 </View>
