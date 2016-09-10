@@ -127,9 +127,11 @@ export default class Setting extends Component {
             {text: '取消'},
             {text: '确认', onPress: () => {
                 actionsApp.deletePush(); // 解绑个推
-                AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
+                AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID, common.CITY_ID]);
                 ActionUtil.setUid("");
+                ActionUtil.setCcid("");
                 gtoken = '';
+                gccid = '';
                 AsyncStorageComponent.get('user_phone')
                 .then((value) => {
                     navigator.resetTo({

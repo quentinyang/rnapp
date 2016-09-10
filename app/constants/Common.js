@@ -13,3 +13,4 @@ export const HOST_CHANGE = 'host_change';
 export const APP_VERSION = 'APP_VERSION';
 export const APP_VERSION_CHANGE = 'APP_VERSION_CHANGE';
 export const USER_ENTER_STATUS = 'USER_ENTER_STATUS';
+export const CITY_ID = 'CITY_ID';

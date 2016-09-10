@@ -45,7 +45,7 @@ class App extends Component {
         };
 
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
-        AsyncStorageComponent.multiGet([common.USER_TOKEN_KEY, common.USER_ID])
+        AsyncStorageComponent.multiGet([common.USER_TOKEN_KEY, common.USER_ID, common.CITY_ID])
         .then((value) => {
             let len = value.length;
             for(let i=0; i<len; i++) {
@@ -59,6 +59,10 @@ class App extends Component {
                             actionsApp.setSearchHistory(value[i][1] || "0");
                             ActionUtil.setUid(value[i][1]);
                         }
+                        break;
+                    case common.CITY_ID:
+                        ActionUtil.setCcid(value[i][1]);
+                        global.gccid = value[i][1];
                         break;
                 }
             }
@@ -425,14 +429,14 @@ class App extends Component {
         } else {
             actionsApp.netWorkChanged('yes');
             actionsApp.setAppConfig();
-            actionsApp.setAppUserConfig();
+            global.gtoken && actionsApp.setAppUserConfig();
         }
     };
 
     _logoutSure = () => {
         let {actionsApp} = this.props;
         actionsApp.deletePush(); // 解绑个推
-        AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
+        AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID, common.CITY_ID]);
         ActionUtil.setUid("");
         gtoken = '';
 
@@ -503,7 +507,7 @@ class App extends Component {
                         msg: "您的身份未通过认证\n请重新上传身份信息"
                     });
                 } else if(newNotifData.data.extras.resulte == "1") { //成功
-
+                    actionsApp.verifiedResultVisibleChanged(true);
                 }                
                 break;
             default:

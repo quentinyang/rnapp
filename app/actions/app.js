@@ -5,6 +5,7 @@ import * as types from '../constants/App';
 import {makeActionCreator, serviceAction} from './base';
 import {setWebStartConfigService, deletePushService, setConfigService, setUserConfigService} from '../service/configService';
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
+import * as common from '../constants/Common';
 
 export const webAuthentication = makeActionCreator(types.WEB_AUTHENTICATION, 'auth');
 export const webNetWorkError = makeActionCreator(types.WEB_NETWORK_ERROR, 'msg');
@@ -101,8 +102,12 @@ export function setAppUserConfig() {  //获取登录后的配置
         serviceAction(dispatch)({
             service: setUserConfigService,
             success: function(oData) {
-                ActionUtil.setCcid(oData.city.id);
-                global.gccid = oData.city.id;
+                if(global.gccid != oData.city.id) {
+                    ActionUtil.setCcid(oData.city.id);
+                    global.gccid = oData.city.id;
+                    AsyncStorageComponent.save(common.CITY_ID, oData.city.id).catch((error) => {console.log(error);});
+                }
+
                 //oData.is_new = true;
                 dispatch(appUserConfig({
                     isSignIn: Number(oData.is_signed_in) ? true : false,
