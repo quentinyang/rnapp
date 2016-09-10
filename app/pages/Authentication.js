@@ -227,6 +227,7 @@ export default class Authentication extends Component {
 
     submitSucModal = () => {
         let {navigator, actions} = this.props;
+        actions.autInfoCleared();
         actions.autSubmitModalChanged(false);
         navigator.pop();
     };
@@ -277,11 +278,11 @@ class SubmitModal extends Component {
         return (
             <Modal visible={visible} transparent={true} onRequestClose={() => {}}>
                 <View style={styles.bgWrap}>
-                    <View style={styles.contentContainer}>
+                    <View style={[commonStyle.center, styles.contentContainer]}>
                         <Text style={styles.textCenter}>{"提交成功\n1个工作日内审核"}</Text>
 
                         <TouchableHighlight
-                            style={[commonStyle.center, styles.logoutSure]}
+                            style={[commonStyle.center, styles.sureBtn]}
                             onPress={onPress}
                             underlayColor='#04c1ae'
                         >
@@ -328,5 +329,31 @@ const styles = StyleSheet.create({
     },
     submitBox: {
         paddingHorizontal: 20
+    },
+    textCenter: {
+        textAlign: 'center'
+    },
+    bgWrap: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)"
+    },
+    contentContainer: {
+        width: 250,
+        borderRadius: 10,
+        padding: 25,
+        backgroundColor: "#fff"
+    },
+    sureBtn: {
+        width: 190,
+        height: 30,
+        borderRadius: 5,
+        backgroundColor: '#04c1ae',
+        marginTop: 20
+    },
+    updateBtnRightText: {
+        color: '#fff',
+        fontSize: 16
     }
 });

@@ -77,7 +77,7 @@
 
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
         <activity android:name=".MainActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
         </activity>
 

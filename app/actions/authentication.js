@@ -18,6 +18,7 @@ export const idcardUrlChanged = makeActionCreator(types.IDENTITY_CARD_CHANGED, '
 export const addrPickerChanged = makeActionCreator(types.ADDR_PICKER_CHANGED, 'visible');
 export const autErrMsgChanged = makeActionCreator(types.AUT_ERRMSG_CHANGED, 'err_msg');
 export const autSubmitModalChanged = makeActionCreator(types.AUT_SUBMIT_MODAL_CHANGED, 'submit_modal_visible');
+export const autInfoCleared = makeActionCreator(types.AUT_INFO_CLEARED);
 
 export function submitAuthentication(params) {
     return dispatch => {

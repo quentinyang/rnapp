@@ -44,6 +44,9 @@ function userInformation(state = Immutable.fromJS(initialState), action) {
         case types.IDENTITY_ID_CHANGED:
             return state.set('identity_card_id', action.identity_card_id);
             break;
+        case types.AUT_INFO_CLEARED:
+            return Immutable.fromJS(initialState);
+            break;
         default:
             return state;
     }
@@ -68,6 +71,9 @@ function autController(state = Immutable.fromJS(initialController), action) {
             return state.set('submit_modal_visible', action.submit_modal_visible);
         case types.AUT_ERRMSG_CHANGED:
             return state.set('err_msg', action.err_msg);
+            break;
+        case types.AUT_INFO_CLEARED:
+            return Immutable.fromJS(initialController);
             break;
         default:
             return state;
