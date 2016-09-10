@@ -20,6 +20,7 @@ import WithLabel from '../components/LabelTextInput';
 import ErrorMsg from '../components/ErrorMsg';
 import Pickers from '../components/Pickers';
 import CheckID from '../components/CheckID';
+import FormContainer from '../components/FormContainer';
 import {qiniuUpload} from '../components/QiniuUploader';
 import {imageSelected} from '../components/ImageSelected';
 import TouchableSubmit from '../components/TouchableSubmit';
@@ -45,7 +46,7 @@ export default class Authentication extends Component {
 
         return (
             <View style={commonStyle.container}>
-                <View>
+                <FormContainer scrollViewRef="scrollView">
                     <View style={[commonStyle.bgWhite, styles.boxTop]}>
                         <WithLabel
                             label='姓名'
@@ -111,7 +112,7 @@ export default class Authentication extends Component {
                             submitText='提交'
                         />
                     </View>
-                </View>
+                </FormContainer>
                 <SubmitModal
                     visible={controller.get('submit_modal_visible')}
                     onPress={this.submitSucModal}
