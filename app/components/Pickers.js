@@ -101,6 +101,7 @@ export default class Pickers extends Component {
     sureModal() {
         let {num} = this.props;
         let data = [];
+
         for(let i = 0; i < num; i++) {
             let key = '';
             if(i == 0) {
@@ -112,10 +113,14 @@ export default class Pickers extends Component {
                 let itemData = this.allData[key][j];
                 if(itemData.id == this.state['selectedOption' + i]) {
                     data.push(itemData);
+                    break;
+                } else {
+                    if(j == this.allData[key].length - 1) {
+                        data.push(this.allData[key][0]);
+                    }
                 }
             }
         }
-
         this.props.confirm(data);
         this.setState({modalVisible: false});
     }
