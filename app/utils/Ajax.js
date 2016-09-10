@@ -20,11 +20,11 @@ function status(response, resolve, reject) {
     }
 }
 
-var mobileAgent = (function() {
+var mobileAgent = function() {
         var infos = {
             app: 'FangYuan360',//app APP 名称
             av: deviceInfo.version,//APP 版本号
-            ccid: global.gccid,//用户选择的城市 id
+            ccid: global.gccid || "",//用户选择的城市 id
             gcid: '1',//定位到的城市 id
             ch: '',//发布的渠道 id
             lng: '',//经度
@@ -48,7 +48,7 @@ var mobileAgent = (function() {
         }
         return agent.join(';');
 
-})();
+};
 
 function _getHeader() {
     // Refer to: https://git.corp.angejia.com/service/design/wikis/Mobile-API/Spec
@@ -59,7 +59,7 @@ function _getHeader() {
             'uid': global.guid || '',
             'Angejia-Signature': '',// 签名信息
             'Angejia-Auth': global.gtoken,// 用户认证信息
-            'Angejia-MobileAgent': mobileAgent,// 移动设备信息
+            'Angejia-MobileAgent': mobileAgent(),// 移动设备信息
             'Angejia-CamelCase': '1',// JSON 数据使用驼峰形式的键
             'Angejia-Stringify': '1',// JSON 数据使用字符串形式的值
             'Angejia-Env': '',// 移动应用访问的 Mobile API 环境
