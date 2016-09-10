@@ -83,16 +83,19 @@ class InputRuleModal extends Component {
 export default class Home extends Component {
     constructor(props) {
         super(props);
-        let hasGetModal = false;
-        let hasGetRuleStatus = false;
+        this.hasGetModal = false;
+        this.hasGetRuleStatus = false;
+
         this.state = {
             isRefreshing: false
         };
+        this._ruleModalStatus();
         this.pageId = actionType.BA_HOME_PAGE;
         ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_ONVIEW, {"bp": this.props.route.bp});
     }
 
      _ruleModalStatus() {
+        let self = this;
         let {actions} = this.props;
         let key = common.APP_SHOW_RULE + guid;
 
@@ -105,6 +108,7 @@ export default class Home extends Component {
                     actions.fetchRuleModalStatus();
                     AsyncStorageComponent.save(key, today).catch((error) => {console.log(error)});
                 }
+                self.hasGetRuleStatus = true;
             })
             .catch((error) => {
                 console.log(error);
@@ -116,14 +120,9 @@ export default class Home extends Component {
         }
 
         let {baseInfo} = this.props;
-        if(baseInfo.get('couponModal').get('fetched')) {
+        if(baseInfo.get('couponModal').get('fetched') && this.hasGetRuleStatus) {
             this._setCurrentModal(homeConst.COUPON);
             this.hasGetModal = true;
-        }
-
-        if(!this.hasGetRuleStatus && nextProps.appConfig.get('isNewModal')) {
-            this._ruleModalStatus();
-            this.hasGetRuleStatus = true;
         }
     }
 
@@ -131,7 +130,6 @@ export default class Home extends Component {
         let {baseInfo, actions} = this.props;
         let modals = baseInfo.get('modals');
         let cur = '';
-
         switch(start) {
         case homeConst.SCORE:
             if(modals.includes(homeConst.SCORE)) {
@@ -186,7 +184,6 @@ export default class Home extends Component {
         } else if(cur == homeConst.RULE) {
             ActionUtil.setAction(actionType.BA_HOME_SENDRULE_ONVIEW);
         }
-
         actions.currentModalChanged(cur);
     }
 
@@ -195,7 +192,6 @@ export default class Home extends Component {
         let houseList = houseData.get('properties');
         let registerMoalInfo = baseInfo.get('scoreModal');
         let couponModalInfo = baseInfo.get('couponModal');
-
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
                 <WelfareModal
