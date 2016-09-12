@@ -6,6 +6,8 @@ const CONFIGS = {
     takePhotoButtonTitle: '拍照',
     chooseFromLibraryButtonTitle: '从手机相册选择',
     mediaType: 'photo',
+    maxWidth: 500,
+    maxHeight: 500,
     storageOptions: {
         skipBackup: true,
         path: 'images'

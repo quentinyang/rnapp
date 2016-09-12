@@ -162,7 +162,7 @@ class PickerContent extends Component {
         }
 
         return (
-            <View style={styles.pickerBox}>
+            <View style={[styles.pickerBox]}>
                 {picker}
             </View>
         );
@@ -201,7 +201,8 @@ var styles = StyleSheet.create({
     },
     pickerBox: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        height: Platform.OS == 'ios' ? null : 100,
     }
 });
 
