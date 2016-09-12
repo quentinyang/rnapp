@@ -18,6 +18,8 @@ import com.xinyi.fy360.getui.GeTuiManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.networkbench.agent.impl.NBSAppAgent;
+
 public class MainActivity extends ReactActivity {
     /**
      * Returns the name of the main component registered from JavaScript.
@@ -41,6 +43,8 @@ public class MainActivity extends ReactActivity {
         Log.d("GetuiSdkDemo init", "init instance");
         PushManager.getInstance().initialize(this.getApplicationContext());
         //}
+
+        NBSAppAgent.setLicenseKey(BuildConfig.TY_APPKEY_VALUE).withLocationServiceEnabled(true).start(this.getApplicationContext());
     }
 
     //检查hash

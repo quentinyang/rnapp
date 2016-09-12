@@ -21,6 +21,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		2D22FCAA1D6443880039C256 /* libGeTuiSdk-1.4.3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D22FCA91D6443880039C256 /* libGeTuiSdk-1.4.3.a */; };
+		2DC323C41D76E0AD0012260E /* tingyunApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC323C31D76E0AD0012260E /* tingyunApp.framework */; };
 		2DD7FB6A1CACCD2900FD56F7 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DD7FB691CACCD2900FD56F7 /* libRNDeviceInfo.a */; };
 		2DDF0ABB1CDC8F9E00D261BE /* AlipaySDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2DDF0AB91CDC8F9E00D261BE /* AlipaySDK.bundle */; };
 		2DDF0ABC1CDC8F9E00D261BE /* AlipaySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DDF0ABA1CDC8F9E00D261BE /* AlipaySDK.framework */; };
@@ -186,6 +187,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = fy360/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		2D22FCA91D6443880039C256 /* libGeTuiSdk-1.4.3.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libGeTuiSdk-1.4.3.a"; path = "../GtSdkLib/libGeTuiSdk-1.4.3.a"; sourceTree = "<group>"; };
+		2DC323C31D76E0AD0012260E /* tingyunApp.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = tingyunApp.framework; sourceTree = "<group>"; };
 		2DD7FB631CACCC4000FD56F7 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		2DD7FB691CACCD2900FD56F7 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRNDeviceInfo.a; path = "../../../../code/reading/ios/build/Build/Products/Debug-iphonesimulator/libRNDeviceInfo.a"; sourceTree = "<group>"; };
 		2DDF0AB91CDC8F9E00D261BE /* AlipaySDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlipaySDK.bundle; sourceTree = "<group>"; };
@@ -243,6 +245,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6630589E1CA0F91D00F15BB8 /* libz.tbd in Frameworks */,
+				6620FB9C1CAA91CD00BB2A3F /* SystemConfiguration.framework in Frameworks */,
+				6620FB981CAA91B500BB2A3F /* Security.framework in Frameworks */,
 				6620FB9E1CAA91E000BB2A3F /* CoreTelephony.framework in Frameworks */,
 				2DDF0ADA1CDC908F00D261BE /* CoreMotion.framework in Frameworks */,
 				2DDF0AD81CDC908100D261BE /* CFNetwork.framework in Frameworks */,
@@ -256,16 +261,14 @@
 				543246E61CC11A4400E24300 /* libGeTui.a in Frameworks */,
 				3BC13C281CBF702600D795FC /* libActionUtil.a in Frameworks */,
 				6620FB961CAA91AB00BB2A3F /* libsqlite3.tbd in Frameworks */,
-				6630589E1CA0F91D00F15BB8 /* libz.tbd in Frameworks */,
 				66C2DF561CAE6DC9003A7F7B /* libMobClickLibrary.a in Frameworks */,
 				6620FBA61CAA920100BB2A3F /* CoreBluetooth.framework in Frameworks */,
 				6620FBA41CAA91F800BB2A3F /* CoreLocation.framework in Frameworks */,
 				2DDF0ABC1CDC8F9E00D261BE /* AlipaySDK.framework in Frameworks */,
 				6620FBA21CAA91F000BB2A3F /* JavaScriptCore.framework in Frameworks */,
 				6620FBA01CAA91E900BB2A3F /* AVFoundation.framework in Frameworks */,
-				6620FB9C1CAA91CD00BB2A3F /* SystemConfiguration.framework in Frameworks */,
 				6620FB9A1CAA91BF00BB2A3F /* MobileCoreServices.framework in Frameworks */,
-				6620FB981CAA91B500BB2A3F /* Security.framework in Frameworks */,
+				2DC323C41D76E0AD0012260E /* tingyunApp.framework in Frameworks */,
 				6630589C1CA0F8F600F15BB8 /* libCodePush.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -449,6 +452,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				2DC323C31D76E0AD0012260E /* tingyunApp.framework */,
 				2DDF0AD91CDC908F00D261BE /* CoreMotion.framework */,
 				2DDF0AD71CDC908100D261BE /* CFNetwork.framework */,
 				2DDF0AD51CDC907900D261BE /* Foundation.framework */,
