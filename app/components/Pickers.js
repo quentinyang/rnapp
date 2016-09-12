@@ -1,9 +1,9 @@
 'use strict';
 
-import {React, Component, Text, View, StyleSheet, PixelRatio, Modal, Picker, TouchableOpacity} from 'nuke';
+import {React, Component, Text, View, StyleSheet, PixelRatio, Modal, Picker, TouchableOpacity, Platform} from 'nuke';
 
 import Dimensions from 'Dimensions';
-
+let commonStyle = require('../styles/main');
 var PickerItem = Picker.Item;
 
 export default class Pickers extends Component {
@@ -26,7 +26,7 @@ export default class Pickers extends Component {
 
         return (
             <Modal
-                animationType='slide'
+                animationType={Platform.OS === 'ios' ? 'slide' : 'none'}
                 transparent={true}
                 visible={this.props.visible}
                 onRequestClose={() => {}}>
@@ -35,10 +35,10 @@ export default class Pickers extends Component {
                     <View style={styles.modalContainer}>
                         <View style={styles.buttonView}>
                             <TouchableOpacity onPress={() => this.cancelModal()}>
-                                <View><Text>取消</Text></View>
+                                <View style={[commonStyle.center, styles.buttonItem]}><Text style={styles.buttonFont}>取消</Text></View>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => this.sureModal()}>
-                                <View><Text>确定</Text></View>
+                                <View style={[commonStyle.center, styles.buttonItem]}><Text style={styles.buttonFont}>确定</Text></View>
                             </TouchableOpacity>
                         </View>
                         <PickerContent
@@ -173,22 +173,31 @@ var styles = StyleSheet.create({
     basicContainer:{
         flex: 1,
         justifyContent: 'flex-end',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     modalContainer:{
         width:Dimensions.get('window').width,
         justifyContent: 'center',
         alignItems: 'center',
         padding:0,
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#fff',
     },
-    buttonView:{
+    buttonView: {
         width:Dimensions.get('window').width,
-        padding: 8,
-        borderTopWidth:0.5,
-        borderTopColor:'lightgrey',
+        height: 45,
+        borderTopWidth:1/PixelRatio.get(),
+        borderTopColor:'#d9d9d9',
+        backgroundColor: '#f8f8f8',
+        alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection:'row',
+    },
+    buttonItem: {
+        width: 60,
+        height: 45
+    },
+    buttonFont: {
+        color: '#04c1ae'
     },
     pickerBox: {
         flex: 1,
