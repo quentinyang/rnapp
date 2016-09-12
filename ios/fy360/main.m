@@ -16,7 +16,7 @@
 #ifdef DEBUG
 NSString * const TY_KEY = @"c89692155d5c4737948e4f8ca7ee0227";
 #else
-NSString * const TY_KEY = @"c89692155d5c4737948e4f8ca7ee0228";
+NSString * const TY_KEY = @"246aa4c7c5724ac1a7d25682c1532b0d";
 #endif
 
 int main(int argc, char * argv[]) {
