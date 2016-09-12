@@ -64,8 +64,10 @@ function _getHeader() {
             'Angejia-Stringify': '1',// JSON 数据使用字符串形式的值
             'Angejia-Env': '',// 移动应用访问的 Mobile API 环境
             'Angejia-Payload': '',// 返回内容结构（兼容设置）
-            'angejia_version': global.gver,
             'cid': global.gcid, // getui client id
+    }
+    if (global.gver) {
+        header.Cookie = 'angejia_version=' + global.gver;
     }
     console.log('Http Header', header);
     return header;
