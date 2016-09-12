@@ -20,16 +20,21 @@ export const autErrMsgChanged = makeActionCreator(types.AUT_ERRMSG_CHANGED, 'err
 export const autSubmitModalChanged = makeActionCreator(types.AUT_SUBMIT_MODAL_CHANGED, 'submit_modal_visible');
 export const autInfoCleared = makeActionCreator(types.AUT_INFO_CLEARED);
 
+let ActionUtil = require( '../utils/ActionLog');
+import * as actionType from '../constants/ActionLog';
+
 export function submitAuthentication(params) {
     return dispatch => {
         serviceAction(dispatch)({
             service: sendAuthenticationService,
             data: params,
             success: function () {
+                ActionUtil.setAction(actionType.BA_IDENTITY_SUBMIT_SUCCESS);
                 dispatch(autSubmitModalChanged(true));
                 dispatch(verifiedStatusChanged("1"));
             },
             error: function (err) {
+                ActionUtil.setActionWithExtend(actionType.BA_IDENTITY_SUBMIT_ERROR, {"error_type": err.msg || ""});
                 dispatch(autErrMsgChanged(err.msg));
             }
         });

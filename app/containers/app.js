@@ -136,7 +136,7 @@ class App extends Component {
 
     render() {
         let {hasSetRoute} = this.state;
-        let {appData, messageNotice, actionsApp} = this.props;
+        let {appData, messageNotice, actionsApp, appUserConfig} = this.props;
         let isAndroid = (Platform.OS == "android");
         // (isAndroid && appData.get('config').get('isCidLogin'))
         return (
@@ -217,6 +217,9 @@ class App extends Component {
                                 name: "auth",
                                 title: "身份认证",
                             });
+                        }
+                        if(appUserConfig.get('verifiedStatus') == '3') {
+                            ActionUtil.setAction(actionType.BA_IDENTITY_LOSE);
                         }
                     }}
                 />
@@ -367,7 +370,7 @@ class App extends Component {
                     hideNavBar: false
                 });
             }
-        }        
+        }
     }
 
     componentDidMount() {
@@ -537,6 +540,7 @@ class App extends Component {
                 break;
             case notifConst.VERIFIED_NOTICE: //用户认证结果提示
                 if(newNotifData.data.extras.result == "0") { //失败
+                    ActionUtil.setAction(actionType.BA_IDENTITY_BOXLOSE);
                     actionsApp.verifiedNoticeSet({
                         visible: true,
                         msg: "您的身份未通过认证\n请重新上传身份信息",
@@ -551,9 +555,9 @@ class App extends Component {
                             duration: Toast.durations.SHORT,
                             position: Toast.positions.CENTER
                         });
-                    }                    
+                    }
                     actionsApp.verifiedStatusChanged("2");
-                }                
+                }
                 break;
             default:
                 break;

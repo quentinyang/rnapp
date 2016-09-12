@@ -33,6 +33,8 @@ export default class Authentication extends Component {
         super(props);
         this.business_card_info = null;
         this.id_card_info = null;
+        this.pageId = actionType.BA_IDENTITY;
+        ActionUtil.setActionWithExtend(actionType.BA_IDENTITY_OPEN, {"bp": this.props.route.bp});
     }
 
     render() {
@@ -54,6 +56,7 @@ export default class Authentication extends Component {
                             placeholder='请输入真实姓名'
                             underlineColorAndroid = 'transparent'
                             maxLength={10}
+                            onFocus={() => ActionUtil.setAction(actionType.BA_IDENTITY_NAME)}
                             onChangeText={(v) => {this.singleAction('realNameChanged', v)}}
                         />
                         <WithLabel
@@ -62,6 +65,7 @@ export default class Authentication extends Component {
                             placeholder='请输入身份证号'
                             underlineColorAndroid = 'transparent'
                             maxLength={18}
+                            onFocus={() => ActionUtil.setAction(actionType.BA_IDENTITY_CARD_NUMBER)}
                             onChangeText={(v) => {this.singleAction('IDCardNumChanged', v)}}
                         />
                         <WithLabel
@@ -71,7 +75,7 @@ export default class Authentication extends Component {
                             special={true}
                             specialText1={userinfo.get('district_name') && userinfo.get('block_name') ? userinfo.get('district_name') + '-' + userinfo.get('block_name') : ''}
                             underlineColorAndroid = 'transparent'
-                            onClick={() => {this.singleAction('addrPickerChanged', true)}}
+                            onClick={() => {this.singleAction('addrPickerChanged', true); ActionUtil.setAction(actionType.BA_IDENTITY_AREA)}}
                         />
                     </View>
                     {district_block_list ?
@@ -92,13 +96,13 @@ export default class Authentication extends Component {
                             labelDesc='名片正面朝上'
                             source={userinfo.get('business_card_url')}
                             otherStyle={styles.borderBottom}
-                            upCard={() => this.upCard('business_card')}
+                            upCard={() => this.upCard('business_card', 'BA_IDENTITY_CARD_VISITING')}
                         />
                         <UploadCard
                             label='上传身份证'
                             labelDesc='身份证正面朝上'
                             source={userinfo.get('identity_card_url')}
-                            upCard={() => this.upCard('id_card')}
+                            upCard={() => this.upCard('id_card', 'BA_IDENTITY_CARD_RESIDENT')}
                         />
                     </View>
                     <ErrorMsg
@@ -140,8 +144,9 @@ export default class Authentication extends Component {
         actions[action](value);
     }
 
-    upCard(state) {
+    upCard(state, log) {
         let {actions} = this.props;
+        ActionUtil.setAction(actionType[log]);
         this.timer = setTimeout(() => {
             actions.autErrMsgChanged('图片加载中，请稍等...');
         }, 3000);
@@ -174,6 +179,7 @@ export default class Authentication extends Component {
     handleSubmit = () => {
         let {userinfo, actions, actionsApp} = this.props;
         let user = userinfo.toJS();
+        ActionUtil.setAction(actionType.BA_IDENTITY_SUBMIT);
         if(!this.checkForm(userinfo)) return;
         actionsApp.appLoadingChanged(true);
         var arr = [];
