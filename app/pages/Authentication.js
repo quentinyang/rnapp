@@ -173,6 +173,7 @@ export default class Authentication extends Component {
 
     handleSubmit = () => {
         let {userinfo, actions, actionsApp} = this.props;
+        let user = userinfo.toJS();
         if(!this.checkForm(userinfo)) return;
         actionsApp.appLoadingChanged(true);
         var arr = [];
@@ -182,22 +183,27 @@ export default class Authentication extends Component {
             this.upload(arr)
             .then((response) => {
                 actionsApp.appLoadingChanged(false);
-                let user = userinfo.toJS();
                 let data = {...user, ...response};
                 actions.submitAuthentication(data);
             })
             .catch((err) => {
+                actionsApp.appLoadingChanged(false);
                 actions.autErrMsgChanged(err);
             });
+        } else {
+            actionsApp.appLoadingChanged(false);
+            actions.submitAuthentication(user);
         }
     };
 
     upload = async function (data) {
         let {actions} = this.props;
         let imgObj = {};
-        for(var i = 0; i < data.length; i++) {
+        for(let i = 0; i < data.length; i++) {
             var value = await qiniuUpload(data[i].url);
             imgObj[data[i].id] = value.id;
+            var tempKey = data[i].id.split('_')[0];
+            actions[tempKey + 'IdChanged'](value.id);  //七牛返回图片id后走action
         }
         return imgObj;
     };
