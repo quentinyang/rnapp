@@ -544,7 +544,14 @@ class App extends Component {
                     });
                     actionsApp.verifiedStatusChanged("3");
                 } else if(newNotifData.data.extras.result == "1") { //成功
-                    actionsApp.verifiedResultSet(Object.assign({visible: true}, newNotifData.data.extras));
+                    if(newNotifData.data.extras.welfare_cards.length) {
+                        actionsApp.verifiedResultSet(Object.assign({visible: true}, newNotifData.data.extras));
+                    } else {
+                        Toast.show('您的身份通过认证审核', {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.CENTER
+                        });
+                    }                    
                     actionsApp.verifiedStatusChanged("2");
                 }                
                 break;
