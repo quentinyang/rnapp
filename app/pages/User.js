@@ -29,6 +29,7 @@ import SettingContainer from '../containers/SettingContainer';
 import ScoreListContainer from '../containers/ScoreListContainer';
 import WelfareContainer from '../containers/WelfareContainer';
 import WelfareModal from '../components/WelfareModal';
+import MessageNoticeModal from '../components/MessageNoticeModal';
 import Toast from 'react-native-root-toast';
 import Immutable from 'immutable';
 let ActionUtil = require('../utils/ActionLog');
@@ -284,7 +285,7 @@ class UserAccount extends Component {
     }
 
     render() {
-        let {userProfile, withdrawData} = this.props;
+        let {userProfile, withdrawData, messageNotice, navigator} = this.props;
 
         return (
             <View style={styles.accountSection}>
@@ -319,8 +320,24 @@ class UserAccount extends Component {
 
     goCharge() {
         ActionUtil.setAction(actionType.BA_MINE_RECHANGE);
-        let {navigator, appConfig} = this.props;
-        if (appConfig.get('showRecharge')) {
+        let {navigator, appConfig, appUserConfig, actionsApp} = this.props;
+
+        if(appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0") {
+            ActionUtil.setActionWithExtend(actionType.BA_MINE_RECHANGE_ENSURE, {"uid": global.guid});
+            actionsApp.verifiedNoticeSet({
+                visible: true,
+                msg: "充值请先进行身份认证",
+                from: "charge",
+                hideClose: false
+            });
+        } else if(appUserConfig.get('verifiedStatus') == "3") {
+            actionsApp.verifiedNoticeSet({
+                visible: true,
+                msg: "您的身份未通过认证\n请重新上传身份信息",
+                from: "charge",
+                hideClose: true
+            });
+        } else if (appConfig.get('showRecharge')) {
             navigator.push({
                 component: RechargeContainer,
                 name: 'recharge',
@@ -335,9 +352,23 @@ class UserAccount extends Component {
 
     goWithdraw(value) {
         ActionUtil.setAction(actionType.BA_MINE_CASH);
-        let {navigator, actions} = this.props;
+        let {navigator, actions, appUserConfig, actionsApp} = this.props;
+        let verfifiedStatus = appUserConfig.get('verifiedStatus');
 
-        if (parseInt(value.score) < parseInt(value.min_price)) {
+        if(verfifiedStatus != "2") {
+            if(verfifiedStatus == "0") {
+                ActionUtil.setActionWithExtend(actionType.BA_MINE_IDENTITY_REVIEWBOX, {"uid": global.guid});
+            } else if(verfifiedStatus == "1") {
+                ActionUtil.setActionWithExtend(actionType.BA_MINE_IDENTITY_NOREVIEWBOX, {"uid": global.guid});
+            }
+            
+            actionsApp.verifiedNoticeSet({
+                visible: true,
+                msg: verfifiedStatus == "0" ? "提现请先进行身份认证" : (verfifiedStatus == "1" ? "您的身份信息审核中\n暂不可提现" : "您的身份未通过认证\n请重新上传身份信息"),
+                from: verfifiedStatus == "0" ? "noVerify" : (verfifiedStatus == "1" ? "inVerify" : ""),
+                hideClose: verfifiedStatus == "3" ? true : false
+            });
+        } else if (parseInt(value.score) < parseInt(value.min_price)) {
             Alert.alert('', '余额超过' + value.min_price + '元才能提现哦', [{text: '知道了'}]);
         } else if (value.name && value.alipay_account && value.identity_card_number) {
             navigator.push({

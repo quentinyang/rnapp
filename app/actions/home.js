@@ -4,7 +4,6 @@ import * as types from '../constants/Home';
 import {fetchAttentionHouseListService, fetchAttentionAppendHouseListService, fetchAttentionPrependHouseListService, fetchHouseNewCountService} from '../service/houseListService';
 
 import {fetchAttentionBlockAndCommunityService} from '../service/blockService';
-import {fetchScoreModalStatusService} from '../service/userService'
 import {fetchCouponStatusService} from '../service/cardService';
 import {fetchRuleStatusService} from '../service/configService';
 import {makeActionCreator, serviceAction} from './base';
@@ -14,7 +13,6 @@ export const houseAttentionAppendFetched = makeActionCreator(types.HOUSE_ATTENTI
 export const houseAttentionPrependFetched = makeActionCreator(types.HOUSE_ATTENTION_PREPEND_FETCHED, 'houseList');
 export const clearHomePage = makeActionCreator(types.CLEAR_HOME_PAGE);
 
-export const scoreModalStatusFetched = makeActionCreator(types.SCORE_MODAL_STATUS, 'status');
 export const couponModalStatusFetched = makeActionCreator(types.COUPON_MODAL_STATUS, 'status');
 export const ruleModalStatusFetched = makeActionCreator(types.RULE_MODAL_STATUS, 'status');
 
@@ -87,27 +85,7 @@ export function fetchAttentionBlockAndCommunity(params) {
 
     }
 }
-//注册领福利卡
-export function fetchScoreModalStatus() {
-    return dispatch => {
-        serviceAction(dispatch)({
-            service: fetchScoreModalStatusService,
-            success: function (oData) {
-                if (Number(oData.is_notify)) {
-                    dispatch(pushShowModal(types.SCORE));
-                }
 
-                dispatch(scoreModalStatusFetched({
-                    fetched: true,
-                    visible: Number(oData.is_notify) ? true : false,
-                    welfareArr: oData.welfare_cards || []
-                }))
-            },
-            error: function (oData) {
-            }
-        })
-    }
-}
 //送看房卡
 export function fetchCouponModalStatus() {
     return dispatch => {

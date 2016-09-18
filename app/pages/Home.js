@@ -55,7 +55,7 @@ class InputRuleModal extends Component {
                         <Text style={[styles.h3, styles.mediumFont, styles.giftDay, styles.orange]}>发房新规则</Text>
 
                         <Text style={styles.ruleText}>1、发布房源的电话每被查看1次获得<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('looked_points')}</Text>积分</Text>
-                        <Text style={styles.ruleText}>2、每套房源审核通过，平台补贴<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('input_points')}</Text>积分<Text style={[styles.h6, styles.grey]}>（补贴只是暂时的，之后会有调整）</Text></Text>
+                        <Text style={styles.ruleText}>2、每套房源审核通过，平台补贴<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('input_points')}</Text>积分<Text style={[styles.h6, styles.grey]}>（每天补贴5套房源）</Text></Text>
                         <Text style={styles.ruleText}>3、房源审核通过，得<Text style={[styles.orange, styles.mediumFont]}>{modalInfo.get('experience')}</Text>经验</Text>
 
                         <TouchableHighlight
@@ -83,16 +83,19 @@ class InputRuleModal extends Component {
 export default class Home extends Component {
     constructor(props) {
         super(props);
-        let hasGetModal = false;
-        let hasGetRuleStatus = false;
+        this.hasGetModal = false;
+        this.hasGetRuleStatus = false;
+
         this.state = {
             isRefreshing: false
         };
+        this._ruleModalStatus();
         this.pageId = actionType.BA_HOME_PAGE;
         ActionUtil.setActionWithExtend(actionType.BA_HOME_PAGE_ONVIEW, {"bp": this.props.route.bp});
     }
 
      _ruleModalStatus() {
+        let self = this;
         let {actions} = this.props;
         let key = common.APP_SHOW_RULE + guid;
 
@@ -105,6 +108,7 @@ export default class Home extends Component {
                     actions.fetchRuleModalStatus();
                     AsyncStorageComponent.save(key, today).catch((error) => {console.log(error)});
                 }
+                self.hasGetRuleStatus = true;
             })
             .catch((error) => {
                 console.log(error);
@@ -116,14 +120,9 @@ export default class Home extends Component {
         }
 
         let {baseInfo} = this.props;
-        if(baseInfo.get('scoreModal').get('fetched') && baseInfo.get('couponModal').get('fetched')) {
-            this._setCurrentModal(homeConst.SCORE);
+        if(baseInfo.get('couponModal').get('fetched') && this.hasGetRuleStatus) {
+            this._setCurrentModal(homeConst.COUPON);
             this.hasGetModal = true;
-        }
-
-        if(!this.hasGetRuleStatus && nextProps.appConfig.get('isNewModal')) {
-            this._ruleModalStatus();
-            this.hasGetRuleStatus = true;
         }
     }
 
@@ -131,7 +130,6 @@ export default class Home extends Component {
         let {baseInfo, actions} = this.props;
         let modals = baseInfo.get('modals');
         let cur = '';
-
         switch(start) {
         case homeConst.SCORE:
             if(modals.includes(homeConst.SCORE)) {
@@ -186,27 +184,16 @@ export default class Home extends Component {
         } else if(cur == homeConst.RULE) {
             ActionUtil.setAction(actionType.BA_HOME_SENDRULE_ONVIEW);
         }
-
         actions.currentModalChanged(cur);
     }
 
     render() {
-        let {houseData, baseInfo, appConfig, actions, navigator} = this.props;
+        let {houseData, baseInfo, appConfig, appUserConfig, actions, navigator} = this.props;
         let houseList = houseData.get('properties');
         let registerMoalInfo = baseInfo.get('scoreModal');
         let couponModalInfo = baseInfo.get('couponModal');
-
         return (
             <View style={[styles.flex, styles.pageBgColor]}>
-                <WelfareModal
-                    isVisible={baseInfo.get('currentModal') == homeConst.SCORE}
-                    title="注册成功"
-                    subTitle={registerMoalInfo.get('welfareArr').size}
-                    welfareData={registerMoalInfo.get('welfareArr')}
-                    closeModal={this._closeModal.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_DELETE)}
-                    goPage={this._goCoupon.bind(this, homeConst.COUPON, actionType.BA_FIRSTOPEN_GETSOON, actionType.BA_FIRSTOPEN_RETURN)}
-                />
-
                 <WelfareModal
                     isVisible={baseInfo.get('currentModal') == homeConst.COUPON}
                     title={"恭喜您获得" + couponModalInfo.get('welfareArr').size + "张"}
@@ -227,7 +214,7 @@ export default class Home extends Component {
 
                 <View style={styles.searchWrap}>
                     <View style={[styles.searchBox, styles.row, styles.alignItems]}>
-                        <Text style={[styles.searchText, styles.searchTextPadding]}>上海</Text>
+                        <Text style={[styles.searchText, styles.searchTextPadding]}>{appUserConfig.get('city').get('name') || ""}</Text>
                         <TouchableWithoutFeedback onPress={this._onHandlePress.bind(null, 'search')}>
                             <View
                                 style={[styles.flex, styles.searchBtn, styles.alignItems, styles.justifyContent, styles.row]}>
@@ -280,7 +267,6 @@ export default class Home extends Component {
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionHouseList({});
             actions.fetchAttentionBlockAndCommunity({});
-            actions.fetchScoreModalStatus();
             actions.fetchHouseNewCount();
             actions.fetchCouponModalStatus();
             //actions.fetchRuleModalStatus();

@@ -98,8 +98,8 @@ android {
         applicationId "com.xinyi.fy360"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 37
-        versionName "2.0.0"
+        versionCode 38
+        versionName "2.2.0"
         // dex突破65535的限制
         multiDexEnabled true
         ndk {
@@ -179,7 +179,7 @@ android {
 
     productFlavors {
         dev {
-            buildConfigField "String", "API_HOST", "\"http://360.master.dev.angejia.com/service/\""
+            buildConfigField "String", "API_HOST", "\"http://360.master.test.angejia.com/service/\""
         }
 
         //渠道
@@ -254,7 +254,10 @@ dependencies {
     // GeTui
     compile files('libs/GetuiSDK2.9.0.0.jar')
     compile files('libs/GetuiExt-2.0.3.jar')
-    compile 'com.android.support:support-v4'
+    //compile 'com.android.support:support-v4'
+
+    //upload image
+    compile project(':react-native-image-picker')
 
     // custom getui
     compile project(':getui')

@@ -20,6 +20,8 @@ import com.facebook.react.shell.MainReactPackage;
 import com.xinyi.fy360.getui.GeTuiManager;
 import com.xinyi.fy365.deviceid.DeviceIDManager;
 
+import com.imagepicker.ImagePickerPackage;
+
 /**
  * Created by renjieguan on 16/4/11.
  */
@@ -79,6 +81,7 @@ public class MyApp extends Application implements ReactApplication {
                     new AliPackage(),
                     new RNAudioPlayer(),
                     new DeviceIDManager(),
+                    new ImagePickerPackage(),
                     new CodePush(BuildConfig.CODE_PUSH_KEY, MyApp.this, BuildConfig.DEBUG)
             );
         }

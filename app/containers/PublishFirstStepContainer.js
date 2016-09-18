@@ -20,9 +20,11 @@ class PublishFirstStepContainer extends Component {
 }
 
 function mapStateToProps(state) {
-    const {houseInput} = state;
+    const {houseInput, app} = state;
+
     return {
-        houseInput
+        houseInput,
+        appUserConfig: app.appUserConfig
     }
 }
 

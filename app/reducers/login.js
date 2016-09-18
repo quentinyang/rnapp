@@ -14,7 +14,8 @@ let initialState = {
         'code_text': '获取验证码',
         'num': 60,
         'err_msg': '',
-    }
+    },
+    userData: {}
 };
 
 function formInfo(state = Immutable.fromJS(initialState.formData), action) {
@@ -47,7 +48,18 @@ function controllerInfo(state = Immutable.fromJS(initialState.controllerData), a
     }
 }
 
+function userData(state = Immutable.fromJS(initialState.userData), action) {
+    switch(action.type) {
+        case types.USER_DATA_FETCHED:
+            return Immutable.fromJS(action.data);
+            break;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     formInfo,
-    controllerInfo
+    controllerInfo,
+    userData
 });

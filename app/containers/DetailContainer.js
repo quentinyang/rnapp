@@ -4,6 +4,7 @@ import {React, Component} from 'nuke';
 import { connect } from 'react-redux';
 import { bindActionCreators} from 'redux';
 import * as actions from '../actions/detail';
+import * as actionsApp from '../actions/app';
 import * as actionsHouseList from '../actions/houseList';
 import * as actionsHome from '../actions/home';
 import * as actionsNavigation from '../actions/navigation';
@@ -24,7 +25,10 @@ class DetailContainer extends Component {
 
 function mapStateToProps(state) {
     const {baseInfo, houseData, callInfo} = state.detail;
+    const {appUserConfig, messageNotice} = state.app;
     return {
+        appUserConfig: appUserConfig,
+        messageNotice: messageNotice,
         baseInfo: baseInfo,
         sameCommunityList: houseData,
         callInfo: callInfo
@@ -34,6 +38,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(actions, dispatch),
+        actionsApp: bindActionCreators(actionsApp, dispatch),
         actionsHome: bindActionCreators(actionsHome, dispatch),
         actionsHouseList: bindActionCreators(actionsHouseList, dispatch),
         actionsNavigation: bindActionCreators(actionsNavigation, dispatch)

@@ -18,7 +18,7 @@ import Countdown from '../components/Countdown'
 import {loginService, sendCodeService} from '../service/userService';
 import TabViewContainer from '../containers/TabViewContainer';
 import TouchWebContainer from "../containers/TouchWebContainer";
-
+import SelectCityContainer from '../containers/SelectCityContainer';
 import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer';
 import {parseUrlParam} from '../utils/CommonUtils';
 import DeviceInfo from 'react-native-device-info';
@@ -234,12 +234,31 @@ class Login extends Component {
                 AsyncStorageComponent.save(common.USER_ID, oData.user_id || "");
                 ActionUtil.setUid(oData.user_id || "");
                 setLoginDays(oData.user_id);
+                actions.userDataFetched({
+                    setAttention: Number(oData.is_select_attention) ? true : false
+                });
                 actionsApp.setSearchHistory(oData.user_id || "0");
                 actionsApp.appLoadingChanged(false);
                 gtoken = oData.token;
                 guid = oData.user_id;
                 actionsApp.setAppUserConfig();
-                if(oData.is_enter_attention_page) {
+                if(oData.is_select_city == "0") {
+                    navigator.push({
+                        component: SelectCityContainer,
+                        name: 'selectCity',
+                        title: '选择城市',
+                        hideNavBar: false,
+                        bp: this.pageId
+                    });
+                } else if(oData.is_select_attention == "0") {
+                    navigator.push({
+                        component: AttentionBlockSetContainer,
+                        name: 'AttentionBlockSetContainer',
+                        title: '',
+                        hideNavBar: false,
+                        bp: this.pageId
+                    });
+                } else {
                     navigator.resetTo({
                         component: TabViewContainer,
                         name: 'home',
@@ -252,14 +271,6 @@ class Login extends Component {
                         let goRoute = routes[params.name] ? Object.assign(routes[params.name], params) : null;
                         goRoute && navigator.push(goRoute);
                     }
-                } else {
-                    navigator.resetTo({
-                        component: AttentionBlockSetContainer,
-                        name: 'AttentionBlockSetContainer',
-                        title: '设置我的关注',
-                        hideNavBar: true,
-                        bp: this.pageId
-                    });
                 }
             })
             .catch((error) => {

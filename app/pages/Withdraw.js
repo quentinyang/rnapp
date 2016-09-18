@@ -108,8 +108,17 @@ export default class Withdraw extends Component {
             );
         })
         .catch((error) => {
-            actionsApp.appLoadingChanged(false);
-            actions.withdrawErrMsg(error.msg);
+            if(error && error.type && error.type == "1") {
+                actionsApp.verifiedNoticeSet({
+                    visible: true,
+                    msg: "您的身份未通过认证\n请重新上传身份信息",
+                    from: "",
+                    hideClose: true
+                });
+            } else {
+                actionsApp.appLoadingChanged(false);
+                actions.withdrawErrMsg(error.msg);
+            }
         })
     };
 }

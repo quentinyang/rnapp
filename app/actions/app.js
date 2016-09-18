@@ -1,9 +1,11 @@
 'use strict';
 
+let ActionUtil = require( '../utils/ActionLog');
 import * as types from '../constants/App';
 import {makeActionCreator, serviceAction} from './base';
 import {setWebStartConfigService, deletePushService, setConfigService, setUserConfigService} from '../service/configService';
 import AsyncStorageComponent from '../utils/AsyncStorageComponent';
+import * as common from '../constants/Common';
 
 export const webAuthentication = makeActionCreator(types.WEB_AUTHENTICATION, 'auth');
 export const webNetWorkError = makeActionCreator(types.WEB_NETWORK_ERROR, 'msg');
@@ -27,12 +29,21 @@ export const appLoadingChanged = makeActionCreator(types.APP_LOADING_CHANGED, 'v
 
 export const netWorkChanged = makeActionCreator(types.APP_NETWORK_CHANGED, 'net');  //网络状况改变
 export const msgNoticeGeted = makeActionCreator(types.MESSAGE_NOTICE_GETED, 'message');
+export const msgNoticeVisibleChanged = makeActionCreator(types.MESSAGE_NOTICE_VISIBLE_CHANGED, 'visible');
 export const forceUpdateGeted = makeActionCreator(types.FORCE_UPDATE_GETED);
 
 export const appSignInChanged = makeActionCreator(types.APP_SIGNIN_CHANGED, 'signIn');
 
 export const levelPushed = makeActionCreator(types.LEVEL_PUSHED, 'data');
 export const levelModalChanged = makeActionCreator(types.NEW_LEVEL_MODAL_CHANGED, 'visible');
+
+export const verifiedNoticeSet = makeActionCreator(types.VERIFIED_NOTICE_SET, 'data');
+export const verifiedNoticeVisibleChanged = makeActionCreator(types.VERIFIED_NOTICE_VISIBLE_CHANGED, 'visible');
+
+export const verifiedResultSet = makeActionCreator(types.VERIFIED_RESULT_SET, 'data');
+export const verifiedResultVisibleChanged = makeActionCreator(types.VERIFIED_RESULT_VISIBLE_CHANGED, 'visible');
+export const curCityChanged = makeActionCreator(types.APP_CITY_CHANGED, 'city');
+export const verifiedStatusChanged = makeActionCreator(types.VERIFIED_STATUS_CHANGED, 'status');
 
 export function clickBack(name) {
     return dispatch => {
@@ -93,8 +104,20 @@ export function setAppUserConfig() {  //获取登录后的配置
         serviceAction(dispatch)({
             service: setUserConfigService,
             success: function(oData) {
+                if(global.gccid != oData.city.id) {
+                    ActionUtil.setCcid(oData.city.id);
+                    global.gccid = oData.city.id;
+                    AsyncStorageComponent.save(common.CITY_ID, oData.city.id).catch((error) => {console.log(error);});
+                }
+
+                //oData.is_new = true;
                 dispatch(appUserConfig({
-                    isSignIn: Number(oData.is_signed_in) ? true : false
+                    isSignIn: Number(oData.is_signed_in) ? true : false,
+                    isNew: Number(oData.is_new) ? true : false,
+                    verifiedStatus: oData.verified_status || "0",
+                    isSelectCity: Number(oData.is_select_city) ? true : false,
+                    isSelectAttention: Number(oData.is_select_attention) ? true : false,
+                    city: oData.city || {}
                 }));
             },
             error: function(oData) {

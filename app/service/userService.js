@@ -21,10 +21,6 @@ module.exports=function(){
         return ajax.get(urls().user.alipayStatus);
     }
 
-    function fetchScoreModalStatusService() {
-        return ajax.get(urls().user.isFirst)
-    }
-
     function withdrawService(data) {
         return ajax.post(urls().user.withdraw, data);
     }
@@ -57,18 +53,31 @@ module.exports=function(){
         });
     }
 
+    function getAuthenticationService() {
+        return ajax.get(urls().user.getAut);
+    }
+
+    function sendAuthenticationService(params) {
+        return ajax.post(urls().user.postAut, {
+            body: params
+        });
+    }
+
+
+
     return {
         sendCodeService: sendCodeService,
         loginService: loginService,
         profileService: getUserProfile,
         getUserAlipayStatus: getUserAlipayStatus,
-        fetchScoreModalStatusService: fetchScoreModalStatusService,
         withdrawService: withdrawService,
         alipayLoginService: alipayLoginService,
         scoreListService: scoreListService,
         getSignInInfo: getSignInInfo,
         signInStatusService: signInStatusService,
         expRuleService: expRuleService,
-        userInputListService: userInputListService
+        userInputListService: userInputListService,
+        getAuthenticationService: getAuthenticationService,
+        sendAuthenticationService: sendAuthenticationService
     };
 }();

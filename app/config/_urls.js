@@ -25,7 +25,6 @@ let urls = {
         sendCode: HOST + 'passport/login/sms',
         login: HOST + 'passport/login',
         profile: HOST + 'user/profile',
-        isFirst: HOST + 'point/notify',
         alipayStatus: HOST + 'user/binding/alipay/status',
         withdraw: HOST + 'withdrawals',
         scoreList: HOST + 'my/account/flow',
@@ -36,7 +35,11 @@ let urls = {
 
         expRule: HOST + 'user/level/rule',
 
-        inputList: HOST + 'user/house/checked/success/list'
+        inputList: HOST + 'user/house/checked/success/list',
+
+        getAut: HOST + 'user/authentication',
+        postAut: HOST + 'verify/submit'
+
     },
     house: {
         list: HOST + 'property-list',
@@ -54,6 +57,10 @@ let urls = {
         newCount: HOST + 'property/new/count',
         baseDuplicate: HOST + 'house/duplicate',
         allowToInput: HOST + 'house/can/input'
+    },
+    city: {
+        list: HOST + 'get/cities',
+        set: HOST + 'city/set'
     },
     blocks: {
         attention: HOST + 'get-attention-block',
@@ -88,7 +95,8 @@ let urls = {
     card: {
         welfare: HOST + 'my-welfare-cards',
         getNewWelfare: HOST + 'my-welfare-card/latest'
-    }
+    },
+    token: HOST + 'storage-tokens'
 }
 
 gDebug && AsyncStorageComponent.multiGet([common.API_HOST, common.APP_VERSION])

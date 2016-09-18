@@ -3,32 +3,28 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/user';
+import * as actions from '../actions/attentionBlockSet';
 import * as actionsApp from '../actions/app';
-import User from '../pages/User';
+import SelectCity from '../pages/SelectCity';
 
-class UserContainer extends Component {
+class SelectCityContainer extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-            <User {...this.props}/>
+            <SelectCity {...this.props} />
         );
     }
 }
 
 function mapStateToProps(state) {
-    const {appConfig, appUserConfig, messageNotice} = state.app;
-    const {userProfile, userControlData, signInInfo} = state.user;
+    let {cityInfo} = state.attentionBlockSet;
+    let {userData} = state.login;
     return {
-        userProfile,
-        userControlData,
-        signInInfo,
-        appConfig,
-        appUserConfig,
-        messageNotice
+        cityInfo: cityInfo,
+        userData: userData
     }
 }
 
@@ -39,4 +35,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectCityContainer);

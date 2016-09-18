@@ -3,32 +3,28 @@
 import {React, Component} from 'nuke';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actions from '../actions/user';
+import * as actions from '../actions/authentication';
 import * as actionsApp from '../actions/app';
-import User from '../pages/User';
+import Authentication from '../pages/Authentication';
 
-class UserContainer extends Component {
+class AuthenticationContainer extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
         return (
-            <User {...this.props}/>
+            <Authentication {...this.props}/>
         );
     }
 }
 
 function mapStateToProps(state) {
-    const {appConfig, appUserConfig, messageNotice} = state.app;
-    const {userProfile, userControlData, signInInfo} = state.user;
+    const {userInformation, autController} = state.aut;
+
     return {
-        userProfile,
-        userControlData,
-        signInInfo,
-        appConfig,
-        appUserConfig,
-        messageNotice
+        userinfo: userInformation,
+        controller: autController
     }
 }
 
@@ -39,4 +35,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthenticationContainer);

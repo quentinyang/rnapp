@@ -55,7 +55,7 @@ export default class HouseInputSuccess extends Component {
                         <Text style={styles.grayColor}>发房规则：</Text>
                         <Text style={styles.grayColor}>1、发布房源的电话每被查看1次获得<Text style={styles.fontOrange}>{data.looked_points}</Text>积分</Text>
                         <Text style={styles.grayColor}>2、每套房源审核通过，平台补贴<Text style={styles.fontOrange}>{data.money}</Text>积分</Text>
-                        <Text style={[styles.ruleSub, styles.grayColor]}>（补贴只是暂时的，之后会有调整）</Text>
+                        <Text style={[styles.ruleSub, styles.grayColor]}>（每天补贴5套房源）</Text>
                         <Text style={styles.grayColor}>3、房源审核通过，得<Text style={styles.fontOrange}>{data.experience}</Text>经验</Text>
                     </View> : null
                 }

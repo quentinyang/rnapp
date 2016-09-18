@@ -1,7 +1,7 @@
 'use strict';
 
 import * as types from '../constants/AttentionBlockSet';
-import {fetchAttentionBlockSetService, enterAttentionBlockSetService} from '../service/blockService';
+import {fetchAttentionBlockSetService, cityListService} from '../service/blockService';
 import {makeActionCreator, serviceAction} from './base';
 
 export const attentionBlockSetFetched = makeActionCreator(types.ATTENTION_BLOCK_SET_FETCHED, 'blockSet');
@@ -10,6 +10,10 @@ export const attentionBlockSetDeleted = makeActionCreator(types.ATTENTION_BLOCK_
 export const attentionBlockSetEntered = makeActionCreator(types.ATTENTION_BLOCK_SET_ENTERED, 'status');
 
 export const attentionBlockSetCleared = makeActionCreator(types.ATTENTION_BLOCK_SET_CLEAR);
+export const attentionCleared = makeActionCreator(types.ATTENTION_CLEAR);
+
+export const cityListFetched = makeActionCreator(types.CITY_LIST_FETCHED, 'list');
+export const curCityChanged = makeActionCreator(types.CUR_CITY_CHANGED, 'city');
 
 export function fetchAttentionBlockSet() {
     return dispatch => {
@@ -24,16 +28,26 @@ export function fetchAttentionBlockSet() {
     }
 }
 
-export function enterAttentionBlockSet() {
+export function getCityList() {
     return dispatch => {
         serviceAction(dispatch)({
-            service: enterAttentionBlockSetService,
+            service: cityListService,
             success: function(oData) {
-                dispatch(attentionBlockSetEntered(oData))
+                // oData.cities = [
+                //     {
+                //         "id": "1",
+                //         "name": "北京"
+                //     },
+                //     {
+                //         "id": "0",
+                //         "name": "上海"
+                //     }
+                // ];
+                dispatch(cityListFetched(oData.cities || []));
             },
-            error: function(oData) {
-                console.log('put请求报错，不影响页面？', oData)
+            error: function() {
+                
             }
-        })
+        });
     }
 }

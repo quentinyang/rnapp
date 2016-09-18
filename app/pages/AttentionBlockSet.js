@@ -11,7 +11,6 @@ import * as actionType from '../constants/ActionLog'
 export default class AttentionBlockSet extends Component {
     constructor(props) {
         super(props);
-
         this.pageId = actionType.BA_LOGFOCUS_AREA;
         ActionUtil.setActionWithExtend(actionType.BA_LOGFOCUS_AREA_ONVIEW, {"bp": this.props.route.bp});
     }
@@ -24,13 +23,9 @@ export default class AttentionBlockSet extends Component {
 
         return (
             <View style={[styles.flex, styles.pageMarginBottom]}>
-                <View style={[styles.right, styles.marginTop]}>
-                    <TouchableWithoutFeedback onPress={this._skip}>
-                        <View><Text style={[styles.topSubHeader, styles.skip]}>跳过</Text></View>
-                    </TouchableWithoutFeedback>
-                </View>
                 <View style={styles.topMsg}>
                     <Text style={styles.topHeader}>设置关注的区域</Text>
+                    <Text style={styles.topSubHeader}>关注区域的新房源第一时间收到</Text>
                 </View>
                 {
                     districtBlockList && districtBlockList.toJS().length > 0 ?
@@ -41,7 +36,7 @@ export default class AttentionBlockSet extends Component {
                 }
                 <View style={styles.conformWrap}>
                     <TouchableHighlight
-                        style={styles.conformButton}
+                        style={[styles.conformButton, districtBlockSelect.size ? {} : {opacity: 0.3}]}
                         underlayColor="#04c1ae"
                         onPress={this._conformBlockSet}
                     >
@@ -59,26 +54,19 @@ export default class AttentionBlockSet extends Component {
 
         InteractionManager.runAfterInteractions(() => {
             actions.fetchAttentionBlockSet();
-            actions.enterAttentionBlockSet();
         });
     }
 
-    _skip = () => {
-        ActionUtil.setAction(actionType.BA_LOGFOCUS_AREA_SKIP);
-        let {navigator, actions} = this.props;
-        actions.attentionBlockSetCleared();
-        navigator.resetTo({
-            component: TabViewContainer,
-            name: 'home',
-            title: '我的主页',
-            hideNavBar: true,
-            bp: this.pageId
-        });
-    };
+    componentWillUnmount() {
+        this.props.actions.attentionCleared();
+    }
 
     _conformBlockSet = () => {
         let {attentionBlockSet, navigator, actionsApp} = this.props;
         let districtBlockSelect = attentionBlockSet.get('district_block_select');
+        if(!districtBlockSelect.size) {
+            return;
+        }
 
         let params = districtBlockSelect.map((v) => {
             return v.get('id')
@@ -110,7 +98,6 @@ export default class AttentionBlockSet extends Component {
 
     _onHandleBlockSelected = (block, insert:boolen) => {
         let {actions} = this.props;
-
         if (insert) {
             ActionUtil.setActionWithExtend(actionType.BA_LOGFOCUS_AREA_CHOOSE, {"block_id": block.get("id"), "block_name": block.get("name")});
             actions.attentionBlockSetAdded(block);
@@ -126,8 +113,8 @@ const styles = StyleSheet.create({
         flex: 1
     },
     topMsg: {
-        height: 30,
-        marginBottom: 10,
+        marginTop: 12,
+        marginBottom: 20,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -135,6 +122,7 @@ const styles = StyleSheet.create({
         fontSize: 23
     },
     topSubHeader: {
+        marginTop: 8,
         fontSize: 15,
         color: '#8d8c92'
     },
@@ -143,10 +131,6 @@ const styles = StyleSheet.create({
     },
     marginTop: {
         marginTop: 30, // TODO
-    },
-    skip: {
-        color: '#04c1ae',
-        paddingRight: 15
     },
     conformWrap: {
         position: 'absolute',

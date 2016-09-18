@@ -17,6 +17,7 @@ import * as actionType from '../constants/ActionLog';
 import TitleBar from '../components/TitleBar';
 import WelfareCard from '../components/WelfareCard';
 import deviceInfo from '../utils/DeviceInfo';
+import MessageNoticeModal from '../components/MessageNoticeModal';
 var AudioPlayer = require('react-native').NativeModules.RNAudioPlayer;
 var {RecyclerViewBackedScrollView} = require('react-native');
 
@@ -36,7 +37,7 @@ export default class Detail extends Component {
     }
 
     render() {
-        let {baseInfo, sameCommunityList, callInfo, actions, navigator, route} = this.props;
+        let {baseInfo, sameCommunityList, callInfo, messageNotice, actions, navigator, route} = this.props;
         let houseList = sameCommunityList.get('properties');
         let info = baseInfo.get("baseInfo");
         let couponArr = baseInfo.get('couponArr');
@@ -204,7 +205,35 @@ export default class Detail extends Component {
         AudioPlayer.stop();
     }
 
+    _userVerified() {
+        let {appUserConfig, actionsApp} = this.props;
+        if(appUserConfig.get('isNew') && appUserConfig.get('verifiedStatus') == "0") {
+            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_IDENTITY_ONVIEW, {"uid": global.guid});
+            actionsApp.verifiedNoticeSet({
+                visible: true,
+                msg: "您需要进行身份认证\n才能联系房东哦~",
+                from: "detail",
+                hideClose: false
+            });
+            return false;
+        }
+        if(appUserConfig.get('verifiedStatus') == "3") {
+            ActionUtil.setActionWithExtend(actionType.BA_DETAIL_IDENTITY_ONVIEW, {"uid": global.guid});
+            actionsApp.verifiedNoticeSet({
+                visible: true,
+                msg: "您的身份未通过认证\n请重新上传身份信息",
+                from: "detail",
+                hideClose: true
+            });
+            return false;
+        }
+        return true;
+    }
     _clickGetSellerPhoneBtn(status, phone) {
+        if(! this._userVerified()){
+            return;
+        }
+
         let {actions, actionsNavigation, actionsHome, route, baseInfo} = this.props;
         let propertyId = route.item.get("property_id");
 
@@ -316,6 +345,10 @@ export default class Detail extends Component {
     };
 
     _playRecord = () => {
+        if(! this._userVerified()){
+            return;
+        }
+
         let {baseInfo, actions, route} = this.props;
         let info = baseInfo.get('baseInfo');
         let record = info.get('record_url');
@@ -338,6 +371,10 @@ export default class Detail extends Component {
     }
 
     _contactSeller = () => {
+        if(! this._userVerified()){
+            return;
+        }
+
         let {baseInfo, actions, callInfo} = this.props;
         ActionUtil.setAction(actionType.BA_DETAIL_CLICK_CALL);
 
@@ -1111,7 +1148,7 @@ class ContactList extends Component {
             return (
                 <View key={index} style={[styles.row, styles.contactItem, styles.center]}>
                     <Text style={[styles.grayColor, styles.date]}>{item.get('time')}</Text><Text
-                    style={[styles.baseColor, styles.itemSize]}>{item.get('phone')}联系房东</Text>
+                    style={[styles.baseColor, styles.itemSize]}>{item.get('phone')}查看房源</Text>
                 </View>
             );
         });

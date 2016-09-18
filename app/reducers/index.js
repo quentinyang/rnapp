@@ -18,6 +18,7 @@ import withdraw from './withdraw';
 import backScore from './backScore';
 import signIn from './signIn';
 import card from './welfare'
+import aut from './authentication'
 
 const rootReducer = combineReducers({
     test,
@@ -36,7 +37,8 @@ const rootReducer = combineReducers({
     withdraw,
     backScore,
     signIn,
-    card
+    card,
+    aut
 });
 
 export default rootReducer;

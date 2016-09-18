@@ -9,6 +9,7 @@ require('../config/route');
 import LoginContainer from '../containers/LoginContainer';
 import AboutEXPContainer from './AboutEXPContainer';
 import TabViewContainer from '../containers/TabViewContainer';
+import WelfareContainer from '../containers/WelfareContainer';
 import * as common from '../constants/Common';
 import * as notifConst from '../constants/Notification';
 import BackScore from '../pages/BackScore'
@@ -19,6 +20,11 @@ let NotificationHandler = require('../utils/NotificationHandler');
 import { NativeAppEventEmitter, DeviceEventEmitter } from 'react-native';
 import { setLoginDaysService } from '../service/configService';
 import Toast from 'react-native-root-toast';
+import MessageNoticeModal from '../components/MessageNoticeModal';
+import WelfareModal from '../components/WelfareModal';
+import AuthenticationContainer from '../containers/AuthenticationContainer';
+import SelectCityContainer from '../containers/SelectCityContainer';
+import AttentionBlockSetContainer from '../containers/AttentionBlockSetContainer';
 
 let _navigator;
 global.gtoken = '';
@@ -29,6 +35,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         var self = this;
+        this.hasShowAttention = false;
         let {actionsApp} = this.props;
 
         this.routeStack = [];
@@ -38,7 +45,7 @@ class App extends Component {
         };
 
         BackAndroid.addEventListener('hardwareBackPress', this._goBack);
-        AsyncStorageComponent.multiGet([common.USER_TOKEN_KEY, common.USER_ID])
+        AsyncStorageComponent.multiGet([common.USER_TOKEN_KEY, common.USER_ID, common.CITY_ID])
         .then((value) => {
             let len = value.length;
             for(let i=0; i<len; i++) {
@@ -52,6 +59,10 @@ class App extends Component {
                             actionsApp.setSearchHistory(value[i][1] || "0");
                             ActionUtil.setUid(value[i][1]);
                         }
+                        break;
+                    case common.CITY_ID:
+                        ActionUtil.setCcid(value[i][1]);
+                        global.gccid = value[i][1];
                         break;
                 }
             }
@@ -125,14 +136,92 @@ class App extends Component {
 
     render() {
         let {hasSetRoute} = this.state;
-        let {appData, actionsApp} = this.props;
+        let {appData, messageNotice, actionsApp, appUserConfig} = this.props;
         let isAndroid = (Platform.OS == "android");
         // (isAndroid && appData.get('config').get('isCidLogin'))
         return (
             <View style={styles.flex}>
                 <MessageNoticeModal
-                    message={appData.get('msgNotice')}
-                    actionsApp={actionsApp}
+                    visible={messageNotice.get('visible')}
+                    message={messageNotice.get('msg')}
+                    onClose={() => {
+                        actionsApp.msgNoticeVisibleChanged(false);
+                    }}
+                    onSure={() => {
+                        actionsApp.msgNoticeVisibleChanged(false);
+                    }}
+                />
+                <WelfareModal
+                    isVisible={appData.get('verifiedResult').get('visible')}
+                    title="身份审核通过"
+                    goTitle="看房卡怎么用"
+                    subTitle={appData.get('verifiedResult').get('welfare_cards').size}
+                    welfareData={appData.get('verifiedResult').get('welfare_cards')}
+                    closeModal={() => {
+                        actionsApp.verifiedResultVisibleChanged(false);
+                    }}
+                    goPage={() => {
+                        actionsApp.verifiedResultVisibleChanged(false);
+                        _navigator.push({
+                            component: WelfareContainer,
+                            name: 'welfare',
+                            title: '看房卡',
+                            hideNavBar: false
+                        });
+                    }}
+                />
+                <MessageNoticeModal
+                    visible={appData.get('verifiedNotice').get('visible')}
+                    message={appData.get('verifiedNotice').get('msg')}
+                    hideClose={appData.get('verifiedNotice').get('hideClose')}
+                    onClose={() => {
+                        switch(appData.get('verifiedNotice').get('from')) {
+                        case "detail":
+                            ActionUtil.setAction(actionType.BA_DETAIL_IDENTITY_DELETE);
+                            break;
+                        case "charge":
+                            ActionUtil.setAction(actionType.BA_MINE_RECHANGE_ENSURE_DELETE);
+                            break;
+                        case "noVerify":
+                            ActionUtil.setAction(actionType.BA_MINE_IDENTITY_REVIEWBOX_DELETE);
+                            break;
+                        case "inVerify":
+                            ActionUtil.setAction(actionType.BA_MINE_IDENTITY_NOREVIEWBOX_DELETE);
+                            break;
+                        default:
+                            break;
+                        }
+                        actionsApp.verifiedNoticeVisibleChanged(false);
+                    }}
+                    onSure={() => {
+                        switch(appData.get('verifiedNotice').get('from')) {
+                        case "detail":
+                            ActionUtil.setAction(actionType.BA_DETAIL_IDENTITY_SURE);
+                            break;
+                        case "charge":
+                            ActionUtil.setAction(actionType.BA_MINE_RECHANGE_ENSURE_SURE);
+                            break;
+                        case "noVerify":
+                            ActionUtil.setAction(actionType.BA_MINE_IDENTITY_REVIEWBOX_SURE);
+                            break;
+                        case "inVerify":
+                            ActionUtil.setAction(actionType.BA_MINE_IDENTITY_NOREVIEWBOX_SURE);
+                            break;
+                        default:
+                            break;
+                        }
+                        actionsApp.verifiedNoticeVisibleChanged(false);
+                        if(appData.get('verifiedNotice').get('from') != "inVerify") {
+                            _navigator.push({
+                                component: AuthenticationContainer,
+                                name: "auth",
+                                title: "身份认证",
+                            });
+                        }
+                        if(appUserConfig.get('verifiedStatus') == '3') {
+                            ActionUtil.setAction(actionType.BA_IDENTITY_LOSE);
+                        }
+                    }}
                 />
                 <LogoutModal
                     logoutInfo={appData.get('auth')}
@@ -251,7 +340,7 @@ class App extends Component {
     }
 
     componentDidUpdate() {
-        let {appData, actionsApp} = this.props;
+        let {appData, actionsApp, appUserConfig} = this.props;
 
         if (appData.get('msg') !== '') {
             Alert.alert('提示', appData.get('msg'), [
@@ -262,6 +351,25 @@ class App extends Component {
                     }
                 }
             ])
+        }
+
+        if(!this.hasShowAttention && appUserConfig.get('isSelectCity') != null && appUserConfig.get('isSelectAttention') != null) {
+            this.hasShowAttention = true;
+            if(!appUserConfig.get('isSelectCity')) {
+                _navigator.resetTo({
+                    component: SelectCityContainer,
+                    name: 'selectCity',
+                    title: '选择城市',
+                    hideNavBar: false
+                });
+            } else if(!appUserConfig.get('isSelectAttention')) {
+                 _navigator.resetTo({
+                    component: AttentionBlockSetContainer,
+                    name: 'AttentionBlockSetContainer',
+                    title: '',
+                    hideNavBar: false
+                });
+            }
         }
     }
 
@@ -359,13 +467,14 @@ class App extends Component {
         } else {
             actionsApp.netWorkChanged('yes');
             actionsApp.setAppConfig();
+            global.gtoken && actionsApp.setAppUserConfig();
         }
     };
 
     _logoutSure = () => {
         let {actionsApp} = this.props;
         actionsApp.deletePush(); // 解绑个推
-        AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID]);
+        AsyncStorageComponent.multiRemove([common.USER_TOKEN_KEY, common.USER_ID, common.CITY_ID]);
         ActionUtil.setUid("");
         gtoken = '';
 
@@ -407,24 +516,48 @@ class App extends Component {
             case notifConst.LOGOUT: // 互踢
                 NotificationHandler.logout.call(this, _navigator);
                 break;
-            case notifConst.OPEN_PAGE:
+            case notifConst.OPEN_PAGE: //跳转到指定页
                 NotificationHandler.openPage(_navigator, notifData);
                 break;
-            case notifConst.OPEN_URL:
+            case notifConst.OPEN_URL: //打开指定URL
                 NotificationHandler.openURL(_navigator, notifData);
                 break;
-            case notifConst.RED_POINT:
+            case notifConst.RED_POINT: //签到小红点提示
                 actionsApp.appSignInChanged(false);
                 break;
-            case notifConst.NEW_LEVEL_NOTICE:
+            case notifConst.NEW_LEVEL_NOTICE:  //会员等级升级提示
                 actionsApp.levelPushed(newNotifData.data.extras);
                 actionsUser.fetchUserProfile();
                 break;
-            case notifConst.TOAST_NOTICE:
+            case notifConst.TOAST_NOTICE:  //toast消息提示
                 NotificationHandler.showToast(newNotifData.data.extras);
                 break;
-            case notifConst.FORCE_UPDATE:
+            case notifConst.FORCE_UPDATE: //强制升级
                 NotificationHandler.showForceUpdate(actionsApp);
+                break;
+            case notifConst.MESSAGE_NOTICE: //消息弹框提示
+                NotificationHandler.messageNotice(actionsApp);
+                break;
+            case notifConst.VERIFIED_NOTICE: //用户认证结果提示
+                if(newNotifData.data.extras.result == "0") { //失败
+                    ActionUtil.setAction(actionType.BA_IDENTITY_BOXLOSE);
+                    actionsApp.verifiedNoticeSet({
+                        visible: true,
+                        msg: "您的身份未通过认证\n请重新上传身份信息",
+                        hideClose: true
+                    });
+                    actionsApp.verifiedStatusChanged("3");
+                } else if(newNotifData.data.extras.result == "1") { //成功
+                    if(newNotifData.data.extras.welfare_cards.length) {
+                        actionsApp.verifiedResultSet(Object.assign({visible: true}, newNotifData.data.extras));
+                    } else {
+                        Toast.show('您的身份通过认证审核', {
+                            duration: Toast.durations.SHORT,
+                            position: Toast.positions.CENTER
+                        });
+                    }
+                    actionsApp.verifiedStatusChanged("2");
+                }
                 break;
             default:
                 break;
@@ -547,33 +680,6 @@ class LogoutModal extends Component {
     }
 }
 
-class MessageNoticeModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        let {message, actionsApp} = this.props;
-        return (
-            <Modal visible={message.get('visible')} transparent={true} onRequestClose={() => {}}>
-                <View style={styles.bgWrap}>
-                    <View style={styles.contentContainer}>
-                        <Text style={styles.textCenter}>{message.get('msg')}</Text>
-
-                        <TouchableHighlight
-                            style={[styles.alignItems, styles.logoutSure, styles.justifyContent]}
-                            onPress={() => actionsApp.msgNoticeGeted({'visible': false})}
-                            underlayColor='#04C1AE'
-                        >
-                            <View>
-                                <Text style={[styles.updateBtnRightText]}>确认</Text>
-                            </View>
-                        </TouchableHighlight>
-                    </View>
-                </View>
-            </Modal>
-        );
-    }
-}
 
 class LevelModal extends Component {
     constructor(props) {
