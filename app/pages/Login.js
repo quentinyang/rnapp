@@ -61,7 +61,6 @@ class Login extends Component {
                             onChangeText={(phone) => this.inputPhone(phone)}
                             keyboardType='numeric'
                             placeholder='手机号'
-                            placeholderTextColor=''
                             maxLength={11}
                             underlineColorAndroid='transparent'
                             value={formInfo.get('phone')}
