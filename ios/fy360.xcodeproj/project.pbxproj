@@ -930,6 +930,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = 82EMB5HWEQ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -956,7 +957,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xinyi.fy360;
 				PRODUCT_NAME = fy360;
-				PROVISIONING_PROFILE = "9997de35-cccd-4f0e-a73a-8d5c60373116";
+				PROVISIONING_PROFILE = "c0136c8b-2f19-4143-bb1e-e731c61ccaed";
+				PROVISIONING_PROFILE_SPECIFIER = XinYiDevApp;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -967,7 +969,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = 82EMB5HWEQ;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -994,7 +997,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xinyi.fy360;
 				PRODUCT_NAME = fy360;
-				PROVISIONING_PROFILE = "9997de35-cccd-4f0e-a73a-8d5c60373116";
+				PROVISIONING_PROFILE = "79a015fa-1563-4957-b777-e36cd0f83860";
+				PROVISIONING_PROFILE_SPECIFIER = XinYiAppStore;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
