@@ -87,7 +87,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "24.0.3"
 
     def debugChannels = ['dev', '']
     def branch = "master.stage"
