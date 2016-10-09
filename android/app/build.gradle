@@ -90,6 +90,7 @@ android {
     buildToolsVersion "24.0.1"
 
     def debugChannels = ['dev', '']
+    def branch = "master.stage"
     def myFile = file("customSetting.properties")
     Properties propFile = new Properties()
     propFile.load(new FileInputStream(myFile))
@@ -142,17 +143,17 @@ android {
             signingConfig signingConfigs.debug
 
             // rename package name
-//            applicationVariants.all { variant ->
-//                if (debugChannels.contains(variant.productFlavors[0].name)) {
-//                    variant.outputs.each { output ->
-//                        def outputFile = output.outputFile
-//                        if (outputFile != null && outputFile.name.endsWith('.apk')) {
-//                            def fileName = "app_debug_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
-//                            output.outputFile = new File(outputFile.parent, fileName)
-//                        }
-//                    }
-//                }
-//            }
+            applicationVariants.all { variant ->
+                if (debugChannels.contains(variant.productFlavors[0].name)) {
+                    variant.outputs.each { output ->
+                        def outputFile = output.outputFile
+                        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                            def fileName = "app_debug_v${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                            output.outputFile = new File(outputFile.parent, fileName)
+                        }
+                    }
+                }
+            }
         }
         release {
             minifyEnabled enableProguardInReleaseBuilds
@@ -178,12 +179,15 @@ android {
 
 
     productFlavors {
+        //start_replace_flag
         dev {
-            buildConfigField "String", "API_HOST", "\"http://360.master.test.angejia.com/service/\""
+            buildConfigField "String", "API_HOST", "\"http://360." + branch + ".angejia.com/service/\""
         }
 
         //渠道
-//        AppStore {}
+        AppStore {}
+        //end_replace_flag
+        
 //        QQ {}
 //        A360 {}
 //        BAIDU {}
@@ -194,6 +198,7 @@ android {
 //        VIVO {}
 //        WANDOUJIA {}
 //        XIAOMI {}
+
     }
 
     productFlavors.all { flavor ->

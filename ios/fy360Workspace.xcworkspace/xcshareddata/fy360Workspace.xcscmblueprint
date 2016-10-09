@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "79CF900B882005C8E2FEC0B58870C75AC30E2473",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "79CF900B882005C8E2FEC0B58870C75AC30E2473" : 0,
+    "C8AD44EB8C15CDC09F4B6B636F064C3FDC91F264" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "FED2CA1E-3FCD-4F5B-886B-EA66B4971FA2",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "79CF900B882005C8E2FEC0B58870C75AC30E2473" : "fy360-native\/",
+    "C8AD44EB8C15CDC09F4B6B636F064C3FDC91F264" : "..\/.."
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "fy360Workspace",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ios\/fy360Workspace.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "git.corp.angejia.com:fangyuan360\/fy360-native.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "79CF900B882005C8E2FEC0B58870C75AC30E2473"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "git.corp.angejia.com:frontend\/app-deploy.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C8AD44EB8C15CDC09F4B6B636F064C3FDC91F264"
+    }
+  ]
+}
