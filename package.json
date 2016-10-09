@@ -8,13 +8,13 @@
   "dependencies": {
     "commander": "^2.9.0",
     "immutable": "^3.7.6",
-    "react": "~15.2.1",
+    "react": "~15.3.1",
     "react-addons-pure-render-mixin": "^0.14.6",
-    "react-native": "~0.29.0",
+    "react-native": "~0.34.0",
     "react-native-code-push": "^1.13.6-beta",
     "react-native-device-info": "^0.9.1",
     "react-native-root-toast": "^1.0.3",
-    "react-native-image-picker": "^0.22.1",
+    "react-native-image-picker": "^0.22.8",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",
     "redux-thunk": "^1.0.3"

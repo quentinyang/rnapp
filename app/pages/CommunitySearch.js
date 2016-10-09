@@ -37,7 +37,7 @@ export default class CommunitySearch extends Component {
     }
 
     renderRow(item, index) {
-        return <AutocompleteItem index={index} item={item} onPress={this.onPress} />;
+        return <AutocompleteItem key={index} item={item} onPress={this.onPress} />;
     }
 
     onChangeText(value) {
