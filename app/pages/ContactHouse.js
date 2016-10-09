@@ -143,13 +143,6 @@ export default class ContactHouse extends Component {
         return (
             <View key={rowID} style={styles.flex}>
                 <ContactItem item={rowData} current={currentStatus} onItemPress={this._onItemPress}/>
-                {btn == 'green' || btn == 'gray' ?
-                <TouchableHighlight style={styles.absolute} onPress={() => {this._applyToRefund(handleBtn, rowData)}} underlayColor="transparent">
-                    <View style={[styles.applyBtn, styles.center, btn == 'green' ? styles.greenBorder: styles.grayBorder]}>
-                        <Text style={[styles.fontSmall, btn == 'green' ? styles.greenColor : styles.grayColor]}>申请退积分</Text>
-                    </View>
-                </TouchableHighlight>
-                :null}
             </View>
         )
     };
